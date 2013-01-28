@@ -171,9 +171,12 @@ class TbHtml extends CHtml
 	 * @param bool $striped
 	 * @param bool $animated
 	 * @param array $htmlOptions
+	 * @see http://twitter.github.com/bootstrap/components.html#progress
 	 */
 	public static function progressBar($type, $content = '', $percent = 0, $striped = false, $animated = false, $htmlOptions = array())
 	{
+		// valid types
+		// todo: Think about $validTypes scope
 		$validTypes = array(self::STYLE_INFO, self::STYLE_SUCCESS, self::STYLE_WARNING, self::STYLE_DANGER);
 
 		$classes = array('progress');
@@ -191,8 +194,44 @@ class TbHtml extends CHtml
 		ob_start();
 		echo parent::openTag('div', self::addClassNames($classes, $htmlOptions));
 		echo '<div class="bar" style="width:' . $percent . '%;">' . $content . '</div>';
-		echo '</div>';
+		echo parent::closeTag('div');
 		return ob_get_clean();
+	}
+
+	/**
+	 * @param string $type the type of alert
+	 * @param string $message the message to display  within the alert box
+	 * @param string $closeText the text that will act as the closing button
+	 * @param bool $block for longer messages, increase the padding on the top and bottom of the alert wrapper
+	 * @param bool $fade the effect to show/hide the alert box. To hide remove the class *in*, to show just add it again.
+	 * @param array $htmlOptions
+	 * @see http://twitter.github.com/bootstrap/components.html#alerts
+	 */
+	public static function alert($type, $message, $closeText="&times", $block = true, $fade = true, $htmlOptions = array())
+	{
+		// valid Types
+		// todo: Think about its scope
+		$validTypes = array(self::STYLE_SUCCESS, self::STYLE_INFO, self::STYLE_WARNING, self::STYLE_ERROR, self::STYLE_DANGER);
+
+		// add default classes
+		// todo: should we allow the user whether to make it visible or not on display?
+		$classes = array('alert in');
+		if(in_array($type, $validTypes))
+			$classes[] = 'alert-'.$type;
+		// block
+		if($block)
+			$classes[] = 'alert-block';
+		// fade
+		if($fade)
+			$classes[] = 'fade';
+
+		ob_start();
+		echo parent::openTag('div', self::addClassNames($classes, $htmlOptions));
+		echo !empty($closeText)? self::link($closeText,'#', array('class'=>'close', 'data-dismiss'=>'alert')) : '';
+		echo $message;
+		echo parent::closeTag('div');
+		return ob_get_clean();
+
 	}
 
 	/**
