@@ -109,10 +109,7 @@ class TbHtml extends CHtml
 			$label = '<i class="' . $icon . '"></i>' . $label;
 		}
 
-		$classes = implode(' ', $classes);
-		$htmlOptions['class'] = isset($htmlOptions['class']) ? $htmlOptions['class'] . ' ' . $classes : $classes;
-
-		return self::tag('button', $htmlOptions, $label);
+		return self::tag('button', self::addClassNames($classes, $htmlOptions), $label);
 	}
 
 	/**
@@ -164,10 +161,7 @@ class TbHtml extends CHtml
 			unset($htmlOptions['style']);
 		}
 
-		$classes = implode(' ', $classes);
-		$htmlOptions['class'] = isset($htmlOptions['class']) ? $htmlOptions['class'] . ' ' . $classes : $classes;
-
-		return self::tag('span', $htmlOptions, $label);
+		return self::tag('span', self::addClassNames($classes, $htmlOptions), $label);
 	}
 
 	/**
@@ -195,9 +189,28 @@ class TbHtml extends CHtml
 			$percent = 100;
 
 		ob_start();
-		echo parent::openTag('div', self::addClassName($classes, $htmlOptions));
+		echo parent::openTag('div', self::addClassNames($classes, $htmlOptions));
 		echo '<div class="bar" style="width:' . $percent . '%;">' . $content . '</div>';
 		echo '</div>';
 		return ob_get_clean();
 	}
+
+	/**
+	 * Helper method to add class names to htmlOptions to avoid code redundancy
+	 * @param $className
+	 * @param $htmlOptions
+	 * @return mixed
+	 */
+	protected static function addClassNames($className, $htmlOptions)
+	{
+		if (is_array($className))
+			$className = implode(' ', $className);
+		if (isset($htmlOptions['class']))
+			$htmlOptions['class'] .= ' ' . $className;
+		else
+			$htmlOptions['class'] = $className;
+
+		return $htmlOptions;
+	}
+
 }
