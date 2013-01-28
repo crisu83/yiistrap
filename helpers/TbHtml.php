@@ -3,7 +3,8 @@
  * Bootstrap HTML helper.
  */
 class TbHtml extends CHtml {
-	// Yii button types
+
+	// Button types
 	const BUTTON_LINK = 'link';
 	const BUTTON_BUTTON = 'button';
 	const BUTTON_SUBMIT = 'submit';
@@ -15,7 +16,7 @@ class TbHtml extends CHtml {
 	const BUTTON_INPUTBUTTON = 'inputButton';
 	const BUTTON_INPUTSUBMIT = 'inputSubmit';
 
-	// Bootstrap types
+	// Bootstrap styles
 	const STYLE_PRIMARY = 'primary';
 	const STYLE_INFO = 'info';
 	const STYLE_SUCCESS = 'success';
@@ -31,22 +32,51 @@ class TbHtml extends CHtml {
 	const SIZE_SMALL = 'small';
 	const SIZE_LARGE = 'large';
 
+	// Valid button styles
+	static $buttonStyles = array(
+		self::STYLE_PRIMARY,
+		self::STYLE_INFO,
+		self::STYLE_SUCCESS,
+		self::STYLE_WARNING,
+		self::STYLE_DANGER,
+		self::STYLE_INVERSE,
+		self::STYLE_LINK,
+	);
+
+	// Valid button sizes
+	static $buttonSizes = array(
+		self::SIZE_LARGE,
+		self::SIZE_SMALL,
+		self::SIZE_MINI,
+	);
+
+	// Valid label and badge styles
+	static $labelBadgeStyles = array(
+		self::STYLE_SUCCESS,
+		self::STYLE_WARNING,
+		self::STYLE_IMPORTANT,
+		self::STYLE_INFO,
+		self::STYLE_INVERSE,
+	);
+
+	/**
+	 * @param $label
+	 * @param array $htmlOptions
+	 * @return string
+	 */
 	public static function button($label, $htmlOptions = array()) {
 		$classes = array('btn');
 
 		// Button styles
 		if (isset($htmlOptions['style'])) {
-			$buttonStyles = array(self::STYLE_PRIMARY, self::STYLE_INFO, self::STYLE_SUCCESS, self::STYLE_WARNING,
-					self::STYLE_DANGER, self::STYLE_INVERSE, self::STYLE_LINK);
-			if (in_array($htmlOptions['style'], $buttonStyles))
+			if (in_array($htmlOptions['style'], self::$buttonStyles))
 				$classes[] = 'btn-' . $htmlOptions['style'];
 			unset($htmlOptions['style']);
 		}
 
 		// Button sizes
 		if (isset($htmlOptions['size'])) {
-			$buttonSizes = array(self::SIZE_LARGE, self::SIZE_SMALL, self::SIZE_MINI);
-			if (in_array($htmlOptions['size'], $buttonSizes))
+			if (in_array($htmlOptions['size'], self::$buttonSizes))
 				$classes[] = 'btn-' . $htmlOptions['size'];
 			unset($htmlOptions['size']);
 		}
@@ -78,18 +108,47 @@ class TbHtml extends CHtml {
 		return self::tag('button', $htmlOptions, $label);
 	}
 
+	/**
+	 * @param $label
+	 * @param $items
+	 * @param array $htmlOptions
+	 * @return string
+	 */
 	public static function buttonDropdown($label, $items, $htmlOptions = array()) {
 		// todo: implement
 	}
 
+	/**
+	 * @param $label
+	 * @param array $htmlOptions
+	 * @return string
+	 */
 	public static function labelSpan($label, $htmlOptions = array()) {
-		$classes = array('label');
+		return self::labelBadgeSpan('label', $label, $htmlOptions);
+	}
+
+	/**
+	 * @param $label
+	 * @param array $htmlOptions
+	 * @return string
+	 */
+	public static function badgeSpan($label, $htmlOptions = array()) {
+		return self::labelBadgeSpan('badge', $label, $htmlOptions);
+	}
+
+	/**
+	 * @param $type
+	 * @param $label
+	 * @param array $htmlOptions
+	 * @return string
+	 */
+	public static function labelBadgeSpan($type, $label, $htmlOptions = array()) {
+		$classes = array($type);
 
 		// Label styles
 		if (isset($htmlOptions['style'])) {
-			$labelTypes = array(self::STYLE_SUCCESS, self::STYLE_WARNING, self::STYLE_IMPORTANT, self::STYLE_INFO, self::STYLE_INVERSE);
-			if (in_array($htmlOptions['style'], $labelTypes))
-				$classes[] = 'label-' . $htmlOptions['style'];
+			if (in_array($htmlOptions['style'], self::$labelBadgeStyles))
+				$classes[] = $type . '-' . $htmlOptions['style'];
 			unset($htmlOptions['style']);
 		}
 
