@@ -2,7 +2,8 @@
 /**
  * Bootstrap HTML helper.
  */
-class TbHtml extends CHtml {
+class TbHtml extends CHtml
+{
 
 	// Button types
 	const BUTTON_LINK = 'link';
@@ -20,10 +21,10 @@ class TbHtml extends CHtml {
 	const STYLE_PRIMARY = 'primary';
 	const STYLE_INFO = 'info';
 	const STYLE_SUCCESS = 'success';
-	const STYLE_WARNING  = 'warning';
+	const STYLE_WARNING = 'warning';
 	const STYLE_ERROR = 'error';
 	const STYLE_DANGER = 'danger';
-	const STYLE_IMPORTANT  = 'important';
+	const STYLE_IMPORTANT = 'important';
 	const STYLE_INVERSE = 'inverse';
 	const STYLE_LINK = 'link';
 
@@ -64,37 +65,43 @@ class TbHtml extends CHtml {
 	 * @param array $htmlOptions
 	 * @return string
 	 */
-	public static function button($label, $htmlOptions = array()) {
+	public static function button($label, $htmlOptions = array())
+	{
 		$classes = array('btn');
 
 		// Button styles
-		if (isset($htmlOptions['style'])) {
+		if (isset($htmlOptions['style']))
+		{
 			if (in_array($htmlOptions['style'], self::$buttonStyles))
 				$classes[] = 'btn-' . $htmlOptions['style'];
 			unset($htmlOptions['style']);
 		}
 
 		// Button sizes
-		if (isset($htmlOptions['size'])) {
+		if (isset($htmlOptions['size']))
+		{
 			if (in_array($htmlOptions['size'], self::$buttonSizes))
 				$classes[] = 'btn-' . $htmlOptions['size'];
 			unset($htmlOptions['size']);
 		}
 
 		// Block level buttons
-		if (isset($htmlOptions['block']) && $htmlOptions['block'] === true) {
+		if (isset($htmlOptions['block']) && $htmlOptions['block'] === true)
+		{
 			$classes[] = 'btn-block';
 			unset($htmlOptions['block']);
 		}
 
 		// Disabled state
-		if (isset($htmlOptions['disabled']) && $htmlOptions['disabled'] === true) {
+		if (isset($htmlOptions['disabled']) && $htmlOptions['disabled'] === true)
+		{
 			$classes[] = 'disabled';
 			unset($htmlOptions['disabled']);
 		}
 
 		// Icons
-		if (isset($htmlOptions['icon'])) {
+		if (isset($htmlOptions['icon']))
+		{
 			$icon = $htmlOptions['icon'];
 			unset($htmlOptions['icon']);
 			if (strpos($icon, 'icon') === false)
@@ -114,7 +121,8 @@ class TbHtml extends CHtml {
 	 * @param array $htmlOptions
 	 * @return string
 	 */
-	public static function buttonDropdown($label, $items, $htmlOptions = array()) {
+	public static function buttonDropdown($label, $items, $htmlOptions = array())
+	{
 		// todo: implement
 	}
 
@@ -123,7 +131,8 @@ class TbHtml extends CHtml {
 	 * @param array $htmlOptions
 	 * @return string
 	 */
-	public static function labelSpan($label, $htmlOptions = array()) {
+	public static function labelSpan($label, $htmlOptions = array())
+	{
 		return self::labelBadgeSpan('label', $label, $htmlOptions);
 	}
 
@@ -132,7 +141,8 @@ class TbHtml extends CHtml {
 	 * @param array $htmlOptions
 	 * @return string
 	 */
-	public static function badgeSpan($label, $htmlOptions = array()) {
+	public static function badgeSpan($label, $htmlOptions = array())
+	{
 		return self::labelBadgeSpan('badge', $label, $htmlOptions);
 	}
 
@@ -142,11 +152,13 @@ class TbHtml extends CHtml {
 	 * @param array $htmlOptions
 	 * @return string
 	 */
-	public static function labelBadgeSpan($type, $label, $htmlOptions = array()) {
+	public static function labelBadgeSpan($type, $label, $htmlOptions = array())
+	{
 		$classes = array($type);
 
 		// Label styles
-		if (isset($htmlOptions['style'])) {
+		if (isset($htmlOptions['style']))
+		{
 			if (in_array($htmlOptions['style'], self::$labelBadgeStyles))
 				$classes[] = $type . '-' . $htmlOptions['style'];
 			unset($htmlOptions['style']);
@@ -154,7 +166,38 @@ class TbHtml extends CHtml {
 
 		$classes = implode(' ', $classes);
 		$htmlOptions['class'] = isset($htmlOptions['class']) ? $htmlOptions['class'] . ' ' . $classes : $classes;
-		
+
 		return self::tag('span', $htmlOptions, $label);
+	}
+
+	/**
+	 * @param $type
+	 * @param string $content
+	 * @param int $percent
+	 * @param bool $striped
+	 * @param bool $animated
+	 * @param array $htmlOptions
+	 */
+	public static function progressBar($type, $content = '', $percent = 0, $striped = false, $animated = false, $htmlOptions = array())
+	{
+		$validTypes = array(self::STYLE_INFO, self::STYLE_SUCCESS, self::STYLE_WARNING, self::STYLE_DANGER);
+
+		$classes = array('progress');
+		if (in_array($type, $validTypes))
+			$classes[] = 'progress-' . $type;
+		if ($striped)
+			$classes[] = 'progress-striped';
+		if ($animated)
+			$classes[] = 'active';
+		if ($percent < 0)
+			$percent = 0;
+		else if ($percent > 100)
+			$percent = 100;
+
+		ob_start();
+		echo parent::openTag('div', self::addClassName($classes, $htmlOptions));
+		echo '<div class="bar" style="width:' . $percent . '%;">' . $content . '</div>';
+		echo '</div>';
+		return ob_get_clean();
 	}
 }
