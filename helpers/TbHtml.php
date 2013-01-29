@@ -348,6 +348,38 @@ class TbHtml extends CHtml
 	}
 
 	/**
+	 * Generates a radio button.
+	 * @param string $name the input name
+	 * @param boolean $checked whether the radio button is checked
+	 * @param array $htmlOptions additional HTML attributes. Besides normal HTML attributes, a few special
+	 * attributes are also recognized (see {@link clientChange} {@link getArrayValue} and {@link tag} for more details.)
+	 * Since version 1.1.2, a special option named 'uncheckValue' is available that can be used to specify
+	 * the value returned when the radio button is not checked. When set, a hidden field is rendered so that
+	 * when the radio button is not checked, we can still obtain the posted uncheck value.
+	 * If 'uncheckValue' is not set or set to NULL, the hidden field will not be rendered.
+	 * @return string the generated radio button
+	 * @see clientChange
+	 * @see inputField
+	 */
+	public static function radioButton($name,$checked=false,$htmlOptions=array())
+	{
+		$label = self::getArrayValue('label', $htmlOptions);
+		$radioButton = parent::radioButton($name, $checked, self::cleanUpOptions($htmlOptions, array('label')));
+
+		if ($label)
+		{
+			ob_start();
+			echo '<label class="radio">';
+			echo $radioButton;
+			echo $label;
+			echo '</label>';
+			return ob_get_clean();
+		}
+
+		return $radioButton;
+	}
+
+	/**
 	 * Returns the add-on classes if any from `$htmlOptions`.
 	 * @param array $htmlOptions the HTML tag options
 	 * @return array|string the resulting classes
