@@ -235,6 +235,46 @@ class TbHtml extends CHtml
 	}
 
 	/**
+	 * Generates an image tag with rounded corners.
+	 * @param string $src the image URL
+	 * @param string $alt the alternative text display
+	 * @param array $htmlOptions additional HTML attributes (see {@link tag}).
+	 * @return string the generated image tag
+	 * @see http://twitter.github.com/bootstrap/base-css.html#images
+	 */
+	public static function imageRounded($src,$alt='',$htmlOptions=array())
+	{
+		parent::image($src, $alt, self::addClassNames('img-rounded', $htmlOptions));
+	}
+
+	/**
+	 * Generates an image tag with circle.
+	 * ***Important*** `.img-rounded` and `.img-circle` do not work in IE7-8 due to lack of border-radius support.
+	 * @param string $src the image URL
+	 * @param string $alt the alternative text display
+	 * @param array $htmlOptions additional HTML attributes (see {@link tag}).
+	 * @return string the generated image tag
+	 * @see http://twitter.github.com/bootstrap/base-css.html#images
+	 */
+	public static function imageCircle($src, $alt='', $htmlOptions=array())
+	{
+		parent::image($src, $alt, self::addClassNames('img-circle', $htmlOptions));
+	}
+
+	/**
+	 * Generates an image tag within polaroid frame.
+	 * @param string $src the image URL
+	 * @param string $alt the alternative text display
+	 * @param array $htmlOptions additional HTML attributes (see {@link tag}).
+	 * @return string the generated image tag
+	 * @see http://twitter.github.com/bootstrap/base-css.html#images
+	 */
+	public static function imagePolaroid($src, $alt='', $htmlOptions=array())
+	{
+		parent::image($src, $alt, self::addClassNames('img-polaroid', $htmlOptions));
+	}
+
+	/**
 	 * Helper method to add class names to htmlOptions to avoid code redundancy
 	 * @param $className
 	 * @param $htmlOptions
