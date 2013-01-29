@@ -65,7 +65,7 @@ class TbHtml extends CHtml
 	 * @param array $htmlOptions
 	 * @return string
 	 */
-	public static function button($label='button',$htmlOptions=array())
+	public static function button($label = 'button', $htmlOptions = array())
 	{
 		$classes = array('btn');
 
@@ -207,7 +207,7 @@ class TbHtml extends CHtml
 	 * @param array $htmlOptions
 	 * @see http://twitter.github.com/bootstrap/components.html#alerts
 	 */
-	public static function alert($type, $message, $closeText="&times", $block = true, $fade = true, $htmlOptions = array())
+	public static function alert($type, $message, $closeText = "&times", $block = true, $fade = true, $htmlOptions = array())
 	{
 		// valid Types
 		// todo: Think about its scope
@@ -216,18 +216,18 @@ class TbHtml extends CHtml
 		// add default classes
 		// todo: should we allow the user whether to make it visible or not on display?
 		$classes = array('alert in');
-		if(in_array($type, $validTypes))
-			$classes[] = 'alert-'.$type;
+		if (in_array($type, $validTypes))
+			$classes[] = 'alert-' . $type;
 		// block
-		if($block)
+		if ($block)
 			$classes[] = 'alert-block';
 		// fade
-		if($fade)
+		if ($fade)
 			$classes[] = 'fade';
 
 		ob_start();
 		echo parent::openTag('div', self::addClassNames($classes, $htmlOptions));
-		echo !empty($closeText)? self::link($closeText,'#', array('class'=>'close', 'data-dismiss'=>'alert')) : '';
+		echo !empty($closeText) ? self::link($closeText, '#', array('class' => 'close', 'data-dismiss' => 'alert')) : '';
 		echo $message;
 		echo parent::closeTag('div');
 		return ob_get_clean();
@@ -242,7 +242,7 @@ class TbHtml extends CHtml
 	 * @return string the generated image tag
 	 * @see http://twitter.github.com/bootstrap/base-css.html#images
 	 */
-	public static function imageRounded($src,$alt='',$htmlOptions=array())
+	public static function imageRounded($src, $alt = '', $htmlOptions = array())
 	{
 		return parent::image($src, $alt, self::addClassNames('img-rounded', $htmlOptions));
 	}
@@ -256,7 +256,7 @@ class TbHtml extends CHtml
 	 * @return string the generated image tag
 	 * @see http://twitter.github.com/bootstrap/base-css.html#images
 	 */
-	public static function imageCircle($src, $alt='', $htmlOptions=array())
+	public static function imageCircle($src, $alt = '', $htmlOptions = array())
 	{
 		return parent::image($src, $alt, self::addClassNames('img-circle', $htmlOptions));
 	}
@@ -269,7 +269,7 @@ class TbHtml extends CHtml
 	 * @return string the generated image tag
 	 * @see http://twitter.github.com/bootstrap/base-css.html#images
 	 */
-	public static function imagePolaroid($src, $alt='', $htmlOptions=array())
+	public static function imagePolaroid($src, $alt = '', $htmlOptions = array())
 	{
 		return parent::image($src, $alt, self::addClassNames('img-polaroid', $htmlOptions));
 	}
@@ -284,15 +284,94 @@ class TbHtml extends CHtml
 	 */
 	public static function iconGlyph($icon, $tag = 'i')
 	{
-		return parent::tag($tag, array('class'=>$icon));
+		return parent::tag($tag, array('class' => $icon));
 	}
+
 	/**
-	 * Helper method to add class names to htmlOptions to avoid code redundancy
-	 * @param $className
-	 * @param $htmlOptions
+	 * Generates a text field input.
+	 * @param string $name the input name
+	 * @param string $value the input value
+	 * @param array $htmlOptions additional HTML attributes. Besides normal HTML attributes, a few special
+	 * attributes are also recognized (see {@link getAddOnClasses} {@link getAppend} {@link getPrepend} {@link clientChange} and {@link tag} for more details.)
+	 * @return string the generated input field
+	 * @see clientChange
+	 * @see inputField
+	 */
+	public static function textField($name, $value = '', $htmlOptions = array())
+	{
+		parent::clientChange('change', $htmlOptions);
+		$addOnClasses = self::getAddOnClasses($htmlOptions);
+
+		ob_start();
+		if(!empty($addOnClasses))
+			echo '<div class="'.$addOnClasses.'">';
+
+		echo  self::getPrepend($htmlOptions);
+		echo  self::inputField('text', $name, $value, self::cleanUpOptions($htmlOptions, array('append', 'prepend')));
+		echo  self::getAppend($htmlOptions);
+
+		if(!empty($addOnClasses))
+			echo '</div>';
+		return ob_get_clean();
+	}
+
+	/**
+	 * Returns the add-on classes if any from `$htmlOptions`.
+	 * @param array $htmlOptions the HTML tag options
+	 * @return array|string the resulting classes
+	 */
+	public static function getAddOnClasses($htmlOptions)
+	{
+		$classes = array();
+		if (is_array($htmlOptions) && isset($htmlOptions['append']) && !empty($htmlOptions['append']))
+		{
+			$classes[] = 'input-append';
+		}
+		if (is_array($htmlOptions) && isset($htmlOptions['prepend']) && !empty($htmlOptions['prepend']))
+		{
+			$classes[] = 'input-prepend';
+		}
+
+		return !empty($classes) ? implode(' ', $classes) : $classes;
+	}
+
+	/**
+	 * Extracts append add-on from `$htmlOptions` if any.
+	 * @param array $htmlOptions
+	 */
+	public static function getAppend($htmlOptions)
+	{
+		return self::getAddOn('append', $htmlOptions);
+	}
+
+	/**
+	 * Extracts prepend add-on from `$htmlOptions` if any.
+	 * @param array $htmlOptions
+	 */
+	public static function getPrepend($htmlOptions)
+	{
+		return self::getAddOn('prepend', $htmlOptions);
+	}
+
+	/**
+	 * Extracs append add-ons from `$htmlOptions` if any.
+	 * @param array $htmlOptions
+	 */
+	public static function getAddOn($type, $htmlOptions)
+	{
+		return (is_array($htmlOptions) && isset($htmlOptions[$type]) && !empty($htmlOptions[$type])) ?
+			CHtml::tag('span', array('class' => 'add-on'), $htmlOptions[$type])
+			:
+			'';
+	}
+
+	/**
+	 * Appends new class names to the named index "class" at the `$htmlOptions` parameter.
+	 * @param mixed $className the class(es) to append to `$htmlOptions`
+	 * @param array $htmlOptions the HTML tag attributes to modify
 	 * @return mixed
 	 */
-	protected static function addClassNames($className, $htmlOptions)
+	public static function addClassNames($className, $htmlOptions)
 	{
 		if (is_array($className))
 			$className = implode(' ', $className);
@@ -304,4 +383,14 @@ class TbHtml extends CHtml
 		return $htmlOptions;
 	}
 
+	/**
+	 * Cleans up `$htmlOptions` from unwanted settings.
+	 * @param array $htmlOptions the options to clean
+	 * @param array $keysToRemove the keys to remove from the options
+	 * @return array
+	 */
+	protected static function cleanUpOptions($htmlOptions, $keysToRemove)
+	{
+		return array_diff_key($htmlOptions, array_flip($keysToRemove));
+	}
 }
