@@ -65,7 +65,7 @@ class TbHtml extends CHtml
 	 * @param array $htmlOptions
 	 * @return string
 	 */
-	public static function button($label, $htmlOptions = array())
+	public static function button($label='button',$htmlOptions=array())
 	{
 		$classes = array('btn');
 
