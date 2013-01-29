@@ -244,7 +244,7 @@ class TbHtml extends CHtml
 	 */
 	public static function imageRounded($src,$alt='',$htmlOptions=array())
 	{
-		parent::image($src, $alt, self::addClassNames('img-rounded', $htmlOptions));
+		return parent::image($src, $alt, self::addClassNames('img-rounded', $htmlOptions));
 	}
 
 	/**
@@ -258,7 +258,7 @@ class TbHtml extends CHtml
 	 */
 	public static function imageCircle($src, $alt='', $htmlOptions=array())
 	{
-		parent::image($src, $alt, self::addClassNames('img-circle', $htmlOptions));
+		return parent::image($src, $alt, self::addClassNames('img-circle', $htmlOptions));
 	}
 
 	/**
@@ -271,7 +271,7 @@ class TbHtml extends CHtml
 	 */
 	public static function imagePolaroid($src, $alt='', $htmlOptions=array())
 	{
-		parent::image($src, $alt, self::addClassNames('img-polaroid', $htmlOptions));
+		return parent::image($src, $alt, self::addClassNames('img-polaroid', $htmlOptions));
 	}
 
 	/**
