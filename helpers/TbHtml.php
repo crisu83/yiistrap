@@ -303,14 +303,14 @@ class TbHtml extends CHtml
 		$addOnClasses = self::getAddOnClasses($htmlOptions);
 
 		ob_start();
-		if(!empty($addOnClasses))
-			echo '<div class="'.$addOnClasses.'">';
+		if (!empty($addOnClasses))
+			echo '<div class="' . $addOnClasses . '">';
 
 		echo  self::getPrepend($htmlOptions);
 		echo  self::inputField('text', $name, $value, self::cleanUpOptions($htmlOptions, array('append', 'prepend')));
 		echo  self::getAppend($htmlOptions);
 
-		if(!empty($addOnClasses))
+		if (!empty($addOnClasses))
 			echo '</div>';
 		return ob_get_clean();
 	}
@@ -359,10 +359,16 @@ class TbHtml extends CHtml
 	 */
 	public static function getAddOn($type, $htmlOptions)
 	{
-		return (is_array($htmlOptions) && isset($htmlOptions[$type]) && !empty($htmlOptions[$type])) ?
-			CHtml::tag('span', array('class' => 'add-on'), $htmlOptions[$type])
-			:
-			'';
+		$addOn = '';
+
+		if (is_array($htmlOptions) && isset($htmlOptions[$type]) && !empty($htmlOptions[$type]))
+		{
+			$addOn = strpos($htmlOptions[$type], self::BUTTON_BUTTON) ?
+				$htmlOptions[$type]
+				:
+				CHtml::tag('span', array('class' => 'add-on'), $htmlOptions[$type]);
+		}
+		return $addOn;
 	}
 
 	/**
