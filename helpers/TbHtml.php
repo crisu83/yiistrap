@@ -332,12 +332,15 @@ class TbHtml extends CHtml
 	public static function checkBox($name, $checked = false, $htmlOptions = array())
 	{
 		$label = self::getArrayValue('label', $htmlOptions);
+		$labelOptions = isset($htmlOptions['labelOptions']) ? $htmlOptions['labelOptions'] : array();
 		$checkBox = parent::checkBox($name, $checked, self::cleanUpOptions($htmlOptions, array('label')));
 
 		if ($label)
 		{
+			$labelOptions = self::addClassNames('checkbox', $labelOptions);
+
 			ob_start();
-			echo '<label class="checkbox">';
+			echo '<label ' . parent::renderAttributes($labelOptions) . '>';
 			echo $checkBox;
 			echo $label;
 			echo '</label>';
@@ -357,19 +360,27 @@ class TbHtml extends CHtml
 	 * the value returned when the radio button is not checked. When set, a hidden field is rendered so that
 	 * when the radio button is not checked, we can still obtain the posted uncheck value.
 	 * If 'uncheckValue' is not set or set to NULL, the hidden field will not be rendered.
+	 * The following special options are recognized:
+	 * <ul>
+	 * <li>labelOptions: array, specifies the additional HTML attributes to be rendered
+	 * for every label tag in the list.</li>
+	 * </ul>
 	 * @return string the generated radio button
 	 * @see clientChange
 	 * @see inputField
 	 */
-	public static function radioButton($name,$checked=false,$htmlOptions=array())
+	public static function radioButton($name, $checked = false, $htmlOptions = array())
 	{
 		$label = self::getArrayValue('label', $htmlOptions);
-		$radioButton = parent::radioButton($name, $checked, self::cleanUpOptions($htmlOptions, array('label')));
+		$labelOptions = isset($htmlOptions['labelOptions']) ? $htmlOptions['labelOptions'] : array();
+		$radioButton = parent::radioButton($name, $checked, self::cleanUpOptions($htmlOptions, array('label', 'labelOptions')));
 
 		if ($label)
 		{
+			$labelOptions = self::addClassNames('radio', $labelOptions);
+
 			ob_start();
-			echo '<label class="radio">';
+			echo '<label ' . parent::renderAttributes($labelOptions) . '>';
 			echo $radioButton;
 			echo $label;
 			echo '</label>';
@@ -377,6 +388,50 @@ class TbHtml extends CHtml
 		}
 
 		return $radioButton;
+	}
+
+	/**
+	 * Generates an inline radio button list.
+	 * A radio button list is like a {@link checkBoxList check box list}, except that
+	 * it only allows single selection.
+	 * @param string $name name of the radio button list. You can use this name to retrieve
+	 * the selected value(s) once the form is submitted.
+	 * @param string $select selection of the radio buttons.
+	 * @param array $data value-label pairs used to generate the radio button list.
+	 * Note, the values will be automatically HTML-encoded, while the labels will not.
+	 * @param array $htmlOptions addtional HTML options. The options will be applied to
+	 * each radio button input. The following special options are recognized:
+	 * <ul>
+	 * <li>labelOptions: array, specifies the additional HTML attributes to be rendered
+	 * for every label tag in the list.</li>
+	 * <li>container: string, specifies the radio buttons enclosing tag. Defaults to 'span'.
+	 * If the value is an empty string, no enclosing tag will be generated</li>
+	 * </ul>
+	 * @return string the generated radio button list
+	 */
+	public static function inlineRadioButtonList($name, $select, $data, $htmlOptions = array())
+	{
+		$separator =  " ";
+		$container = isset($htmlOptions['container']) ? $htmlOptions['container'] : null;
+		unset($htmlOptions['separator'], $htmlOptions['container']);
+
+		$items = array();
+		$baseID = self::getIdByName($name);
+		$id = 0;
+		foreach ($data as $value => $label)
+		{
+			$checked = !strcmp($value, $select);
+			$htmlOptions['label'] = $label;
+			$htmlOptions['labelOptions'] = array('class'=>'inline');
+			$htmlOptions['value'] = $value;
+			$htmlOptions['id'] = $baseID . '_' . $id++;
+			$items[] = self::radioButton($name, $checked, $htmlOptions);
+		}
+
+		return empty($container) ?
+			implode($separator, $items)
+			:
+			self::tag($container, array('id' => $baseID), implode($separator, $items));
 	}
 
 	/**
