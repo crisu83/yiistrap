@@ -316,6 +316,38 @@ class TbHtml extends CHtml
 	}
 
 	/**
+	 * Generates a check box.
+	 * @param string $name the input name
+	 * @param boolean $checked whether the check box is checked
+	 * @param array $htmlOptions additional HTML attributes. Besides normal HTML attributes, a few special
+	 * attributes are also recognized (see {@link clientChange} and {@link tag} for more details.)
+	 * Since version 1.1.2, a special option named 'uncheckValue' is available that can be used to specify
+	 * the value returned when the checkbox is not checked. When set, a hidden field is rendered so that
+	 * when the checkbox is not checked, we can still obtain the posted uncheck value.
+	 * If 'uncheckValue' is not set or set to NULL, the hidden field will not be rendered.
+	 * @return string the generated check box
+	 * @see clientChange
+	 * @see inputField
+	 */
+	public static function checkBox($name, $checked = false, $htmlOptions = array())
+	{
+		$label = self::getArrayValue('label', $htmlOptions);
+		$checkBox = parent::checkBox($name, $checked, self::cleanUpOptions($htmlOptions, array('label')));
+
+		if ($label)
+		{
+			ob_start();
+			echo '<label class="checkbox">';
+			echo $checkBox;
+			echo $label;
+			echo '</label>';
+			return ob_get_clean();
+		}
+
+		return $checkBox;
+	}
+
+	/**
 	 * Returns the add-on classes if any from `$htmlOptions`.
 	 * @param array $htmlOptions the HTML tag options
 	 * @return array|string the resulting classes
@@ -323,15 +355,14 @@ class TbHtml extends CHtml
 	public static function getAddOnClasses($htmlOptions)
 	{
 		$classes = array();
-		if (is_array($htmlOptions) && isset($htmlOptions['append']) && !empty($htmlOptions['append']))
+		if (self::getArrayValue('append', $htmlOptions))
 		{
 			$classes[] = 'input-append';
 		}
-		if (is_array($htmlOptions) && isset($htmlOptions['prepend']) && !empty($htmlOptions['prepend']))
+		if (self::getArrayValue('prepend', $htmlOptions))
 		{
 			$classes[] = 'input-prepend';
 		}
-
 		return !empty($classes) ? implode(' ', $classes) : $classes;
 	}
 
@@ -360,8 +391,7 @@ class TbHtml extends CHtml
 	public static function getAddOn($type, $htmlOptions)
 	{
 		$addOn = '';
-
-		if (is_array($htmlOptions) && isset($htmlOptions[$type]) && !empty($htmlOptions[$type]))
+		if (self::getArrayValue($type, $htmlOptions))
 		{
 			$addOn = strpos($htmlOptions[$type], self::BUTTON_BUTTON) ?
 				$htmlOptions[$type]
@@ -398,5 +428,18 @@ class TbHtml extends CHtml
 	protected static function cleanUpOptions($htmlOptions, $keysToRemove)
 	{
 		return array_diff_key($htmlOptions, array_flip($keysToRemove));
+	}
+
+	/**
+	 * Checks for the existence of a key and returns its value or null otherwise. Done, in order to avoid code
+	 * redundancy.
+	 *
+	 * @param string $key
+	 * @param array $htmlOptions
+	 * @return mixed
+	 */
+	protected static function getArrayValue($key, $htmlOptions)
+	{
+		return (is_array($htmlOptions) && isset($htmlOptions[$key]) && !empty($htmlOptions[$key])) ? $htmlOptions[$key] : null;
 	}
 }
