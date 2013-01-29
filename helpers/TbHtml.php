@@ -333,7 +333,7 @@ class TbHtml extends CHtml
 	{
 		$label = self::getArrayValue('label', $htmlOptions);
 		$labelOptions = isset($htmlOptions['labelOptions']) ? $htmlOptions['labelOptions'] : array();
-		$checkBox = parent::checkBox($name, $checked, self::cleanUpOptions($htmlOptions, array('label')));
+		$checkBox = parent::checkBox($name, $checked, self::cleanUpOptions($htmlOptions, array('label', 'labelOptions')));
 
 		if ($label)
 		{
@@ -411,7 +411,7 @@ class TbHtml extends CHtml
 	 */
 	public static function inlineRadioButtonList($name, $select, $data, $htmlOptions = array())
 	{
-		$separator =  " ";
+		$separator = " ";
 		$container = isset($htmlOptions['container']) ? $htmlOptions['container'] : null;
 		unset($htmlOptions['separator'], $htmlOptions['container']);
 
@@ -422,7 +422,7 @@ class TbHtml extends CHtml
 		{
 			$checked = !strcmp($value, $select);
 			$htmlOptions['label'] = $label;
-			$htmlOptions['labelOptions'] = array('class'=>'inline');
+			$htmlOptions['labelOptions'] = array('class' => 'inline');
 			$htmlOptions['value'] = $value;
 			$htmlOptions['id'] = $baseID . '_' . $id++;
 			$items[] = self::radioButton($name, $checked, $htmlOptions);
@@ -432,6 +432,103 @@ class TbHtml extends CHtml
 			implode($separator, $items)
 			:
 			self::tag($container, array('id' => $baseID), implode($separator, $items));
+	}
+
+	/**
+	 * Generates a inline check box list.
+	 * A check box list allows multiple selection, like {@link listBox}.
+	 * As a result, the corresponding POST value is an array.
+	 * @param string $name name of the check box list. You can use this name to retrieve
+	 * the selected value(s) once the form is submitted.
+	 * @param mixed $select selection of the check boxes. This can be either a string
+	 * for single selection or an array for multiple selections.
+	 * @param array $data value-label pairs used to generate the check box list.
+	 * Note, the values will be automatically HTML-encoded, while the labels will not.
+	 * @param array $htmlOptions addtional HTML options. The options will be applied to
+	 * each checkbox input. The following special options are recognized:
+	 * <ul>
+	 * <li>checkAll: string, specifies the label for the "check all" checkbox.
+	 * If this option is specified, a 'check all' checkbox will be displayed. Clicking on
+	 * this checkbox will cause all checkboxes checked or unchecked.</li>
+	 * <li>checkAllLast: boolean, specifies whether the 'check all' checkbox should be
+	 * displayed at the end of the checkbox list. If this option is not set (default)
+	 * or is false, the 'check all' checkbox will be displayed at the beginning of
+	 * the checkbox list.</li>
+	 * <li>labelOptions: array, specifies the additional HTML attributes to be rendered
+	 * for every label tag in the list.</li>
+	 * <li>container: string, specifies the checkboxes enclosing tag. Defaults to 'span'.
+	 * If the value is an empty string, no enclosing tag will be generated</li>
+	 * </ul>
+	 * @return string the generated check box list
+	 */
+	public static function inlineCheckBoxList($name, $select, $data, $htmlOptions = array())
+	{
+		$separator = " ";
+		$container = isset($htmlOptions['container']) ? $htmlOptions['container'] : null;
+		unset($htmlOptions['separator'], $htmlOptions['container']);
+
+		if (substr($name, -2) !== '[]')
+			$name .= '[]';
+
+		if (isset($htmlOptions['checkAll']))
+		{
+			$checkAllLabel = $htmlOptions['checkAll'];
+			$checkAllLast = isset($htmlOptions['checkAllLast']) && $htmlOptions['checkAllLast'];
+		}
+		unset($htmlOptions['checkAll'], $htmlOptions['checkAllLast']);
+
+		$labelOptions = isset($htmlOptions['labelOptions']) ? $htmlOptions['labelOptions'] : array();
+		unset($htmlOptions['labelOptions']);
+
+		$items = array();
+		$baseID = self::getIdByName($name);
+		$id = 0;
+		$checkAll = true;
+
+		foreach ($data as $value => $label)
+		{
+			$checked = !is_array($select) && !strcmp($value, $select) || is_array($select) && in_array($value, $select);
+			$checkAll = $checkAll && $checked;
+			$htmlOptions['label'] = $label;
+			$htmlOptions['labelOptions'] = array('class' => 'inline');
+			$htmlOptions['value'] = $value;
+			$htmlOptions['id'] = $baseID . '_' . $id++;
+			$items[] = self::checkBox($name, $checked, $htmlOptions);
+		}
+
+		// todo: refactor to declarative approach
+		if (isset($checkAllLabel))
+		{
+			$htmlOptions['label'] = $checkAllLabel;
+			$htmlOptions['labelOptions'] = array('class' => 'inline');
+			$htmlOptions['value'] = 1;
+			$htmlOptions['id'] = $id = $baseID . '_all';
+			$option = self::checkBox($id, $checkAll, $htmlOptions);
+			$item = $option;
+			if ($checkAllLast)
+				$items[] = $item;
+			else
+				array_unshift($items, $item);
+			$name = strtr($name, array('[' => '\\[', ']' => '\\]'));
+			$js = <<<EOD
+$('#$id').click(function() {
+	$("input[name='$name']").prop('checked', this.checked);
+});
+$("input[name='$name']").click(function() {
+	$('#$id').prop('checked', !$("input[name='$name']:not(:checked)").length);
+});
+$('#$id').prop('checked', !$("input[name='$name']:not(:checked)").length);
+EOD;
+			$cs = Yii::app()->getClientScript();
+			$cs->registerCoreScript('jquery');
+			$cs->registerScript($id, $js);
+		}
+
+		return empty($container) ?
+			implode($separator, $items)
+			:
+			self::tag($container, array('id' => $baseID), implode($separator, $items));
+
 	}
 
 	/**
@@ -512,7 +609,7 @@ class TbHtml extends CHtml
 	 * @param array $keysToRemove the keys to remove from the options
 	 * @return array
 	 */
-	protected static function cleanUpOptions($htmlOptions, $keysToRemove)
+	public static function cleanUpOptions($htmlOptions, $keysToRemove)
 	{
 		return array_diff_key($htmlOptions, array_flip($keysToRemove));
 	}
@@ -525,7 +622,7 @@ class TbHtml extends CHtml
 	 * @param array $htmlOptions
 	 * @return mixed
 	 */
-	protected static function getArrayValue($key, $htmlOptions)
+	public static function getArrayValue($key, $htmlOptions)
 	{
 		return (is_array($htmlOptions) && isset($htmlOptions[$key]) && !empty($htmlOptions[$key])) ? $htmlOptions[$key] : null;
 	}
