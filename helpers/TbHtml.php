@@ -275,6 +275,18 @@ class TbHtml extends CHtml
 	}
 
 	/**
+	 * Generates an icon glyph.
+	 * @param $icon the glyph class
+	 * @param string $tag
+	 * @return string
+	 * @see TbIcon
+	 * @see http://twitter.github.com/bootstrap/base-css.html#icons
+	 */
+	public static function iconGlyph($icon, $tag = 'i')
+	{
+		return parent::tag($tag, array('class'=>$icon));
+	}
+	/**
 	 * Helper method to add class names to htmlOptions to avoid code redundancy
 	 * @param $className
 	 * @param $htmlOptions
