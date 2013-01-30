@@ -1,11 +1,11 @@
 <?php
 /**
- * TbActiveForm.php
- *
- * @author: antonio ramirez <ramirez.cobos@gmail.com>
- * Date: 1/29/13
- * Time: 12:24 PM
+ * TbActiveForm class file.
+ * @author Antonio Ramirez <ramirez.cobos@gmail.com>
+ * @copyright Copyright &copy; Christoffer Niska 2013-
+ * @license http://www.opensource.org/licenses/bsd-license.php New BSD License
  */
+
 class TbActiveForm extends CActiveForm
 {
 

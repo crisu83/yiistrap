@@ -1,14 +1,14 @@
 <?php
 /**
- * TbIcon.php
- *
- * TbIcon is a static class that provides a collection of helper methods for easy access to icon classes from bootstrap.
+ * TbIcon class file.
+ * @author Antonio Ramirez <ramirez.cobos@gmail.com>
+ * @copyright Copyright &copy; Christoffer Niska 2013-
+ * @license http://www.opensource.org/licenses/bsd-license.php New BSD License
+ */
+
+/**
+ * Static class that provides a collection of helper methods for easy access to icon classes from Bootstrap.
  * @link http://twitter.github.com/bootstrap/base-css.html#icons
- *
- * @author: antonio ramirez <ramirez.cobos@gmail.com>
- * Date: 1/29/13
- * Time: 1:09 AM
- *
  */
 class TbIcon {
 	const ICON_GLASS = 'icon-glass';

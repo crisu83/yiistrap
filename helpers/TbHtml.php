@@ -1,9 +1,17 @@
 <?php
 /**
+ * TbHtml class file.
+ * @author Antonio Ramirez <ramirez.cobos@gmail.com>
+ * @copyright Copyright &copy; Christoffer Niska 2013-
+ * @license http://www.opensource.org/licenses/bsd-license.php New BSD License
+ */
+
+/**
  * Bootstrap HTML helper.
  */
 class TbHtml extends CHtml
 {
+    // todo: consider moving these back to the TbApi class.
     // Bootstrap plugins
     const PLUGIN_AFFIX = 'affix';
     const PLUGIN_ALERT = 'alert';
