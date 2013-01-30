@@ -4,19 +4,6 @@
  */
 class TbHtml extends CHtml
 {
-
-	// Button types
-	const BUTTON_LINK = 'link';
-	const BUTTON_BUTTON = 'button';
-	const BUTTON_SUBMIT = 'submit';
-	const BUTTON_SUBMITLINK = 'submitLink';
-	const BUTTON_RESET = 'reset';
-	const BUTTON_AJAXLINK = 'ajaxLink';
-	const BUTTON_AJAXBUTTON = 'ajaxButton';
-	const BUTTON_AJAXSUBMIT = 'ajaxSubmit';
-	const BUTTON_INPUTBUTTON = 'inputButton';
-	const BUTTON_INPUTSUBMIT = 'inputSubmit';
-
 	// Bootstrap styles
 	const STYLE_PRIMARY = 'primary';
 	const STYLE_INFO = 'info';
@@ -127,7 +114,7 @@ class TbHtml extends CHtml
 	 * Renders a button group
 	 * @param $items
 	 * @param array $htmlOptions additional HTML options. The following special options are recognized:
-	 *  TODO: write the options
+	 * todo: write the options
 	 * @return string
 	 */
 	public static function buttonGroup($items, $htmlOptions = array())
@@ -149,7 +136,7 @@ class TbHtml extends CHtml
 				$buttonOptions = self::cleanUpOptions($item, array('label'));
 				echo self::button($buttonLabel, $buttonOptions);
 			}
-			echo parent::closeTag('div');
+            echo '</div>';
 			return ob_get_clean();
 		}
 		return '';
@@ -173,12 +160,11 @@ class TbHtml extends CHtml
 				$groupOptions = self::getArrayValue('options', $group, array());
 				$items = self::getArrayValue('items', $group, array());
 				if(empty($items))
-				{
 					continue;
-				}
+
 				echo self::buttonGroup($items, $groupOptions);
 			}
-			echo parent::closeTag('div');
+			echo '</div>';
 			return ob_get_clean();
 		}
 		return '';
@@ -314,7 +300,7 @@ class TbHtml extends CHtml
 		ob_start();
 		echo parent::openTag('div', self::addClassNames($classes, $htmlOptions));
 		echo '<div class="bar" style="width:' . $percent . '%;">' . $content . '</div>';
-		echo parent::closeTag('div');
+		echo '</div>';
 		return ob_get_clean();
 	}
 
@@ -377,7 +363,7 @@ class TbHtml extends CHtml
 				echo parent::tag('div', self::addClassNames($classes, $barOptions), $content);
 			}
 
-			echo parent::closeTag('div');
+			echo '</div>';
 			return ob_get_clean();
 		}
 		return '';
@@ -386,7 +372,7 @@ class TbHtml extends CHtml
 	/**
 	 * @param string $type the type of alert
 	 * @param string $message the message to display  within the alert box
-	 * @param array $htmlOptions addtional HTML options. The following special options are recognized:
+	 * @param array $htmlOptions additional HTML options. The following special options are recognized:
 	 * <ul>
 	 * <li>block: boolean, specifies whether to increase the padding on top and bottom of the alert wrapper.</li>
 	 * <li>fade: boolean, specifies whether to have fade in/out effect when showing/hiding the alert.
@@ -398,7 +384,7 @@ class TbHtml extends CHtml
 	public static function alert($type, $message, $htmlOptions = array())
 	{
 		// valid Types
-		// todo: Think about its scope
+		// todo: Think about its scope, maybe move to static class variable?
 		$validTypes = array(self::STYLE_SUCCESS, self::STYLE_INFO, self::STYLE_WARNING, self::STYLE_ERROR, self::STYLE_DANGER);
 
 		$closeText = self::getArrayValue('closeText', $htmlOptions);
@@ -411,6 +397,7 @@ class TbHtml extends CHtml
 		// add default classes
 		// todo: should we allow the user whether to make it visible or not on display?
 		$classes = array('alert in');
+
 		if (in_array($type, $validTypes))
 			$classes[] = 'alert-' . $type;
 		// block
@@ -424,7 +411,7 @@ class TbHtml extends CHtml
 		echo parent::openTag('div', self::addClassNames($classes, $htmlOptions));
 		echo !empty($closeText) ? self::link($closeText, '#', array('class' => 'close', 'data-dismiss' => 'alert')) : '';
 		echo $message;
-		echo parent::closeTag('div');
+		echo '</div>';
 		return ob_get_clean();
 
 	}
@@ -471,7 +458,7 @@ class TbHtml extends CHtml
 
 	/**
 	 * Generates an icon glyph.
-	 * @param $icon the glyph class
+	 * @param string $icon the glyph class
 	 * @param string $tag
 	 * @return string
 	 * @see TbIcon
@@ -507,6 +494,7 @@ class TbHtml extends CHtml
 
 		if (!empty($addOnClasses))
 			echo '</div>';
+
 		return ob_get_clean();
 	}
 
@@ -594,7 +582,7 @@ class TbHtml extends CHtml
 	 * @param string $select selection of the radio buttons.
 	 * @param array $data value-label pairs used to generate the radio button list.
 	 * Note, the values will be automatically HTML-encoded, while the labels will not.
-	 * @param array $htmlOptions addtional HTML options. The options will be applied to
+	 * @param array $htmlOptions additional HTML options. The options will be applied to
 	 * each radio button input. The following special options are recognized:
 	 * <ul>
 	 * <li>labelOptions: array, specifies the additional HTML attributes to be rendered
@@ -623,10 +611,9 @@ class TbHtml extends CHtml
 			$items[] = self::radioButton($name, $checked, $htmlOptions);
 		}
 
-		return empty($container) ?
-			implode($separator, $items)
-			:
-			self::tag($container, array('id' => $baseID), implode($separator, $items));
+		return empty($container)
+            ? implode($separator, $items)
+			: self::tag($container, array('id' => $baseID), implode($separator, $items));
 	}
 
 	/**
@@ -639,7 +626,7 @@ class TbHtml extends CHtml
 	 * for single selection or an array for multiple selections.
 	 * @param array $data value-label pairs used to generate the check box list.
 	 * Note, the values will be automatically HTML-encoded, while the labels will not.
-	 * @param array $htmlOptions addtional HTML options. The options will be applied to
+	 * @param array $htmlOptions additional HTML options. The options will be applied to
 	 * each checkbox input. The following special options are recognized:
 	 * <ul>
 	 * <li>checkAll: string, specifies the label for the "check all" checkbox.
@@ -672,6 +659,7 @@ class TbHtml extends CHtml
 		}
 		unset($htmlOptions['checkAll'], $htmlOptions['checkAllLast']);
 
+        // todo: $labelOptions is not actually used at all?
 		$labelOptions = isset($htmlOptions['labelOptions']) ? $htmlOptions['labelOptions'] : array();
 		unset($htmlOptions['labelOptions']);
 
@@ -691,7 +679,7 @@ class TbHtml extends CHtml
 			$items[] = self::checkBox($name, $checked, $htmlOptions);
 		}
 
-		// todo: refactor to declarative approach
+		// todo: refactor to declarative approach.
 		if (isset($checkAllLabel))
 		{
 			$htmlOptions['label'] = $checkAllLabel;
@@ -700,6 +688,7 @@ class TbHtml extends CHtml
 			$htmlOptions['id'] = $id = $baseID . '_all';
 			$option = self::checkBox($id, $checkAll, $htmlOptions);
 			$item = $option;
+            // todo: $checkAllLast might not be defined here.
 			if ($checkAllLast)
 				$items[] = $item;
 			else
@@ -714,15 +703,15 @@ $("input[name='$name']").click(function() {
 });
 $('#$id').prop('checked', !$("input[name='$name']:not(:checked)").length);
 EOD;
+            /* @var $cs CClientScript */
 			$cs = Yii::app()->getClientScript();
 			$cs->registerCoreScript('jquery');
 			$cs->registerScript($id, $js);
 		}
 
-		return empty($container) ?
-			implode($separator, $items)
-			:
-			self::tag($container, array('id' => $baseID), implode($separator, $items));
+		return empty($container)
+            ? implode($separator, $items)
+			: self::tag($container, array('id' => $baseID), implode($separator, $items));
 
 	}
 
@@ -735,13 +724,9 @@ EOD;
 	{
 		$classes = array();
 		if (self::getArrayValue('append', $htmlOptions))
-		{
 			$classes[] = 'input-append';
-		}
 		if (self::getArrayValue('prepend', $htmlOptions))
-		{
 			$classes[] = 'input-prepend';
-		}
 		return !empty($classes) ? implode(' ', $classes) : $classes;
 	}
 
@@ -772,10 +757,9 @@ EOD;
 		$addOn = '';
 		if (self::getArrayValue($type, $htmlOptions))
 		{
-			$addOn = strpos($htmlOptions[$type], self::BUTTON_BUTTON) ?
-				$htmlOptions[$type]
-				:
-				CHtml::tag('span', array('class' => 'add-on'), $htmlOptions[$type]);
+			$addOn = strpos($htmlOptions[$type], self::BUTTON_BUTTON)
+                ? $htmlOptions[$type]
+				: CHtml::tag('span', array('class' => 'add-on'), $htmlOptions[$type]);
 		}
 		return $addOn;
 	}
@@ -790,11 +774,8 @@ EOD;
 	{
 		if (is_array($className))
 			$className = implode(' ', $className);
-		if (isset($htmlOptions['class']))
-			$htmlOptions['class'] .= ' ' . $className;
-		else
-			$htmlOptions['class'] = $className;
 
+        $htmlOptions['class'] = isset($htmlOptions['class']) ? $htmlOptions['class'] . ' ' . $className : $className;
 		return $htmlOptions;
 	}
 
@@ -820,6 +801,7 @@ EOD;
 	 */
 	public static function getArrayValue($key, $htmlOptions, $default = null)
 	{
+        // todo: wouldn't it be better to pass $htmlOptions by reference and unset the fetched value?
 		return (is_array($htmlOptions) && isset($htmlOptions[$key])) ? $htmlOptions[$key] : $default;
 	}
 }
