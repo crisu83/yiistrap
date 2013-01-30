@@ -166,8 +166,7 @@ class TbHtml extends CHtml
 
 	/**
 	 * @param string $type the type of progress bar
-	 * @param string $message the message to display  within the alert box
-	 * @param array $htmlOptions addtional HTML options. The following special options are recognized:
+	 * @param array $htmlOptions additional HTML options. The following special options are recognized:
 	 * <ul>
 	 * <li>content: string, the contents of the progress bar (if any).</li>
 	 * <li>percent: integer, the initial percentage of the progress bar. Defaults to `0`.</li>
@@ -206,6 +205,71 @@ class TbHtml extends CHtml
 		echo '<div class="bar" style="width:' . $percent . '%;">' . $content . '</div>';
 		echo parent::closeTag('div');
 		return ob_get_clean();
+	}
+
+	/**
+	 * Displays a stacked progress bar.
+	 * @param array $items the bars to display within the progress bar. The following is the configuration of a bar:
+	 * <ul>
+	 * <li>type: string, the Type of progress bar. Valid types are STYLE_INFO, STYLE_SUCCESS, STYLE_WARNING and STYLE_DANGER.</li>
+	 * <li>percent: integer, the initial percentage of the progress bar. Defaults to `0`.</li>
+	 * <li>content: string, the contents of the progress bar (if any).</li>
+	 * <li>barOptions: array, additional HTML options of the bar.</li>
+	 * </ul>
+	 * @param array $htmlOptions additional HTML options. The following special options are recognized:
+	 * <ul>
+	 * <li>striped: boolean, set to true to use a gradient to create a striped effect. Not available for IE7-8.</li>
+	 * <li>animated: boolean, set to true to animate the stripes. Not available in all versions of IE.</li>
+	 * </ul>
+	 * @see http://twitter.github.com/bootstrap/components.html#progress
+	 */
+	public static function stackedProgressBar($items, $htmlOptions = array())
+	{
+		if (is_array($items))
+		{
+			$validTypes = array(self::STYLE_INFO, self::STYLE_SUCCESS, self::STYLE_WARNING, self::STYLE_DANGER);
+
+			$striped = self::getArrayValue('striped', $htmlOptions);
+			$animated = self::getArrayValue('animated', $htmlOptions);
+
+			$htmlOptions = self::cleanUpOptions($htmlOptions, array('striped', 'animated'));
+
+			$classes = array('progress');
+
+			if ($striped)
+				$classes[] = 'progress-striped';
+			if ($animated)
+				$classes[] = 'active';
+
+			ob_start();
+			echo parent::openTag('div', self::addClassNames($classes, $htmlOptions));
+
+			foreach ($items as $item)
+			{
+				$classes = array('bar');
+
+				$type = self::getArrayValue('type', $item);
+				$percent = self::getArrayValue('percent', $item, 0);
+				$content = self::getArrayvalue('content', $item);
+				$barOptions = self::getArrayValue('barOptions', @$item['barOptions'], array());
+
+				if (in_array($type, $validTypes))
+					$classes[] = 'bar-' . $type;
+
+				if ($percent < 0)
+					$percent = 0;
+				else if ($percent > 100)
+					$percent = 100;
+
+				$barOptions['style'] = 'width:' . $percent . '%;';
+
+				echo parent::tag('div', self::addClassNames($classes, $barOptions), $content);
+			}
+
+			echo parent::closeTag('div');
+			return ob_get_clean();
+		}
+		return '';
 	}
 
 	/**
@@ -643,7 +707,7 @@ EOD;
 	 * @param mixed $default value to return in case no value was found
 	 * @return mixed
 	 */
-	public static function getArrayValue($key, $htmlOptions, $default  = null)
+	public static function getArrayValue($key, $htmlOptions, $default = null)
 	{
 		return (is_array($htmlOptions) && isset($htmlOptions[$key]) && !empty($htmlOptions[$key])) ? $htmlOptions[$key] : $default;
 	}
