@@ -165,6 +165,56 @@ class TbHtml extends CHtml
 	}
 
 	/**
+	 * Renders a search form.
+	 * @param string $action
+	 * @param string $method
+	 * @param array $htmlOptions additional HTML options. The following special options are recognized:
+	 * <ul>
+	 * <li>appendButton: boolean, whether to append or prepend the search button.</li>
+	 * <li>inputOptions: array, additional HTML options of the text input field. `type` will always default to `text`.</li>
+	 * <li>buttonOptions: array, additional HTML options of the button. It contains special options for the button:
+	 *      <ul>
+	 *      <li>label: string, the button label</li>
+	 *      </ul>
+	 * </li>
+	 * </ul>
+	 * @return string
+	 * @see http://twitter.github.com/bootstrap/base-css.html#forms
+	 */
+	public static function searchForm($action = '', $method = 'post', $htmlOptions = array())
+	{
+		// Append or prepend button
+		$appendButton = self::getArrayValue('appendButton', $htmlOptions);
+		// Input options
+		$inputOptions = self::getArrayValue('inputOptions', $htmlOptions, array());
+		// Button options
+		$buttonOptions = self::getArrayValue('buttonOptions', $htmlOptions, array());
+		// Button label
+		$buttonLabel = self::getArrayValue('label', $buttonOptions, 'button');
+
+		// Clean up options
+		$htmlOptions = self::cleanUpOptions($htmlOptions, array('appendButton', 'inputOptions', 'buttonOptions'));
+		$buttonOptions = self::cleanUpOptions($buttonOptions, array('label'));
+
+		// Render
+		ob_start();
+		echo self::beginForm($action, $method, self::addClassNames('form-search', $htmlOptions));
+		echo self::openTag('div', self::addClassNames(($appendButton ? 'input-append' : 'input-prepend'), $inputOptions));
+		if ($appendButton === false)
+		{
+			echo self::button($buttonLabel, $buttonOptions);
+		}
+		echo self::tag('input', CMap::mergeArray(self::addClassNames('search-query', $inputOptions), array('type' => 'text')));
+		if ($appendButton)
+		{
+			echo self::button($buttonLabel, $buttonOptions);
+		}
+		echo self::closeTag('div');
+		echo parent::endForm();
+		return ob_get_clean();
+	}
+
+	/**
 	 * @param string $type the type of progress bar
 	 * @param array $htmlOptions additional HTML options. The following special options are recognized:
 	 * <ul>
