@@ -94,7 +94,7 @@ class TbApi extends CApplicationComponent
     /**
      * Registers the Bootstrap Popover plugin.
      * @param string $selector the CSS selector.
-     * @param array $options plugin JavaScript options.
+     * @param array $options the JavaScript options for the plugin.
      * @see http://twitter.github.com/bootstrap/javascript.html#popover
      */
     public function registerPopover($selector = 'body', $options = array())
@@ -107,7 +107,7 @@ class TbApi extends CApplicationComponent
     /**
      * Registers the Bootstrap Tooltip plugin.
      * @param string $selector the CSS selector.
-     * @param array $options plugin JavaScript options.
+     * @param array $options the JavaScript options for the plugin.
      * @see http://twitter.github.com/bootstrap/javascript.html#tooltip
      */
     public function registerTooltip($selector = 'body', $options = array())
@@ -118,18 +118,40 @@ class TbApi extends CApplicationComponent
     }
 
     /**
-     * Registers a specific Bootstrap plugin with the given selector and options.
+     * Registers a specific Bootstrap plugin using the given selector and options.
      * @param string $name the plugin name.
      * @param string $selector the CSS selector.
-     * @param array $options plugin JavaScript options.
+     * @param array $options the JavaScript options for the plugin.
      * @param int $position the position of the JavaScript code.
      */
     public function registerPlugin($name, $selector, $options = array(), $position = CClientScript::POS_END)
     {
-        // Generate a "somewhat" unique id for the script snippet.
-        $id = __CLASS__ . '#' . sha1($name . $selector . serialize($options) . $position);
+        if (isset($options['events']))
+        {
+            $this->registerEvents($selector, $options['events'], $position);
+            unset($options['events']);
+        }
+
         $options = !empty($options) ? CJavaScript::encode($options) : '';
-        Yii::app()->clientScript->registerScript($id, "jQuery('{$selector}').{$name}({$options});", $position);
+        Yii::app()->clientScript->registerScript(
+                $this->generateRandomId(), "jQuery('{$selector}').{$name}({$options});", $position);
+    }
+
+    /**
+     * Registers events using the given selector.
+     * @param string $selector the CSS selector.
+     * @param array $events the JavaScript event configuration (name=>handler).
+     * @param int $position the position of the JavaScript code.
+     */
+    public function registerEvents($selector, $events, $position = CClientScript::POS_END)
+    {
+        $script = '';
+        foreach ($events as $name => $handler)
+        {
+            $handler = new CJavaScriptExpression($handler);
+            $script .= "jQuery('{$selector}).on('{$name}', {$handler});'";
+        }
+        Yii::app()->clientScript->registerScript($this->generateRandomId(), $script, $position);
     }
 
     /**
@@ -146,5 +168,14 @@ class TbApi extends CApplicationComponent
             $assetsUrl = Yii::app()->assetManager->publish($assetsPath, true, -1, $this->forceCopyAssets);
             return $this->_assetsUrl = $assetsUrl;
         }
+    }
+
+    /**
+     * Generates a "somewhat" random id string.
+     * @return string the id.
+     */
+    protected function generateRandomId()
+    {
+        return uniqid(__CLASS__ . '#', true);
     }
 }
