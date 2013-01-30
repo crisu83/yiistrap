@@ -124,6 +124,67 @@ class TbHtml extends CHtml
 	}
 
 	/**
+	 * Renders a button group
+	 * @param $items
+	 * @param array $htmlOptions additional HTML options. The following special options are recognized:
+	 *  TODO: write the options
+	 * @return string
+	 */
+	public static function buttonGroup($items, $htmlOptions = array())
+	{
+		if(is_array($items) && !empty($items))
+		{
+			$classes = array('btn-group');
+			$vertical = self::getArrayValue('vertical', $htmlOptions, false);
+			if($vertical)
+				$classes[] = 'btn-group-vertical';
+
+			$htmlOptions = self::cleanUpOptions($htmlOptions, array('vertical'));
+
+			ob_start();
+			echo parent::openTag('div', self::addClassNames($classes, $htmlOptions));
+			foreach($items as $item)
+			{
+				$buttonLabel = self::getArrayValue('label', $item, 'button');
+				$buttonOptions = self::cleanUpOptions($item, array('label'));
+				echo self::button($buttonLabel, $buttonOptions);
+			}
+			echo parent::closeTag('div');
+			return ob_get_clean();
+		}
+		return '';
+	}
+
+	/**
+	 * @param $groups
+	 *  TODO: explain the configuration array
+	 * @param array $htmlOptions additional HTML options. The following special options are recognized:
+	 *  TODO: write the options
+	 * @return string
+	 */
+	public static function multipleButtonGroup($groups, $htmlOptions = array())
+	{
+		if(is_array($groups) && !empty($groups))
+		{
+			ob_start();
+			echo parent::openTag('div', self::addClassNames('btn-toolbar', $htmlOptions));
+			foreach($groups as $group)
+			{
+				$groupOptions = self::getArrayValue('options', $group, array());
+				$items = self::getArrayValue('items', $group, array());
+				if(empty($items))
+				{
+					continue;
+				}
+				echo self::buttonGroup($items, $groupOptions);
+			}
+			echo parent::closeTag('div');
+			return ob_get_clean();
+		}
+		return '';
+	}
+
+	/**
 	 * @param $label
 	 * @param array $htmlOptions
 	 * @return string
@@ -184,7 +245,7 @@ class TbHtml extends CHtml
 	public static function searchForm($action = '', $method = 'post', $htmlOptions = array())
 	{
 		// Append or prepend button
-		$appendButton = self::getArrayValue('appendButton', $htmlOptions);
+		$appendButton = self::getArrayValue('appendButton', $htmlOptions, true);
 		// Input options
 		$inputOptions = self::getArrayValue('inputOptions', $htmlOptions, array());
 		// Button options
@@ -759,6 +820,6 @@ EOD;
 	 */
 	public static function getArrayValue($key, $htmlOptions, $default = null)
 	{
-		return (is_array($htmlOptions) && isset($htmlOptions[$key]) && !empty($htmlOptions[$key])) ? $htmlOptions[$key] : $default;
+		return (is_array($htmlOptions) && isset($htmlOptions[$key])) ? $htmlOptions[$key] : $default;
 	}
 }
