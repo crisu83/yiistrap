@@ -28,11 +28,9 @@ return array(
 
 	// application components
 	'components' => array(
-        /*
 		'bootstrap' => array(
-			'class' => 'bootstrap.components.Bootstrap',
+			'class' => 'bootstrap.components.TbApi',
 		),
-        */
 		'errorHandler' => array(
 			'errorAction' => 'site/error',
 		),

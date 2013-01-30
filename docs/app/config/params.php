@@ -18,6 +18,5 @@ return array(
 	),
 	'less.files' => array(
 		'less/main.less' => 'css/main.css',
-		'less/responsive.less' => 'css/responsive.css',
 	),
 );
