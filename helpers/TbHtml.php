@@ -165,19 +165,29 @@ class TbHtml extends CHtml
 	}
 
 	/**
-	 * @param $type
-	 * @param string $content
-	 * @param int $percent
-	 * @param bool $striped
-	 * @param bool $animated
-	 * @param array $htmlOptions
+	 * @param string $type the type of progress bar
+	 * @param string $message the message to display  within the alert box
+	 * @param array $htmlOptions addtional HTML options. The following special options are recognized:
+	 * <ul>
+	 * <li>content: string, the contents of the progress bar (if any).</li>
+	 * <li>percent: integer, the initial percentage of the progress bar. Defaults to `0`.</li>
+	 * <li>striped: boolean, set to true to use a gradient to create a striped effect. Not available for IE7-8.</li>
+	 * <li>animated: boolean, set to true to animate the stripes. Not available in all versions of IE.</li>
+	 * </ul>
 	 * @see http://twitter.github.com/bootstrap/components.html#progress
 	 */
-	public static function progressBar($type, $content = '', $percent = 0, $striped = false, $animated = false, $htmlOptions = array())
+	public static function progressBar($type, $htmlOptions = array())
 	{
 		// valid types
 		// todo: Think about $validTypes scope
 		$validTypes = array(self::STYLE_INFO, self::STYLE_SUCCESS, self::STYLE_WARNING, self::STYLE_DANGER);
+
+		$content = self::getArrayValue('content', $htmlOptions);
+		$percent = self::getArrayValue('percent', $htmlOptions, 0);
+		$striped = self::getArrayValue('striped', $htmlOptions);
+		$animated = self::getArrayValue('animated', $htmlOptions);
+
+		$htmlOptions = self::cleanUpOptions($htmlOptions, array('content', 'percent', 'striped', 'animated'));
 
 		$classes = array('progress');
 		if (in_array($type, $validTypes))
@@ -201,17 +211,27 @@ class TbHtml extends CHtml
 	/**
 	 * @param string $type the type of alert
 	 * @param string $message the message to display  within the alert box
-	 * @param string $closeText the text that will act as the closing button
-	 * @param bool $block for longer messages, increase the padding on the top and bottom of the alert wrapper
-	 * @param bool $fade the effect to show/hide the alert box. To hide remove the class *in*, to show just add it again.
-	 * @param array $htmlOptions
+	 * @param array $htmlOptions addtional HTML options. The following special options are recognized:
+	 * <ul>
+	 * <li>block: boolean, specifies whether to increase the padding on top and bottom of the alert wrapper.</li>
+	 * <li>fade: boolean, specifies whether to have fade in/out effect when showing/hiding the alert.
+	 * Defaults to `true`.</li>
+	 * <li>closeText: string, the text to use as closing button. If none specified, no close button will be shown.</li>
+	 * </ul>
 	 * @see http://twitter.github.com/bootstrap/components.html#alerts
 	 */
-	public static function alert($type, $message, $closeText = "&times", $block = true, $fade = true, $htmlOptions = array())
+	public static function alert($type, $message, $htmlOptions = array())
 	{
 		// valid Types
 		// todo: Think about its scope
 		$validTypes = array(self::STYLE_SUCCESS, self::STYLE_INFO, self::STYLE_WARNING, self::STYLE_ERROR, self::STYLE_DANGER);
+
+		$closeText = self::getArrayValue('closeText', $htmlOptions);
+		$block = self::getArrayValue('block', $htmlOptions);
+		$fade = self::getArrayValue('fade', $htmlOptions, true);
+
+		$htmlOptions = self::cleanUpOptions($htmlOptions, array('closeText', 'block', 'fade'));
+
 
 		// add default classes
 		// todo: should we allow the user whether to make it visible or not on display?
@@ -620,10 +640,11 @@ EOD;
 	 *
 	 * @param string $key
 	 * @param array $htmlOptions
+	 * @param mixed $default value to return in case no value was found
 	 * @return mixed
 	 */
-	public static function getArrayValue($key, $htmlOptions)
+	public static function getArrayValue($key, $htmlOptions, $default  = null)
 	{
-		return (is_array($htmlOptions) && isset($htmlOptions[$key]) && !empty($htmlOptions[$key])) ? $htmlOptions[$key] : null;
+		return (is_array($htmlOptions) && isset($htmlOptions[$key]) && !empty($htmlOptions[$key])) ? $htmlOptions[$key] : $default;
 	}
 }
