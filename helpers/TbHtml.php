@@ -1125,6 +1125,32 @@ EOD;
 	}
 
 	/**
+	 * Returns an item from the given options or the default value if it's not set.
+	 * @param string $name the name of the item.
+	 * @param array $options the options to get from.
+	 * @param mixed $defaultValue the default value.
+	 * @return mixed the value.
+	 */
+	public static function getOption($name, $options, $defaultValue = null)
+	{
+		return (is_array($options) && isset($options[$name])) ? $options[$name] : $defaultValue;
+	}
+
+	/**
+	 * Removes an item from the given options and returns the value.
+	 * @param string $name the name of the item.
+	 * @param array $options the options to remove the item from.
+	 * @param mixed $defaultValue the default value.
+	 * @return mixed the value.
+	 */
+	public static function popOption($name, &$options, $defaultValue = null)
+	{
+		$value = self::getOption($name, $options, $defaultValue);
+		unset($options[$name]);
+		return $value;
+	}
+
+	/**
 	 * Sets the default value for an item in the given options.
 	 * @param string $name the name of the item.
 	 * @param mixed $value the default value.
@@ -1147,31 +1173,5 @@ EOD;
 	public static function removeOptions($options, $keysToRemove)
 	{
 		return array_diff_key($options, array_flip($keysToRemove));
-	}
-
-	/**
-	 * Returns an item from the given options or the default value if it's not set.
-	 * @param string $name the name of the item.
-	 * @param array $options the options to get from.
-	 * @param mixed $defaultValue the default value.
-	 * @return mixed the value.
-	 */
-	public static function getOption($name, $options, $defaultValue = null)
-	{
-		return (is_array($options) && isset($options[$name])) ? $options[$name] : $defaultValue;
-	}
-
-	/**
-	 * Removes an item from the given options and returns the value.
-	 * @param string $name the item name.
-	 * @param array $options the options to remove the item from.
-	 * @param mixed $defaultValue the default value.
-	 * @return mixed the value.
-	 */
-	public static function popOption($name, &$options, $defaultValue = null)
-	{
-		$value = self::getOption($name, $options, $defaultValue);
-		unset($options[$name]);
-		return $value;
 	}
 }
