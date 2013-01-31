@@ -56,7 +56,6 @@ class TbApi extends CApplicationComponent
      */
     public function registerCoreScripts($position = CClientScript::POS_END)
     {
-        // todo: register tooltip & popover
         /** @var CClientScript $cs */
         $cs = Yii::app()->getClientScript();
         $cs->registerCoreScript('jquery');

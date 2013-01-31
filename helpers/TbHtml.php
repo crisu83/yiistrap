@@ -234,6 +234,113 @@ class TbHtml extends CHtml
 		return self::tag('span', self::addClassNames($classes, $htmlOptions), $label);
 	}
 
+    /**
+     * Generates a dropdown menu.
+     * @param array $items the menu items.
+     * @param array $htmlOptions the HTML attributes for the dropdown.
+     * @return string the generated dropdown.
+     */
+    public static function dropdown($items, $htmlOptions = array())
+    {
+        $classes = array('dropdown-menu');
+
+        if (!isset($htmlOptions['role']))
+            $htmlOptions['role'] = 'menu';
+
+        $htmlOptions = self::addClassNames($classes, $htmlOptions);
+
+        ob_start();
+        echo self::menu($items, $htmlOptions);
+        return ob_get_clean();
+    }
+
+    /**
+     * Generates a menu.
+     * @param array $items the menu items.
+     * @param array $htmlOptions the HTML attributes for the menu.
+     * @return string the generated menu.
+     */
+    public static function menu($items, $htmlOptions = array())
+    {
+        ob_start();
+        echo parent::openTag('ul', $htmlOptions);
+        foreach ($items as $item)
+        {
+            if (!isset($item['label']))
+                $item['label'] = 'Link';
+
+            if (!isset($item['url']))
+                $item['url'] = false;
+
+            if (isset($item['icon']))
+                $item['label'] = self::icon($item['icon']) . ' ' . $item['label'];
+
+            $items = self::getArrayValue('items', $item, array());
+            $itemOptions = self::getArrayValue('itemOptions', $item, array());
+            $itemOptions['linkOptions'] = self::getArrayValue('linkOptions', $item, array());
+            echo self::menuItem($item['label'], $item['url'], $items, $itemOptions);
+        }
+        echo '</ul>';
+        return ob_get_clean();
+    }
+
+    /**
+     * Generates a menu item.
+     * @param string $label the item label.
+     * @param array $url the item url.
+     * @param array $items the submenu items.
+     * @param array $htmlOptions the HTML attributes for the menu item.
+     * @return string the generated menu item.
+     */
+    public static function menuItem($label, $url, $items = array(), $htmlOptions = array())
+    {
+        $linkOptions = self::getArrayValue('linkOptions', $htmlOptions, array());
+        $htmlOptions = self::cleanUpOptions($htmlOptions, array('linkOptions'));
+
+        $menuOptions = self::getArrayValue('menuOptions', $htmlOptions, array());
+        $htmlOptions = self::cleanUpOptions($htmlOptions, array('menuOptions'));
+
+        $dropdown = !empty($items);
+
+        if ($dropdown)
+        {
+            $item['url'] = '#';
+
+            $linkOptions['class'] = isset($linkOptions['class'])
+                ? $linkOptions['class'] . ' dropdown-toggle'
+                : 'dropdown-toggle';
+
+            if (!isset($linkOptions['data-toggle']))
+                $linkOptions['data-toggle'] = 'dropdown';
+        }
+
+        ob_start();
+        echo parent::openTag('li', $htmlOptions);
+        echo $url !== false ? parent::link($label, $url, $linkOptions) : $label;
+
+        if ($dropdown)
+            echo self::menu($items, $menuOptions);
+
+        echo '</li>';
+        return ob_get_clean();
+    }
+
+    /**
+     * Generates a Glyph icon.
+     * @param string $icon the icon type.
+     * @param array $htmlOptions the HTML attributes for the icon.
+     * @param string $tag the icon tag.
+     * @return string the generated icon.
+     * @see http://twitter.github.com/bootstrap/base-css.html#icons
+     */
+    public static function icon($icon, $htmlOptions = array(), $tag = 'i')
+    {
+        if (strpos($icon, 'icon') === false)
+            $icon = 'icon-' . implode(' icon-', explode(' ', $icon));
+        $htmlOptions['class'] = isset($htmlOptions['class']) ? $htmlOptions['class'] . ' ' . $icon : $icon;
+        return parent::openTag($tag, $htmlOptions) . parent::closeTag($tag);
+    }
+
 	/**
 	 * Renders a search form.
 	 * @param string $action
@@ -271,15 +378,11 @@ class TbHtml extends CHtml
 		echo self::beginForm($action, $method, self::addClassNames('form-search', $htmlOptions));
 		echo self::openTag('div', self::addClassNames(($appendButton ? 'input-append' : 'input-prepend'), $inputOptions));
 		if ($appendButton === false)
-		{
 			echo self::button($buttonLabel, $buttonOptions);
-		}
 		echo self::tag('input', CMap::mergeArray(self::addClassNames('search-query', $inputOptions), array('type' => 'text')));
 		if ($appendButton)
-		{
 			echo self::button($buttonLabel, $buttonOptions);
-		}
-		echo self::closeTag('div');
+		echo '</div>';
 		echo parent::endForm();
 		return ob_get_clean();
 	}

@@ -24,6 +24,7 @@ return array(
 	'import' => array(
 		'application.models.*',
 		'application.components.*',
+		'bootstrap.helpers.*',
 	),
 
 	// application components
