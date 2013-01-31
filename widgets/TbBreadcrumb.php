@@ -11,64 +11,64 @@
  */
 class TbBreadcrumb extends CWidget
 {
-    /**
-     * @var string the divider between links in the breadcrumbs.
-     */
-    public $divider = '/';
-    /**
-     * @var boolean whether to HTML encode the link labels.
-     */
-    public $encodeLabel = true;
-    /**
-     * @var string the label for the first link in the breadcrumb.
-     */
-    public $homeLabel;
-    /**
-     * @var array the url for the first link in the breadcrumb
-     */
-    public $homeUrl;
-    /**
-     * @var array the HTML attributes for the breadcrumbs.
-     */
-    public $htmlOptions = array();
-    /**
-     * @var array list of links to appear in the breadcrumbs.
-     */
-    public $links = array();
+	/**
+	 * @var string the divider between links in the breadcrumbs.
+	 */
+	public $divider = '/';
+	/**
+	 * @var boolean whether to HTML encode the link labels.
+	 */
+	public $encodeLabel = true;
+	/**
+	 * @var string the label for the first link in the breadcrumb.
+	 */
+	public $homeLabel;
+	/**
+	 * @var array the url for the first link in the breadcrumb
+	 */
+	public $homeUrl;
+	/**
+	 * @var array the HTML attributes for the breadcrumbs.
+	 */
+	public $htmlOptions = array();
+	/**
+	 * @var array list of links to appear in the breadcrumbs.
+	 */
+	public $links = array();
 
-    /**
-     * Initializes the widget.
-     */
-    public function init()
-    {
-        $this->htmlOptions = TbHtml::setDefaultOption('divider', $this->divider, $this->htmlOptions);
-    }
+	/**
+	 * Initializes the widget.
+	 */
+	public function init()
+	{
+		$this->htmlOptions = TbHtml::setDefaultOption('divider', $this->divider, $this->htmlOptions);
+	}
 
-    /**
-     * Runs the widget.
-     */
-    public function run()
-    {
-        if (!empty($this->links))
-        {
-            $links = array();
-            if ($this->homeLabel !== false)
-            {
-                $label = $this->homeLabel !== null ? $this->homeLabel : TbHtml::icon('home');
-                $links[$label] = $this->homeUrl !== null ? $this->homeUrl : Yii::app()->homeUrl;
-            }
-            foreach ($this->links as $label => $url)
-            {
-                if (is_string($label))
-                {
-                    if ($this->encodeLabel)
-                        $label = CHtml::encode($label);
-                    $links[$label] = $url;
-                }
-                else
-                    $links[] = $this->encodeLabel ? CHtml::encode($url) : $url;
-            }
-            echo TbHtml::breadcrumb($links, $this->htmlOptions);
-        }
-    }
+	/**
+	 * Runs the widget.
+	 */
+	public function run()
+	{
+		if (!empty($this->links))
+		{
+			$links = array();
+			if ($this->homeLabel !== false)
+			{
+				$label = $this->homeLabel !== null ? $this->homeLabel : TbHtml::icon('home');
+				$links[$label] = $this->homeUrl !== null ? $this->homeUrl : Yii::app()->homeUrl;
+			}
+			foreach ($this->links as $label => $url)
+			{
+				if (is_string($label))
+				{
+					if ($this->encodeLabel)
+						$label = CHtml::encode($label);
+					$links[$label] = $url;
+				}
+				else
+					$links[] = $this->encodeLabel ? CHtml::encode($url) : $url;
+			}
+			echo TbHtml::breadcrumb($links, $this->htmlOptions);
+		}
+	}
 }
