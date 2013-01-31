@@ -41,7 +41,7 @@
 
 		<hr />
 
-		<div id="footer" style="padding: 20px 0;">
+		<div id="footer" style="padding-bottom: 20px;">
 			<div class="row">
 				<div class="span6">
 					&copy; Yiistrap <?php echo date('Y'); ?><br/>

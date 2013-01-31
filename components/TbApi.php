@@ -154,7 +154,7 @@ class TbApi extends CApplicationComponent
     /**
      * Registers events using the given selector.
      * @param string $selector the CSS selector.
-     * @param array $events the JavaScript event configuration (name=>handler).
+     * @param string[] $events the JavaScript event configuration (name=>handler).
      * @param int $position the position of the JavaScript code.
      */
     public function registerEvents($selector, $events, $position = CClientScript::POS_END)
@@ -163,7 +163,7 @@ class TbApi extends CApplicationComponent
         foreach ($events as $name => $handler)
         {
             $handler = new CJavaScriptExpression($handler);
-            $script .= "jQuery('{$selector}).on('{$name}', {$handler});'";
+            $script .= "jQuery('{$selector}').on('{$name}', {$handler});";
         }
         Yii::app()->clientScript->registerScript($this->generateRandomId(), $script, $position);
     }

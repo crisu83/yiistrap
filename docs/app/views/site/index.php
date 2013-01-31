@@ -168,6 +168,25 @@ $this->pageTitle=Yii::app()->name;
 	</div>
 </div>
 
+<div class="breadcrumbs">
+    <h3>Breadcrumb</h3>
+
+    <?php echo TbHtml::breadcrumb(array('Home')); ?>
+
+    <?php echo TbHtml::breadcrumb(array(
+        TbHtml::icon('home') => array('/site/index'),
+        'Library',
+    )); ?>
+
+    <?php $this->widget('bootstrap.widgets.TbBreadcrumb', array(
+        'divider' => '&rsaquo;',
+        'links' => array(
+            'Library' => array('#'),
+            'Data',
+        ),
+    )); ?>
+</div>
+
 <div class="labels-badges">
 	<h3>Labels and badges</h3>
 
@@ -192,4 +211,29 @@ $this->pageTitle=Yii::app()->name;
 		<?php echo TbHtml::badgeSpan('8',array('style'=>'info')); ?>
 		<?php echo TbHtml::badgeSpan('10',array('style'=>'inverse')); ?>
 	</div>
+</div>
+
+<div class="alerts">
+    <h3>Alerts</h3>
+
+    <h5>Default alerts</h5>
+
+    <?php echo TbHtml::alert('warning', '<strong>Warning!</strong> Best check yo self, you\'re not looking too good.'); ?>
+    <?php echo TbHtml::alert('error', '<strong>Oh snap!</strong> Change a few things up and try submitting again.'); ?>
+    <?php echo TbHtml::alert('success', '<strong>Well done!</strong> You successfully read this important alert message.'); ?>
+    <?php echo TbHtml::alert('info', '<strong>Heads up!</strong> This alert needs your attention, but it\'s not super important.'); ?>
+
+    <h5>Block alerts</h5>
+
+    <?php Yii::app()->user->setFlash('warning','<h4>Warning!</h4>Best check yo self, you\'re not looking too good. Nulla vitae elit libero, a pharetra augue. Praesent commodo cursus magna, vel scelerisque nisl consectetur et.'); ?>
+
+    <?php $this->widget('bootstrap.widgets.TbAlert',array(
+        'block'=>true,
+        'fade'=>false,
+        'events'=>array(
+            'close'=>"function() { console.log('Alert close event fired.'); }",
+            'closed'=>"function() { console.log('Alert closed event fired.'); }",
+        ),
+    )); ?>
+
 </div>

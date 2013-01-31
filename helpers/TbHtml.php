@@ -27,6 +27,7 @@ class TbHtml extends CHtml
 	const SIZE_SMALL = 'small';
 	const SIZE_LARGE = 'large';
 
+    // Bootstrap navigation menu types
 	const NAV_TABS = 'tabs';
 	const NAV_PILLS = 'pills';
 	const NAV_LIST = 'list';
@@ -58,12 +59,21 @@ class TbHtml extends CHtml
 		self::STYLE_INVERSE,
 	);
 
-	// Valid nav styles
-	static $navStyles = array(
-		self::NAV_TABS,
-		self::NAV_PILLS,
-		self::NAV_LIST,
-	);
+    // Valid alert styles
+    static $alertStyles = array(
+        self::STYLE_SUCCESS,
+        self::STYLE_INFO,
+        self::STYLE_WARNING,
+        self::STYLE_ERROR,
+    );
+
+    // Valid navigation menu styles
+    static $navStyles = array(
+        self::NAV_TABS,
+        self::NAV_PILLS,
+        self::NAV_LIST,
+    );
+
 
 	/**
 	 * Generates a button.
@@ -189,7 +199,7 @@ class TbHtml extends CHtml
 	public static function dropdownToggle($tag, $label, $htmlOptions)
 	{
 		$htmlOptions = self::addClassName('dropdown-toggle', $htmlOptions);
-		$htmlOptions = self::setDefaultValue('data-toggle', 'dropdown', $htmlOptions);
+		$htmlOptions = self::setDefaultOption('data-toggle', 'dropdown', $htmlOptions);
 		$label .= ' <b class="caret"></b>';
 		return self::btn($tag, $label, $htmlOptions);
 	}
@@ -197,7 +207,7 @@ class TbHtml extends CHtml
 	public static function dropdownToggleMenuItem($label, $htmlOptions = array())
 	{
 		$htmlOptions = self::addClassName('dropdown-toggle', $htmlOptions);
-		$htmlOptions = self::setDefaultValue('data-toggle', 'dropdown', $htmlOptions);
+		$htmlOptions = self::setDefaultOption('data-toggle', 'dropdown', $htmlOptions);
 		$label .= ' <b class="caret"></b>';
 		return parent::link($label, '#', $htmlOptions);
 	}
@@ -317,8 +327,8 @@ class TbHtml extends CHtml
 				echo self::menuDivider();
 			else
 			{
-				$menuItem = self::setDefaultValue('label', '', $menuItem);
-				$menuItem = self::setDefaultValue('url', false, $menuItem);
+				$menuItem = self::setDefaultOption('label', '', $menuItem);
+				$menuItem = self::setDefaultOption('url', false, $menuItem);
 
 				if (isset($menuItem['icon']))
 					$menuItem['label'] = self::icon(self::popOption('icon', $menuItem)) . ' ' . $menuItem['label'];
@@ -391,6 +401,34 @@ class TbHtml extends CHtml
 		$htmlOptions = self::addClassName($className, $htmlOptions);
 		return parent::tag('li', $htmlOptions);
 	}
+
+    /**
+     * Generates a breadcrumb menu.
+     * @param array $links the breadcrumb links.
+     * @param array $htmlOptions the HTML options for the breadcrumbs.
+     * @return string the generated breadcrumb.
+     */
+    public static function breadcrumb($links, $htmlOptions = array())
+    {
+        $divider = self::popOption('divider', $htmlOptions, '/');
+        $htmlOptions = self::addClassName('breadcrumb', $htmlOptions);
+        ob_start();
+        echo parent::openTag('ul', $htmlOptions);
+        foreach ($links as $label => $url)
+        {
+            if (is_string($label))
+            {
+                echo parent::openTag('li');
+                echo parent::link($label, parent::normalizeUrl($url));
+                echo parent::tag('span', array('class' => 'divider'), $divider);
+                echo '</li>';
+            }
+            else
+                echo parent::tag('li', array('class' => 'active'), $url);
+        }
+        echo '</ul>';
+        return ob_get_clean();
+    }
 
 	/**
 	 * Generates a label span.
@@ -601,7 +639,7 @@ class TbHtml extends CHtml
 	}
 
 	/**
-	 * @param string $type the type of alert
+	 * @param string $style the style of the alert.
 	 * @param string $message the message to display  within the alert box
 	 * @param array $htmlOptions additional HTML options. The following special options are recognized:
 	 * <ul>
@@ -612,40 +650,39 @@ class TbHtml extends CHtml
 	 * </ul>
 	 * @see http://twitter.github.com/bootstrap/components.html#alerts
 	 */
-	public static function alert($type, $message, $htmlOptions = array())
+	public static function alert($style, $message, $htmlOptions = array())
 	{
-		// valid Types
-		// todo: Think about its scope, maybe move to static class variable?
-		$validTypes = array(self::STYLE_SUCCESS, self::STYLE_INFO, self::STYLE_WARNING, self::STYLE_ERROR, self::STYLE_DANGER);
+		$block = self::popOption('block', $htmlOptions, false);
+		$fade = self::popOption('fade', $htmlOptions, true);
+        $closeText = self::popOption('closeText', $htmlOptions, '&times;');
+        $closeOptions = self::popOption('closeOptions', $htmlOptions, array());
 
-		$closeText = self::getOption('closeText', $htmlOptions);
-		$block = self::getOption('block', $htmlOptions);
-		$fade = self::getOption('fade', $htmlOptions, true);
-
-		$htmlOptions = self::removeOptions($htmlOptions, array('closeText', 'block', 'fade'));
-
-
-		// add default classes
 		// todo: should we allow the user whether to make it visible or not on display?
-		$classes = array('alert in');
+        $htmlOptions = self::addClassName('alert in', $htmlOptions);
 
-		if (in_array($type, $validTypes))
-			$classes[] = 'alert-' . $type;
-		// block
-		if ($block)
-			$classes[] = 'alert-block';
-		// fade
+		if (in_array($style, self::$alertStyles))
+            $htmlOptions = self::addClassName('alert-' . $style, $htmlOptions);
+
+        if ($block)
+			$htmlOptions = self::addClassName('alert-block', $htmlOptions);
+
 		if ($fade)
-			$classes[] = 'fade';
+            $htmlOptions = self::addClassName('fade', $htmlOptions);
 
 		ob_start();
-		echo parent::openTag('div', self::addClassName($classes, $htmlOptions));
-		echo !empty($closeText) ? self::link($closeText, '#', array('class' => 'close', 'data-dismiss' => 'alert')) : '';
+		echo parent::openTag('div', $htmlOptions);
+		echo $closeText !== false ? self::closeLink($closeText, $closeOptions) : '';
 		echo $message;
 		echo '</div>';
 		return ob_get_clean();
-
 	}
+
+    public static function closeLink($label = '&times;', $htmlOptions = array())
+    {
+        $htmlOptions = self::addClassName('close', $htmlOptions);
+        $htmlOptions = self::setDefaultOption('data-dismiss', 'alert', $htmlOptions);
+        return parent::link($label, '#', $htmlOptions);
+    }
 
 	/**
 	 * Generates an image tag with rounded corners.
@@ -1009,7 +1046,7 @@ EOD;
 		return $htmlOptions;
 	}
 
-	public static function setDefaultValue($name, $value, $htmlOptions)
+	public static function setDefaultOption($name, $value, $htmlOptions)
 	{
 		if (!isset($htmlOptions[$name]))
 			$htmlOptions[$name] = $value;
@@ -1042,7 +1079,14 @@ EOD;
 		return (is_array($options) && isset($options[$name])) ? $options[$name] : $defaultValue;
 	}
 
-	public static function popOption($name, &$options, $defaultValue = null)
+    /**
+     * Removes an item from the given options and returns the value.
+     * @param string $name the option name.
+     * @param array $options the options to remove the item from.
+     * @param null $defaultValue
+     * @return mixed
+     */
+    public static function popOption($name, &$options, $defaultValue = null)
 	{
 		$value = self::getOption($name, $options, $defaultValue);
 		unset($options[$name]);
