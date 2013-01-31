@@ -41,7 +41,7 @@ class TbAlert extends CWidget
 	 */
 	public function init()
 	{
-		$this->htmlOptions = TbHtml::setDefaultOption('id', $this->getId(), $this->htmlOptions);
+		$this->htmlOptions = TbHtml::defaultOption('id', $this->getId(), $this->htmlOptions);
 		if (is_string($this->alerts))
 			$styles = explode(' ', $this->alerts);
 		else if (!isset($this->alerts))
@@ -70,9 +70,9 @@ class TbAlert extends CWidget
 			if ($user->hasFlash($style))
 			{
 				$htmlOptions = TbHtml::popOption('htmlOptions', $alert, array());
-				$htmlOptions = TbHtml::setDefaultOption('closeText', $this->closeText, $htmlOptions);
-				$htmlOptions = TbHtml::setDefaultOption('block', $this->block, $htmlOptions);
-				$htmlOptions = TbHtml::setDefaultOption('fade', $this->fade, $htmlOptions);
+				$htmlOptions = TbHtml::defaultOption('closeText', $this->closeText, $htmlOptions);
+				$htmlOptions = TbHtml::defaultOption('block', $this->block, $htmlOptions);
+				$htmlOptions = TbHtml::defaultOption('fade', $this->fade, $htmlOptions);
 				echo TbHtml::alert($style, $user->getFlash($style), $htmlOptions);
 			}
 		}

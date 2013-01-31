@@ -222,7 +222,7 @@ class TbHtml extends CHtml
 	public static function dropdownToggle($tag, $label, $htmlOptions)
 	{
 		$htmlOptions = self::addClassName('dropdown-toggle', $htmlOptions);
-		$htmlOptions = self::setDefaultOption('data-toggle', 'dropdown', $htmlOptions);
+		$htmlOptions = self::defaultOption('data-toggle', 'dropdown', $htmlOptions);
 		$label .= ' <b class="caret"></b>';
 		return self::btn($tag, $label, $htmlOptions);
 	}
@@ -237,7 +237,7 @@ class TbHtml extends CHtml
 	public static function dropdownToggleMenuItem($label, $htmlOptions = array())
 	{
 		$htmlOptions = self::addClassName('dropdown-toggle', $htmlOptions);
-		$htmlOptions = self::setDefaultOption('data-toggle', 'dropdown', $htmlOptions);
+		$htmlOptions = self::defaultOption('data-toggle', 'dropdown', $htmlOptions);
 		$label .= ' <b class="caret"></b>';
 		return parent::link($label, '#', $htmlOptions);
 	}
@@ -356,8 +356,8 @@ class TbHtml extends CHtml
 				echo self::menuDivider();
 			else
 			{
-				$menuItem = self::setDefaultOption('label', '', $menuItem);
-				$menuItem = self::setDefaultOption('url', false, $menuItem);
+				$menuItem = self::defaultOption('label', '', $menuItem);
+				$menuItem = self::defaultOption('url', false, $menuItem);
 
 				if (isset($menuItem['icon']))
 					$menuItem['label'] = self::icon(self::popOption('icon', $menuItem)) . ' ' . $menuItem['label'];
@@ -507,7 +507,7 @@ class TbHtml extends CHtml
 	 */
 	public static function closeLink($label = self::CLOSE_TEXT, $htmlOptions = array())
 	{
-		$htmlOptions = self::setDefaultOption('href', '#', $htmlOptions);
+		$htmlOptions = self::defaultOption('href', '#', $htmlOptions);
 		return self::closeIcon('a', $label, $htmlOptions);
 	}
 
@@ -533,7 +533,7 @@ class TbHtml extends CHtml
 	public static function closeIcon($tag = 'a', $label, $htmlOptions = array())
 	{
 		$htmlOptions = self::addClassName('close', $htmlOptions);
-		$htmlOptions = self::setDefaultOption('data-dismiss', 'alert', $htmlOptions);
+		$htmlOptions = self::defaultOption('data-dismiss', 'alert', $htmlOptions);
 		return parent::tag($tag, $htmlOptions, $label);
 	}
 
@@ -1124,33 +1124,37 @@ EOD;
 		return $htmlOptions;
 	}
 
-	public static function setDefaultOption($name, $value, $htmlOptions)
-	{
-		if (!isset($htmlOptions[$name]))
-			$htmlOptions[$name] = $value;
-		return $htmlOptions;
-	}
-
 	/**
-	 * Cleans up `$htmlOptions` from unwanted settings.
-	 * @param array $htmlOptions the options to clean
-	 * @param array $keysToRemove the keys to remove from the options
-	 * @return array
-	 */
-	public static function removeOptions($htmlOptions, $keysToRemove)
-	{
-		return array_diff_key($htmlOptions, array_flip($keysToRemove));
-	}
-
-	/**
-	 * Checks for the existence of a key and returns its value or null otherwise. Done, in order to avoid code
-	 * redundancy.
-	 *
-	 * @param string $name
-	 * @param array $options
-	 * @param mixed $defaultValue value to return in case no value was found
+	 * Sets the default value for an item in the given options.
+	 * @param string $name the name of the item.
+	 * @param mixed $value the default value.
+	 * @param array $options the options.
 	 * @return mixed
-	 * todo: update doc
+	 */
+	public static function defaultOption($name, $value, $options)
+	{
+		if (!isset($options[$name]))
+			$options[$name] = $value;
+		return $options;
+	}
+
+	/**
+	 * Removes unwanted items from the given options.
+	 * @param array $options the options to remove from.
+	 * @param array $keysToRemove list of keys to remove from the options.
+	 * @return array the options.
+	 */
+	public static function removeOptions($options, $keysToRemove)
+	{
+		return array_diff_key($options, array_flip($keysToRemove));
+	}
+
+	/**
+	 * Returns an item from the given options or the default value if it's not set.
+	 * @param string $name the name of the item.
+	 * @param array $options the options to get from.
+	 * @param mixed $defaultValue the default value.
+	 * @return mixed the value.
 	 */
 	public static function getOption($name, $options, $defaultValue = null)
 	{
@@ -1159,10 +1163,10 @@ EOD;
 
 	/**
 	 * Removes an item from the given options and returns the value.
-	 * @param string $name the option name.
+	 * @param string $name the item name.
 	 * @param array $options the options to remove the item from.
-	 * @param null $defaultValue
-	 * @return mixed
+	 * @param mixed $defaultValue the default value.
+	 * @return mixed the value.
 	 */
 	public static function popOption($name, &$options, $defaultValue = null)
 	{

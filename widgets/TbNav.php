@@ -56,7 +56,7 @@ class TbNav extends CWidget
 	 */
 	public function init()
 	{
-		$this->htmlOptions = TbHtml::setDefaultOption('id', $this->getId(), $this->htmlOptions);
+		$this->htmlOptions = TbHtml::defaultOption('id', $this->getId(), $this->htmlOptions);
 		$route = $this->controller->getRoute();
 		if ($this->stacked)
 			$this->htmlOptions = TbHtml::addClassName('nav-stacked', $this->htmlOptions);
@@ -93,7 +93,7 @@ class TbNav extends CWidget
 				continue;
 			}
 
-			$item = TbHtml::setDefaultOption('label', '', $item);
+			$item = TbHtml::defaultOption('label', '', $item);
 
 			if ($this->encodeLabel)
 				$items[$i]['label'] = CHtml::encode($item['label']);
