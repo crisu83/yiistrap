@@ -6,13 +6,23 @@ $this->pageTitle=Yii::app()->name;
 
 <h1>Yiistrap</h1>
 
-<div class="btn-group">
-    <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
-        Action
-        <span class="caret"></span>
-    </a>
-    <?php echo TbHtml::dropdown(array(
-        array('label'=>'Foo','url'=>'#'),
-        array('label'=>'Bar','url'=>'#'),
-    )); ?>
-</div>
+<?php $this->widget('bootstrap.widgets.TbNav', array(
+	'style'=>'tabs',
+	'items'=>array(
+		array('icon'=>'home','url'=>array('/site/index')),
+		array('label'=>'Foo','url'=>'#'),
+		array('label'=>'Bar','url'=>'#'),
+		array('label'=>'Dropdown','items'=>array(
+			array('label'=>'Heading'),
+			array('label'=>'Link','url'=>'#'),
+			array('label'=>'Link','url'=>'#'),
+			'---',
+			array('label'=>'Link','url'=>'#'),
+		)),
+	),
+)); ?>
+
+<?php echo TbHtml::buttonDropdown('Action', array(
+	array('label'=>'Foo','url'=>'#'),
+	array('label'=>'Bar','url'=>'#'),
+), array('split'=>true)); ?>

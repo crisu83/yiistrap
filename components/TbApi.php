@@ -13,6 +13,21 @@ Yii::import('bootstrap.helpers.TbHtml');
  */
 class TbApi extends CApplicationComponent
 {
+	// Bootstrap plugins
+	const PLUGIN_AFFIX = 'affix';
+	const PLUGIN_ALERT = 'alert';
+	const PLUGIN_BUTTON = 'button';
+	const PLUGIN_CAROUSEL = 'carousel';
+	const PLUGIN_COLLAPSE = 'collapse';
+	const PLUGIN_DROPDOWN = 'dropdown';
+	const PLUGIN_MODAL = 'modal';
+	const PLUGIN_POPOVER = 'popover';
+	const PLUGIN_SCROLLSPY = 'scrollspy';
+	const PLUGIN_TAB = 'tab';
+	const PLUGIN_TOOLTIP = 'tooltip';
+	const PLUGIN_TRANSITION = 'transition';
+	const PLUGIN_TYPEAHEAD = 'typeahead';
+
     /**
      * @var bool whether we should copy the asset file or directory even if it is already published before.
      */
@@ -100,7 +115,7 @@ class TbApi extends CApplicationComponent
     {
         if (!isset($options['selector']))
             $options['selector'] = 'a[rel=popover]';
-        $this->registerPlugin(TbHtml::PLUGIN_POPOVER, $selector, $options);
+        $this->registerPlugin(self::PLUGIN_POPOVER, $selector, $options);
     }
 
     /**
@@ -113,7 +128,7 @@ class TbApi extends CApplicationComponent
     {
         if (!isset($options['selector']))
             $options['selector'] = 'a[rel=tooltip]';
-        $this->registerPlugin(TbHtml::PLUGIN_TOOLTIP, $selector, $options);
+        $this->registerPlugin(self::PLUGIN_TOOLTIP, $selector, $options);
     }
 
     /**

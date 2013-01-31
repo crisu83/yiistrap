@@ -1,5 +1,7 @@
 <?php
 
+ini_set('display_errors', 1);
+
 // change the following paths if necessary
 $yii = __DIR__ . '/../yii/yii.php';
 $config = __DIR__ . '/../app/config/main.php';
