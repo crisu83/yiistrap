@@ -22,6 +22,8 @@ class TbHtml extends CHtml
 	const STYLE_INVERSE = 'inverse';
 	const STYLE_LINK = 'link';
 
+    const CLOSE_TEXT = '&times;';
+
 	// Bootstrap sizes
 	const SIZE_MINI = 'mini';
 	const SIZE_SMALL = 'small';
@@ -74,6 +76,12 @@ class TbHtml extends CHtml
         self::NAV_LIST,
     );
 
+    // Valid well sizes
+    static $wellSizes = array(
+        self::SIZE_LARGE,
+        self::SIZE_SMALL,
+        self::SIZE_MINI,
+    );
 
 	/**
 	 * Generates a button.
@@ -167,7 +175,7 @@ class TbHtml extends CHtml
 	/**
 	 * Generates a dropdown toggle link.
 	 * @param string $label the link label text.
-	 * @param array $htmlOptions  the HTML attributes for the link.
+	 * @param array $htmlOptions the HTML attributes for the link.
 	 * @return string the generated link.
 	 * http://twitter.github.com/bootstrap/components.html#buttonDropdowns
 	 */
@@ -179,7 +187,7 @@ class TbHtml extends CHtml
 	/**
 	 * Generates a dropdown toggle button.
 	 * @param string $label the button label text.
-	 * @param array $htmlOptions  the HTML attributes for the button.
+	 * @param array $htmlOptions the HTML attributes for the button.
 	 * @return string the generated button.
 	 * http://twitter.github.com/bootstrap/components.html#buttonDropdowns
 	 */
@@ -192,7 +200,7 @@ class TbHtml extends CHtml
 	 * Generates a dropdown toggle element.
 	 * @param string $tag the HTML tag.
 	 * @param string $label the element text.
-	 * @param array $htmlOptions  the HTML attributes for the element.
+	 * @param array $htmlOptions the HTML attributes for the element.
 	 * @return string the generated element.
 	 * http://twitter.github.com/bootstrap/components.html#dropdowns
 	 */
@@ -204,6 +212,13 @@ class TbHtml extends CHtml
 		return self::btn($tag, $label, $htmlOptions);
 	}
 
+    /**
+     * Generates a dropdown toggle menu item.
+     * @param string $label the menu item text.
+     * @param array $htmlOptions the HTML attributes for the menu item.
+     * @return string the generated menu item.
+     * http://twitter.github.com/bootstrap/components.html#dropdowns
+     */
 	public static function dropdownToggleMenuItem($label, $htmlOptions = array())
 	{
 		$htmlOptions = self::addClassName('dropdown-toggle', $htmlOptions);
@@ -305,7 +320,6 @@ class TbHtml extends CHtml
 		// todo: think about how to apply this, now it applies to all depths while it should only apply for the first.
 		//$htmlOptions = self::setDefaultValue('role', 'menu', $htmlOptions);
 		$htmlOptions = self::addClassName('dropdown-menu', $htmlOptions);
-
 		ob_start();
 		echo self::menu($items, $htmlOptions);
 		return ob_get_clean();
@@ -430,6 +444,84 @@ class TbHtml extends CHtml
         return ob_get_clean();
     }
 
+    /**
+     * @param string $style the style of the alert.
+     * @param string $message the message to display  within the alert box
+     * @param array $htmlOptions additional HTML options. The following special options are recognized:
+     * <ul>
+     * <li>block: boolean, specifies whether to increase the padding on top and bottom of the alert wrapper.</li>
+     * <li>fade: boolean, specifies whether to have fade in/out effect when showing/hiding the alert.
+     * Defaults to `true`.</li>
+     * <li>closeText: string, the text to use as closing button. If none specified, no close button will be shown.</li>
+     * </ul>
+     * @see http://twitter.github.com/bootstrap/components.html#alerts
+     */
+    public static function alert($style, $message, $htmlOptions = array())
+    {
+        $block = self::popOption('block', $htmlOptions, false);
+        $fade = self::popOption('fade', $htmlOptions, true);
+        $closeText = self::popOption('closeText', $htmlOptions, self::CLOSE_TEXT);
+        $closeOptions = self::popOption('closeOptions', $htmlOptions, array());
+
+        // todo: should we allow the user whether to make it visible or not on display?
+        $htmlOptions = self::addClassName('alert in', $htmlOptions);
+
+        if (isset($style) && in_array($style, self::$alertStyles))
+            $htmlOptions = self::addClassName('alert-' . $style, $htmlOptions);
+
+        if ($block)
+            $htmlOptions = self::addClassName('alert-block', $htmlOptions);
+
+        if ($fade)
+            $htmlOptions = self::addClassName('fade', $htmlOptions);
+
+        ob_start();
+        echo parent::openTag('div', $htmlOptions);
+        echo $closeText !== false ? self::closeLink($closeText, $closeOptions) : '';
+        echo $message;
+        echo '</div>';
+        return ob_get_clean();
+    }
+
+    /**
+     * Generates a close link.
+     * @param string $label the link label text.
+     * @param array $htmlOptions the HTML options for the link.
+     * @return string the generated link.
+     * @see http://twitter.github.com/bootstrap/components.html#misc
+     */
+    public static function closeLink($label = self::CLOSE_TEXT, $htmlOptions = array())
+    {
+        $htmlOptions = self::setDefaultOption('href', '#', $htmlOptions);
+        return self::closeIcon('a', $label, $htmlOptions);
+    }
+
+    /**
+     * Generates a close button.
+     * @param string $label the button label text.
+     * @param array $htmlOptions the HTML options for the button.
+     * @return string the generated button.
+     * @see http://twitter.github.com/bootstrap/components.html#misc
+     */
+    public static function closeButton($label = self::CLOSE_TEXT, $htmlOptions = array())
+    {
+        return self::closeIcon('button', $label, $htmlOptions);
+    }
+
+    /**
+     * Generates a close element.
+     * @param string $label the element label text.
+     * @param array $htmlOptions the HTML options for the element.
+     * @return string the generated element.
+     * @see http://twitter.github.com/bootstrap/components.html#misc
+     */
+    public static function closeIcon($tag = 'a', $label, $htmlOptions = array())
+    {
+        $htmlOptions = self::addClassName('close', $htmlOptions);
+        $htmlOptions = self::setDefaultOption('data-dismiss', 'alert', $htmlOptions);
+        return parent::tag($tag, $htmlOptions, $label);
+    }
+
 	/**
 	 * Generates a label span.
 	 * @param string $label the label text.
@@ -472,6 +564,46 @@ class TbHtml extends CHtml
 		return self::tag('span', $htmlOptions, $label);
 	}
 
+    /**
+     * Generates an image tag with rounded corners.
+     * @param string $src the image URL
+     * @param string $alt the alternative text display
+     * @param array $htmlOptions additional HTML attributes (see {@link tag}).
+     * @return string the generated image tag
+     * @see http://twitter.github.com/bootstrap/base-css.html#images
+     */
+    public static function imageRounded($src, $alt = '', $htmlOptions = array())
+    {
+        return parent::image($src, $alt, self::addClassName('img-rounded', $htmlOptions));
+    }
+
+    /**
+     * Generates an image tag with circle.
+     * ***Important*** `.img-rounded` and `.img-circle` do not work in IE7-8 due to lack of border-radius support.
+     * @param string $src the image URL
+     * @param string $alt the alternative text display
+     * @param array $htmlOptions additional HTML attributes (see {@link tag}).
+     * @return string the generated image tag
+     * @see http://twitter.github.com/bootstrap/base-css.html#images
+     */
+    public static function imageCircle($src, $alt = '', $htmlOptions = array())
+    {
+        return parent::image($src, $alt, self::addClassName('img-circle', $htmlOptions));
+    }
+
+    /**
+     * Generates an image tag within polaroid frame.
+     * @param string $src the image URL
+     * @param string $alt the alternative text display
+     * @param array $htmlOptions additional HTML attributes (see {@link tag}).
+     * @return string the generated image tag
+     * @see http://twitter.github.com/bootstrap/base-css.html#images
+     */
+    public static function imagePolaroid($src, $alt = '', $htmlOptions = array())
+    {
+        return parent::image($src, $alt, self::addClassName('img-polaroid', $htmlOptions));
+    }
+
 	/**
 	 * Generates a Glyph icon.
 	 * @param string $icon the icon type.
@@ -487,6 +619,23 @@ class TbHtml extends CHtml
 		$htmlOptions = self::addClassName($icon, $htmlOptions);
 		return parent::openTag($tag, $htmlOptions) . parent::closeTag($tag); // tag won't work in this case
 	}
+
+    /**
+     * Generates a well element.
+     * @param string $content the well content.
+     * @param array $htmlOptions the HTML attributes for the well.
+     * @return string the generated well.
+     * @see http://twitter.github.com/bootstrap/components.html#misc
+     */
+    public static function well($content, $htmlOptions = array())
+    {
+        $size = self::popOption('size', $htmlOptions);
+        if (isset($size) && in_array($size, self::$wellSizes))
+            $htmlOptions = self::addClassName('well-' . $size, $htmlOptions);
+        ob_start();
+        parent::tag('div', $htmlOptions, $content);
+        return ob_get_clean();
+    }
 
 	/**
 	 * Renders a search form.
@@ -636,92 +785,6 @@ class TbHtml extends CHtml
 			return ob_get_clean();
 		}
 		return '';
-	}
-
-	/**
-	 * @param string $style the style of the alert.
-	 * @param string $message the message to display  within the alert box
-	 * @param array $htmlOptions additional HTML options. The following special options are recognized:
-	 * <ul>
-	 * <li>block: boolean, specifies whether to increase the padding on top and bottom of the alert wrapper.</li>
-	 * <li>fade: boolean, specifies whether to have fade in/out effect when showing/hiding the alert.
-	 * Defaults to `true`.</li>
-	 * <li>closeText: string, the text to use as closing button. If none specified, no close button will be shown.</li>
-	 * </ul>
-	 * @see http://twitter.github.com/bootstrap/components.html#alerts
-	 */
-	public static function alert($style, $message, $htmlOptions = array())
-	{
-		$block = self::popOption('block', $htmlOptions, false);
-		$fade = self::popOption('fade', $htmlOptions, true);
-        $closeText = self::popOption('closeText', $htmlOptions, '&times;');
-        $closeOptions = self::popOption('closeOptions', $htmlOptions, array());
-
-		// todo: should we allow the user whether to make it visible or not on display?
-        $htmlOptions = self::addClassName('alert in', $htmlOptions);
-
-		if (in_array($style, self::$alertStyles))
-            $htmlOptions = self::addClassName('alert-' . $style, $htmlOptions);
-
-        if ($block)
-			$htmlOptions = self::addClassName('alert-block', $htmlOptions);
-
-		if ($fade)
-            $htmlOptions = self::addClassName('fade', $htmlOptions);
-
-		ob_start();
-		echo parent::openTag('div', $htmlOptions);
-		echo $closeText !== false ? self::closeLink($closeText, $closeOptions) : '';
-		echo $message;
-		echo '</div>';
-		return ob_get_clean();
-	}
-
-    public static function closeLink($label = '&times;', $htmlOptions = array())
-    {
-        $htmlOptions = self::addClassName('close', $htmlOptions);
-        $htmlOptions = self::setDefaultOption('data-dismiss', 'alert', $htmlOptions);
-        return parent::link($label, '#', $htmlOptions);
-    }
-
-	/**
-	 * Generates an image tag with rounded corners.
-	 * @param string $src the image URL
-	 * @param string $alt the alternative text display
-	 * @param array $htmlOptions additional HTML attributes (see {@link tag}).
-	 * @return string the generated image tag
-	 * @see http://twitter.github.com/bootstrap/base-css.html#images
-	 */
-	public static function imageRounded($src, $alt = '', $htmlOptions = array())
-	{
-		return parent::image($src, $alt, self::addClassName('img-rounded', $htmlOptions));
-	}
-
-	/**
-	 * Generates an image tag with circle.
-	 * ***Important*** `.img-rounded` and `.img-circle` do not work in IE7-8 due to lack of border-radius support.
-	 * @param string $src the image URL
-	 * @param string $alt the alternative text display
-	 * @param array $htmlOptions additional HTML attributes (see {@link tag}).
-	 * @return string the generated image tag
-	 * @see http://twitter.github.com/bootstrap/base-css.html#images
-	 */
-	public static function imageCircle($src, $alt = '', $htmlOptions = array())
-	{
-		return parent::image($src, $alt, self::addClassName('img-circle', $htmlOptions));
-	}
-
-	/**
-	 * Generates an image tag within polaroid frame.
-	 * @param string $src the image URL
-	 * @param string $alt the alternative text display
-	 * @param array $htmlOptions additional HTML attributes (see {@link tag}).
-	 * @return string the generated image tag
-	 * @see http://twitter.github.com/bootstrap/base-css.html#images
-	 */
-	public static function imagePolaroid($src, $alt = '', $htmlOptions = array())
-	{
-		return parent::image($src, $alt, self::addClassName('img-polaroid', $htmlOptions));
 	}
 
 	/**

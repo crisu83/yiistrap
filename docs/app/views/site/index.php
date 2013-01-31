@@ -229,7 +229,6 @@ $this->pageTitle=Yii::app()->name;
 
     <?php $this->widget('bootstrap.widgets.TbAlert',array(
         'block'=>true,
-        'fade'=>false,
         'events'=>array(
             'close'=>"function() { console.log('Alert close event fired.'); }",
             'closed'=>"function() { console.log('Alert closed event fired.'); }",
