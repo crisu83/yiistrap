@@ -144,7 +144,7 @@ class TbHtml extends CHtml
 		if ($split)
 		{
 			echo self::btn('a', $label, $htmlOptions);
-			echo self::dropdownToggleButton();
+			echo self::dropdownToggleButton('', $htmlOptions);
 		}
 		else
 			echo self::dropdownToggleLink($label, $htmlOptions);
@@ -186,11 +186,20 @@ class TbHtml extends CHtml
 	 * @return string the generated element.
 	 * http://twitter.github.com/bootstrap/components.html#dropdowns
 	 */
-	public static function dropdownToggle($tag = 'a', $label, $htmlOptions)
+	public static function dropdownToggle($tag, $label, $htmlOptions)
 	{
-		$htmlOptions = self::addClassName('btn dropdown-toggle', $htmlOptions);
+		$htmlOptions = self::addClassName('dropdown-toggle', $htmlOptions);
 		$htmlOptions = self::setDefaultValue('data-toggle', 'dropdown', $htmlOptions);
-		return self::btn($tag, $label . ' <b class="caret"></b>', $htmlOptions);
+		$label .= ' <b class="caret"></b>';
+		return self::btn($tag, $label, $htmlOptions);
+	}
+
+	public static function dropdownToggleMenuItem($label, $htmlOptions = array())
+	{
+		$htmlOptions = self::addClassName('dropdown-toggle', $htmlOptions);
+		$htmlOptions = self::setDefaultValue('data-toggle', 'dropdown', $htmlOptions);
+		$label .= ' <b class="caret"></b>';
+		return parent::link($label, '#', $htmlOptions);
 	}
 
 	/**
@@ -266,6 +275,10 @@ class TbHtml extends CHtml
 		if (in_array($style, self::$navStyles))
 			$htmlOptions = self::addClassName('nav-' . $style, $htmlOptions);
 
+		$stacked = self::popOption('stacked', $htmlOptions, false);
+		if ($stacked)
+			$htmlOptions = self::addClassName('nav-stacked', $htmlOptions);
+
 		ob_start();
 		echo self::menu($items, $htmlOptions);
 		return ob_get_clean();
@@ -304,18 +317,18 @@ class TbHtml extends CHtml
 				echo self::menuDivider();
 			else
 			{
-			$menuItem = self::setDefaultValue('label', '', $menuItem);
-			$menuItem = self::setDefaultValue('url', false, $menuItem);
+				$menuItem = self::setDefaultValue('label', '', $menuItem);
+				$menuItem = self::setDefaultValue('url', false, $menuItem);
 
-			if (isset($menuItem['icon']))
-				$menuItem['label'] = self::icon(self::popOption('icon', $menuItem)) . ' ' . $menuItem['label'];
+				if (isset($menuItem['icon']))
+					$menuItem['label'] = self::icon(self::popOption('icon', $menuItem)) . ' ' . $menuItem['label'];
 
-			$items = self::getOption('items', $menuItem, array());
-			$itemOptions = self::getOption('itemOptions', $menuItem, array());
-			$itemOptions['active'] = self::popOption('active', $menuItem, false);
-			$itemOptions['header'] = self::popOption('header', $menuItem, false);
-			$itemOptions['linkOptions'] = self::getOption('linkOptions', $menuItem, array());
-			echo self::menuItem($menuItem['label'], $menuItem['url'], $items, $itemOptions);
+				$items = self::getOption('items', $menuItem, array());
+				$itemOptions = self::getOption('itemOptions', $menuItem, array());
+				$itemOptions['active'] = self::popOption('active', $menuItem, false);
+				$itemOptions['header'] = self::popOption('header', $menuItem, false);
+				$itemOptions['linkOptions'] = self::getOption('linkOptions', $menuItem, array());
+				echo self::menuItem($menuItem['label'], $menuItem['url'], $items, $itemOptions);
 			}
 		}
 		echo '</ul>';
@@ -340,13 +353,11 @@ class TbHtml extends CHtml
 			$htmlOptions = self::addClassName('active', $htmlOptions);
 
 		$dropdown = !empty($items);
+
 		if ($dropdown)
 		{
 			$url = '#';
 			$htmlOptions = self::addClassName('dropdown', $htmlOptions);
-			$linkOptions = self::addClassName('dropdown-toggle', $linkOptions);
-			$linkOptions = self::setDefaultValue('data-toggle', 'dropdown', $linkOptions);
-			$label .= ' <b class="caret"></b>';
 		}
 
 		$header = self::popOption('header', $htmlOptions, false);
@@ -355,13 +366,15 @@ class TbHtml extends CHtml
 
 		ob_start();
 		echo parent::openTag('li', $htmlOptions);
-		echo !$header ? parent::link($label, $url, $linkOptions) : $label;
 
 		if ($dropdown)
 		{
+			echo self::dropdownToggleMenuItem($label, $linkOptions);
 			$menuOptions = self::addClassName('dropdown-menu', $menuOptions);
 			echo self::menu($items, $menuOptions);
 		}
+		else
+			echo !$header ? parent::link($label, $url, $linkOptions) : $label;
 
 		echo '</li>';
 		return ob_get_clean();
@@ -414,8 +427,10 @@ class TbHtml extends CHtml
 	 */
 	public static function labelBadgeSpan($type, $label, $htmlOptions = array())
 	{
-		if (isset($htmlOptions['style']) && in_array($htmlOptions['style'], self::$labelBadgeStyles))
-			$htmlOptions = self::addClassName($type . '-' . self::popOption('style', $htmlOptions), $htmlOptions);
+		$htmlOptions = self::addClassName($type, $htmlOptions);
+		$style = self::popOption('style', $htmlOptions);
+		if (isset($style) && in_array($style, self::$labelBadgeStyles))
+			$htmlOptions = self::addClassName($type . '-' . $style, $htmlOptions);
 		return self::tag('span', $htmlOptions, $label);
 	}
 

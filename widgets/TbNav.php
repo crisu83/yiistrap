@@ -16,6 +16,10 @@ class TbNav extends CWidget
 	 */
 	public $style = TbHtml::NAV_TABS;
 	/**
+	 * @var boolean whether the menu items should be stacked on top of each other.
+	 */
+	public $stacked = false;
+	/**
 	 * @var array list of menu items. Each menu item is specified as an array of name-value pairs.
 	 */
 	public $items = array();
@@ -54,6 +58,8 @@ class TbNav extends CWidget
 	{
 		$this->htmlOptions['id'] = $this->getId();
 		$route = $this->controller->getRoute();
+		if ($this->stacked)
+			$this->htmlOptions = TbHtml::addClassName('nav-stacked', $this->htmlOptions);
 		$this->items = $this->normalizeItems($this->items, $route, $hasActiveChild);
 	}
 

@@ -41,10 +41,15 @@
 
 		<hr />
 
-		<div id="footer">
-			Copyright &copy; <?php echo date('Y'); ?> by My Company.<br/>
-			All Rights Reserved.<br/>
-			<?php echo Yii::powered(); ?>
+		<div id="footer" style="padding: 20px 0;">
+			<div class="row">
+				<div class="span6">
+					&copy; Yiistrap <?php echo date('Y'); ?><br/>
+				</div>
+				<div class="span6" style="text-align: right;">
+					<?php echo Yii::powered(); ?>
+				</div>
+			</div>
 		</div>
 
 	</div>

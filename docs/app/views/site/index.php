@@ -4,25 +4,192 @@
 $this->pageTitle=Yii::app()->name;
 ?>
 
-<h1>Yiistrap</h1>
+<h1>Yiistrap <small>Twitter Bootstrap for Yii</small></h1>
 
-<?php $this->widget('bootstrap.widgets.TbNav', array(
-	'style'=>'tabs',
-	'items'=>array(
+<div class="buttons">
+	<h3>Buttons</h3>
+
+	<h5>Button styles</h5>
+
+	<div style="margin-bottom: 20px;">
+		<?php echo TbHtml::button('Default'); ?>
+		<?php echo TbHtml::button('Primary',array('style'=>'primary')); ?>
+		<?php echo TbHtml::button('Danger',array('style'=>'danger')); ?>
+		<?php echo TbHtml::button('Warning',array('style'=>'warning')); ?>
+		<?php echo TbHtml::button('Success',array('style'=>'success')); ?>
+		<?php echo TbHtml::button('Info',array('style'=>'info')); ?>
+		<?php echo TbHtml::button('Inverse',array('style'=>'inverse')); ?>
+		<?php echo TbHtml::button('Link',array('style'=>'link')); ?>
+	</div>
+
+	<h5>Button sizes</h5>
+
+	<div style="margin-bottom: 10px;">
+		<?php echo TbHtml::button('Large button',array('style'=>'primary','size'=>'large')); ?>
+		<?php echo TbHtml::button('Large button',array('size'=>'large')); ?>
+	</div>
+
+	<div style="margin-bottom: 10px;">
+		<?php echo TbHtml::button('Default button',array('style'=>'primary')); ?>
+		<?php echo TbHtml::button('Default button'); ?><br/>
+	</div>
+
+	<div style="margin-bottom: 10px;">
+		<?php echo TbHtml::button('Small button',array('style'=>'primary','size'=>'small')); ?>
+		<?php echo TbHtml::button('Small button',array('size'=>'small')); ?><br/>
+	</div>
+
+	<div style="margin-bottom: 10px;">
+		<?php echo TbHtml::button('Mini button',array('style'=>'primary','size'=>'mini')); ?>
+		<?php echo TbHtml::button('Mini button',array('size'=>'mini')); ?>
+	</div>
+
+	<h5>Block buttons</h5>
+
+	<div class="well" style="margin-bottom: 20px; width: 320px;">
+		<?php echo TbHtml::button('Block button',array('block'=>true,'style'=>'primary')); ?>
+		<?php echo TbHtml::button('Block button',array('block'=>true)); ?>
+	</div>
+
+	<h5>Disabled state</h5>
+
+	<div style="margin-bottom: 20px;">
+		<?php echo TbHtml::linkButton('Primary link',array('disabled'=>true,'style'=>'primary','size'=>'large')); ?>
+		<?php echo TbHtml::linkButton('Link',array('disabled'=>true,'size'=>'large')); ?>
+	</div>
+</div>
+
+<div class="button-dropdowns">
+	<h3>Button dropdowns</h3>
+
+	<?php $dropdownConfig = array(
+		array('label'=>'Action','url'=>'#'),
+		array('label'=>'Another action','url'=>'#'),
+		array('label'=>'Something else here','url'=>'#'),
+		'---',
+		array('label'=>'Separate link','url'=>'#'),
+	); ?>
+
+	<h5>Default dropdown</h5>
+
+	<div style="margin-bottom: 20px;">
+		<?php echo TbHtml::buttonDropdown('Action', $dropdownConfig); ?>
+		<?php echo TbHtml::buttonDropdown('Action', $dropdownConfig, array('style'=>'primary')); ?>
+		<?php echo TbHtml::buttonDropdown('Action', $dropdownConfig, array('style'=>'danger')); ?>
+		<?php echo TbHtml::buttonDropdown('Action', $dropdownConfig, array('style'=>'warning')); ?>
+		<?php echo TbHtml::buttonDropdown('Action', $dropdownConfig, array('style'=>'success')); ?>
+		<?php echo TbHtml::buttonDropdown('Action', $dropdownConfig, array('style'=>'info')); ?>
+		<?php echo TbHtml::buttonDropdown('Action', $dropdownConfig, array('style'=>'inverse')); ?>
+	</div>
+
+	<h5>Split dropdown</h5>
+
+	<div style="margin-bottom: 20px;">
+		<?php echo TbHtml::buttonDropdown('Action', $dropdownConfig, array('split'=>true)); ?>
+		<?php echo TbHtml::buttonDropdown('Action', $dropdownConfig, array('style'=>'primary','split'=>true)); ?>
+		<?php echo TbHtml::buttonDropdown('Action', $dropdownConfig, array('style'=>'danger','split'=>true)); ?>
+		<?php echo TbHtml::buttonDropdown('Action', $dropdownConfig, array('style'=>'warning','split'=>true)); ?>
+		<?php echo TbHtml::buttonDropdown('Action', $dropdownConfig, array('style'=>'success','split'=>true)); ?>
+		<?php echo TbHtml::buttonDropdown('Action', $dropdownConfig, array('style'=>'info','split'=>true)); ?>
+		<?php echo TbHtml::buttonDropdown('Action', $dropdownConfig, array('style'=>'inverse','split'=>true)); ?>
+	</div>
+</div>
+
+<div class="images">
+	<h3>Images</h3>
+
+	<div class="row-fluid" style="text-align: center; width: 450px;">
+		<div class="span4">
+			<?php echo TbHtml::imageRounded('http://placehold.it/140x140/eeeeee/aaaaaa/'); ?>
+			<h5>Rounded</h5>
+		</div>
+		<div class="span4">
+			<?php echo TbHtml::imageCircle('http://placehold.it/140x140/eeeeee/aaaaaa/'); ?>
+			<h5>Circle</h5>
+		</div>
+		<div class="span4">
+			<?php echo TbHtml::imagePolaroid('http://placehold.it/140x140/eeeeee/aaaaaa/'); ?>
+			<h5>Polaroid</h5>
+		</div>
+	</div>
+</div>
+
+<div class="navs">
+	<?php $navItems = array(
 		array('icon'=>'home','url'=>array('/site/index')),
-		array('label'=>'Foo','url'=>'#'),
-		array('label'=>'Bar','url'=>'#'),
+		array('label'=>'Profile','url'=>'#'),
+		array('label'=>'Messages','url'=>'#'),
 		array('label'=>'Dropdown','items'=>array(
 			array('label'=>'Heading'),
-			array('label'=>'Link','url'=>'#'),
-			array('label'=>'Link','url'=>'#'),
+			array('label'=>'Action','url'=>'#'),
+			array('label'=>'Another action','url'=>'#'),
+			array('label'=>'Something else here','url'=>'#'),
 			'---',
-			array('label'=>'Link','url'=>'#'),
+			array('label'=>'Separate link','url'=>'#'),
 		)),
-	),
-)); ?>
+	); ?>
 
-<?php echo TbHtml::buttonDropdown('Action', array(
-	array('label'=>'Foo','url'=>'#'),
-	array('label'=>'Bar','url'=>'#'),
-), array('split'=>true)); ?>
+	<h3>Navs</h3>
+
+	<h5>Nav tabs</h5>
+
+	<div style="margin-bottom: 20px;">
+		<?php $this->widget('bootstrap.widgets.TbNav', array('style'=>'tabs','items'=>$navItems)); ?>
+	</div>
+
+	<div style="margin-bottom: 20px;">
+		<?php $this->widget('bootstrap.widgets.TbNav', array('style'=>'tabs','stacked'=>true,'items'=>$navItems)); ?>
+	</div>
+
+	<h5>Nav pills</h5>
+
+	<div style="margin-bottom: 20px;">
+		<?php $this->widget('bootstrap.widgets.TbNav', array('style'=>'pills','items'=>$navItems)); ?>
+	</div>
+
+	<div style="margin-bottom: 20px;">
+		<?php $this->widget('bootstrap.widgets.TbNav', array('style'=>'pills','stacked'=>true,'items'=>$navItems)); ?>
+	</div>
+
+	<h5>Nav list</h5>
+
+	<div style="margin-bottom: 20px;">
+		<div class="well" style="padding: 8px 0;">
+			<?php $this->widget('bootstrap.widgets.TbNav', array(
+				'style'=>'list',
+				'items'=>array(
+					array('label'=>'List header'),
+					array('label'=>'Home','url'=>'#'),
+					array('label'=>'Library','url'=>'#'),
+					array('label'=>'Applications','url'=>'#'),
+				),
+			)); ?>
+		</div>
+	</div>
+</div>
+
+<div class="labels-badges">
+	<h3>Labels and badges</h3>
+
+	<h5>Labels</h5>
+
+	<div style="margin-bottom: 10px;">
+		<?php echo TbHtml::labelSpan('Default'); ?>
+		<?php echo TbHtml::labelSpan('Success',array('style'=>'success')); ?>
+		<?php echo TbHtml::labelSpan('Warning',array('style'=>'warning')); ?>
+		<?php echo TbHtml::labelSpan('Important',array('style'=>'important')); ?>
+		<?php echo TbHtml::labelSpan('Info',array('style'=>'info')); ?>
+		<?php echo TbHtml::labelSpan('Inverse',array('style'=>'inverse')); ?>
+	</div>
+
+	<h5>Badges</h5>
+
+	<div style="margin-bottom: 10px;">
+		<?php echo TbHtml::badgeSpan('1'); ?>
+		<?php echo TbHtml::badgeSpan('2',array('style'=>'success')); ?>
+		<?php echo TbHtml::badgeSpan('4',array('style'=>'warning')); ?>
+		<?php echo TbHtml::badgeSpan('6',array('style'=>'important')); ?>
+		<?php echo TbHtml::badgeSpan('8',array('style'=>'info')); ?>
+		<?php echo TbHtml::badgeSpan('10',array('style'=>'inverse')); ?>
+	</div>
+</div>
