@@ -22,8 +22,6 @@ class TbHtml extends CHtml
 	const STYLE_INVERSE = 'inverse';
 	const STYLE_LINK = 'link';
 
-    const CLOSE_TEXT = '&times;';
-
 	// Bootstrap sizes
 	const SIZE_MINI = 'mini';
 	const SIZE_SMALL = 'small';
@@ -33,6 +31,13 @@ class TbHtml extends CHtml
 	const NAV_TABS = 'tabs';
 	const NAV_PILLS = 'pills';
 	const NAV_LIST = 'list';
+
+    // Fixed types
+    const FIXED_TOP = 'top';
+    const FIXED_BOTTOM = 'bottom';
+
+    // Default close text
+    const CLOSE_TEXT = '&times;';
 
 	// Valid button styles
 	static $buttonStyles = array(
@@ -67,6 +72,16 @@ class TbHtml extends CHtml
         self::STYLE_INFO,
         self::STYLE_WARNING,
         self::STYLE_ERROR,
+    );
+
+    // Valid navbar styles
+    static $navbarStyles = array(
+        self::STYLE_INVERSE,
+    );
+
+    static $navbarFixes = array(
+        self::FIXED_TOP,
+        self::FIXED_BOTTOM,
     );
 
     // Valid navigation menu styles

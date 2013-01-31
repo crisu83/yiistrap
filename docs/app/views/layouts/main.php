@@ -4,40 +4,31 @@
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<meta name="language" content="en" />
-
 	<title><?php echo CHtml::encode($this->pageTitle); ?></title>
-
     <?php Yii::app()->bootstrap->register(); ?>
-
 	<?php Yii::app()->less->register(); ?>
 </head>
 
 <body>
-	<?php /*$this->widget('bootstrap.widgets.TbNavbar',array(
-		'collapse'=>true,
-		'items'=>array(
+	<?php $this->widget('bootstrap.widgets.TbNavbar',array(
+        'style'=>'inverse',
+        'items'=>array(
 			array(
-				'class'=>'bootstrap.widgets.TbMenu',
+				'class'=>'bootstrap.widgets.TbNav',
 				'items'=>array(
-					array('label'=>'Home', 'url'=>array('/site/index')),
-					array('label'=>'About', 'url'=>array('/site/page', 'view'=>'about')),
-					array('label'=>'Contact', 'url'=>array('/site/contact')),
-					array('label'=>'Login', 'url'=>array('/site/login'), 'visible'=>Yii::app()->user->isGuest),
-					array('label'=>'Logout ('.Yii::app()->user->name.')', 'url'=>array('/site/logout'), 'visible'=>!Yii::app()->user->isGuest)
+					array('label'=>'Home','url'=>array('/site/index')),
+					array('label'=>'Link','url'=>'#'),
+					array('label'=>'Link','url'=>'#'),
 				),
 			),
 		),
-	));*/ ?>
+	)); ?>
 
-	<div class="container" id="page">
+	<div id="page">
 
-		<?php /*if(isset($this->breadcrumbs)):?>
-			<?php $this->widget('bootstrap.widgets.TbBreadcrumbs', array(
-				'links'=>$this->breadcrumbs,
-			)); ?><!-- breadcrumbs -->
-		<?php endif;*/ ?>
-
-		<?php echo $content; ?>
+        <div class="container">
+		    <?php echo $content; ?>
+        </div>
 
 		<hr />
 

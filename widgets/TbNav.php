@@ -14,7 +14,7 @@ class TbNav extends CWidget
 	/**
 	 * @var string the menu style.
 	 */
-	public $style = TbHtml::NAV_TABS;
+	public $style;
 	/**
 	 * @var boolean whether the menu items should be stacked on top of each other.
 	 */
