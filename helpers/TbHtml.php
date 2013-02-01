@@ -176,7 +176,7 @@ class TbHtml extends CHtml
 		echo parent::openTag('div', $groupOptions);
 		if ($split)
 		{
-			echo self::btn('a', $label, $htmlOptions);
+			echo self::linkButton($label, $htmlOptions);
 			echo self::dropdownToggleButton('', $htmlOptions);
 		}
 		else

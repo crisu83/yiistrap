@@ -6,6 +6,8 @@
  * @license http://www.opensource.org/licenses/bsd-license.php New BSD License
  */
 
+Yii::import('bootstrap.components.TbApi');
+
 /**
  * Bootstrap collapse widget.
  * @see http://twitter.github.com/bootstrap/javascript.html#collapse
@@ -63,11 +65,8 @@ class TbCollapse extends CWidget
 	{
 		echo CHtml::closeTag($this->tagName);
 		$selector = $this->htmlOptions['id'];
-		if (!empty($this->events))
-			$this->options['events'] = $this->events;
-		/* @var $api TbApi */
-		$api = Yii::app()->getComponent('bootstrap');
-		$api->registerPlugin(TbApi::PLUGIN_COLLAPSE, $selector, $this->options);
+		$this->options = TbHtml::defaultOption('events', $this->events, $this->options);
+		Yii::app()->bootstrap->registerPlugin(TbApi::PLUGIN_COLLAPSE, $selector, $this->options);
 	}
 
 	/**
