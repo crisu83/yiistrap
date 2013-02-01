@@ -13,56 +13,56 @@
 class TbHtml extends CHtml
 {
 	// Element styles.
-	const STYLE_PRIMARY = 'primary';
-	const STYLE_INFO = 'info';
-	const STYLE_SUCCESS = 'success';
-	const STYLE_WARNING = 'warning';
-	const STYLE_ERROR = 'error';
-	const STYLE_DANGER = 'danger';
-	const STYLE_IMPORTANT = 'important';
-	const STYLE_INVERSE = 'inverse';
-	const STYLE_LINK = 'link';
-
-	// Element sizes.
-	const SIZE_MINI = 'mini';
-	const SIZE_SMALL = 'small';
-	const SIZE_LARGE = 'large';
-
-	// Navigation menu types.
-	const NAV_TABS = 'tabs';
-	const NAV_PILLS = 'pills';
-	const NAV_LIST = 'list';
-
-	// Fixed types.
-	const FIXED_TOP = 'top';
-	const FIXED_BOTTOM = 'bottom';
-
-	// Addon types.
-	const ADDON_PREPEND = 'prepend';
-	const ADDON_APPEND = 'append';
-
-	const PROGRESS_STRIPED = 'striped';
-	const PROGRESS_ACTIVE = 'active';
-
-	// Default close text.
-	const CLOSE_TEXT = '&times;';
-
-	// Scope constants.
-	static $buttonStyles = array(
-		self::STYLE_PRIMARY, self::STYLE_INFO, self::STYLE_SUCCESS, self::STYLE_WARNING,
-		self::STYLE_DANGER, self::STYLE_INVERSE, self::STYLE_LINK,
-	);
-	static $buttonSizes = array(self::SIZE_LARGE, self::SIZE_SMALL, self::SIZE_MINI);
-	static $labelBadgeStyles = array(self::STYLE_SUCCESS, self::STYLE_WARNING, self::STYLE_IMPORTANT,
-		self::STYLE_INFO, self::STYLE_INVERSE,
-	);
-	static $alertStyles = array(self::STYLE_SUCCESS, self::STYLE_INFO, self::STYLE_WARNING, self::STYLE_ERROR);
-	static $navbarStyles = array(self::STYLE_INVERSE);
-	static $navbarFixes = array(self::FIXED_TOP, self::FIXED_BOTTOM);
-	static $progressStyles = array(self::STYLE_INFO, self::STYLE_SUCCESS, self::STYLE_WARNING, self::STYLE_DANGER);
-	static $inputAddons = array(self::ADDON_PREPEND, self::ADDON_APPEND);
-	static $navStyles = array(self::NAV_TABS, self::NAV_PILLS, self::NAV_LIST);
-	static $wellSizes = array(self::SIZE_LARGE, self::SIZE_SMALL, self::SIZE_MINI);
+	const STYLE_PRIMARY			= 'primary';
+	const STYLE_INFO			= 'info';
+	const STYLE_SUCCESS			= 'success';
+	const STYLE_WARNING			= 'warning';
+	const STYLE_ERROR			= 'error';
+	const STYLE_DANGER			= 'danger';
+	const STYLE_IMPORTANT		= 'important';
+	const STYLE_INVERSE			= 'inverse';
+	const STYLE_LINK			= 'link';
+  
+	// Element sizes.  
+	const SIZE_MINI				= 'mini';
+	const SIZE_SMALL			= 'small';
+	const SIZE_LARGE			= 'large';
+  
+	// Navigation menu types.  
+	const NAV_TABS				= 'tabs';
+	const NAV_PILLS				= 'pills';
+	const NAV_LIST				= 'list';
+  
+	// Fixed types.  
+	const FIXED_TOP				= 'top';
+	const FIXED_BOTTOM			= 'bottom';
+  
+	// Addon types.  
+	const ADDON_PREPEND			= 'prepend';
+	const ADDON_APPEND			= 'append';
+  
+	const PROGRESS_STRIPED		= 'striped';
+	const PROGRESS_ACTIVE		= 'active';
+  
+	// Default close text.  
+	const CLOSE_TEXT			= '&times;';
+  
+	// Scope constants.  
+	static $buttonStyles		= array(
+									self::STYLE_PRIMARY, self::STYLE_INFO, self::STYLE_SUCCESS, self::STYLE_WARNING,
+									self::STYLE_DANGER, self::STYLE_INVERSE, self::STYLE_LINK,
+								);
+	static $buttonSizes			= array(self::SIZE_LARGE, self::SIZE_SMALL, self::SIZE_MINI);
+	static $labelBadgeStyles	= array(self::STYLE_SUCCESS, self::STYLE_WARNING, self::STYLE_IMPORTANT,
+									self::STYLE_INFO, self::STYLE_INVERSE,
+								);
+	static $alertStyles			= array(self::STYLE_SUCCESS, self::STYLE_INFO, self::STYLE_WARNING, self::STYLE_ERROR);
+	static $navbarStyles		= array(self::STYLE_INVERSE);
+	static $navbarFixes			= array(self::FIXED_TOP, self::FIXED_BOTTOM);
+	static $progressStyles		= array(self::STYLE_INFO, self::STYLE_SUCCESS, self::STYLE_WARNING, self::STYLE_DANGER);
+	static $inputAddons			= array(self::ADDON_PREPEND, self::ADDON_APPEND);
+	static $navStyles			= array(self::NAV_TABS, self::NAV_PILLS, self::NAV_LIST);
+	static $wellSizes			= array(self::SIZE_LARGE, self::SIZE_SMALL, self::SIZE_MINI);
 
 	/**
 	 * Generates a button.
@@ -144,7 +144,8 @@ class TbHtml extends CHtml
 		{
 			echo self::linkButton($label, $htmlOptions);
 			echo self::dropdownToggleButton('', $htmlOptions);
-		} else
+		}
+		else
 			echo self::dropdownToggleLink($label, $htmlOptions);
 
 		echo self::dropdown($items, $menuOptions);
@@ -223,16 +224,20 @@ class TbHtml extends CHtml
 			if ($vertical)
 				$htmlOptions = self::addClassName('btn-group-vertical', $htmlOptions);
 
+			$globalOptions = array(
+				'style' => self::popOption('style', $htmlOptions),
+				'size' => self::popOption('size', $htmlOptions),
+				'disabled' => self::popOption('disabled', $htmlOptions)
+			);
+
 			ob_start();
 			echo parent::openTag('div', $htmlOptions);
 			foreach ($buttons as $button)
 			{
+				$button = self::copyOptions(array('style', 'size', 'disabled'), $globalOptions, $button);
 				$buttonLabel = self::popOption('label', $button, '');
 				$buttonOptions = self::popOption('htmlOptions', $button, array());
-				$buttonOptions = self::defaultOption('icon', self::popOption('icon', $button), $buttonOptions);
-				$buttonOptions = self::defaultOption('style', self::popOption('style', $button), $buttonOptions);
-				$buttonOptions = self::defaultOption('size', self::popOption('size', $button), $buttonOptions);
-				$buttonOptions = self::defaultOption('disabled', self::popOption('disabled', $button), $buttonOptions);
+				$buttonOptions = self::moveOptions(array('icon', 'style', 'size', 'disabled'), $button, $buttonOptions);
 				echo self::button($buttonLabel, $buttonOptions);
 			}
 			echo '</div>';
@@ -250,17 +255,27 @@ class TbHtml extends CHtml
 	 */
 	public static function buttonToolbar($groups, $htmlOptions = array())
 	{
-		if (is_array($groups) && !empty($groups))
+		if(is_array($groups) && !empty($groups))
 		{
 			$htmlOptions = self::addClassName('btn-toolbar', $htmlOptions);
+
+			$globalOptions = array(
+				'style' => self::popOption('style', $htmlOptions),
+				'size' => self::popOption('size', $htmlOptions),
+				'disabled' => self::popOption('disabled', $htmlOptions)
+			);
+
 			ob_start();
 			echo parent::openTag('div', $htmlOptions);
 			foreach ($groups as $group)
 			{
-				$groupOptions = self::getOption('htmlOptions', $group, array());
 				$items = self::getOption('items', $group, array());
 				if (empty($items))
 					continue;
+
+				$group = self::copyOptions(array('style', 'size', 'disabled'), $globalOptions, $group);
+				$groupOptions = self::getOption('htmlOptions', $group, array());
+				$groupOptions = self::moveOptions(array('style', 'size', 'disabled'), $group, $groupOptions);
 				echo self::buttonGroup($items, $groupOptions);
 			}
 			echo '</div>';
@@ -379,7 +394,8 @@ class TbHtml extends CHtml
 			echo self::dropdownToggleMenuItem($label, $linkOptions);
 			$menuOptions = self::addClassName('dropdown-menu', $menuOptions);
 			echo self::menu($items, $menuOptions);
-		} else
+		}
+		else
 			echo !$header ? parent::link($label, $url, $linkOptions) : $label;
 
 		echo '</li>';
@@ -418,7 +434,8 @@ class TbHtml extends CHtml
 				echo parent::link($label, parent::normalizeUrl($url));
 				echo parent::tag('span', array('class' => 'divider'), $divider);
 				echo '</li>';
-			} else
+			}
+			else
 				echo parent::tag('li', array('class' => 'active'), $url);
 		}
 		echo '</ul>';
@@ -518,7 +535,7 @@ class TbHtml extends CHtml
 		$htmlOptions = self::defaultOption('data-toggle', 'collapse', $htmlOptions);
 		$htmlOptions = self::defaultOption('data-target', $target, $htmlOptions);
 		ob_start();
-		echo CHtml::openTag('a', $htmlOptions);
+		echo parent::openTag('a', $htmlOptions);
 		echo '<span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span>';
 		echo '</a>';
 		return ob_get_clean();
@@ -662,7 +679,6 @@ class TbHtml extends CHtml
 		$inputOptions = self::popOption('inputOptions', $htmlOptions, array());
 		$inputOptions = self::defaultOption('type', 'text', $inputOptions);
 		$inputOptions = self::defaultOption('placeholder', 'Search', $inputOptions);
-		$inputOptions = self::defaultOption('name', 'input-search', $inputOptions);
 		$inputOptions = self::addClassName('search-query', $inputOptions);
 		$buttonOptions = self::popOption('buttonOptions', $htmlOptions, array());
 		$buttonLabel = self::popOption('buttonLabel', $htmlOptions, self::icon('search'));
@@ -687,11 +703,6 @@ class TbHtml extends CHtml
 			echo $input;
 		echo parent::endForm();
 		return ob_get_clean();
-	}
-
-	public static function inputFieldRow($type, $name, $value, $htmlOptions)
-	{
-
 	}
 
 	/**
@@ -1065,7 +1076,7 @@ EOD;
 	 * @param array $htmlOptions the HTML tag options
 	 * @return array|string the resulting classes
 	 */
-	public static function getAddOnClasses($htmlOptions=array())
+	public static function getAddOnClasses($htmlOptions)
 	{
 		$classes = array();
 		if (self::getOption('append', $htmlOptions))
@@ -1115,7 +1126,7 @@ EOD;
 	 * @param array $htmlOptions the HTML tag attributes to modify
 	 * @return array the options.
 	 */
-	public static function addClassName($className, $htmlOptions = array())
+	public static function addClassName($className, $htmlOptions)
 	{
 		if (is_array($className))
 			$className = implode(' ', $className);
@@ -1129,10 +1140,61 @@ EOD;
 	 * @param array $htmlOptions the options.
 	 * @return array the options.
 	 */
-	public static function addStyles($styles, $htmlOptions = array())
+	public static function addStyles($styles, $htmlOptions)
 	{
-		$htmlOptions['style'] = isset($htmlOptions['style']) ? $htmlOptions['style'] . ';' . $styles : $styles;
+		$htmlOptions['style'] = isset($htmlOptions['style']) ? $htmlOptions['style'] . ' ' . $styles : $styles;
 		return $htmlOptions;
+	}
+
+	/**
+	 * Copies the option values from one option array to another.
+	 * @param array $names the option names to copy.
+	 * @param array $fromOptions the options to copy from.
+	 * @param array $options the options to copy to.
+	 * @return array the options.
+	 */
+	public static function copyOptions($names, $fromOptions, $options)
+	{
+		if (is_array($fromOptions) && is_array($options))
+		{
+			foreach ($names as $key)
+			{
+				if (isset($fromOptions[$key]) && !isset($options[$key]))
+					$options[$key] = self::getOption($key, $fromOptions);
+			}
+		}
+		return $options;
+	}
+
+	/**
+	 * Moves the option values from one option array to another.
+	 * @param array $names the option names to move.
+	 * @param array $fromOptions the options to move from.
+	 * @param array $options the options to move to.
+	 * @return array the options.
+	 */
+	public static function moveOptions($names, $fromOptions, $options)
+	{
+		if (is_array($fromOptions) && is_array($options))
+		{
+			foreach ($names as $key)
+			{
+				if (isset($fromOptions[$key]) && !isset($options[$key]))
+					$options[$key] = self::popOption($key, $fromOptions);
+			}
+		}
+		return $options;
+	}
+
+	/**
+	 * Merges two options arrays.
+	 * @param array $a options to be merged to
+	 * @param array $b options to be merged from
+	 * @return array the merged options.
+	 */
+	public static function mergeOptions($a, $b)
+	{
+		return CMap::mergeArray($a, $b); // yeah I know but we might want to change this to be something else later
 	}
 
 	/**
@@ -1156,25 +1218,16 @@ EOD;
 	 */
 	public static function popOption($name, &$options, $defaultValue = null)
 	{
-		$value = self::getOption($name, $options, $defaultValue);
-		unset($options[$name]);
-		return $value;
+		if (is_array($options))
+		{
+			$value = self::getOption($name, $options, $defaultValue);
+			unset($options[$name]);
+			return $value;
+		}
+		else
+			return $defaultValue;
 	}
 
-	/**
-	 * Sets default values to an array of options
-	 * @param $options
-	 * @param array $settings
-	 * @return array
-	 */
-	public static function configOptions($options, $settings=array())
-	{
-		foreach($settings as $key=>$value)
-		{
-			$options = self::defaultOption($key, $value, $options);
-		}
-		return $settings;
-	}
 	/**
 	 * Sets the default value for an item in the given options.
 	 * @param string $name the name of the item.
@@ -1184,20 +1237,20 @@ EOD;
 	 */
 	public static function defaultOption($name, $value, $options)
 	{
-		if (!isset($options[$name]))
+		if (is_array($options) && !isset($options[$name]))
 			$options[$name] = $value;
 		return $options;
 	}
 
 	/**
-	 * Removes unwanted items from the given options.
+	 * Removes the option values from the given options.
 	 * @param array $options the options to remove from.
-	 * @param array $keysToRemove list of keys to remove from the options.
+	 * @param array $names names to remove from the options.
 	 * @return array the options.
 	 */
-	public static function removeOptions($options, $keysToRemove)
+	public static function removeOptions($options, $names)
 	{
-		return array_diff_key($options, array_flip($keysToRemove));
+		return array_diff_key($options, array_flip($names));
 	}
 
 	/**

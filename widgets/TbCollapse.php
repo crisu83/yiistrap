@@ -75,6 +75,6 @@ class TbCollapse extends CWidget
 	 */
 	public static function getNextContainerId()
 	{
-		return self::ID_PREFIX.self::$_containerId++;
+		return self::ID_PREFIX . self::$_containerId++;
 	}
 }
