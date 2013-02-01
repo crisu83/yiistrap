@@ -13,56 +13,56 @@
 class TbHtml extends CHtml
 {
 	// Element styles.
-	const STYLE_PRIMARY         = 'primary';
-	const STYLE_INFO            = 'info';
-	const STYLE_SUCCESS         = 'success';
-	const STYLE_WARNING         = 'warning';
-	const STYLE_ERROR           = 'error';
-	const STYLE_DANGER          = 'danger';
-	const STYLE_IMPORTANT       = 'important';
-	const STYLE_INVERSE         = 'inverse';
-	const STYLE_LINK            = 'link';
+	const STYLE_PRIMARY = 'primary';
+	const STYLE_INFO = 'info';
+	const STYLE_SUCCESS = 'success';
+	const STYLE_WARNING = 'warning';
+	const STYLE_ERROR = 'error';
+	const STYLE_DANGER = 'danger';
+	const STYLE_IMPORTANT = 'important';
+	const STYLE_INVERSE = 'inverse';
+	const STYLE_LINK = 'link';
 
 	// Element sizes.
-	const SIZE_MINI             = 'mini';
-	const SIZE_SMALL            = 'small';
-	const SIZE_LARGE            = 'large';
+	const SIZE_MINI = 'mini';
+	const SIZE_SMALL = 'small';
+	const SIZE_LARGE = 'large';
 
 	// Navigation menu types.
-	const NAV_TABS              = 'tabs';
-	const NAV_PILLS             = 'pills';
-	const NAV_LIST              = 'list';
+	const NAV_TABS = 'tabs';
+	const NAV_PILLS = 'pills';
+	const NAV_LIST = 'list';
 
 	// Fixed types.
-	const FIXED_TOP             = 'top';
-	const FIXED_BOTTOM          = 'bottom';
+	const FIXED_TOP = 'top';
+	const FIXED_BOTTOM = 'bottom';
 
 	// Addon types.
-	const ADDON_PREPEND         = 'prepend';
-	const ADDON_APPEND          = 'append';
+	const ADDON_PREPEND = 'prepend';
+	const ADDON_APPEND = 'append';
 
-	const PROGRESS_STRIPED      = 'striped';
-	const PROGRESS_ACTIVE       = 'active';
+	const PROGRESS_STRIPED = 'striped';
+	const PROGRESS_ACTIVE = 'active';
 
 	// Default close text.
-	const CLOSE_TEXT            = '&times;';
+	const CLOSE_TEXT = '&times;';
 
 	// Scope constants.
-	static $buttonStyles        = array(
-									self::STYLE_PRIMARY, self::STYLE_INFO, self::STYLE_SUCCESS, self::STYLE_WARNING,
-									self::STYLE_DANGER, self::STYLE_INVERSE, self::STYLE_LINK,
-								);
-	static $buttonSizes         = array(self::SIZE_LARGE, self::SIZE_SMALL, self::SIZE_MINI);
-	static $labelBadgeStyles    = array(self::STYLE_SUCCESS, self::STYLE_WARNING, self::STYLE_IMPORTANT,
-									self::STYLE_INFO, self::STYLE_INVERSE,
-								);
-	static $alertStyles         = array(self::STYLE_SUCCESS, self::STYLE_INFO, self::STYLE_WARNING, self::STYLE_ERROR);
-	static $navbarStyles        = array(self::STYLE_INVERSE);
-	static $navbarFixes         = array(self::FIXED_TOP, self::FIXED_BOTTOM);
-	static $progressStyles   = array(self::STYLE_INFO, self::STYLE_SUCCESS, self::STYLE_WARNING, self::STYLE_DANGER);
-	static $inputAddons         = array(self::ADDON_PREPEND, self::ADDON_APPEND);
-	static $navStyles           = array(self::NAV_TABS, self::NAV_PILLS, self::NAV_LIST);
-	static $wellSizes           = array(self::SIZE_LARGE, self::SIZE_SMALL, self::SIZE_MINI);
+	static $buttonStyles = array(
+		self::STYLE_PRIMARY, self::STYLE_INFO, self::STYLE_SUCCESS, self::STYLE_WARNING,
+		self::STYLE_DANGER, self::STYLE_INVERSE, self::STYLE_LINK,
+	);
+	static $buttonSizes = array(self::SIZE_LARGE, self::SIZE_SMALL, self::SIZE_MINI);
+	static $labelBadgeStyles = array(self::STYLE_SUCCESS, self::STYLE_WARNING, self::STYLE_IMPORTANT,
+		self::STYLE_INFO, self::STYLE_INVERSE,
+	);
+	static $alertStyles = array(self::STYLE_SUCCESS, self::STYLE_INFO, self::STYLE_WARNING, self::STYLE_ERROR);
+	static $navbarStyles = array(self::STYLE_INVERSE);
+	static $navbarFixes = array(self::FIXED_TOP, self::FIXED_BOTTOM);
+	static $progressStyles = array(self::STYLE_INFO, self::STYLE_SUCCESS, self::STYLE_WARNING, self::STYLE_DANGER);
+	static $inputAddons = array(self::ADDON_PREPEND, self::ADDON_APPEND);
+	static $navStyles = array(self::NAV_TABS, self::NAV_PILLS, self::NAV_LIST);
+	static $wellSizes = array(self::SIZE_LARGE, self::SIZE_SMALL, self::SIZE_MINI);
 
 	/**
 	 * Generates a button.
@@ -144,8 +144,7 @@ class TbHtml extends CHtml
 		{
 			echo self::linkButton($label, $htmlOptions);
 			echo self::dropdownToggleButton('', $htmlOptions);
-		}
-		else
+		} else
 			echo self::dropdownToggleLink($label, $htmlOptions);
 
 		echo self::dropdown($items, $menuOptions);
@@ -251,7 +250,7 @@ class TbHtml extends CHtml
 	 */
 	public static function buttonToolbar($groups, $htmlOptions = array())
 	{
-		if(is_array($groups) && !empty($groups))
+		if (is_array($groups) && !empty($groups))
 		{
 			$htmlOptions = self::addClassName('btn-toolbar', $htmlOptions);
 			ob_start();
@@ -380,8 +379,7 @@ class TbHtml extends CHtml
 			echo self::dropdownToggleMenuItem($label, $linkOptions);
 			$menuOptions = self::addClassName('dropdown-menu', $menuOptions);
 			echo self::menu($items, $menuOptions);
-		}
-		else
+		} else
 			echo !$header ? parent::link($label, $url, $linkOptions) : $label;
 
 		echo '</li>';
@@ -420,8 +418,7 @@ class TbHtml extends CHtml
 				echo parent::link($label, parent::normalizeUrl($url));
 				echo parent::tag('span', array('class' => 'divider'), $divider);
 				echo '</li>';
-			}
-			else
+			} else
 				echo parent::tag('li', array('class' => 'active'), $url);
 		}
 		echo '</ul>';
@@ -665,6 +662,7 @@ class TbHtml extends CHtml
 		$inputOptions = self::popOption('inputOptions', $htmlOptions, array());
 		$inputOptions = self::defaultOption('type', 'text', $inputOptions);
 		$inputOptions = self::defaultOption('placeholder', 'Search', $inputOptions);
+		$inputOptions = self::defaultOption('name', 'input-search', $inputOptions);
 		$inputOptions = self::addClassName('search-query', $inputOptions);
 		$buttonOptions = self::popOption('buttonOptions', $htmlOptions, array());
 		$buttonLabel = self::popOption('buttonLabel', $htmlOptions, self::icon('search'));
@@ -689,6 +687,11 @@ class TbHtml extends CHtml
 			echo $input;
 		echo parent::endForm();
 		return ob_get_clean();
+	}
+
+	public static function inputFieldRow($type, $name, $value, $htmlOptions)
+	{
+
 	}
 
 	/**
@@ -1062,7 +1065,7 @@ EOD;
 	 * @param array $htmlOptions the HTML tag options
 	 * @return array|string the resulting classes
 	 */
-	public static function getAddOnClasses($htmlOptions)
+	public static function getAddOnClasses($htmlOptions=array())
 	{
 		$classes = array();
 		if (self::getOption('append', $htmlOptions))
@@ -1112,7 +1115,7 @@ EOD;
 	 * @param array $htmlOptions the HTML tag attributes to modify
 	 * @return array the options.
 	 */
-	public static function addClassName($className, $htmlOptions)
+	public static function addClassName($className, $htmlOptions = array())
 	{
 		if (is_array($className))
 			$className = implode(' ', $className);
@@ -1126,9 +1129,9 @@ EOD;
 	 * @param array $htmlOptions the options.
 	 * @return array the options.
 	 */
-	public static function addStyles($styles, $htmlOptions)
+	public static function addStyles($styles, $htmlOptions = array())
 	{
-		$htmlOptions['style'] = isset($htmlOptions['style']) ? $htmlOptions['style'] . ' ' . $styles : $styles;
+		$htmlOptions['style'] = isset($htmlOptions['style']) ? $htmlOptions['style'] . ';' . $styles : $styles;
 		return $htmlOptions;
 	}
 
@@ -1159,6 +1162,20 @@ EOD;
 	}
 
 	/**
+	 * Sets default values to an array of options
+	 * @param $options
+	 * @param array $settings
+	 * @return array
+	 */
+	public static function configOptions($options, $settings=array())
+	{
+		foreach($settings as $key=>$value)
+		{
+			$options = self::defaultOption($key, $value, $options);
+		}
+		return $settings;
+	}
+	/**
 	 * Sets the default value for an item in the given options.
 	 * @param string $name the name of the item.
 	 * @param mixed $value the default value.
@@ -1181,5 +1198,26 @@ EOD;
 	public static function removeOptions($options, $keysToRemove)
 	{
 		return array_diff_key($options, array_flip($keysToRemove));
+	}
+
+	/**
+	 * Displays the first validation error for a model attribute.
+	 * @param CModel $model the data model
+	 * @param string $attribute the attribute name
+	 * @param array $htmlOptions additional HTML attributes to be rendered in the container tag.
+	 * @return string the error display. Empty if no errors are found.
+	 * @see CModel::getErrors
+	 * @see errorMessageCss
+	 * @see $errorContainerTag
+	 */
+	public static function error($model, $attribute, $htmlOptions = array())
+	{
+		self::resolveName($model, $attribute); // turn [a][b]attr into attr
+		$error = $model->getError($attribute);
+		return $error != ''
+			? self::tag('span', (!isset($htmlOptions['class'])
+				? self::addClassName(self::$errorMessageCss, $htmlOptions)
+				: $htmlOptions), $error)
+			: '';
 	}
 }
