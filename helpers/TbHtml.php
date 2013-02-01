@@ -13,56 +13,56 @@
 class TbHtml extends CHtml
 {
 	// Element styles.
-	const STYLE_PRIMARY         = 'primary';
-	const STYLE_INFO            = 'info';
-	const STYLE_SUCCESS         = 'success';
-	const STYLE_WARNING         = 'warning';
-	const STYLE_ERROR           = 'error';
-	const STYLE_DANGER          = 'danger';
-	const STYLE_IMPORTANT       = 'important';
-	const STYLE_INVERSE         = 'inverse';
-	const STYLE_LINK            = 'link';
-
-	// Element sizes.
-	const SIZE_MINI             = 'mini';
-	const SIZE_SMALL            = 'small';
-	const SIZE_LARGE            = 'large';
-
-	// Navigation menu types.
-	const NAV_TABS              = 'tabs';
-	const NAV_PILLS             = 'pills';
-	const NAV_LIST              = 'list';
-
-	// Fixed types.
-	const FIXED_TOP             = 'top';
-	const FIXED_BOTTOM          = 'bottom';
-
-	// Addon types.
-	const ADDON_PREPEND         = 'prepend';
-	const ADDON_APPEND          = 'append';
-
-	const PROGRESS_STRIPED      = 'striped';
-	const PROGRESS_ACTIVE       = 'active';
-
-	// Default close text.
-	const CLOSE_TEXT            = '&times;';
-
-	// Scope constants.
-	static $buttonStyles        = array(
+	const STYLE_PRIMARY			= 'primary';
+	const STYLE_INFO			= 'info';
+	const STYLE_SUCCESS			= 'success';
+	const STYLE_WARNING			= 'warning';
+	const STYLE_ERROR			= 'error';
+	const STYLE_DANGER			= 'danger';
+	const STYLE_IMPORTANT		= 'important';
+	const STYLE_INVERSE			= 'inverse';
+	const STYLE_LINK			= 'link';
+  
+	// Element sizes.  
+	const SIZE_MINI				= 'mini';
+	const SIZE_SMALL			= 'small';
+	const SIZE_LARGE			= 'large';
+  
+	// Navigation menu types.  
+	const NAV_TABS				= 'tabs';
+	const NAV_PILLS				= 'pills';
+	const NAV_LIST				= 'list';
+  
+	// Fixed types.  
+	const FIXED_TOP				= 'top';
+	const FIXED_BOTTOM			= 'bottom';
+  
+	// Addon types.  
+	const ADDON_PREPEND			= 'prepend';
+	const ADDON_APPEND			= 'append';
+  
+	const PROGRESS_STRIPED		= 'striped';
+	const PROGRESS_ACTIVE		= 'active';
+  
+	// Default close text.  
+	const CLOSE_TEXT			= '&times;';
+  
+	// Scope constants.  
+	static $buttonStyles		= array(
 									self::STYLE_PRIMARY, self::STYLE_INFO, self::STYLE_SUCCESS, self::STYLE_WARNING,
 									self::STYLE_DANGER, self::STYLE_INVERSE, self::STYLE_LINK,
 								);
-	static $buttonSizes         = array(self::SIZE_LARGE, self::SIZE_SMALL, self::SIZE_MINI);
-	static $labelBadgeStyles    = array(self::STYLE_SUCCESS, self::STYLE_WARNING, self::STYLE_IMPORTANT,
+	static $buttonSizes			= array(self::SIZE_LARGE, self::SIZE_SMALL, self::SIZE_MINI);
+	static $labelBadgeStyles	= array(self::STYLE_SUCCESS, self::STYLE_WARNING, self::STYLE_IMPORTANT,
 									self::STYLE_INFO, self::STYLE_INVERSE,
 								);
-	static $alertStyles         = array(self::STYLE_SUCCESS, self::STYLE_INFO, self::STYLE_WARNING, self::STYLE_ERROR);
-	static $navbarStyles        = array(self::STYLE_INVERSE);
-	static $navbarFixes         = array(self::FIXED_TOP, self::FIXED_BOTTOM);
-	static $progressStyles   = array(self::STYLE_INFO, self::STYLE_SUCCESS, self::STYLE_WARNING, self::STYLE_DANGER);
-	static $inputAddons         = array(self::ADDON_PREPEND, self::ADDON_APPEND);
-	static $navStyles           = array(self::NAV_TABS, self::NAV_PILLS, self::NAV_LIST);
-	static $wellSizes           = array(self::SIZE_LARGE, self::SIZE_SMALL, self::SIZE_MINI);
+	static $alertStyles			= array(self::STYLE_SUCCESS, self::STYLE_INFO, self::STYLE_WARNING, self::STYLE_ERROR);
+	static $navbarStyles		= array(self::STYLE_INVERSE);
+	static $navbarFixes			= array(self::FIXED_TOP, self::FIXED_BOTTOM);
+	static $progressStyles		= array(self::STYLE_INFO, self::STYLE_SUCCESS, self::STYLE_WARNING, self::STYLE_DANGER);
+	static $inputAddons			= array(self::ADDON_PREPEND, self::ADDON_APPEND);
+	static $navStyles			= array(self::NAV_TABS, self::NAV_PILLS, self::NAV_LIST);
+	static $wellSizes			= array(self::SIZE_LARGE, self::SIZE_SMALL, self::SIZE_MINI);
 
 	/**
 	 * Generates a button.
