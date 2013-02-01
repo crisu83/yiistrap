@@ -69,7 +69,7 @@ $this->pageTitle=Yii::app()->name;
 			array('label'=>'Left'),
 			array('label'=>'Middle'),
 			array('label'=>'Right'),
-		)); ?>
+		),array('style'=>'primary')); ?>
 	</div>
 
 	<h5>Multiple button groups</h5>
@@ -90,7 +90,7 @@ $this->pageTitle=Yii::app()->name;
 			array('items'=>array(
 				array('label'=>'8'),
 			)),
-		)); ?>
+		),array('style'=>'inverse')); ?>
 	</div>
 
 	<h5>Vertical button groups</h5>
@@ -302,24 +302,23 @@ $this->pageTitle=Yii::app()->name;
 	<h5>Stacked</h5>
 
 	<?php echo TbHtml::stackedProgressBar(array(
-		array('style'=>'success', 'width'=>35),
-		array('style'=>'warning', 'width'=>20),
-		array('style'=>'danger', 'width'=>10),
+		array('style'=>'success','width'=>35),
+		array('style'=>'warning','width'=>20),
+		array('style'=>'danger','width'=>10),
 	)); ?>
 
 	<h5>Additional colors</h5>
 
 	<?php echo TbHtml::progressBar(20); ?>
-	<?php echo TbHtml::progressBar(40, array('style'=>'success')); ?>
-	<?php echo TbHtml::progressBar(60, array('style'=>'warning')); ?>
-	<?php echo TbHtml::progressBar(80, array('style'=>'danger')); ?>
+	<?php echo TbHtml::progressBar(40,array('style'=>'success')); ?>
+	<?php echo TbHtml::progressBar(60,array('style'=>'warning')); ?>
+	<?php echo TbHtml::progressBar(80,array('style'=>'danger')); ?>
 
 	<h5>Striped bars</h5>
 
 	<?php echo TbHtml::stripedProgressBar(20); ?>
-	<?php echo TbHtml::stripedProgressBar(40, array('style'=>'success')); ?>
-	<?php echo TbHtml::stripedProgressBar(60, array('style'=>'warning')); ?>
-	<?php echo TbHtml::stripedProgressBar(80, array('style'=>'danger')); ?>
-
+	<?php echo TbHtml::stripedProgressBar(40,array('style'=>'success')); ?>
+	<?php echo TbHtml::stripedProgressBar(60,array('style'=>'warning')); ?>
+	<?php echo TbHtml::stripedProgressBar(80,array('style'=>'danger')); ?>
 
 </div>

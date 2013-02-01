@@ -224,16 +224,20 @@ class TbHtml extends CHtml
 			if ($vertical)
 				$htmlOptions = self::addClassName('btn-group-vertical', $htmlOptions);
 
+			$globalOptions = array(
+				'style' => self::popOption('style', $htmlOptions),
+				'size' => self::popOption('size', $htmlOptions),
+				'disabled' => self::popOption('disabled', $htmlOptions)
+			);
+
 			ob_start();
 			echo parent::openTag('div', $htmlOptions);
 			foreach ($buttons as $button)
 			{
+				$button = self::copyOptions(array('style', 'size', 'disabled'), $globalOptions, $button);
 				$buttonLabel = self::popOption('label', $button, '');
 				$buttonOptions = self::popOption('htmlOptions', $button, array());
-				$buttonOptions = self::defaultOption('icon', self::popOption('icon', $button), $buttonOptions);
-				$buttonOptions = self::defaultOption('style', self::popOption('style', $button), $buttonOptions);
-				$buttonOptions = self::defaultOption('size', self::popOption('size', $button), $buttonOptions);
-				$buttonOptions = self::defaultOption('disabled', self::popOption('disabled', $button), $buttonOptions);
+				$buttonOptions = self::moveOptions(array('icon', 'style', 'size', 'disabled'), $button, $buttonOptions);
 				echo self::button($buttonLabel, $buttonOptions);
 			}
 			echo '</div>';
@@ -254,14 +258,24 @@ class TbHtml extends CHtml
 		if(is_array($groups) && !empty($groups))
 		{
 			$htmlOptions = self::addClassName('btn-toolbar', $htmlOptions);
+
+			$globalOptions = array(
+				'style' => self::popOption('style', $htmlOptions),
+				'size' => self::popOption('size', $htmlOptions),
+				'disabled' => self::popOption('disabled', $htmlOptions)
+			);
+
 			ob_start();
 			echo parent::openTag('div', $htmlOptions);
 			foreach ($groups as $group)
 			{
-				$groupOptions = self::getOption('htmlOptions', $group, array());
 				$items = self::getOption('items', $group, array());
 				if (empty($items))
 					continue;
+
+				$group = self::copyOptions(array('style', 'size', 'disabled'), $globalOptions, $group);
+				$groupOptions = self::getOption('htmlOptions', $group, array());
+				$groupOptions = self::moveOptions(array('style', 'size', 'disabled'), $group, $groupOptions);
 				echo self::buttonGroup($items, $groupOptions);
 			}
 			echo '</div>';
@@ -521,7 +535,7 @@ class TbHtml extends CHtml
 		$htmlOptions = self::defaultOption('data-toggle', 'collapse', $htmlOptions);
 		$htmlOptions = self::defaultOption('data-target', $target, $htmlOptions);
 		ob_start();
-		echo CHtml::openTag('a', $htmlOptions);
+		echo parent::openTag('a', $htmlOptions);
 		echo '<span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span>';
 		echo '</a>';
 		return ob_get_clean();
@@ -1133,6 +1147,57 @@ EOD;
 	}
 
 	/**
+	 * Copies the option values from one option array to another.
+	 * @param array $names the option names to copy.
+	 * @param array $fromOptions the options to copy from.
+	 * @param array $options the options to copy to.
+	 * @return array the options.
+	 */
+	public static function copyOptions($names, $fromOptions, $options)
+	{
+		if (is_array($fromOptions) && is_array($options))
+		{
+			foreach ($names as $key)
+			{
+				if (isset($fromOptions[$key]) && !isset($options[$key]))
+					$options[$key] = self::getOption($key, $fromOptions);
+			}
+		}
+		return $options;
+	}
+
+	/**
+	 * Moves the option values from one option array to another.
+	 * @param array $names the option names to move.
+	 * @param array $fromOptions the options to move from.
+	 * @param array $options the options to move to.
+	 * @return array the options.
+	 */
+	public static function moveOptions($names, $fromOptions, $options)
+	{
+		if (is_array($fromOptions) && is_array($options))
+		{
+			foreach ($names as $key)
+			{
+				if (isset($fromOptions[$key]) && !isset($options[$key]))
+					$options[$key] = self::popOption($key, $fromOptions);
+			}
+		}
+		return $options;
+	}
+
+	/**
+	 * Merges two options arrays.
+	 * @param array $a options to be merged to
+	 * @param array $b options to be merged from
+	 * @return array the merged options.
+	 */
+	public static function mergeOptions($a, $b)
+	{
+		return CMap::mergeArray($a, $b); // yeah I know but we might want to change this to be something else later
+	}
+
+	/**
 	 * Returns an item from the given options or the default value if it's not set.
 	 * @param string $name the name of the item.
 	 * @param array $options the options to get from.
@@ -1153,9 +1218,14 @@ EOD;
 	 */
 	public static function popOption($name, &$options, $defaultValue = null)
 	{
-		$value = self::getOption($name, $options, $defaultValue);
-		unset($options[$name]);
-		return $value;
+		if (is_array($options))
+		{
+			$value = self::getOption($name, $options, $defaultValue);
+			unset($options[$name]);
+			return $value;
+		}
+		else
+			return $defaultValue;
 	}
 
 	/**
@@ -1167,19 +1237,19 @@ EOD;
 	 */
 	public static function defaultOption($name, $value, $options)
 	{
-		if (!isset($options[$name]))
+		if (is_array($options) && !isset($options[$name]))
 			$options[$name] = $value;
 		return $options;
 	}
 
 	/**
-	 * Removes unwanted items from the given options.
+	 * Removes the option values from the given options.
 	 * @param array $options the options to remove from.
-	 * @param array $keysToRemove list of keys to remove from the options.
+	 * @param array $names names to remove from the options.
 	 * @return array the options.
 	 */
-	public static function removeOptions($options, $keysToRemove)
+	public static function removeOptions($options, $names)
 	{
-		return array_diff_key($options, array_flip($keysToRemove));
+		return array_diff_key($options, array_flip($names));
 	}
 }

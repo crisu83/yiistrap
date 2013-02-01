@@ -30,11 +30,7 @@
 					)),
 				),
 			),
-	        TbHtml::navbarSearchForm('#', 'post', array(
-		        'addon'=>'append',
-		        'buttonLabel'=>TbHtml::icon('search white'),
-		        'buttonOptions'=>array('style'=>'inverse'),
-	        )),
+	        TbHtml::navbarSearchForm('#'),
 	        array(
 		        'class'=>'bootstrap.widgets.TbNav',
 		        'htmlOptions'=>array('class'=>'pull-right'),
