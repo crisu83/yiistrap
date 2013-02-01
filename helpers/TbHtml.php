@@ -36,6 +36,10 @@ class TbHtml extends CHtml
 	const FIXED_TOP = 'top';
 	const FIXED_BOTTOM = 'bottom';
 
+	// Addon types
+	const ADDON_PREPEND = 'prepend';
+	const ADDON_APPEND = 'append';
+
 	// Default close text
 	const CLOSE_TEXT = '&times;';
 
@@ -84,6 +88,11 @@ class TbHtml extends CHtml
 		self::FIXED_BOTTOM,
 	);
 
+	static $inputAddons = array(
+		self::ADDON_PREPEND,
+		self::ADDON_APPEND,
+	);
+
 	// Valid navigation menu styles
 	static $navStyles = array(
 		self::NAV_TABS,
@@ -101,7 +110,7 @@ class TbHtml extends CHtml
 	/**
 	 * Generates a button.
 	 * @param string $label the button label text.
-	 * @param array $htmlOptions the HTML attributes for the button.
+	 * @param array $htmlOptions additional HTML attributes.
 	 * @return string the generated button.
 	 * @see http://twitter.github.com/bootstrap/base-css.html#buttons
 	 */
@@ -126,7 +135,7 @@ class TbHtml extends CHtml
 	 * Generates a button.
 	 * @param string $tag the HTML tag.
 	 * @param string $label the button label text.
-	 * @param array $htmlOptions the HTML attributes for the button.
+	 * @param array $htmlOptions additional HTML attributes.
 	 * @return string the generated button.
 	 * @see http://twitter.github.com/bootstrap/base-css.html#buttons
 	 */
@@ -162,7 +171,7 @@ class TbHtml extends CHtml
 	 * Generates a button with a dropdown menu.
 	 * @param string $label the button label text.
 	 * @param array $items the menu items.
-	 * @param array $htmlOptions  the HTML attributes for the button.
+	 * @param array $htmlOptions additional HTML attributes.
 	 * @return string the generated button.
 	 */
 	public static function buttonDropdown($label, $items, $htmlOptions = array())
@@ -190,7 +199,7 @@ class TbHtml extends CHtml
 	/**
 	 * Generates a dropdown toggle link.
 	 * @param string $label the link label text.
-	 * @param array $htmlOptions the HTML attributes for the link.
+	 * @param array $htmlOptions additional HTML attributes.
 	 * @return string the generated link.
 	 * http://twitter.github.com/bootstrap/components.html#buttonDropdowns
 	 */
@@ -202,7 +211,7 @@ class TbHtml extends CHtml
 	/**
 	 * Generates a dropdown toggle button.
 	 * @param string $label the button label text.
-	 * @param array $htmlOptions the HTML attributes for the button.
+	 * @param array $htmlOptions additional HTML attributes.
 	 * @return string the generated button.
 	 * http://twitter.github.com/bootstrap/components.html#buttonDropdowns
 	 */
@@ -215,7 +224,7 @@ class TbHtml extends CHtml
 	 * Generates a dropdown toggle element.
 	 * @param string $tag the HTML tag.
 	 * @param string $label the element text.
-	 * @param array $htmlOptions the HTML attributes for the element.
+	 * @param array $htmlOptions additional HTML attributes.
 	 * @return string the generated element.
 	 * http://twitter.github.com/bootstrap/components.html#dropdowns
 	 */
@@ -230,7 +239,7 @@ class TbHtml extends CHtml
 	/**
 	 * Generates a dropdown toggle menu item.
 	 * @param string $label the menu item text.
-	 * @param array $htmlOptions the HTML attributes for the menu item.
+	 * @param array $htmlOptions additional HTML attributes.
 	 * @return string the generated menu item.
 	 * http://twitter.github.com/bootstrap/components.html#dropdowns
 	 */
@@ -305,7 +314,7 @@ class TbHtml extends CHtml
 	 * Generates a navigation menu.
 	 * @param string $style the menu style.
 	 * @param array $items the menu items.
-	 * @param array $htmlOptions the HTML attributes for the menu.
+	 * @param array $htmlOptions additional HTML attributes.
 	 * @return string the generated menu.
 	 */
 	public static function nav($style, $items, $htmlOptions = array())
@@ -327,7 +336,7 @@ class TbHtml extends CHtml
 	/**
 	 * Generates a dropdown menu.
 	 * @param array $items the menu items.
-	 * @param array $htmlOptions the HTML attributes for the dropdown.
+	 * @param array $htmlOptions additional HTML attributes.
 	 * @return string the generated menu.
 	 */
 	public static function dropdown($items, $htmlOptions = array())
@@ -343,7 +352,7 @@ class TbHtml extends CHtml
 	/**
 	 * Generates a menu.
 	 * @param array $items the menu items.
-	 * @param array $htmlOptions the HTML attributes for the menu.
+	 * @param array $htmlOptions additional HTML attributes.
 	 * @return string the generated menu.
 	 */
 	public static function menu($items, $htmlOptions = array())
@@ -379,7 +388,7 @@ class TbHtml extends CHtml
 	 * @param string $label the item label.
 	 * @param array $url the item url.
 	 * @param array $items the submenu items.
-	 * @param array $htmlOptions the HTML attributes for the menu item.
+	 * @param array $htmlOptions additional HTML attributes.
 	 * @return string the generated menu item.
 	 */
 	public static function menuItem($label, $url, $items = array(), $htmlOptions = array())
@@ -422,7 +431,7 @@ class TbHtml extends CHtml
 	/**
 	 * Generates a divider menu item.
 	 * @param string $className the divider CSS class.
-	 * @param array $htmlOptions the HTML attributes for the menu item.
+	 * @param array $htmlOptions additional HTML attributes.
 	 * @return string the generated menu item.
 	 */
 	public static function menuDivider($className = 'divider', $htmlOptions = array())
@@ -434,7 +443,7 @@ class TbHtml extends CHtml
 	/**
 	 * Generates a breadcrumb menu.
 	 * @param array $links the breadcrumb links.
-	 * @param array $htmlOptions the HTML options for the breadcrumbs.
+	 * @param array $htmlOptions additional HTML attributes.
 	 * @return string the generated breadcrumb.
 	 */
 	public static function breadcrumb($links, $htmlOptions = array())
@@ -501,7 +510,7 @@ class TbHtml extends CHtml
 	/**
 	 * Generates a close link.
 	 * @param string $label the link label text.
-	 * @param array $htmlOptions the HTML options for the link.
+	 * @param array $htmlOptions additional HTML attributes.
 	 * @return string the generated link.
 	 * @see http://twitter.github.com/bootstrap/components.html#misc
 	 */
@@ -526,7 +535,7 @@ class TbHtml extends CHtml
 	/**
 	 * Generates a close element.
 	 * @param string $label the element label text.
-	 * @param array $htmlOptions the HTML options for the element.
+	 * @param array $htmlOptions additional HTML attributes.
 	 * @return string the generated element.
 	 * @see http://twitter.github.com/bootstrap/components.html#misc
 	 */
@@ -540,7 +549,7 @@ class TbHtml extends CHtml
 	/**
 	 * Generates a collapse icon.
 	 * @param string $target the CSS selector for the target element.
-	 * @param array $htmlOptions the HTML attributes for the icon.
+	 * @param array $htmlOptions additional HTML attributes.
 	 * @return string the generated icon.
 	 */
 	public static function collapseIcon($target, $htmlOptions = array())
@@ -558,7 +567,7 @@ class TbHtml extends CHtml
 	/**
 	 * Generates a label span.
 	 * @param string $label the label text.
-	 * @param array $htmlOptions the HTML attributes for the label.
+	 * @param array $htmlOptions additional HTML attributes.
 	 * @return string the generated span.
 	 * @see http://twitter.github.com/bootstrap/components.html#labels-badges
 	 */
@@ -570,7 +579,7 @@ class TbHtml extends CHtml
 	/**
 	 * Generates a badge span.
 	 * @param string $label the badge text.
-	 * @param array $htmlOptions the HTML attributes for the badge.
+	 * @param array $htmlOptions additional HTML attributes.
 	 * @return string the generated span.
 	 * @see http://twitter.github.com/bootstrap/components.html#labels-badges
 	 *
@@ -584,7 +593,7 @@ class TbHtml extends CHtml
 	 * Generates a label or badge span.
 	 * @param string $type the span type.
 	 * @param string $label the label text.
-	 * @param array $htmlOptions the HTML attributes for the label.
+	 * @param array $htmlOptions additional HTML attributes.
 	 * @return string the generated span.
 	 * @see http://twitter.github.com/bootstrap/components.html#labels-badges
 	 */
@@ -599,10 +608,10 @@ class TbHtml extends CHtml
 
 	/**
 	 * Generates an image tag with rounded corners.
-	 * @param string $src the image URL
-	 * @param string $alt the alternative text display
-	 * @param array $htmlOptions additional HTML attributes (see {@link tag}).
-	 * @return string the generated image tag
+	 * @param string $src the image URL.
+	 * @param string $alt the alternative text display.
+	 * @param array $htmlOptions additional HTML attributes.
+	 * @return string the generated image tag.
 	 * @see http://twitter.github.com/bootstrap/base-css.html#images
 	 */
 	public static function imageRounded($src, $alt = '', $htmlOptions = array())
@@ -613,10 +622,10 @@ class TbHtml extends CHtml
 	/**
 	 * Generates an image tag with circle.
 	 * ***Important*** `.img-rounded` and `.img-circle` do not work in IE7-8 due to lack of border-radius support.
-	 * @param string $src the image URL
-	 * @param string $alt the alternative text display
-	 * @param array $htmlOptions additional HTML attributes (see {@link tag}).
-	 * @return string the generated image tag
+	 * @param string $src the image URL.
+	 * @param string $alt the alternative text display.
+	 * @param array $htmlOptions additional HTML attributes.
+	 * @return string the generated image tag.
 	 * @see http://twitter.github.com/bootstrap/base-css.html#images
 	 */
 	public static function imageCircle($src, $alt = '', $htmlOptions = array())
@@ -626,10 +635,10 @@ class TbHtml extends CHtml
 
 	/**
 	 * Generates an image tag within polaroid frame.
-	 * @param string $src the image URL
-	 * @param string $alt the alternative text display
-	 * @param array $htmlOptions additional HTML attributes (see {@link tag}).
-	 * @return string the generated image tag
+	 * @param string $src the image URL.
+	 * @param string $alt the alternative text display.
+	 * @param array $htmlOptions additional HTML attributes.
+	 * @return string the generated image tag.
 	 * @see http://twitter.github.com/bootstrap/base-css.html#images
 	 */
 	public static function imagePolaroid($src, $alt = '', $htmlOptions = array())
@@ -640,7 +649,7 @@ class TbHtml extends CHtml
 	/**
 	 * Generates a Glyph icon.
 	 * @param string $icon the icon type.
-	 * @param array $htmlOptions the HTML attributes for the icon.
+	 * @param array $htmlOptions additional HTML attributes.
 	 * @param string $tag the icon tag.
 	 * @return string the generated icon.
 	 * @see http://twitter.github.com/bootstrap/base-css.html#icons
@@ -656,7 +665,7 @@ class TbHtml extends CHtml
 	/**
 	 * Generates a well element.
 	 * @param string $content the well content.
-	 * @param array $htmlOptions the HTML attributes for the well.
+	 * @param array $htmlOptions additional HTML attributes.
 	 * @return string the generated well.
 	 * @see http://twitter.github.com/bootstrap/components.html#misc
 	 */
@@ -668,6 +677,19 @@ class TbHtml extends CHtml
 		ob_start();
 		parent::tag('div', $htmlOptions, $content);
 		return ob_get_clean();
+	}
+
+	/**
+	 * Generates a navbar search form.
+	 * @param mixed $action the form action URL.
+	 * @param string $method form method (e.g. post, get).
+	 * @param array $htmlOptions additional HTML attributes
+	 * @return string the generated form.
+	 */
+	public static function navbarSearchForm($action, $method = 'post', $htmlOptions = array())
+	{
+		$htmlOptions = self::addClassName('navbar-search', $htmlOptions);
+		return self::searchForm($action, $method, $htmlOptions);
 	}
 
 	/**
@@ -687,27 +709,34 @@ class TbHtml extends CHtml
 	 * @return string
 	 * @see http://twitter.github.com/bootstrap/base-css.html#forms
 	 */
-	public static function searchForm($action = '', $method = 'post', $htmlOptions = array())
+	public static function searchForm($action, $method = 'post', $htmlOptions = array())
 	{
-		// Append or prepend button
-		$appendButton = self::popOption('appendButton', $htmlOptions, true);
-		// Input options
+		$htmlOptions = self::addClassName('form-search', $htmlOptions);
 		$inputOptions = self::popOption('inputOptions', $htmlOptions, array());
-		// Button options
+		$inputOptions = self::defaultOption('type', 'text', $inputOptions);
+		$inputOptions = self::defaultOption('placeholder', 'Search', $inputOptions);
+		$inputOptions = self::addClassName('search-query', $inputOptions);
 		$buttonOptions = self::popOption('buttonOptions', $htmlOptions, array());
-		// Button label
-		$buttonLabel = self::popOption('label', $buttonOptions, 'button');
-
-		// Render
+		$buttonLabel = self::popOption('buttonLabel', $htmlOptions, self::icon('search'));
+		$input = parent::tag('input', $inputOptions);
 		ob_start();
-		echo self::beginForm($action, $method, self::addClassName('form-search', $htmlOptions));
-		echo self::openTag('div', self::addClassName(($appendButton ? 'input-append' : 'input-prepend'), $inputOptions));
-		if ($appendButton === false)
-			echo self::btn($buttonLabel, $buttonOptions);
-		echo self::tag('input', CMap::mergeArray(self::addClassName('search-query', $inputOptions), array('type' => 'text')));
-		if ($appendButton)
-			echo self::btn($buttonLabel, $buttonOptions);
-		echo '</div>';
+		echo self::beginForm($action, $method, $htmlOptions);
+		$addon = self::popOption('addon', $htmlOptions);
+
+		if (isset($addon) && in_array($addon, self::$inputAddons))
+		{
+			$addonOptions = self::popOption('addonOptions', $htmlOptions, array());
+			$addonOptions = self::addClassName('input-' . $addon, $addonOptions);
+			echo self::openTag('div', $addonOptions);
+			if ($addon === self::ADDON_PREPEND)
+				echo self::button($buttonLabel, $buttonOptions);
+			echo $input;
+			if ($addon === self::ADDON_APPEND)
+				echo self::button($buttonLabel, $buttonOptions);
+			echo '</div>';
+		}
+		else
+			echo $input;
 		echo parent::endForm();
 		return ob_get_clean();
 	}
@@ -1121,7 +1150,7 @@ EOD;
 		$addOn = '';
 		if (self::getOption($type, $htmlOptions))
 		{
-			$addOn = strpos($htmlOptions[$type], self::BUTTON_BUTTON)
+			$addOn = strpos($htmlOptions[$type], self::BUTTON_BUTTON) // todo: fix this.
 				? $htmlOptions[$type]
 				: CHtml::tag('span', array('class' => 'add-on'), $htmlOptions[$type]);
 		}

@@ -20,16 +20,42 @@
 					array('label'=>'Home','url'=>array('/site/index')),
 					array('label'=>'Link','url'=>'#'),
 					array('label'=>'Link','url'=>'#'),
+					array('label'=>'Dropdown','items'=>array(
+						array('label'=>'Heading'),
+						array('label'=>'Action','url'=>'#'),
+						array('label'=>'Another action','url'=>'#'),
+						array('label'=>'Something else here','url'=>'#'),
+						'---',
+						array('label'=>'Separate link','url'=>'#'),
+					)),
 				),
 			),
+	        TbHtml::navbarSearchForm('#', 'post', array(
+		        'addon'=>'append',
+		        'buttonLabel'=>TbHtml::icon('search white'),
+		        'buttonOptions'=>array('style'=>'inverse'),
+	        )),
+	        array(
+		        'class'=>'bootstrap.widgets.TbNav',
+		        'htmlOptions'=>array('class'=>'pull-right'),
+		        'items'=>array(
+			        array('label'=>'Link','url'=>'#'),
+			        array('label'=>'Dropdown','items'=>array(
+				        array('label'=>'Heading'),
+				        array('label'=>'Action','url'=>'#'),
+				        array('label'=>'Another action','url'=>'#'),
+				        array('label'=>'Something else here','url'=>'#'),
+				        '---',
+				        array('label'=>'Separate link','url'=>'#'),
+			        )),
+		        ),
+	        ),
 		),
 	)); ?>
 
-	<div id="page">
+	<div id="page"><div class="container">
 
-        <div class="container">
-		    <?php echo $content; ?>
-        </div>
+	    <?php echo $content; ?>
 
 		<hr />
 
@@ -44,6 +70,6 @@
 			</div>
 		</div>
 
-	</div>
+    </div></div>
 </body>
 </html>
