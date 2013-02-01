@@ -2,6 +2,7 @@
 /**
  * TbHtml class file.
  * @author Antonio Ramirez <ramirez.cobos@gmail.com>
+ * @author Christoffer Niska <christoffer.niska@gmail.com>
  * @copyright Copyright &copy; Christoffer Niska 2013-
  * @license http://www.opensource.org/licenses/bsd-license.php New BSD License
  */
@@ -11,101 +12,57 @@
  */
 class TbHtml extends CHtml
 {
-	// Bootstrap styles
-	const STYLE_PRIMARY = 'primary';
-	const STYLE_INFO = 'info';
-	const STYLE_SUCCESS = 'success';
-	const STYLE_WARNING = 'warning';
-	const STYLE_ERROR = 'error';
-	const STYLE_DANGER = 'danger';
-	const STYLE_IMPORTANT = 'important';
-	const STYLE_INVERSE = 'inverse';
-	const STYLE_LINK = 'link';
+	// Element styles.
+	const STYLE_PRIMARY         = 'primary';
+	const STYLE_INFO            = 'info';
+	const STYLE_SUCCESS         = 'success';
+	const STYLE_WARNING         = 'warning';
+	const STYLE_ERROR           = 'error';
+	const STYLE_DANGER          = 'danger';
+	const STYLE_IMPORTANT       = 'important';
+	const STYLE_INVERSE         = 'inverse';
+	const STYLE_LINK            = 'link';
 
-	// Bootstrap sizes
-	const SIZE_MINI = 'mini';
-	const SIZE_SMALL = 'small';
-	const SIZE_LARGE = 'large';
+	// Element sizes.
+	const SIZE_MINI             = 'mini';
+	const SIZE_SMALL            = 'small';
+	const SIZE_LARGE            = 'large';
 
-	// Bootstrap navigation menu types
-	const NAV_TABS = 'tabs';
-	const NAV_PILLS = 'pills';
-	const NAV_LIST = 'list';
+	// Navigation menu types.
+	const NAV_TABS              = 'tabs';
+	const NAV_PILLS             = 'pills';
+	const NAV_LIST              = 'list';
 
-	// Fixed types
-	const FIXED_TOP = 'top';
-	const FIXED_BOTTOM = 'bottom';
+	// Fixed types.
+	const FIXED_TOP             = 'top';
+	const FIXED_BOTTOM          = 'bottom';
 
-	// Addon types
-	const ADDON_PREPEND = 'prepend';
-	const ADDON_APPEND = 'append';
+	// Addon types.
+	const ADDON_PREPEND         = 'prepend';
+	const ADDON_APPEND          = 'append';
 
-	// Default close text
-	const CLOSE_TEXT = '&times;';
+	const PROGRESS_STRIPED      = 'striped';
+	const PROGRESS_ACTIVE       = 'active';
 
-	// Valid button styles
-	static $buttonStyles = array(
-		self::STYLE_PRIMARY,
-		self::STYLE_INFO,
-		self::STYLE_SUCCESS,
-		self::STYLE_WARNING,
-		self::STYLE_DANGER,
-		self::STYLE_INVERSE,
-		self::STYLE_LINK,
-	);
+	// Default close text.
+	const CLOSE_TEXT            = '&times;';
 
-	// Valid button sizes
-	static $buttonSizes = array(
-		self::SIZE_LARGE,
-		self::SIZE_SMALL,
-		self::SIZE_MINI,
-	);
-
-	// Valid label and badge styles
-	static $labelBadgeStyles = array(
-		self::STYLE_SUCCESS,
-		self::STYLE_WARNING,
-		self::STYLE_IMPORTANT,
-		self::STYLE_INFO,
-		self::STYLE_INVERSE,
-	);
-
-	// Valid alert styles
-	static $alertStyles = array(
-		self::STYLE_SUCCESS,
-		self::STYLE_INFO,
-		self::STYLE_WARNING,
-		self::STYLE_ERROR,
-	);
-
-	// Valid navbar styles
-	static $navbarStyles = array(
-		self::STYLE_INVERSE,
-	);
-
-	static $navbarFixes = array(
-		self::FIXED_TOP,
-		self::FIXED_BOTTOM,
-	);
-
-	static $inputAddons = array(
-		self::ADDON_PREPEND,
-		self::ADDON_APPEND,
-	);
-
-	// Valid navigation menu styles
-	static $navStyles = array(
-		self::NAV_TABS,
-		self::NAV_PILLS,
-		self::NAV_LIST,
-	);
-
-	// Valid well sizes
-	static $wellSizes = array(
-		self::SIZE_LARGE,
-		self::SIZE_SMALL,
-		self::SIZE_MINI,
-	);
+	// Scope constants.
+	static $buttonStyles        = array(
+									self::STYLE_PRIMARY, self::STYLE_INFO, self::STYLE_SUCCESS, self::STYLE_WARNING,
+									self::STYLE_DANGER, self::STYLE_INVERSE, self::STYLE_LINK,
+								);
+	static $buttonSizes         = array(self::SIZE_LARGE, self::SIZE_SMALL, self::SIZE_MINI);
+	static $labelBadgeStyles    = array(self::STYLE_SUCCESS, self::STYLE_WARNING, self::STYLE_IMPORTANT,
+									self::STYLE_INFO, self::STYLE_INVERSE,
+								);
+	static $alertStyles         = array(self::STYLE_SUCCESS, self::STYLE_INFO, self::STYLE_WARNING, self::STYLE_ERROR);
+	static $navbarStyles        = array(self::STYLE_INVERSE);
+	static $navbarFixes         = array(self::FIXED_TOP, self::FIXED_BOTTOM);
+	static $progressStyles   = array(self::STYLE_INFO, self::STYLE_SUCCESS, self::STYLE_WARNING, self::STYLE_DANGER);
+	static $inputAddons         = array(self::ADDON_PREPEND, self::ADDON_APPEND);
+	static $navStyles           = array(self::NAV_TABS, self::NAV_PILLS, self::NAV_LIST);
+	static $wellSizes           = array(self::SIZE_LARGE, self::SIZE_SMALL, self::SIZE_MINI);
 
 	/**
 	 * Generates a button.
@@ -252,15 +209,15 @@ class TbHtml extends CHtml
 	}
 
 	/**
-	 * Renders a button group
-	 * @param $items
+	 * Generates a button group.
+	 * @param array $buttons the button configurations.
 	 * @param array $htmlOptions additional HTML options. The following special options are recognized:
 	 * todo: write the options
-	 * @return string
+	 * @return string the generated button group.
 	 */
-	public static function buttonGroup($items, $htmlOptions = array())
+	public static function buttonGroup($buttons, $htmlOptions = array())
 	{
-		if (is_array($items) && !empty($items))
+		if (is_array($buttons) && !empty($buttons))
 		{
 			$htmlOptions = self::addClassName('btn-group', $htmlOptions);
 			$vertical = self::popOption('vertical', $htmlOptions, false);
@@ -269,11 +226,15 @@ class TbHtml extends CHtml
 
 			ob_start();
 			echo parent::openTag('div', $htmlOptions);
-			foreach ($items as $item)
+			foreach ($buttons as $button)
 			{
-				$buttonLabel = self::getOption('label', $item, 'button');
-				$buttonOptions = self::removeOptions($item, array('label'));
-				echo self::btn($buttonLabel, $buttonOptions);
+				$buttonLabel = self::popOption('label', $button, '');
+				$buttonOptions = self::popOption('htmlOptions', $button, array());
+				$buttonOptions = self::defaultOption('icon', self::popOption('icon', $button), $buttonOptions);
+				$buttonOptions = self::defaultOption('style', self::popOption('style', $button), $buttonOptions);
+				$buttonOptions = self::defaultOption('size', self::popOption('size', $button), $buttonOptions);
+				$buttonOptions = self::defaultOption('disabled', self::popOption('disabled', $button), $buttonOptions);
+				echo self::button($buttonLabel, $buttonOptions);
 			}
 			echo '</div>';
 			return ob_get_clean();
@@ -282,13 +243,13 @@ class TbHtml extends CHtml
 	}
 
 	/**
-	 * @param $groups
-	 *  TODO: explain the configuration array
+	 * Generates a button toolbar.
+	 * @param array $groups the button group configurations.
 	 * @param array $htmlOptions additional HTML options. The following special options are recognized:
-	 *  TODO: write the options
-	 * @return string
+	 * todo: write the options
+	 * @return string the generated button toolbar.
 	 */
-	public static function multipleButtonGroup($groups, $htmlOptions = array())
+	public static function buttonToolbar($groups, $htmlOptions = array())
 	{
 		if(is_array($groups) && !empty($groups))
 		{
@@ -297,11 +258,10 @@ class TbHtml extends CHtml
 			echo parent::openTag('div', $htmlOptions);
 			foreach ($groups as $group)
 			{
-				$groupOptions = self::getOption('options', $group, array());
+				$groupOptions = self::getOption('htmlOptions', $group, array());
 				$items = self::getOption('items', $group, array());
 				if (empty($items))
 					continue;
-
 				echo self::buttonGroup($items, $groupOptions);
 			}
 			echo '</div>';
@@ -482,22 +442,25 @@ class TbHtml extends CHtml
 	 */
 	public static function alert($style, $message, $htmlOptions = array())
 	{
-		$block = self::popOption('block', $htmlOptions, false);
-		$fade = self::popOption('fade', $htmlOptions, true);
-		$closeText = self::popOption('closeText', $htmlOptions, self::CLOSE_TEXT);
-		$closeOptions = self::popOption('closeOptions', $htmlOptions, array());
-
-		// todo: should we allow the user whether to make it visible or not on display?
-		$htmlOptions = self::addClassName('alert in', $htmlOptions);
+		$htmlOptions = self::addClassName('alert', $htmlOptions);
 
 		if (isset($style) && in_array($style, self::$alertStyles))
 			$htmlOptions = self::addClassName('alert-' . $style, $htmlOptions);
 
+		$in = self::popOption('in', $htmlOptions, true);
+		if ($in)
+			$htmlOptions = self::addClassName('in', $htmlOptions);
+
+		$block = self::popOption('block', $htmlOptions, false);
 		if ($block)
 			$htmlOptions = self::addClassName('alert-block', $htmlOptions);
 
+		$fade = self::popOption('fade', $htmlOptions, true);
 		if ($fade)
 			$htmlOptions = self::addClassName('fade', $htmlOptions);
+
+		$closeText = self::popOption('closeText', $htmlOptions, self::CLOSE_TEXT);
+		$closeOptions = self::popOption('closeOptions', $htmlOptions, array());
 
 		ob_start();
 		echo parent::openTag('div', $htmlOptions);
@@ -693,20 +656,20 @@ class TbHtml extends CHtml
 	}
 
 	/**
-	 * Renders a search form.
-	 * @param string $action
-	 * @param string $method
+	 * Generates a search form.
+	 * @param mixed $action the form action URL.
+	 * @param string $method form method (e.g. post, get).
 	 * @param array $htmlOptions additional HTML options. The following special options are recognized:
 	 * <ul>
 	 * <li>appendButton: boolean, whether to append or prepend the search button.</li>
 	 * <li>inputOptions: array, additional HTML options of the text input field. `type` will always default to `text`.</li>
 	 * <li>buttonOptions: array, additional HTML options of the button. It contains special options for the button:
-	 *	  <ul>
-	 *	  <li>label: string, the button label</li>
-	 *	  </ul>
+	 * <ul>
+	 * <li>label: string, the button label</li>
+	 * </ul>
 	 * </li>
 	 * </ul>
-	 * @return string
+	 * @return string the generated form.
 	 * @see http://twitter.github.com/bootstrap/base-css.html#forms
 	 */
 	public static function searchForm($action, $method = 'post', $htmlOptions = array())
@@ -742,107 +705,82 @@ class TbHtml extends CHtml
 	}
 
 	/**
-	 * @param string $type the type of progress bar
-	 * @param array $htmlOptions additional HTML options. The following special options are recognized:
-	 * <ul>
-	 * <li>content: string, the contents of the progress bar (if any).</li>
-	 * <li>percent: integer, the initial percentage of the progress bar. Defaults to `0`.</li>
-	 * <li>striped: boolean, set to true to use a gradient to create a striped effect. Not available for IE7-8.</li>
-	 * <li>animated: boolean, set to true to animate the stripes. Not available in all versions of IE.</li>
-	 * </ul>
-	 * @see http://twitter.github.com/bootstrap/components.html#progress
+	 * Generates an animated progress bar.
+	 * @param integer $width the progress in percent.
+	 * @param array $htmlOptions additional HTML attributes.
+	 * @return string the generated progress bar.
 	 */
-	public static function progressBar($type, $htmlOptions = array())
+	public static function animatedProgressBar($width = 0, $htmlOptions = array())
 	{
-		// valid types
-		// todo: Think about $validTypes scope
-		$validTypes = array(self::STYLE_INFO, self::STYLE_SUCCESS, self::STYLE_WARNING, self::STYLE_DANGER);
+		$htmlOptions = self::defaultOption('animated', true, $htmlOptions);
+		return self::stripedProgressBar($width, $htmlOptions);
+	}
 
-		$content = self::getOption('content', $htmlOptions);
-		$percent = self::getOption('percent', $htmlOptions, 0);
-		$striped = self::getOption('striped', $htmlOptions);
-		$animated = self::getOption('animated', $htmlOptions);
+	/**
+	 * Generates a striped progress bar.
+	 * @param integer $width the progress in percent.
+	 * @param array $htmlOptions additional HTML attributes.
+	 * @return string the generated progress bar.
+	 */
+	public static function stripedProgressBar($width = 0, $htmlOptions = array())
+	{
+		$htmlOptions = self::defaultOption('striped', true, $htmlOptions);
+		return self::progressBar($width, $htmlOptions);
+	}
 
-		$htmlOptions = self::removeOptions($htmlOptions, array('content', 'percent', 'striped', 'animated'));
+	/**
+	 * Generates a progress bar.
+	 * @param integer $width the progress in percent.
+	 * @param array $htmlOptions additional HTML attributes.
+	 * @return string the generated progress bar.
+	 */
+	public static function progressBar($width = 0, $htmlOptions = array())
+	{
+		$htmlOptions = self::addClassName('progress', $htmlOptions);
 
-		$classes = array('progress');
-		if (in_array($type, $validTypes))
-			$classes[] = 'progress-' . $type;
+		$style = self::popOption('style', $htmlOptions);
+		if (isset($style) && in_array($style, self::$progressStyles))
+			$htmlOptions = self::addClassName('progress-' . $style, $htmlOptions);
+
+		$striped = self::popOption('striped', $htmlOptions, false);
 		if ($striped)
-			$classes[] = 'progress-striped';
-		if ($animated)
-			$classes[] = 'active';
-		if ($percent < 0)
-			$percent = 0;
-		else if ($percent > 100)
-			$percent = 100;
+		{
+			$htmlOptions = self::addClassName('progress-striped', $htmlOptions);
+			$animated = self::popOption('animated', $htmlOptions, false);
+			if ($animated)
+				$htmlOptions = self::addClassName('active', $htmlOptions);
+		}
+
+		$barOptions = self::getOption('barOptions', $htmlOptions, array());
+		$barOptions = self::defaultOption('content', self::getOption('content', $htmlOptions, ''), $barOptions);
 
 		ob_start();
-		echo parent::openTag('div', self::addClassName($classes, $htmlOptions));
-		echo '<div class="bar" style="width:' . $percent . '%;">' . $content . '</div>';
+		echo parent::openTag('div', $htmlOptions);
+		echo self::bar($width, $barOptions);
 		echo '</div>';
 		return ob_get_clean();
 	}
 
 	/**
-	 * Displays a stacked progress bar.
-	 * @param array $items the bars to display within the progress bar. The following is the configuration of a bar:
-	 * <ul>
-	 * <li>type: string, the Type of progress bar. Valid types are STYLE_INFO, STYLE_SUCCESS, STYLE_WARNING and STYLE_DANGER.</li>
-	 * <li>percent: integer, the initial percentage of the progress bar. Defaults to `0`.</li>
-	 * <li>content: string, the contents of the progress bar (if any).</li>
-	 * <li>barOptions: array, additional HTML options of the bar.</li>
-	 * </ul>
-	 * @param array $htmlOptions additional HTML options. The following special options are recognized:
-	 * <ul>
-	 * <li>striped: boolean, set to true to use a gradient to create a striped effect. Not available for IE7-8.</li>
-	 * <li>animated: boolean, set to true to animate the stripes. Not available in all versions of IE.</li>
-	 * </ul>
-	 * @see http://twitter.github.com/bootstrap/components.html#progress
+	 * Generates a stacked progress bar.
+	 * @param array $bars the bar configurations.
+	 * @param array $htmlOptions additional HTML attributes.
+	 * @return string the generated progress bar.
 	 */
-	public static function stackedProgressBar($items, $htmlOptions = array())
+	public static function stackedProgressBar($bars, $htmlOptions = array())
 	{
-		if (is_array($items))
+		if (is_array($bars) && !empty($bars))
 		{
-			$validTypes = array(self::STYLE_INFO, self::STYLE_SUCCESS, self::STYLE_WARNING, self::STYLE_DANGER);
-
-			$striped = self::getOption('striped', $htmlOptions);
-			$animated = self::getOption('animated', $htmlOptions);
-
-			$htmlOptions = self::removeOptions($htmlOptions, array('striped', 'animated'));
-
-			$classes = array('progress');
-
-			if ($striped)
-				$classes[] = 'progress-striped';
-			if ($animated)
-				$classes[] = 'active';
-
+			$htmlOptions = self::addClassName('progress', $htmlOptions);
 			ob_start();
-			echo parent::openTag('div', self::addClassName($classes, $htmlOptions));
-
-			foreach ($items as $item)
+			echo parent::openTag('div', $htmlOptions);
+			foreach ($bars as $bar)
 			{
-				$classes = array('bar');
-
-				$type = self::getOption('type', $item);
-				$percent = self::getOption('percent', $item, 0);
-				$content = self::getOption('content', $item);
-				$barOptions = self::getOption('barOptions', @$item['barOptions'], array());
-
-				if (in_array($type, $validTypes))
-					$classes[] = 'bar-' . $type;
-
-				if ($percent < 0)
-					$percent = 0;
-				else if ($percent > 100)
-					$percent = 100;
-
-				$barOptions['style'] = 'width:' . $percent . '%;';
-
-				echo parent::tag('div', self::addClassName($classes, $barOptions), $content);
+				$width = self::popOption('width', $bar, 0);
+				$barOptions = self::popOption('htmlOptions', $bar, array());
+				$barOptions = self::defaultOption('style', self::popOption('style', $bar), $barOptions);
+				echo self::bar($width, $barOptions);
 			}
-
 			echo '</div>';
 			return ob_get_clean();
 		}
@@ -850,16 +788,27 @@ class TbHtml extends CHtml
 	}
 
 	/**
-	 * Generates an icon glyph.
-	 * @param string $icon the glyph class
-	 * @param string $tag
-	 * @return string
-	 * @see TbIcon
-	 * @see http://twitter.github.com/bootstrap/base-css.html#icons
+	 * Generates a progress bar.
+	 * @param integer $width the progress in percent.
+	 * @param array $htmlOptions additional HTML attributes.
+	 * @return string the generated bar.
 	 */
-	public static function iconGlyph($icon, $tag = 'i')
+	public static function bar($width = 0, $htmlOptions = array())
 	{
-		return parent::tag($tag, array('class' => $icon));
+		$htmlOptions = self::addClassName('bar', $htmlOptions);
+
+		$style = self::popOption('style', $htmlOptions);
+		if (isset($style) && in_array($style, self::$progressStyles))
+			$htmlOptions = self::addClassName('bar-' . $style, $htmlOptions);
+
+		if ($width < 0)
+			$width = 0;
+		if ($width > 100)
+			$width = 100;
+
+		$htmlOptions = self::addStyles("width: {$width}%;", $htmlOptions);
+		$content = self::popOption('content', $htmlOptions, '');
+		return parent::tag('div', $htmlOptions, $content);
 	}
 
 	/**
@@ -1161,13 +1110,25 @@ EOD;
 	 * Appends new class names to the named index "class" at the `$htmlOptions` parameter.
 	 * @param mixed $className the class(es) to append to `$htmlOptions`
 	 * @param array $htmlOptions the HTML tag attributes to modify
-	 * @return mixed
+	 * @return array the options.
 	 */
 	public static function addClassName($className, $htmlOptions)
 	{
 		if (is_array($className))
 			$className = implode(' ', $className);
 		$htmlOptions['class'] = isset($htmlOptions['class']) ? $htmlOptions['class'] . ' ' . $className : $className;
+		return $htmlOptions;
+	}
+
+	/**
+	 * Appends a CSS style string to the given options.
+	 * @param string $styles the CSS style string.
+	 * @param array $htmlOptions the options.
+	 * @return array the options.
+	 */
+	public static function addStyles($styles, $htmlOptions)
+	{
+		$htmlOptions['style'] = isset($htmlOptions['style']) ? $htmlOptions['style'] . ' ' . $styles : $styles;
 		return $htmlOptions;
 	}
 

@@ -59,6 +59,53 @@ $this->pageTitle=Yii::app()->name;
 	</div>
 </div>
 
+<div class="button-groups">
+	<h3>Button groups</h3>
+
+	<h5>Single button group</h5>
+
+	<div style="margin-bottom: 20px;">
+		<?php echo TbHtml::buttonGroup(array(
+			array('label'=>'Left'),
+			array('label'=>'Middle'),
+			array('label'=>'Right'),
+		)); ?>
+	</div>
+
+	<h5>Multiple button groups</h5>
+
+	<div style="margin-bottom: 20px;">
+		<?php echo TbHtml::buttonToolbar(array(
+			array('items'=>array(
+				array('label'=>'1'),
+				array('label'=>'2'),
+				array('label'=>'3'),
+				array('label'=>'4'),
+			)),
+			array('items'=>array(
+				array('label'=>'5'),
+				array('label'=>'6'),
+				array('label'=>'7'),
+			)),
+			array('items'=>array(
+				array('label'=>'8'),
+			)),
+		)); ?>
+	</div>
+
+	<h5>Vertical button groups</h5>
+
+	<div style="margin-bottom: 20px;">
+		<?php echo TbHtml::buttonGroup(array(
+			array('icon'=>'align-left'),
+			array('icon'=>'align-center'),
+			array('icon'=>'align-right'),
+			array('icon'=>'align-justify'),
+		),array('vertical'=>true)); ?>
+	</div>
+
+</div>
+
 <div class="button-dropdowns">
 	<h3>Button dropdowns</h3>
 
@@ -234,5 +281,45 @@ $this->pageTitle=Yii::app()->name;
             'closed'=>"function() { console.log('Alert closed event fired.'); }",
         ),
     )); ?>
+
+</div>
+
+<div class="progressbars">
+	<h3>Progress bars</h3>
+
+	<h5>Basic</h5>
+
+	<?php echo TbHtml::progressBar(60); ?>
+
+	<h5>Striped</h5>
+
+	<?php echo TbHtml::stripedProgressBar(20); ?>
+
+	<h5>Animated</h5>
+
+	<?php echo TbHtml::animatedProgressBar(40); ?>
+
+	<h5>Stacked</h5>
+
+	<?php echo TbHtml::stackedProgressBar(array(
+		array('style'=>'success', 'width'=>35),
+		array('style'=>'warning', 'width'=>20),
+		array('style'=>'danger', 'width'=>10),
+	)); ?>
+
+	<h5>Additional colors</h5>
+
+	<?php echo TbHtml::progressBar(20); ?>
+	<?php echo TbHtml::progressBar(40, array('style'=>'success')); ?>
+	<?php echo TbHtml::progressBar(60, array('style'=>'warning')); ?>
+	<?php echo TbHtml::progressBar(80, array('style'=>'danger')); ?>
+
+	<h5>Striped bars</h5>
+
+	<?php echo TbHtml::stripedProgressBar(20); ?>
+	<?php echo TbHtml::stripedProgressBar(40, array('style'=>'success')); ?>
+	<?php echo TbHtml::stripedProgressBar(60, array('style'=>'warning')); ?>
+	<?php echo TbHtml::stripedProgressBar(80, array('style'=>'danger')); ?>
+
 
 </div>
