@@ -154,6 +154,22 @@ class TbHtml extends CHtml
 	}
 
 	/**
+	 * Generates a dropdown toggle element.
+	 * @param string $tag the HTML tag.
+	 * @param string $label the element text.
+	 * @param array $htmlOptions additional HTML attributes.
+	 * @return string the generated element.
+	 * http://twitter.github.com/bootstrap/components.html#dropdowns
+	 */
+	public static function dropdownToggle($tag, $label, $htmlOptions)
+	{
+		$htmlOptions = self::addClassName('dropdown-toggle', $htmlOptions);
+		$htmlOptions = self::defaultOption('data-toggle', 'dropdown', $htmlOptions);
+		$label .= ' <b class="caret"></b>';
+		return self::btn($tag, $label, $htmlOptions);
+	}
+
+	/**
 	 * Generates a dropdown toggle link.
 	 * @param string $label the link label text.
 	 * @param array $htmlOptions additional HTML attributes.
@@ -175,22 +191,6 @@ class TbHtml extends CHtml
 	public static function dropdownToggleButton($label = '', $htmlOptions = array())
 	{
 		return self::dropdownToggle('button', $label, $htmlOptions);
-	}
-
-	/**
-	 * Generates a dropdown toggle element.
-	 * @param string $tag the HTML tag.
-	 * @param string $label the element text.
-	 * @param array $htmlOptions additional HTML attributes.
-	 * @return string the generated element.
-	 * http://twitter.github.com/bootstrap/components.html#dropdowns
-	 */
-	public static function dropdownToggle($tag, $label, $htmlOptions)
-	{
-		$htmlOptions = self::addClassName('dropdown-toggle', $htmlOptions);
-		$htmlOptions = self::defaultOption('data-toggle', 'dropdown', $htmlOptions);
-		$label .= ' <b class="caret"></b>';
-		return self::btn($tag, $label, $htmlOptions);
 	}
 
 	/**
@@ -471,6 +471,20 @@ class TbHtml extends CHtml
 	}
 
 	/**
+	 * Generates a close element.
+	 * @param string $label the element label text.
+	 * @param array $htmlOptions additional HTML attributes.
+	 * @return string the generated element.
+	 * @see http://twitter.github.com/bootstrap/components.html#misc
+	 */
+	public static function closeIcon($tag = 'a', $label, $htmlOptions = array())
+	{
+		$htmlOptions = self::addClassName('close', $htmlOptions);
+		$htmlOptions = self::defaultOption('data-dismiss', 'alert', $htmlOptions);
+		return parent::tag($tag, $htmlOptions, $label);
+	}
+
+	/**
 	 * Generates a close link.
 	 * @param string $label the link label text.
 	 * @param array $htmlOptions additional HTML attributes.
@@ -496,20 +510,6 @@ class TbHtml extends CHtml
 	}
 
 	/**
-	 * Generates a close element.
-	 * @param string $label the element label text.
-	 * @param array $htmlOptions additional HTML attributes.
-	 * @return string the generated element.
-	 * @see http://twitter.github.com/bootstrap/components.html#misc
-	 */
-	public static function closeIcon($tag = 'a', $label, $htmlOptions = array())
-	{
-		$htmlOptions = self::addClassName('close', $htmlOptions);
-		$htmlOptions = self::defaultOption('data-dismiss', 'alert', $htmlOptions);
-		return parent::tag($tag, $htmlOptions, $label);
-	}
-
-	/**
 	 * Generates a collapse icon.
 	 * @param string $target the CSS selector for the target element.
 	 * @param array $htmlOptions additional HTML attributes.
@@ -525,6 +525,23 @@ class TbHtml extends CHtml
 		echo '<span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span>';
 		echo '</a>';
 		return ob_get_clean();
+	}
+
+	/**
+	 * Generates a label or badge span.
+	 * @param string $type the span type.
+	 * @param string $label the label text.
+	 * @param array $htmlOptions additional HTML attributes.
+	 * @return string the generated span.
+	 * @see http://twitter.github.com/bootstrap/components.html#labels-badges
+	 */
+	public static function labelBadgeSpan($type, $label, $htmlOptions = array())
+	{
+		$htmlOptions = self::addClassName($type, $htmlOptions);
+		$style = self::popOption('style', $htmlOptions);
+		if (isset($style) && in_array($style, self::$labelBadgeStyles))
+			$htmlOptions = self::addClassName($type . '-' . $style, $htmlOptions);
+		return self::tag('span', $htmlOptions, $label);
 	}
 
 	/**
@@ -550,23 +567,6 @@ class TbHtml extends CHtml
 	public static function badgeSpan($label, $htmlOptions = array())
 	{
 		return self::labelBadgeSpan('badge', $label, $htmlOptions);
-	}
-
-	/**
-	 * Generates a label or badge span.
-	 * @param string $type the span type.
-	 * @param string $label the label text.
-	 * @param array $htmlOptions additional HTML attributes.
-	 * @return string the generated span.
-	 * @see http://twitter.github.com/bootstrap/components.html#labels-badges
-	 */
-	public static function labelBadgeSpan($type, $label, $htmlOptions = array())
-	{
-		$htmlOptions = self::addClassName($type, $htmlOptions);
-		$style = self::popOption('style', $htmlOptions);
-		if (isset($style) && in_array($style, self::$labelBadgeStyles))
-			$htmlOptions = self::addClassName($type . '-' . $style, $htmlOptions);
-		return self::tag('span', $htmlOptions, $label);
 	}
 
 	/**
@@ -643,19 +643,6 @@ class TbHtml extends CHtml
 	}
 
 	/**
-	 * Generates a navbar search form.
-	 * @param mixed $action the form action URL.
-	 * @param string $method form method (e.g. post, get).
-	 * @param array $htmlOptions additional HTML attributes
-	 * @return string the generated form.
-	 */
-	public static function navbarSearchForm($action, $method = 'post', $htmlOptions = array())
-	{
-		$htmlOptions = self::addClassName('navbar-search', $htmlOptions);
-		return self::searchForm($action, $method, $htmlOptions);
-	}
-
-	/**
 	 * Generates a search form.
 	 * @param mixed $action the form action URL.
 	 * @param string $method form method (e.g. post, get).
@@ -705,27 +692,16 @@ class TbHtml extends CHtml
 	}
 
 	/**
-	 * Generates an animated progress bar.
-	 * @param integer $width the progress in percent.
-	 * @param array $htmlOptions additional HTML attributes.
-	 * @return string the generated progress bar.
+	 * Generates a navbar search form.
+	 * @param mixed $action the form action URL.
+	 * @param string $method form method (e.g. post, get).
+	 * @param array $htmlOptions additional HTML attributes
+	 * @return string the generated form.
 	 */
-	public static function animatedProgressBar($width = 0, $htmlOptions = array())
+	public static function navbarSearchForm($action, $method = 'post', $htmlOptions = array())
 	{
-		$htmlOptions = self::defaultOption('animated', true, $htmlOptions);
-		return self::stripedProgressBar($width, $htmlOptions);
-	}
-
-	/**
-	 * Generates a striped progress bar.
-	 * @param integer $width the progress in percent.
-	 * @param array $htmlOptions additional HTML attributes.
-	 * @return string the generated progress bar.
-	 */
-	public static function stripedProgressBar($width = 0, $htmlOptions = array())
-	{
-		$htmlOptions = self::defaultOption('striped', true, $htmlOptions);
-		return self::progressBar($width, $htmlOptions);
+		$htmlOptions = self::addClassName('navbar-search', $htmlOptions);
+		return self::searchForm($action, $method, $htmlOptions);
 	}
 
 	/**
@@ -759,6 +735,30 @@ class TbHtml extends CHtml
 		echo self::bar($width, $barOptions);
 		echo '</div>';
 		return ob_get_clean();
+	}
+
+	/**
+	 * Generates a striped progress bar.
+	 * @param integer $width the progress in percent.
+	 * @param array $htmlOptions additional HTML attributes.
+	 * @return string the generated progress bar.
+	 */
+	public static function stripedProgressBar($width = 0, $htmlOptions = array())
+	{
+		$htmlOptions = self::defaultOption('striped', true, $htmlOptions);
+		return self::progressBar($width, $htmlOptions);
+	}
+
+	/**
+	 * Generates an animated progress bar.
+	 * @param integer $width the progress in percent.
+	 * @param array $htmlOptions additional HTML attributes.
+	 * @return string the generated progress bar.
+	 */
+	public static function animatedProgressBar($width = 0, $htmlOptions = array())
+	{
+		$htmlOptions = self::defaultOption('animated', true, $htmlOptions);
+		return self::stripedProgressBar($width, $htmlOptions);
 	}
 
 	/**
