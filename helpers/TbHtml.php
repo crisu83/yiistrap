@@ -538,6 +538,24 @@ class TbHtml extends CHtml
 	}
 
 	/**
+	 * Generates a collapse icon.
+	 * @param string $target the CSS selector for the target element.
+	 * @param array $htmlOptions the HTML attributes for the icon.
+	 * @return string the generated icon.
+	 */
+	public static function collapseIcon($target, $htmlOptions = array())
+	{
+		$htmlOptions = self::addClassName('btn btn-navbar', $htmlOptions);
+		$htmlOptions = self::defaultOption('data-toggle', 'collapse', $htmlOptions);
+		$htmlOptions = self::defaultOption('data-target', $target, $htmlOptions);
+		ob_start();
+		echo CHtml::openTag('a', $htmlOptions);
+		echo '<span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span>';
+		echo '</a>';
+		return ob_get_clean();
+	}
+
+	/**
 	 * Generates a label span.
 	 * @param string $label the label text.
 	 * @param array $htmlOptions the HTML attributes for the label.

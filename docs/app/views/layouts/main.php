@@ -12,6 +12,7 @@
 <body>
 	<?php $this->widget('bootstrap.widgets.TbNavbar',array(
         'style'=>'inverse',
+		'collapse'=>true,
         'items'=>array(
 			array(
 				'class'=>'bootstrap.widgets.TbNav',

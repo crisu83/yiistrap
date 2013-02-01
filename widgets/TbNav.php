@@ -8,6 +8,7 @@
 
 /**
  * Bootstrap navigation menu widget.
+ * @see http://twitter.github.com/bootstrap/components.html#navbar
  */
 class TbNav extends CWidget
 {

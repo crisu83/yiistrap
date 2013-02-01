@@ -8,6 +8,7 @@
 
 /**
  * Bootstrap alert widget.
+ * @see http://twitter.github.com/bootstrap/javascript.html#alerts
  */
 class TbAlert extends CWidget
 {
@@ -18,7 +19,7 @@ class TbAlert extends CWidget
 	/**
 	 * @var string|boolean the close link text. If this is set false, no close link will be displayed.
 	 */
-	public $closeText = '&times;';
+	public $closeText = TbHtml::CLOSE_TEXT;
 	/**
 	 * @var boolean indicates whether the alert should be an alert block. Defaults to 'true'.
 	 */

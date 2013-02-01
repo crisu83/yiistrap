@@ -8,6 +8,7 @@
 
 /**
  * Bootstrap breadcrumb widget.
+ * @see http://twitter.github.com/bootstrap/components.html#breadcrumbs
  */
 class TbBreadcrumb extends CWidget
 {

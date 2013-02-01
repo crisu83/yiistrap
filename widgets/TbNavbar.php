@@ -6,21 +6,54 @@
  * @license http://www.opensource.org/licenses/bsd-license.php New BSD License
  */
 
+Yii::import('bootstrap.widgets.TbCollapse');
+
 /**
  * Bootstrap navbar widget.
+ * @see http://twitter.github.com/bootstrap/components.html#navbar
  */
 class TbNavbar extends CWidget
 {
+	/**
+	 * @var string the navbar style.
+	 */
 	public $style;
+	/**
+	 * @var string the brand label text.
+	 */
 	public $brandLabel;
+	/**
+	 * @var mixed the brand url.
+	 */
 	public $brandUrl;
+	/**
+	 * @var array the HTML attributes for the brand link.
+	 */
 	public $brandOptions = array();
+	/**
+	 * @var string fix location of the navbar is applicable.
+	 */
 	public $fixed = TbHtml::FIXED_TOP;
+	/**
+	 * @var boolean whether the navbar spans over the whole page.
+	 */
 	public $fluid = false;
+	/**
+	 * @var boolean whether to enable collapsing of the navbar on narrow screens.
+	 */
 	public $collapse = false;
+	/**
+	 * @var array list of navbar item.
+	 */
 	public $items = array();
+	/**
+	 * @var array the HTML attributes for the navbar.
+	 */
 	public $htmlOptions = array();
 
+	/**
+	 * Initializes the widget.
+	 */
 	public function init()
 	{
 		if ($this->brandLabel !== false)
@@ -46,15 +79,18 @@ class TbNavbar extends CWidget
 			$this->htmlOptions = TbHtml::addClassName('navbar-fixed-' . $this->fixed, $this->htmlOptions);
 	}
 
+	/**
+	 * Runs the widget.
+	 */
 	public function run()
 	{
-		echo CHtml::openTag('div', $this->htmlOptions);
-		echo '<div class="navbar-inner">';
-		echo CHtml::openTag('div', array('class' => $this->fluid ? 'container-fluid' : 'container'));
+		$collapseId = TbCollapse::getNextContainerId();
 
-		if ($this->brandLabel !== false)
-			echo CHtml::tag($this->brandUrl !== false ? 'a' : 'span', $this->brandOptions, $this->brandLabel);
+		$brand = $this->brandLabel !== false
+			? CHtml::tag($this->brandUrl !== false ? 'a' : 'span', $this->brandOptions, $this->brandLabel)
+			: '';
 
+		ob_start();
 		foreach ($this->items as $item)
 		{
 			if (is_string($item))
@@ -66,6 +102,26 @@ class TbNavbar extends CWidget
 					$this->controller->widget($widgetClassName, $item);
 			}
 		}
+		$items = ob_get_clean();
+
+		echo CHtml::openTag('div', $this->htmlOptions);
+		echo '<div class="navbar-inner">';
+		echo CHtml::openTag('div', array('class' => $this->fluid ? 'container-fluid' : 'container'));
+
+		if ($this->collapse !== false)
+		{
+			echo TbHtml::collapseIcon('#' . $collapseId);
+			echo $brand;
+			$this->controller->beginWidget('TbCollapse', array(
+				'id' => $collapseId,
+				'toggle' => false, // navbars are collapsed by default
+				'htmlOptions' => array('class' => 'nav-collapse'),
+			));
+			echo $items;
+			$this->controller->endWidget();
+		}
+		else
+			echo $brand . $items;
 
 		echo '</div></div></div>';
 	}
