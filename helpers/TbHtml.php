@@ -677,30 +677,25 @@ class TbHtml extends CHtml
 	{
 		$htmlOptions = self::addClassName('form-search', $htmlOptions);
 		$inputOptions = self::popOption('inputOptions', $htmlOptions, array());
-		$inputOptions = self::defaultOption('type', 'text', $inputOptions);
-		$inputOptions = self::defaultOption('placeholder', 'Search', $inputOptions);
+		$inputOptions = self::mergeOptions(array('type'=>'text', 'placeholder'=>'Search'), $inputOptions);
 		$inputOptions = self::addClassName('search-query', $inputOptions);
+
 		$buttonOptions = self::popOption('buttonOptions', $htmlOptions, array());
-		$buttonLabel = self::popOption('buttonLabel', $htmlOptions, self::icon('search'));
-		$input = parent::tag('input', $inputOptions);
+		$buttonLabel = self::popOption('label', $buttonOptions, self::icon('search'));
+
 		ob_start();
 		echo self::beginForm($action, $method, $htmlOptions);
-		$addon = self::popOption('addon', $htmlOptions);
 
-		if (isset($addon) && in_array($addon, self::$inputAddons))
-		{
-			$addonOptions = self::popOption('addonOptions', $htmlOptions, array());
-			$addonOptions = self::addClassName('input-' . $addon, $addonOptions);
-			echo self::openTag('div', $addonOptions);
-			if ($addon === self::ADDON_PREPEND)
-				echo self::button($buttonLabel, $buttonOptions);
-			echo $input;
-			if ($addon === self::ADDON_APPEND)
-				echo self::button($buttonLabel, $buttonOptions);
-			echo '</div>';
-		}
-		else
-			echo $input;
+		$addon = self::popOption('addon', $htmlOptions);
+		if(isset($addon) && in_array($addon, self::$inputAddons))
+			$inputOptions[$addon] = self::button($buttonLabel, $buttonOptions);
+
+		echo self::textField(
+			self::popOption('name', $inputOptions,'search'),
+			self::popOption('value', $inputOptions, ''),
+			$inputOptions
+		);
+
 		echo parent::endForm();
 		return ob_get_clean();
 	}
@@ -1113,7 +1108,7 @@ EOD;
 		$addOn = '';
 		if (self::getOption($type, $htmlOptions))
 		{
-			$addOn = strpos($htmlOptions[$type], self::BUTTON_BUTTON) // todo: fix this.
+			$addOn = strpos($htmlOptions[$type], 'button')
 				? $htmlOptions[$type]
 				: CHtml::tag('span', array('class' => 'add-on'), $htmlOptions[$type]);
 		}

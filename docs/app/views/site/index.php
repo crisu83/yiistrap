@@ -322,3 +322,18 @@ $this->pageTitle=Yii::app()->name;
 	<?php echo TbHtml::stripedProgressBar(80,array('style'=>'danger')); ?>
 
 </div>
+
+<div class="search-forms">
+	<h5>Append</h5>
+	<?php echo TbHtml::searchForm('','post', array(
+		'addon' => 'append',
+		'inputOptions' => array('name'=>'term', 'class'=>'span3', 'placeholder'=>'Search'),
+		'buttonOptions' => array('label'=>'search', 'type'=>'submit')
+	));?>
+	<h5>Prepend and Additional Options</h5>
+	<?php echo TbHtml::searchForm('','post', array(
+	'addon' => 'prepend',
+		'inputOptions' => array('name'=>'term', 'class'=>'span3', 'placeholder'=>'Search'),
+		'buttonOptions' => array('label'=>'search ' . TbHtml::icon(TbIcon::ICON_SEARCH), 'type'=>'submit')
+	));?>
+</div>
