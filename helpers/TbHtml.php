@@ -110,11 +110,13 @@ class TbHtml extends CHtml
 	{
 		$htmlOptions = self::addClassName('btn', $htmlOptions);
 
-		if (isset($htmlOptions['style']) && in_array($htmlOptions['style'], self::$buttonStyles))
-			$htmlOptions = self::addClassName('btn-' . self::popOption('style', $htmlOptions), $htmlOptions);
+		$style = self::popOption('style', $htmlOptions);
+		if (isset($style) && in_array($style, self::$buttonStyles))
+			$htmlOptions = self::addClassName('btn-' . $style, $htmlOptions);
 
-		if (isset($htmlOptions['size']) && in_array($htmlOptions['size'], self::$sizes))
-			$htmlOptions = self::addClassName('btn-' . self::popOption('size', $htmlOptions), $htmlOptions);
+		$size = self::popOption('size', $htmlOptions);
+		if (isset($size) && in_array($size, self::$sizes))
+			$htmlOptions = self::addClassName('btn-' . $size, $htmlOptions);
 
 		if (self::popOption('block', $htmlOptions, false))
 			$htmlOptions = self::addClassName('btn-block', $htmlOptions);
@@ -122,8 +124,9 @@ class TbHtml extends CHtml
 		if (self::popOption('disabled', $htmlOptions, false))
 			$htmlOptions = self::addClassName('disabled', $htmlOptions);
 
-		if (isset($htmlOptions['icon']))
-			$label = self::icon(self::popOption('icon', $htmlOptions)) . $label;
+		$icon = self::popOption('icon', $htmlOptions);
+		if (isset($icon))
+			$label = self::icon($icon) . $label;
 
 		return self::tag($tag, $htmlOptions, $label);
 	}
@@ -200,7 +203,7 @@ class TbHtml extends CHtml
 
 			ob_start();
 			echo parent::openTag('div', $htmlOptions);
-			foreach ($buttons as $button)
+			foreach ($buttons as $button) // todo: use as buttonOptions
 			{
 				$button = self::copyOptions(array('style', 'size', 'disabled'), $parentOptions, $button);
 				$buttonLabel = self::popOption('label', $button, '');
@@ -235,7 +238,7 @@ class TbHtml extends CHtml
 
 			ob_start();
 			echo parent::openTag('div', $htmlOptions);
-			foreach ($groups as $group)
+			foreach ($groups as $group) // todo: use as groupOptions
 			{
 				$items = self::getOption('items', $group, array());
 				if (empty($items))
@@ -298,7 +301,7 @@ class TbHtml extends CHtml
 	{
 		ob_start();
 		echo parent::openTag('ul', $htmlOptions);
-		foreach ($items as $menuItem)
+		foreach ($items as $menuItem) // todo: use as menuOptions
 		{
 			if (is_string($menuItem))
 				echo self::menuDivider();
@@ -372,7 +375,7 @@ class TbHtml extends CHtml
 
 		ob_start();
 		echo parent::openTag('li', $htmlOptions);
-		echo self::dropdownToggleMenuItem($label, $linkOptions);
+		echo self::dropdownToggleMenuLink($label, $linkOptions);
 		echo self::menu($items, $menuOptions);
 		echo '</li>';
 		return ob_get_clean();
@@ -491,7 +494,7 @@ class TbHtml extends CHtml
 	 * @return string the generated menu item.
 	 * http://twitter.github.com/bootstrap/components.html#dropdowns
 	 */
-	public static function dropdownToggleMenuItem($label, $htmlOptions = array())
+	public static function dropdownToggleMenuLink($label, $htmlOptions = array())
 	{
 		$htmlOptions = self::addClassName('dropdown-toggle', $htmlOptions);
 		$htmlOptions = self::defaultOption('data-toggle', 'dropdown', $htmlOptions);
@@ -580,33 +583,35 @@ class TbHtml extends CHtml
 
 	/**
 	 * Generates a pagination.
-	 * @param array $items the pagination items.
+	 * @param array $buttons the pagination buttons.
 	 * @param array $htmlOptions additional HTML attributes.
 	 * @return string the generated pagination.
 	 * @see http://twitter.github.com/bootstrap/components.html#pagination
 	 */
-	public static function pagination($items, $htmlOptions = array())
+	public static function pagination($buttons, $htmlOptions = array())
 	{
-		if (is_array($items) && !empty($items))
+		if (is_array($buttons) && !empty($buttons))
 		{
 			$htmlOptions = self::addClassName('pagination', $htmlOptions);
 
-			if (isset($htmlOptions['size']) && in_array($htmlOptions['size'], self::$sizes))
-				$htmlOptions = self::addClassName('pagination-' . self::popOption('size', $htmlOptions), $htmlOptions);
+			$size = self::popOption('size', $htmlOptions);
+			if (isset($size) && in_array($size, self::$sizes))
+				$htmlOptions = self::addClassName('pagination-' . $size, $htmlOptions);
 
-			if (isset($htmlOptions['align']) && in_array($htmlOptions['align'], self::$alignments))
-				$htmlOptions = self::addClassName('pagination-' . self::popOption('align', $htmlOptions), $htmlOptions);
+			$align = self::popOption('align', $htmlOptions);
+			if (isset($align) && in_array($align, self::$alignments))
+				$htmlOptions = self::addClassName('pagination-' . $align, $htmlOptions);
 
 			$listOptions = self::popOption('listOptions', $htmlOptions, array());
 
 			ob_start();
 			echo parent::openTag('div', $htmlOptions) . PHP_EOL;
 			echo parent::openTag('ul', $listOptions) . PHP_EOL;
-			foreach ($items as $itemOptions)
+			foreach ($buttons as $itemOptions)
 			{
 				$label = self::popOption('label', $itemOptions, '');
 				$url = self::popOption('url', $itemOptions, false);
-				echo self::paginationLink($label, $url, $itemOptions) . PHP_EOL;
+				echo self::paginationButton($label, $url, $itemOptions) . PHP_EOL;
 			}
 			echo '</ul>' . PHP_EOL . '</div>' . PHP_EOL;
 			return ob_get_clean();
@@ -621,11 +626,14 @@ class TbHtml extends CHtml
 	 * @param array $htmlOptions additional HTML attributes.
 	 * @return string the generated link.
 	 */
-	public static function paginationLink($label, $url, $htmlOptions = array())
+	public static function paginationButton($label, $url, $htmlOptions = array())
 	{
-		if (self::popOption('active', $htmlOptions, false))
+		$active = self::popOption('active', $htmlOptions);
+		$disabled = self::popOption('disabled', $htmlOptions);
+
+		if ($active)
 			$htmlOptions = self::addClassName('active', $htmlOptions);
-		else if (self::popOption('disabled', $htmlOptions, false))
+		else if ($disabled)
 			$htmlOptions = self::addClassName('disabled', $htmlOptions);
 
 		$linkOptions = self::popOption('linkOptions', $itemOptions, array());
@@ -639,24 +647,23 @@ class TbHtml extends CHtml
 
 	/**
 	 * Generates a pager.
-	 * @param array $items the pager items.
+	 * @param array $buttons the pager buttons.
 	 * @param array $htmlOptions additional HTML attributes.
 	 * @return string the generated pager.
 	 * @see http://twitter.github.com/bootstrap/components.html#pagination
 	 */
-	public static function pager($items, $htmlOptions = array())
+	public static function pager($buttons, $htmlOptions = array())
 	{
-		if (is_array($items) && !empty($items))
+		if (is_array($buttons) && !empty($buttons))
 		{
 			$htmlOptions = self::addClassName('pager', $htmlOptions);
-
 			ob_start();
 			echo parent::openTag('ul', $htmlOptions) . PHP_EOL;
-			foreach ($items as $itemOptions)
+			foreach ($buttons as $itemOptions)
 			{
 				$label = self::popOption('label', $itemOptions, '');
 				$url = self::popOption('url', $itemOptions, false);
-				echo self::pagerLink($label, $url, $itemOptions) . PHP_EOL;
+				echo self::pagerButton($label, $url, $itemOptions) . PHP_EOL;
 			}
 			echo '</ul>' . PHP_EOL;
 			return ob_get_clean();
@@ -671,11 +678,14 @@ class TbHtml extends CHtml
 	 * @param array $htmlOptions additional HTML attributes.
 	 * @return string the generated link.
 	 */
-	public static function pagerLink($label, $url, $htmlOptions = array())
+	public static function pagerButton($label, $url, $htmlOptions = array())
 	{
-		if (self::popOption('previous', $htmlOptions, false))
+		$previous = self::popOption('previous', $htmlOptions);
+		$next = self::popOption('next', $htmlOptions);
+
+		if ($previous)
 			$htmlOptions = self::addClassName('previous', $htmlOptions);
-		else if (self::popOption('next', $htmlOptions, false))
+		else if ($next)
 			$htmlOptions = self::addClassName('next', $htmlOptions);
 
 		if (self::popOption('disabled', $htmlOptions, false))
@@ -797,12 +807,10 @@ class TbHtml extends CHtml
 		if (isset($style) && in_array($style, self::$progressStyles))
 			$htmlOptions = self::addClassName('progress-' . $style, $htmlOptions);
 
-		$striped = self::popOption('striped', $htmlOptions, false);
-		if ($striped)
+		if (self::popOption('striped', $htmlOptions, false))
 		{
 			$htmlOptions = self::addClassName('progress-striped', $htmlOptions);
-			$animated = self::popOption('animated', $htmlOptions, false);
-			if ($animated)
+			if (self::popOption('animated', $htmlOptions, false))
 				$htmlOptions = self::addClassName('active', $htmlOptions);
 		}
 
@@ -853,7 +861,7 @@ class TbHtml extends CHtml
 			$htmlOptions = self::addClassName('progress', $htmlOptions);
 			ob_start();
 			echo parent::openTag('div', $htmlOptions);
-			foreach ($bars as $bar)
+			foreach ($bars as $bar) // todo: use as barOptions
 			{
 				$width = self::popOption('width', $bar, 0);
 				$barOptions = self::popOption('htmlOptions', $bar, array());
@@ -980,10 +988,14 @@ class TbHtml extends CHtml
 	 */
 	public static function icon($icon, $htmlOptions = array(), $tag = 'i')
 	{
-		if (strpos($icon, 'icon') === false)
-			$icon = 'icon-' . implode(' icon-', explode(' ', $icon));
-		$htmlOptions = self::addClassName($icon, $htmlOptions);
-		return parent::openTag($tag, $htmlOptions) . parent::closeTag($tag); // tag won't work in this case
+		if (is_string($icon))
+		{
+			if (strpos($icon, 'icon') === false)
+				$icon = 'icon-' . implode(' icon-', explode(' ', $icon));
+			$htmlOptions = self::addClassName($icon, $htmlOptions);
+			return parent::openTag($tag, $htmlOptions) . parent::closeTag($tag); // tag won't work in this case
+		}
+		return '';
 	}
 
 	//
