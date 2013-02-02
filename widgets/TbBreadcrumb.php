@@ -69,7 +69,7 @@ class TbBreadcrumb extends CWidget
 				else
 					$links[] = $this->encodeLabel ? CHtml::encode($url) : $url;
 			}
-			echo TbHtml::breadcrumb($links, $this->htmlOptions);
+			echo TbHtml::breadcrumbs($links, $this->htmlOptions);
 		}
 	}
 }

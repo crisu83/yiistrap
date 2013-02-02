@@ -218,9 +218,9 @@ $this->pageTitle=Yii::app()->name;
 <div class="breadcrumbs">
     <h3>Breadcrumb</h3>
 
-    <?php echo TbHtml::breadcrumb(array('Home')); ?>
+    <?php echo TbHtml::breadcrumbs(array('Home')); ?>
 
-    <?php echo TbHtml::breadcrumb(array(
+    <?php echo TbHtml::breadcrumbs(array(
         TbHtml::icon('home') => array('/site/index'),
         'Library',
     )); ?>
@@ -258,6 +258,22 @@ $this->pageTitle=Yii::app()->name;
 		<?php echo TbHtml::badgeSpan('8',array('style'=>'info')); ?>
 		<?php echo TbHtml::badgeSpan('10',array('style'=>'inverse')); ?>
 	</div>
+</div>
+
+<div class="typography">
+    <h3>Typography</h3>
+
+    <h5>Hero unit</h5>
+
+    <?php echo TbHtml::heroUnit(
+        'Hello, world!',
+        '<p>This is a simple hero unit, a simple jumbotron-style component for calling extra attention to featured content or information.</p>' . TbHtml::button('Learn more', array('style'=>'primary','size'=>'large')),
+        array('style'=>'width: 480px')
+    ); ?>
+
+    <h5>Page header</h5>
+
+    <?php echo TbHtml::pageHeader('Header text', 'Subtext for header'); ?>
 </div>
 
 <div class="alerts">
