@@ -1540,7 +1540,7 @@ EOD;
 	 * @see CModel::getErrors
 	 * @see errorMessageCss
 	 * @see $errorContainerTag
-	 * @todo move this method up to the form section.
+	 *
 	 */
 	public static function error($model, $attribute, $htmlOptions = array())
 	{
