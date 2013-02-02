@@ -443,6 +443,10 @@ class TbHtml extends CHtml
 		// todo: think about how to apply this, now it applies to all depths while it should only apply for the first.
 		//$htmlOptions = self::setDefaultValue('role', 'menu', $htmlOptions);
 		$htmlOptions = self::addClassName('dropdown-menu', $htmlOptions);
+
+		if (self::popOption('dropup', $htmlOptions, false))
+			$htmlOptions = self::addClassName('dropup', $htmlOptions);
+
 		ob_start();
 		echo self::menu($items, $htmlOptions);
 		return ob_get_clean();

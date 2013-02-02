@@ -35,8 +35,8 @@ class TbHeroUnit extends CWidget
 	public function init()
 	{
 		$controller = $this->getController();
-		if ($controller->getViewFile($this->content) !== false)
-			$this->content = $this->controller->renderPartial($this->content, null, true);
+		if (isset($controller) && $controller->getViewFile($this->content) !== false)
+			$this->content = $this->controller->renderPartial($this->content, null/* no data */, true);
 		$this->htmlOptions['headingOptions'] = $this->headingOptions;
 	}
 

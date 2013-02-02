@@ -21,6 +21,10 @@ class TbNav extends CWidget
 	 */
 	public $stacked = false;
 	/**
+	 * @var string|array the scrollspy target or configuration.
+	 */
+	public $scrollspy;
+	/**
 	 * @var array list of menu items. Each menu item is specified as an array of name-value pairs.
 	 */
 	public $items = array();
@@ -61,6 +65,12 @@ class TbNav extends CWidget
 		$route = $this->controller->getRoute();
 		if ($this->stacked)
 			$this->htmlOptions = TbHtml::addClassName('nav-stacked', $this->htmlOptions);
+		if (isset($this->scrollspy))
+		{
+			if (is_string($this->scrollspy))
+				$this->scrollspy = array('target'=>$this->scrollspy);
+			$this->widget('bootstrap.widgets.TbScrollspy', $this->scrollspy);
+		}
 		$this->items = $this->normalizeItems($this->items, $route, $hasActiveChild);
 	}
 

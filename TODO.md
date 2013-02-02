@@ -6,7 +6,6 @@ TODO
  - carousel
  - detail view
  - grid view
- - hero unit
  - modal
  - scroll spy
  - tabs

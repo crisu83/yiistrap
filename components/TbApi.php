@@ -142,7 +142,7 @@ class TbApi extends CApplicationComponent
     {
         $options = !empty($options) ? CJavaScript::encode($options) : '';
 		$script = "jQuery('{$selector}').{$name}({$options});";
-		Yii::app()->clientScript->registerScript($this->generateRandomId(), $script, $position);
+		Yii::app()->clientScript->registerScript($this->getUniqueScriptId(), $script, $position);
     }
 
     /**
@@ -159,7 +159,7 @@ class TbApi extends CApplicationComponent
             $handler = new CJavaScriptExpression($handler);
             $script .= "jQuery('{$selector}').on('{$name}', {$handler});";
         }
-        Yii::app()->clientScript->registerScript($this->generateRandomId(), $script, $position);
+        Yii::app()->clientScript->registerScript($this->getUniqueScriptId(), $script, $position);
     }
 
     /**
@@ -182,7 +182,7 @@ class TbApi extends CApplicationComponent
      * Generates a "somewhat" random id string.
      * @return string the id.
      */
-    protected function generateRandomId()
+    protected function getUniqueScriptId()
     {
         return uniqid(__CLASS__ . '#', true);
     }
