@@ -1,2 +1,4 @@
-yii-bootstrap
-=============
+Yiistrap
+========
+
+Twitter Bootstrap for Yii.
