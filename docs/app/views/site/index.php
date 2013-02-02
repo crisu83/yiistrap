@@ -346,11 +346,11 @@ $this->pageTitle=Yii::app()->name;
 
     <h5>Hero unit</h5>
 
-    <?php echo TbHtml::heroUnit(
-        'Hello, world!',
-        '<p>This is a simple hero unit, a simple jumbotron-style component for calling extra attention to featured content or information.</p>' . TbHtml::button('Learn more', array('style'=>'primary','size'=>'large')),
-        array('style'=>'width: 480px')
-    ); ?>
+    <?php $this->widget('bootstrap.widgets.TbHeroUnit',array(
+        'heading'=>'Hello, world!',
+        'content'=>'_heroUnit',
+        'htmlOptions'=>array('style'=>'width: 480px')
+	)); ?>
 
     <h5>Page header</h5>
 
