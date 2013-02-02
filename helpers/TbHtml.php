@@ -22,47 +22,53 @@ class TbHtml extends CHtml
 	const STYLE_IMPORTANT		= 'important';
 	const STYLE_INVERSE			= 'inverse';
 	const STYLE_LINK			= 'link';
-  
-	// Element sizes.  
+
+	// Element sizes.
 	const SIZE_MINI				= 'mini';
 	const SIZE_SMALL			= 'small';
 	const SIZE_LARGE			= 'large';
-  
-	// Navigation menu types.  
+
+	// Navigation menu types.
 	const NAV_TABS				= 'tabs';
 	const NAV_PILLS				= 'pills';
 	const NAV_LIST				= 'list';
-  
-	// Fixed types.  
+
+	// Fixed types.
 	const FIXED_TOP				= 'top';
 	const FIXED_BOTTOM			= 'bottom';
-  
-	// Addon types.  
-	const ADDON_PREPEND			= 'prepend';
-	const ADDON_APPEND			= 'append';
-  
+
+	// Alignments.
+	const ALIGN_CENTER			= 'centered';
+	const ALIGN_RIGHT			= 'right';
+
+	// Progress bar types.
 	const PROGRESS_STRIPED		= 'striped';
 	const PROGRESS_ACTIVE		= 'active';
-  
-	// Default close text.  
+
+	// Addon types.
+	const ADDON_PREPEND			= 'prepend';
+	const ADDON_APPEND			= 'append';
+
+
+	// Default close text.
 	const CLOSE_TEXT			= '&times;';
-  
-	// Scope constants.  
+
+	// Scope constants.
+	static $sizes				= array(self::SIZE_LARGE, self::SIZE_SMALL, self::SIZE_MINI);
 	static $buttonStyles		= array(
 									self::STYLE_PRIMARY, self::STYLE_INFO, self::STYLE_SUCCESS, self::STYLE_WARNING,
 									self::STYLE_DANGER, self::STYLE_INVERSE, self::STYLE_LINK,
 								);
-	static $buttonSizes			= array(self::SIZE_LARGE, self::SIZE_SMALL, self::SIZE_MINI);
 	static $labelBadgeStyles	= array(self::STYLE_SUCCESS, self::STYLE_WARNING, self::STYLE_IMPORTANT,
 									self::STYLE_INFO, self::STYLE_INVERSE,
 								);
-	static $alertStyles			= array(self::STYLE_SUCCESS, self::STYLE_INFO, self::STYLE_WARNING, self::STYLE_ERROR);
+	static $navStyles			= array(self::NAV_TABS, self::NAV_PILLS, self::NAV_LIST);
 	static $navbarStyles		= array(self::STYLE_INVERSE);
 	static $navbarFixes			= array(self::FIXED_TOP, self::FIXED_BOTTOM);
+	static $alignments	= array(self::ALIGN_CENTER, self::ALIGN_RIGHT);
+	static $alertStyles			= array(self::STYLE_SUCCESS, self::STYLE_INFO, self::STYLE_WARNING, self::STYLE_ERROR);
 	static $progressStyles		= array(self::STYLE_INFO, self::STYLE_SUCCESS, self::STYLE_WARNING, self::STYLE_DANGER);
-	static $inputAddons			= array(self::ADDON_PREPEND, self::ADDON_APPEND);
-	static $navStyles			= array(self::NAV_TABS, self::NAV_PILLS, self::NAV_LIST);
-	static $wellSizes			= array(self::SIZE_LARGE, self::SIZE_SMALL, self::SIZE_MINI);
+	static $addons				= array(self::ADDON_PREPEND, self::ADDON_APPEND);
 
 	//
 	// Buttons
@@ -107,7 +113,7 @@ class TbHtml extends CHtml
 		if (isset($htmlOptions['style']) && in_array($htmlOptions['style'], self::$buttonStyles))
 			$htmlOptions = self::addClassName('btn-' . self::popOption('style', $htmlOptions), $htmlOptions);
 
-		if (isset($htmlOptions['size']) && in_array($htmlOptions['size'], self::$buttonSizes))
+		if (isset($htmlOptions['size']) && in_array($htmlOptions['size'], self::$sizes))
 			$htmlOptions = self::addClassName('btn-' . self::popOption('size', $htmlOptions), $htmlOptions);
 
 		if (self::popOption('block', $htmlOptions, false))
@@ -572,6 +578,118 @@ class TbHtml extends CHtml
 	// Pagination
 	// --------------------------------------------------
 
+	/**
+	 * Generates a pagination.
+	 * @param array $items the pagination items.
+	 * @param array $htmlOptions additional HTML attributes.
+	 * @return string the generated pagination.
+	 * @see http://twitter.github.com/bootstrap/components.html#pagination
+	 */
+	public static function pagination($items, $htmlOptions = array())
+	{
+		if (is_array($items) && !empty($items))
+		{
+			$htmlOptions = self::addClassName('pagination', $htmlOptions);
+
+			if (isset($htmlOptions['size']) && in_array($htmlOptions['size'], self::$sizes))
+				$htmlOptions = self::addClassName('pagination-' . self::popOption('size', $htmlOptions), $htmlOptions);
+
+			if (isset($htmlOptions['align']) && in_array($htmlOptions['align'], self::$alignments))
+				$htmlOptions = self::addClassName('pagination-' . self::popOption('align', $htmlOptions), $htmlOptions);
+
+			$listOptions = self::popOption('listOptions', $htmlOptions, array());
+
+			ob_start();
+			echo parent::openTag('div', $htmlOptions) . PHP_EOL;
+			echo parent::openTag('ul', $listOptions) . PHP_EOL;
+			foreach ($items as $itemOptions)
+			{
+				$label = self::popOption('label', $itemOptions, '');
+				$url = self::popOption('url', $itemOptions, false);
+				echo self::paginationLink($label, $url, $itemOptions) . PHP_EOL;
+			}
+			echo '</ul>' . PHP_EOL . '</div>' . PHP_EOL;
+			return ob_get_clean();
+		}
+		return '';
+	}
+
+	/**
+	 * Generates a pagination link.
+	 * @param string $label the link label text.
+	 * @param mixed $url the link url.
+	 * @param array $htmlOptions additional HTML attributes.
+	 * @return string the generated link.
+	 */
+	public static function paginationLink($label, $url, $htmlOptions = array())
+	{
+		if (self::popOption('active', $htmlOptions, false))
+			$htmlOptions = self::addClassName('active', $htmlOptions);
+		else if (self::popOption('disabled', $htmlOptions, false))
+			$htmlOptions = self::addClassName('disabled', $htmlOptions);
+
+		$linkOptions = self::popOption('linkOptions', $itemOptions, array());
+
+		ob_start();
+		echo parent::openTag('li', $htmlOptions) . PHP_EOL;
+		echo parent::link($label, $url, $linkOptions) . PHP_EOL;
+		echo '</li>' . PHP_EOL;
+		return ob_get_clean();
+	}
+
+	/**
+	 * Generates a pager.
+	 * @param array $items the pager items.
+	 * @param array $htmlOptions additional HTML attributes.
+	 * @return string the generated pager.
+	 * @see http://twitter.github.com/bootstrap/components.html#pagination
+	 */
+	public static function pager($items, $htmlOptions = array())
+	{
+		if (is_array($items) && !empty($items))
+		{
+			$htmlOptions = self::addClassName('pager', $htmlOptions);
+
+			ob_start();
+			echo parent::openTag('ul', $htmlOptions) . PHP_EOL;
+			foreach ($items as $itemOptions)
+			{
+				$label = self::popOption('label', $itemOptions, '');
+				$url = self::popOption('url', $itemOptions, false);
+				echo self::pagerLink($label, $url, $itemOptions) . PHP_EOL;
+			}
+			echo '</ul>' . PHP_EOL;
+			return ob_get_clean();
+		}
+		return '';
+	}
+
+	/**
+	 * Generates a pager link.
+	 * @param string $label the link label text.
+	 * @param mixed $url the link url.
+	 * @param array $htmlOptions additional HTML attributes.
+	 * @return string the generated link.
+	 */
+	public static function pagerLink($label, $url, $htmlOptions = array())
+	{
+		if (self::popOption('previous', $htmlOptions, false))
+			$htmlOptions = self::addClassName('previous', $htmlOptions);
+		else if (self::popOption('next', $htmlOptions, false))
+			$htmlOptions = self::addClassName('next', $htmlOptions);
+
+		if (self::popOption('disabled', $htmlOptions, false))
+			$htmlOptions = self::addClassName('disabled', $htmlOptions);
+
+		$linkOptions = self::popOption('linkOptions', $itemOptions, array());
+
+		ob_start();
+		echo parent::openTag('li', $htmlOptions) . PHP_EOL;
+		echo parent::link($label, $url, $linkOptions) . PHP_EOL;
+		echo '</li>' . PHP_EOL;
+		return ob_get_clean();
+	}
+
 	//
 	// Labels and badges
 	// --------------------------------------------------
@@ -786,7 +904,7 @@ class TbHtml extends CHtml
 	public static function well($content, $htmlOptions = array())
 	{
 		$size = self::popOption('size', $htmlOptions);
-		if (isset($size) && in_array($size, self::$wellSizes))
+		if (isset($size) && in_array($size, self::$sizes))
 			$htmlOptions = self::addClassName('well-' . $size, $htmlOptions);
 		ob_start();
 		parent::tag('div', $htmlOptions, $content);
@@ -905,7 +1023,7 @@ class TbHtml extends CHtml
 		echo self::beginForm($action, $method, $htmlOptions);
 
 		$addon = self::popOption('addon', $htmlOptions);
-		if(isset($addon) && in_array($addon, self::$inputAddons))
+		if(isset($addon) && in_array($addon, self::$addons))
 			$inputOptions[$addon] = self::button($buttonLabel, $buttonOptions);
 
 		echo self::textField(
@@ -1296,15 +1414,18 @@ EOD;
 		return $options;
 	}
 
+	/**
+	 * Sets multiple default options for the given options array.
+	 * @param array $options the options to set defaults for.
+	 * @param array $defaults the default options.
+	 * @return array the options with default values.
+	 */
 	public static function defaultOptions($options, $defaults)
 	{
 		if (is_array($defaults) && is_array($options))
 		{
 			foreach ($defaults as $name => $value)
-			{
-				if (!isset($options[$name]))
-					$options[$name] = $defaults[$name];
-			}
+				$options = self::defaultOption($name, $value, $options);
 		}
 		return $options;
 	}

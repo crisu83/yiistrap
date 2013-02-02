@@ -234,6 +234,73 @@ $this->pageTitle=Yii::app()->name;
     )); ?>
 </div>
 
+<div class="paginations" style="width: 590px;">
+	<h3>Pagination</h3>
+
+	<h5>Standard pagination</h5>
+
+	<?php $paginationConfig = array(
+		array('label'=>'Prev','url'=>'#'),
+		array('label'=>'1','url'=>'#'),
+		array('label'=>'2','url'=>'#'),
+		array('label'=>'3','url'=>'#'),
+		array('label'=>'4','url'=>'#'),
+		array('label'=>'5','url'=>'#'),
+		array('label'=>'Next','url'=>'#'),
+	); ?>
+
+	<?php echo TbHtml::pagination($paginationConfig); ?>
+
+	<h5>Disabled and active states</h5>
+
+	<?php echo TbHtml::pagination(array(
+		array('label'=>'Prev','url'=>'#','disabled'=>true),
+		array('label'=>'1','url'=>'#','active'=>true),
+		array('label'=>'2','url'=>'#'),
+		array('label'=>'3','url'=>'#'),
+		array('label'=>'4','url'=>'#'),
+		array('label'=>'5','url'=>'#'),
+		array('label'=>'Next','url'=>'#'),
+	)); ?>
+
+	<h5>Sizes</h5>
+
+	<?php echo TbHtml::pagination($paginationConfig,array('size'=>'large')); ?>
+	<?php echo TbHtml::pagination($paginationConfig); ?>
+	<?php echo TbHtml::pagination($paginationConfig,array('size'=>'small')); ?>
+	<?php echo TbHtml::pagination($paginationConfig,array('size'=>'mini')); ?>
+
+	<h5>Alignment</h5>
+
+	<?php echo TbHtml::pagination($paginationConfig); ?>
+	<?php echo TbHtml::pagination($paginationConfig,array('align'=>'centered')); ?>
+	<?php echo TbHtml::pagination($paginationConfig,array('align'=>'right')); ?>
+
+	<h3>Pager</h3>
+
+	<h5>Default pager</h5>
+
+	<?php echo TbHtml::pager(array(
+		array('label'=>'Previous'),
+		array('label'=>'Next'),
+	)); ?>
+
+	<h5>Aligned links</h5>
+
+	<?php echo TbHtml::pager(array(
+		array('label'=>'Older &larr;','previous'=>true),
+		array('label'=>'Newer &rarr;','next'=>true),
+	)); ?>
+
+	<h5>Disabled state</h5>
+
+	<?php echo TbHtml::pager(array(
+		array('label'=>'Older &larr;','previous'=>true,'disabled'=>true),
+		array('label'=>'Newer &rarr;','next'=>true),
+	)); ?>
+
+</div>
+
 <div class="labels-badges">
 	<h3>Labels and badges</h3>
 
