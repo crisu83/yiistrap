@@ -23,10 +23,6 @@ class TbCollapse extends TbWrap
 	 */
 	public $toggle;
 	/**
-	 * @var array the JavaScript options for the plugin.
-	 */
-	public $options = array();
-	/**
 	 * @var string[] $events the JavaScript event configuration (name=>handler).
 	 */
 	public $events = array();
@@ -36,10 +32,12 @@ class TbCollapse extends TbWrap
 	 */
 	public function init()
 	{
+		$this->htmlOptions = TbHtml::addClassName('collapse', $this->htmlOptions);
+		$this->htmlOptions['data-toggle'] = 'collapse';
 		if (isset($this->parent))
-			$this->options = TbHtml::defaultOption('parent', $this->parent, $this->options);
-		if (isset($this->toggle))
-			$this->options = TbHtml::defaultOption('toggle', $this->toggle, $this->options);
+			$this->htmlOptions = TbHtml::defaultOption('data-parent', $this->parent, $this->htmlOptions);
+		if (isset($this->toggle) && $this->toggle)
+			$this->htmlOptions = TbHtml::addClassName('in', $this->htmlOptions);
 		parent::init();
 	}
 
@@ -50,7 +48,6 @@ class TbCollapse extends TbWrap
 	{
 		parent::run();
 		$selector = $this->htmlOptions['id'];
-		$this->options = TbHtml::defaultOption('events', $this->events, $this->options);
-		$this->registerPlugin(TbApi::PLUGIN_COLLAPSE, $selector, $this->options);
+		$this->registerEvents($selector, $this->events);
 	}
 }
