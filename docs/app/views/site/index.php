@@ -66,7 +66,7 @@ $this->pageTitle=Yii::app()->name;
 
 	<div style="margin-bottom: 20px;">
 		<?php echo TbHtml::buttonGroup(array(
-			array('label'=>'Left'),
+			array('label'=>'Left', 'htmlOptions'=>array('style'=>'success')),
 			array('label'=>'Middle'),
 			array('label'=>'Right'),
 		),array('style'=>'primary')); ?>
@@ -81,7 +81,7 @@ $this->pageTitle=Yii::app()->name;
 				array('label'=>'2'),
 				array('label'=>'3'),
 				array('label'=>'4'),
-			)),
+			),'htmlOptions'=>array('style'=>'warning')),
 			array('items'=>array(
 				array('label'=>'5'),
 				array('label'=>'6'),
@@ -164,7 +164,7 @@ $this->pageTitle=Yii::app()->name;
 <div class="navs">
 	<?php $navItems = array(
 		array('icon'=>'home','url'=>array('/site/index')),
-		array('label'=>'Profile','url'=>'#'),
+		array('label'=>'Profile','url'=>'#','itemOptions'=>array('class'=>'foo'),'linkOptions'=>array('class'=>'bar')),
 		array('label'=>'Messages','url'=>'#'),
 		array('label'=>'Dropdown','items'=>array(
 			array('label'=>'Header'),
@@ -241,7 +241,7 @@ $this->pageTitle=Yii::app()->name;
 
 	<?php $paginationConfig = array(
 		array('label'=>'Prev','url'=>'#'),
-		array('label'=>'1','url'=>'#'),
+		array('label'=>'1','url'=>'#','htmlOptions'=>array('class'=>'foo')),
 		array('label'=>'2','url'=>'#'),
 		array('label'=>'3','url'=>'#'),
 		array('label'=>'4','url'=>'#'),
@@ -281,7 +281,7 @@ $this->pageTitle=Yii::app()->name;
 	<h5>Default pager</h5>
 
 	<?php echo TbHtml::pager(array(
-		array('label'=>'Previous'),
+		array('label'=>'Previous','htmlOptions'=>array('class'=>'bar')),
 		array('label'=>'Next'),
 	)); ?>
 
@@ -399,7 +399,7 @@ $this->pageTitle=Yii::app()->name;
 	<h5>Stacked</h5>
 
 	<?php echo TbHtml::stackedProgressBar(array(
-		array('style'=>'success','width'=>35),
+		array('style'=>'success','width'=>35,'htmlOptions'=>array('class'=>'foo')),
 		array('style'=>'warning','width'=>20),
 		array('style'=>'danger','width'=>10),
 	)); ?>

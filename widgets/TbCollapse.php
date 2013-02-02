@@ -6,7 +6,7 @@
  * @license http://www.opensource.org/licenses/bsd-license.php New BSD License
  */
 
-Yii::import('bootstrap.components.TbApi');
+Yii::import('bootstrap.widgets.TbWrap');
 
 /**
  * Bootstrap collapse widget.

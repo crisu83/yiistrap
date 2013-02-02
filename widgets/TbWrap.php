@@ -7,6 +7,7 @@
  */
 
 Yii::import('bootstrap.components.TbApi');
+Yii::import('bootstrap.widgets.TbWidget');
 
 /**
  * Bootstrap base widget for wrappers.
@@ -27,6 +28,7 @@ abstract class TbWrap extends TbWidget
 	 */
 	public function init()
 	{
+		$this->htmlOptions = TbHtml::defaultOption('id', $this->getId(), $this->htmlOptions);
 		echo CHtml::openTag($this->tagName, $this->htmlOptions);
 	}
 

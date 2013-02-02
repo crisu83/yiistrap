@@ -6,6 +6,8 @@
  * @license http://www.opensource.org/licenses/bsd-license.php New BSD License
  */
 
+Yii::import('bootstrap.widgets.TbWidget');
+
 /**
  * Bootstrap alert widget.
  * @see http://twitter.github.com/bootstrap/javascript.html#alerts

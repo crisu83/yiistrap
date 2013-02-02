@@ -205,12 +205,13 @@ class TbHtml extends CHtml
 
 			ob_start();
 			echo parent::openTag('div', $htmlOptions);
-			foreach ($buttons as $button) // todo: use as buttonOptions
+			foreach ($buttons as $buttonOptions)
 			{
-				$button = self::copyOptions(array('style', 'size', 'disabled'), $parentOptions, $button);
-				$buttonLabel = self::popOption('label', $button, '');
-				$buttonOptions = self::popOption('htmlOptions', $button, array());
-				$buttonOptions = self::moveOptions(array('icon', 'style', 'size', 'disabled'), $button, $buttonOptions);
+				$options = self::popOption('htmlOptions', $buttonOptions, array());
+				if (!empty($options))
+					$buttonOptions = self::mergeOptions($options, $buttonOptions);
+				$buttonLabel = self::popOption('label', $buttonOptions, '');
+				$buttonOptions = self::copyOptions(array('style', 'size', 'disabled'), $parentOptions, $buttonOptions);
 				echo self::button($buttonLabel, $buttonOptions);
 			}
 			echo '</div>';
@@ -240,15 +241,15 @@ class TbHtml extends CHtml
 
 			ob_start();
 			echo parent::openTag('div', $htmlOptions);
-			foreach ($groups as $group) // todo: use as groupOptions
+			foreach ($groups as $groupOptions)
 			{
-				$items = self::getOption('items', $group, array());
+				$items = self::popOption('items', $groupOptions, array());
 				if (empty($items))
 					continue;
-
-				$group = self::copyOptions(array('style', 'size', 'disabled'), $parentOptions, $group);
-				$groupOptions = self::getOption('htmlOptions', $group, array());
-				$groupOptions = self::moveOptions(array('style', 'size', 'disabled'), $group, $groupOptions);
+				$options = self::popOption('htmlOptions', $groupOptions, array());
+				if (!empty($options))
+					$groupOptions = self::mergeOptions($options, $groupOptions);
+				$groupOptions = self::copyOptions(array('style', 'size', 'disabled'), $parentOptions, $groupOptions);
 				echo self::buttonGroup($items, $groupOptions);
 			}
 			echo '</div>';
@@ -303,32 +304,32 @@ class TbHtml extends CHtml
 	{
 		ob_start();
 		echo parent::openTag('ul', $htmlOptions);
-		foreach ($items as $menuItem) // todo: use as menuOptions
+		foreach ($items as $itemOptions)
 		{
-			if (is_string($menuItem))
+			if (is_string($itemOptions))
 				echo self::menuDivider();
 			else
 			{
+				$options = self::popOption('itemOptions', $itemOptions, array());
+				if (!empty($options))
+					$itemOptions = self::mergeOptions($options, $itemOptions);
+
 				// todo: I'm not quite happy with the logic below but it will have to do for now.
-				$label = self::getOption('label', $menuItem, '');
-				$itemOptions = self::getOption('itemOptions', $menuItem, array());
-
-				if (self::getOption('active', $menuItem, false))
+				$label = self::popOption('label', $itemOptions, '');
+				if (self::popOption('active', $itemOptions, false))
 					$itemOptions = self::addClassName('active', $itemOptions);
-
-				if (self::getOption('header', $menuItem, false))
+				if (self::popOption('header', $itemOptions, false))
 					echo self::menuHeader($label, $itemOptions);
 				else
 				{
-					$itemOptions['linkOptions'] = self::getOption('linkOptions', $menuItem, array());
-
-					if (isset($menuItem['icon']))
-						$label = self::icon(self::popOption('icon', $menuItem)) . ' ' . $label;
-
-					$items = self::getOption('items', $menuItem, array());
+					$itemOptions['linkOptions'] = self::getOption('linkOptions', $itemOptions, array());
+					$icon = self::popOption('icon', $itemOptions);
+					if (isset($icon))
+						$label = self::icon($icon) . ' ' . $label;
+					$items = self::popOption('items', $itemOptions, array());
 					if (empty($items))
 					{
-						$url = self::getOption('url', false, $menuItem);
+						$url = self::popOption('url', $itemOptions, false);
 						echo self::menuLink($label, $url, $itemOptions);
 					}
 					else
@@ -611,6 +612,9 @@ class TbHtml extends CHtml
 			echo parent::openTag('ul', $listOptions) . PHP_EOL;
 			foreach ($buttons as $itemOptions)
 			{
+				$options = self::popOption('htmlOptions', $itemOptions, array());
+				if (!empty($options))
+					$itemOptions = self::mergeOptions($options, $itemOptions);
 				$label = self::popOption('label', $itemOptions, '');
 				$url = self::popOption('url', $itemOptions, false);
 				echo self::paginationButton($label, $url, $itemOptions) . PHP_EOL;
@@ -663,6 +667,9 @@ class TbHtml extends CHtml
 			echo parent::openTag('ul', $htmlOptions) . PHP_EOL;
 			foreach ($buttons as $itemOptions)
 			{
+				$options = self::popOption('htmlOptions', $itemOptions, array());
+				if (!empty($options))
+					$itemOptions = self::mergeOptions($options, $itemOptions);
 				$label = self::popOption('label', $itemOptions, '');
 				$url = self::popOption('url', $itemOptions, false);
 				echo self::pagerButton($label, $url, $itemOptions) . PHP_EOL;
@@ -863,11 +870,15 @@ class TbHtml extends CHtml
 			$htmlOptions = self::addClassName('progress', $htmlOptions);
 			ob_start();
 			echo parent::openTag('div', $htmlOptions);
-			foreach ($bars as $bar) // todo: use as barOptions
+			foreach ($bars as $barOptions)
 			{
-				$width = self::popOption('width', $bar, 0);
-				$barOptions = self::popOption('htmlOptions', $bar, array());
-				$barOptions = self::defaultOption('style', self::popOption('style', $bar), $barOptions);
+				$options = self::popOption('htmlOptions', $barOptions, array());
+				if (!empty($options))
+					$barOptions = self::mergeOptions($options, $barOptions);
+				$style = self::popOption('style', $barOptions);
+				if (isset($style))
+					$barOptions = self::defaultOption('style', $style, $barOptions);
+				$width = self::popOption('width', $barOptions, 0);
 				echo self::bar($width, $barOptions);
 			}
 			echo '</div>';
