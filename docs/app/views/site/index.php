@@ -253,18 +253,6 @@ $this->pageTitle=Yii::app()->name;
 
 	<h5>Disabled and active states</h5>
 
-	<?php
-	$rawData=array();
-	for($i=0;$i<800;$i++)
-		$rawData[]=array('id'=>$i+1);
-	$dp=new CArrayDataProvider($rawData);
-	$this->widget('bootstrap.widgets.TbListView',array(
-		'dataProvider'=>$dp,
-		'template'=>"{pager}",
-		'itemView'=>'_empty',
-	));
-	?>
-
 	<?php echo TbHtml::pagination(array(
 		array('label'=>'Prev','url'=>'#','disabled'=>true),
 		array('label'=>'1','url'=>'#','active'=>true),
@@ -310,6 +298,20 @@ $this->pageTitle=Yii::app()->name;
 		array('label'=>'Older &larr;','previous'=>true,'disabled'=>true),
 		array('label'=>'Newer &rarr;','next'=>true),
 	)); ?>
+
+	<h5>Widget</h5>
+
+	<?php
+	$rawData=array();
+	for($i=0;$i<800;$i++)
+		$rawData[]=array('id'=>$i+1);
+	$dp=new CArrayDataProvider($rawData);
+	$this->widget('bootstrap.widgets.TbListView',array(
+		'dataProvider'=>$dp,
+		'template'=>"{pager}",
+		'itemView'=>'_empty',
+	));
+	?>
 
 </div>
 
