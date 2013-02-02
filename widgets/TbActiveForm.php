@@ -18,6 +18,11 @@ class TbActiveForm extends CActiveForm
 
 	public $errorMessageCssClass = TbHtml::STYLE_ERROR;
 
+	public function init()
+	{
+		$this->htmlOptions = TbHtml::addClassName('form-' . $this->type, $this->htmlOptions);
+	}
+
     /**
      * Displays a summary of validation errors for one or several models.
      * This method is very similar to {@link CHtml::errorSummary} except that it also works

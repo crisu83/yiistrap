@@ -1546,11 +1546,8 @@ EOD;
 	{
 		self::resolveName($model, $attribute); // turn [a][b]attr into attr
 		$error = $model->getError($attribute);
-		// todo: logic below needs to cleaned up, nested ternary operations are messy.
 		return $error != ''
-			? self::tag('span', (!isset($htmlOptions['class'])
-				? self::addClassName(self::$errorMessageCss, $htmlOptions)
-				: $htmlOptions), $error)
+			? self::tag('span', self::defaultOption('class', self::$errorMessageCss, $htmlOptions) , $error)
 			: '';
 	}
 
