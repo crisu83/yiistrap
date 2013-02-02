@@ -6,11 +6,13 @@
  * @license http://www.opensource.org/licenses/bsd-license.php New BSD License
  */
 
+Yii::import('bootstrap.widgets.TbWidget');
+
 /**
  * Bootstrap alert widget.
  * @see http://twitter.github.com/bootstrap/javascript.html#alerts
  */
-class TbAlert extends CWidget
+class TbAlert extends TbWidget
 {
 	/**
 	 * @var array the alerts configurations (style=>config).
@@ -78,6 +80,6 @@ class TbAlert extends CWidget
 			}
 		}
 		echo '</div>';
-		Yii::app()->bootstrap->registerEvents("#{$this->htmlOptions['id']} > .alert", $this->events);
+		$this->registerEvents("#{$this->htmlOptions['id']} > .alert", $this->events);
 	}
 }

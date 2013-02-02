@@ -66,7 +66,7 @@ $this->pageTitle=Yii::app()->name;
 
 	<div style="margin-bottom: 20px;">
 		<?php echo TbHtml::buttonGroup(array(
-			array('label'=>'Left'),
+			array('label'=>'Left', 'htmlOptions'=>array('style'=>'success')),
 			array('label'=>'Middle'),
 			array('label'=>'Right'),
 		),array('style'=>'primary')); ?>
@@ -81,7 +81,7 @@ $this->pageTitle=Yii::app()->name;
 				array('label'=>'2'),
 				array('label'=>'3'),
 				array('label'=>'4'),
-			)),
+			),'htmlOptions'=>array('style'=>'warning')),
 			array('items'=>array(
 				array('label'=>'5'),
 				array('label'=>'6'),
@@ -164,7 +164,7 @@ $this->pageTitle=Yii::app()->name;
 <div class="navs">
 	<?php $navItems = array(
 		array('icon'=>'home','url'=>array('/site/index')),
-		array('label'=>'Profile','url'=>'#'),
+		array('label'=>'Profile','url'=>'#','itemOptions'=>array('class'=>'foo'),'linkOptions'=>array('class'=>'bar')),
 		array('label'=>'Messages','url'=>'#'),
 		array('label'=>'Dropdown','items'=>array(
 			array('label'=>'Header'),
@@ -218,9 +218,9 @@ $this->pageTitle=Yii::app()->name;
 <div class="breadcrumbs">
     <h3>Breadcrumb</h3>
 
-    <?php echo TbHtml::breadcrumb(array('Home')); ?>
+    <?php echo TbHtml::breadcrumbs(array('Home')); ?>
 
-    <?php echo TbHtml::breadcrumb(array(
+    <?php echo TbHtml::breadcrumbs(array(
         TbHtml::icon('home') => array('/site/index'),
         'Library',
     )); ?>
@@ -232,6 +232,87 @@ $this->pageTitle=Yii::app()->name;
             'Data',
         ),
     )); ?>
+</div>
+
+<div class="paginations" style="width: 590px;">
+	<h3>Pagination</h3>
+
+	<h5>Standard pagination</h5>
+
+	<?php $paginationConfig = array(
+		array('label'=>'Prev','url'=>'#'),
+		array('label'=>'1','url'=>'#','htmlOptions'=>array('class'=>'foo')),
+		array('label'=>'2','url'=>'#'),
+		array('label'=>'3','url'=>'#'),
+		array('label'=>'4','url'=>'#'),
+		array('label'=>'5','url'=>'#'),
+		array('label'=>'Next','url'=>'#'),
+	); ?>
+
+	<?php echo TbHtml::pagination($paginationConfig); ?>
+
+	<h5>Disabled and active states</h5>
+
+	<?php echo TbHtml::pagination(array(
+		array('label'=>'Prev','url'=>'#','disabled'=>true),
+		array('label'=>'1','url'=>'#','active'=>true),
+		array('label'=>'2','url'=>'#'),
+		array('label'=>'3','url'=>'#'),
+		array('label'=>'4','url'=>'#'),
+		array('label'=>'5','url'=>'#'),
+		array('label'=>'Next','url'=>'#'),
+	)); ?>
+
+	<h5>Sizes</h5>
+
+	<?php echo TbHtml::pagination($paginationConfig,array('size'=>'large')); ?>
+	<?php echo TbHtml::pagination($paginationConfig); ?>
+	<?php echo TbHtml::pagination($paginationConfig,array('size'=>'small')); ?>
+	<?php echo TbHtml::pagination($paginationConfig,array('size'=>'mini')); ?>
+
+	<h5>Alignment</h5>
+
+	<?php echo TbHtml::pagination($paginationConfig); ?>
+	<?php echo TbHtml::pagination($paginationConfig,array('align'=>'centered')); ?>
+	<?php echo TbHtml::pagination($paginationConfig,array('align'=>'right')); ?>
+
+	<h3>Pager</h3>
+
+	<h5>Default pager</h5>
+
+	<?php echo TbHtml::pager(array(
+		array('label'=>'Previous','htmlOptions'=>array('class'=>'bar')),
+		array('label'=>'Next'),
+	)); ?>
+
+	<h5>Aligned links</h5>
+
+	<?php echo TbHtml::pager(array(
+		array('label'=>'Older &larr;','previous'=>true),
+		array('label'=>'Newer &rarr;','next'=>true),
+	)); ?>
+
+	<h5>Disabled state</h5>
+
+	<?php echo TbHtml::pager(array(
+		array('label'=>'Older &larr;','previous'=>true,'disabled'=>true),
+		array('label'=>'Newer &rarr;','next'=>true),
+	)); ?>
+
+	<h5>Widget</h5>
+
+	<?php
+	$rawData=array();
+	for($i=0;$i<800;$i++)
+		$rawData[]=array('id'=>$i+1);
+	$dp=new CArrayDataProvider($rawData);
+	$this->widget('bootstrap.widgets.TbListView',array(
+		'dataProvider'=>$dp,
+		'template'=>"{pager}",
+		'itemView'=>'_empty',
+	));
+	?>
+
 </div>
 
 <div class="labels-badges">
@@ -258,6 +339,22 @@ $this->pageTitle=Yii::app()->name;
 		<?php echo TbHtml::badgeSpan('8',array('style'=>'info')); ?>
 		<?php echo TbHtml::badgeSpan('10',array('style'=>'inverse')); ?>
 	</div>
+</div>
+
+<div class="typography">
+    <h3>Typography</h3>
+
+    <h5>Hero unit</h5>
+
+    <?php echo TbHtml::heroUnit(
+        'Hello, world!',
+        '<p>This is a simple hero unit, a simple jumbotron-style component for calling extra attention to featured content or information.</p>' . TbHtml::button('Learn more', array('style'=>'primary','size'=>'large')),
+        array('style'=>'width: 480px')
+    ); ?>
+
+    <h5>Page header</h5>
+
+    <?php echo TbHtml::pageHeader('Header text', 'Subtext for header'); ?>
 </div>
 
 <div class="alerts">
@@ -302,7 +399,7 @@ $this->pageTitle=Yii::app()->name;
 	<h5>Stacked</h5>
 
 	<?php echo TbHtml::stackedProgressBar(array(
-		array('style'=>'success','width'=>35),
+		array('style'=>'success','width'=>35,'htmlOptions'=>array('class'=>'foo')),
 		array('style'=>'warning','width'=>20),
 		array('style'=>'danger','width'=>10),
 	)); ?>
