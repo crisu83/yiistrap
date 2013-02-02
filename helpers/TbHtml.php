@@ -13,62 +13,62 @@
 class TbHtml extends CHtml
 {
 	// Element styles.
-	const STYLE_PRIMARY			= 'primary';
-	const STYLE_INFO			= 'info';
-	const STYLE_SUCCESS			= 'success';
-	const STYLE_WARNING			= 'warning';
-	const STYLE_ERROR			= 'error';
-	const STYLE_DANGER			= 'danger';
-	const STYLE_IMPORTANT		= 'important';
-	const STYLE_INVERSE			= 'inverse';
-	const STYLE_LINK			= 'link';
+	const STYLE_PRIMARY = 'primary';
+	const STYLE_INFO = 'info';
+	const STYLE_SUCCESS = 'success';
+	const STYLE_WARNING = 'warning';
+	const STYLE_ERROR = 'error';
+	const STYLE_DANGER = 'danger';
+	const STYLE_IMPORTANT = 'important';
+	const STYLE_INVERSE = 'inverse';
+	const STYLE_LINK = 'link';
 
 	// Element sizes.
-	const SIZE_MINI				= 'mini';
-	const SIZE_SMALL			= 'small';
-	const SIZE_LARGE			= 'large';
+	const SIZE_MINI = 'mini';
+	const SIZE_SMALL = 'small';
+	const SIZE_LARGE = 'large';
 
 	// Navigation menu types.
-	const NAV_TABS				= 'tabs';
-	const NAV_PILLS				= 'pills';
-	const NAV_LIST				= 'list';
+	const NAV_TABS = 'tabs';
+	const NAV_PILLS = 'pills';
+	const NAV_LIST = 'list';
 
 	// Position types.
-	const POSITION_TOP			= 'top';
-	const POSITION_BOTTOM		= 'bottom';
+	const POSITION_TOP = 'top';
+	const POSITION_BOTTOM = 'bottom';
 
 	// Alignments.
-	const ALIGN_CENTER			= 'centered';
-	const ALIGN_RIGHT			= 'right';
+	const ALIGN_CENTER = 'centered';
+	const ALIGN_RIGHT = 'right';
 
 	// Progress bar types.
-	const PROGRESS_STRIPED		= 'striped';
-	const PROGRESS_ACTIVE		= 'active';
+	const PROGRESS_STRIPED = 'striped';
+	const PROGRESS_ACTIVE = 'active';
 
 	// Addon types.
-	const ADDON_PREPEND			= 'prepend';
-	const ADDON_APPEND			= 'append';
+	const ADDON_PREPEND = 'prepend';
+	const ADDON_APPEND = 'append';
 
 
 	// Default close text.
-	const CLOSE_TEXT			= '&times;';
+	const CLOSE_TEXT = '&times;';
 
 	// Scope constants.
-	static $sizes				= array(self::SIZE_LARGE, self::SIZE_SMALL, self::SIZE_MINI);
-	static $buttonStyles		= array(
-									self::STYLE_PRIMARY, self::STYLE_INFO, self::STYLE_SUCCESS, self::STYLE_WARNING,
-									self::STYLE_DANGER, self::STYLE_INVERSE, self::STYLE_LINK,
-								);
-	static $labelBadgeStyles	= array(self::STYLE_SUCCESS, self::STYLE_WARNING, self::STYLE_IMPORTANT,
-									self::STYLE_INFO, self::STYLE_INVERSE,
-								);
-	static $navStyles			= array(self::NAV_TABS, self::NAV_PILLS, self::NAV_LIST);
-	static $navbarStyles		= array(self::STYLE_INVERSE);
-	static $positions			= array(self::POSITION_TOP, self::POSITION_BOTTOM);
-	static $alignments			= array(self::ALIGN_CENTER, self::ALIGN_RIGHT);
-	static $alertStyles			= array(self::STYLE_SUCCESS, self::STYLE_INFO, self::STYLE_WARNING, self::STYLE_ERROR);
-	static $progressStyles		= array(self::STYLE_INFO, self::STYLE_SUCCESS, self::STYLE_WARNING, self::STYLE_DANGER);
-	static $addons				= array(self::ADDON_PREPEND, self::ADDON_APPEND);
+	static $sizes = array(self::SIZE_LARGE, self::SIZE_SMALL, self::SIZE_MINI);
+	static $buttonStyles = array(
+		self::STYLE_PRIMARY, self::STYLE_INFO, self::STYLE_SUCCESS, self::STYLE_WARNING,
+		self::STYLE_DANGER, self::STYLE_INVERSE, self::STYLE_LINK,
+	);
+	static $labelBadgeStyles = array(self::STYLE_SUCCESS, self::STYLE_WARNING, self::STYLE_IMPORTANT,
+		self::STYLE_INFO, self::STYLE_INVERSE,
+	);
+	static $navStyles = array(self::NAV_TABS, self::NAV_PILLS, self::NAV_LIST);
+	static $navbarStyles = array(self::STYLE_INVERSE);
+	static $positions = array(self::POSITION_TOP, self::POSITION_BOTTOM);
+	static $alignments = array(self::ALIGN_CENTER, self::ALIGN_RIGHT);
+	static $alertStyles = array(self::STYLE_SUCCESS, self::STYLE_INFO, self::STYLE_WARNING, self::STYLE_ERROR);
+	static $progressStyles = array(self::STYLE_INFO, self::STYLE_SUCCESS, self::STYLE_WARNING, self::STYLE_DANGER);
+	static $addons = array(self::ADDON_PREPEND, self::ADDON_APPEND);
 
 	private static $_counter;
 
@@ -229,7 +229,7 @@ class TbHtml extends CHtml
 	 */
 	public static function buttonToolbar($groups, $htmlOptions = array())
 	{
-		if(is_array($groups) && !empty($groups))
+		if (is_array($groups) && !empty($groups))
 		{
 			$htmlOptions = self::addClassName('btn-toolbar', $htmlOptions);
 
@@ -281,8 +281,7 @@ class TbHtml extends CHtml
 		{
 			echo self::linkButton($label, $htmlOptions);
 			echo self::dropdownToggleButton('', $htmlOptions);
-		}
-		else
+		} else
 			echo self::dropdownToggleLink($label, $htmlOptions);
 
 		echo self::dropdown($items, $menuOptions);
@@ -331,8 +330,7 @@ class TbHtml extends CHtml
 					{
 						$url = self::popOption('url', $itemOptions, false);
 						echo self::menuLink($label, $url, $itemOptions);
-					}
-					else
+					} else
 						echo self::menuDropdown($label, $items, $itemOptions);
 				}
 			}
@@ -529,8 +527,7 @@ class TbHtml extends CHtml
 				echo parent::link($label, parent::normalizeUrl($url));
 				echo parent::tag('span', array('class' => 'divider'), $divider);
 				echo '</li>';
-			}
-			else
+			} else
 				echo parent::tag('li', array('class' => 'active'), $url);
 		}
 		echo '</ul>';
@@ -1038,7 +1035,7 @@ class TbHtml extends CHtml
 	{
 		$htmlOptions = self::addClassName('form-search', $htmlOptions);
 		$inputOptions = self::popOption('inputOptions', $htmlOptions, array());
-		$inputOptions = self::mergeOptions(array('type'=>'text', 'placeholder'=>'Search'), $inputOptions);
+		$inputOptions = self::mergeOptions(array('type' => 'text', 'placeholder' => 'Search'), $inputOptions);
 		$inputOptions = self::addClassName('search-query', $inputOptions);
 
 		$buttonOptions = self::popOption('buttonOptions', $htmlOptions, array());
@@ -1048,11 +1045,11 @@ class TbHtml extends CHtml
 		echo self::beginForm($action, $method, $htmlOptions);
 
 		$addon = self::popOption('addon', $htmlOptions);
-		if(isset($addon) && in_array($addon, self::$addons))
+		if (isset($addon) && in_array($addon, self::$addons))
 			$inputOptions[$addon] = self::button($buttonLabel, $buttonOptions);
 
 		echo self::textField(
-			self::popOption('name', $inputOptions,'search'),
+			self::popOption('name', $inputOptions, 'search'),
 			self::popOption('value', $inputOptions, ''),
 			$inputOptions
 		);
@@ -1087,20 +1084,8 @@ class TbHtml extends CHtml
 	public static function textField($name, $value = '', $htmlOptions = array())
 	{
 		parent::clientChange('change', $htmlOptions);
-		$addOnClasses = self::getAddOnClasses($htmlOptions);
 
-		ob_start();
-		if (!empty($addOnClasses))
-			echo '<div class="' . $addOnClasses . '">';
-
-		echo self::getPrepend($htmlOptions);
-		echo self::inputField('text', $name, $value, self::removeOptions($htmlOptions, array('append', 'prepend')));
-		echo self::getAppend($htmlOptions);
-
-		if (!empty($addOnClasses))
-			echo '</div>';
-
-		return ob_get_clean();
+		return  self::inputField('text', $name, $value, $htmlOptions);
 	}
 
 	/**
@@ -1264,9 +1249,7 @@ class TbHtml extends CHtml
 		}
 		unset($htmlOptions['checkAll'], $htmlOptions['checkAllLast']);
 
-		// todo: $labelOptions is not actually used at all?
-		$labelOptions = isset($htmlOptions['labelOptions']) ? $htmlOptions['labelOptions'] : array();
-		unset($htmlOptions['labelOptions']);
+		$labelOptions = self::popOption('labelOptions', $htmlOptions, array());
 
 		$items = array();
 		$baseID = self::getIdByName($name);
@@ -1278,7 +1261,7 @@ class TbHtml extends CHtml
 			$checked = !is_array($select) && !strcmp($value, $select) || is_array($select) && in_array($value, $select);
 			$checkAll = $checkAll && $checked;
 			$htmlOptions['label'] = $label;
-			$htmlOptions['labelOptions'] = array('class' => 'inline');
+			$htmlOptions['labelOptions'] = self::addClassName('inline', $labelOptions);
 			$htmlOptions['value'] = $value;
 			$htmlOptions['id'] = $baseID . '_' . $id++;
 			$items[] = self::checkBox($name, $checked, $htmlOptions);
@@ -1288,7 +1271,7 @@ class TbHtml extends CHtml
 		if (isset($checkAllLabel))
 		{
 			$htmlOptions['label'] = $checkAllLabel;
-			$htmlOptions['labelOptions'] = array('class' => 'inline');
+			$htmlOptions['labelOptions'] = self::addClassName('inline', $labelOptions);
 			$htmlOptions['value'] = 1;
 			$htmlOptions['id'] = $id = $baseID . '_all';
 			$option = self::checkBox($id, $checkAll, $htmlOptions);
@@ -1492,8 +1475,7 @@ EOD;
 			$value = self::getOption($name, $options, $defaultValue);
 			unset($options[$name]);
 			return $value;
-		}
-		else
+		} else
 			return $defaultValue;
 	}
 
@@ -1547,7 +1529,7 @@ EOD;
 		self::resolveName($model, $attribute); // turn [a][b]attr into attr
 		$error = $model->getError($attribute);
 		return $error != ''
-			? self::tag('span', self::defaultOption('class', self::$errorMessageCss, $htmlOptions) , $error)
+			? self::tag('span', self::defaultOption('class', self::$errorMessageCss, $htmlOptions), $error)
 			: '';
 	}
 
@@ -1566,10 +1548,43 @@ EOD;
 	 * @see CModel::getErrors
 	 * @see errorSummaryCss
 	 */
-	public static function errorSummary($model,$header=null,$footer=null,$htmlOptions=array())
+	public static function errorSummary($model, $header = null, $footer = null, $htmlOptions = array())
 	{
 		$htmlOptions = TbHtml::addClassName('alert alert-block alert-error', $htmlOptions);
 
 		return parent::errorSummary($model, $header, $footer, $htmlOptions);
+	}
+
+	/**
+	 * Generates an input HTML tag.
+	 * This method generates an input HTML tag based on the given input name and value.
+	 * @param string $type the input type (e.g. 'text', 'radio')
+	 * @param string $name the input name
+	 * @param string $value the input value
+	 * @param array $htmlOptions additional HTML attributes for the HTML tag (see {@link tag}). The following special
+	 * attributes are supported:
+	 * <ul>
+	 * 	<li>append: string, append addon to the input types: text, password, date</li>
+	 *  <li>prepend: string, prepend addon to the input types: text, password, date</li>
+	 * </ul>
+	 * @return string the generated input tag
+	 */
+	protected static function inputField($type, $name, $value, $htmlOptions)
+	{
+		$inputOptions = self::removeOptions($htmlOptions, array('append', 'prepend'));
+		$addOnClasses = self::getAddOnClasses($htmlOptions);
+
+		ob_start();
+		if (!empty($addOnClasses))
+			echo '<div class="' . $addOnClasses . '">';
+
+		echo self::getPrepend($htmlOptions);
+		echo parent::inputField($type, $name, $value, $inputOptions);
+		echo self::getAppend($htmlOptions);
+
+		if (!empty($addOnClasses))
+			echo '</div>';
+
+		return ob_get_clean();
 	}
 }
