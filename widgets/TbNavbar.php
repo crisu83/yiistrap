@@ -33,7 +33,7 @@ class TbNavbar extends CWidget
 	/**
 	 * @var string fix location of the navbar is applicable.
 	 */
-	public $fixed = TbHtml::FIXED_TOP;
+	public $fixed = TbHtml::POSITION_TOP;
 	/**
 	 * @var boolean whether the navbar spans over the whole page.
 	 */
@@ -75,7 +75,7 @@ class TbNavbar extends CWidget
 		if (isset($this->style) && in_array($this->style, TbHtml::$navbarStyles))
 			$this->htmlOptions = TbHtml::addClassName('navbar-' . $this->style, $this->htmlOptions);
 
-		if ($this->fixed !== false && in_array($this->fixed, TbHtml::$navbarFixes))
+		if ($this->fixed !== false && in_array($this->fixed, TbHtml::$positions))
 			$this->htmlOptions = TbHtml::addClassName('navbar-fixed-' . $this->fixed, $this->htmlOptions);
 	}
 
@@ -84,8 +84,6 @@ class TbNavbar extends CWidget
 	 */
 	public function run()
 	{
-		$collapseId = TbCollapse::getNextContainerId();
-
 		$brand = $this->brandLabel !== false
 			? CHtml::tag($this->brandUrl !== false ? 'a' : 'span', $this->brandOptions, $this->brandLabel)
 			: '';
@@ -110,6 +108,7 @@ class TbNavbar extends CWidget
 
 		if ($this->collapse !== false)
 		{
+			$collapseId = TbHtml::getNextId();
 			echo TbHtml::collapseIcon('#' . $collapseId);
 			echo $brand;
 			$this->controller->beginWidget('TbCollapse', array(

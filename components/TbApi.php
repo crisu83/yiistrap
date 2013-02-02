@@ -140,15 +140,9 @@ class TbApi extends CApplicationComponent
      */
     public function registerPlugin($name, $selector, $options = array(), $position = CClientScript::POS_END)
     {
-        if (isset($options['events']))
-        {
-            $this->registerEvents($selector, $options['events'], $position);
-            unset($options['events']);
-        }
-
         $options = !empty($options) ? CJavaScript::encode($options) : '';
-        Yii::app()->clientScript->registerScript(
-                $this->generateRandomId(), "jQuery('{$selector}').{$name}({$options});", $position);
+		$script = "jQuery('{$selector}').{$name}({$options});";
+		Yii::app()->clientScript->registerScript($this->generateRandomId(), $script, $position);
     }
 
     /**

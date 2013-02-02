@@ -12,15 +12,8 @@ Yii::import('bootstrap.components.TbApi');
  * Bootstrap collapse widget.
  * @see http://twitter.github.com/bootstrap/javascript.html#collapse
  */
-class TbCollapse extends CWidget
+class TbCollapse extends TbWrap
 {
-	// Collapse widget id prefix.
-	const ID_PREFIX = 'tbcollapse';
-
-	/**
-	 * @var string the HTML tag for the container.
-	 */
-	public $tagName = 'div';
 	/**
 	 * @var string the CSS selector for the parent element.
 	 */
@@ -37,25 +30,17 @@ class TbCollapse extends CWidget
 	 * @var string[] $events the JavaScript event configuration (name=>handler).
 	 */
 	public $events = array();
-	/**
-	 * @var array the HTML attributes for the container.
-	 */
-	public $htmlOptions = array();
-
-	private static $_containerId = 0;
 
 	/**
 	 * Initializes the widget.
 	 */
 	public function init()
 	{
-		$this->htmlOptions = TbHtml::defaultOption('id', $this->getId(), $this->htmlOptions);
 		if (isset($this->parent))
 			$this->options = TbHtml::defaultOption('parent', $this->parent, $this->options);
 		if (isset($this->toggle))
 			$this->options = TbHtml::defaultOption('toggle', $this->toggle, $this->options);
-
-		echo CHtml::openTag($this->tagName, $this->htmlOptions);
+		parent::init();
 	}
 
 	/**
@@ -63,18 +48,9 @@ class TbCollapse extends CWidget
 	 */
 	public function run()
 	{
-		echo CHtml::closeTag($this->tagName);
+		parent::run();
 		$selector = $this->htmlOptions['id'];
 		$this->options = TbHtml::defaultOption('events', $this->events, $this->options);
-		Yii::app()->bootstrap->registerPlugin(TbApi::PLUGIN_COLLAPSE, $selector, $this->options);
-	}
-
-	/**
-	 * Returns the next collapse container ID.
-	 * @return string the id.
-	 */
-	public static function getNextContainerId()
-	{
-		return self::ID_PREFIX . self::$_containerId++;
+		$this->registerPlugin(TbApi::PLUGIN_COLLAPSE, $selector, $this->options);
 	}
 }

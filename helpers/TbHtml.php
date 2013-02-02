@@ -33,9 +33,9 @@ class TbHtml extends CHtml
 	const NAV_PILLS				= 'pills';
 	const NAV_LIST				= 'list';
 
-	// Fixed types.
-	const FIXED_TOP				= 'top';
-	const FIXED_BOTTOM			= 'bottom';
+	// Position types.
+	const POSITION_TOP			= 'top';
+	const POSITION_BOTTOM		= 'bottom';
 
 	// Alignments.
 	const ALIGN_CENTER			= 'centered';
@@ -64,11 +64,13 @@ class TbHtml extends CHtml
 								);
 	static $navStyles			= array(self::NAV_TABS, self::NAV_PILLS, self::NAV_LIST);
 	static $navbarStyles		= array(self::STYLE_INVERSE);
-	static $navbarFixes			= array(self::FIXED_TOP, self::FIXED_BOTTOM);
-	static $alignments	= array(self::ALIGN_CENTER, self::ALIGN_RIGHT);
+	static $positions			= array(self::POSITION_TOP, self::POSITION_BOTTOM);
+	static $alignments			= array(self::ALIGN_CENTER, self::ALIGN_RIGHT);
 	static $alertStyles			= array(self::STYLE_SUCCESS, self::STYLE_INFO, self::STYLE_WARNING, self::STYLE_ERROR);
 	static $progressStyles		= array(self::STYLE_INFO, self::STYLE_SUCCESS, self::STYLE_WARNING, self::STYLE_DANGER);
 	static $addons				= array(self::ADDON_PREPEND, self::ADDON_APPEND);
+
+	private static $_counter;
 
 	//
 	// Buttons
@@ -1507,6 +1509,15 @@ EOD;
 	public static function removeOptions($options, $names)
 	{
 		return array_diff_key($options, array_flip($names));
+	}
+
+	/**
+	 * Returns the next free id.
+	 * @return string the id string.
+	 */
+	public static function getNextId()
+	{
+		return 'tb' . self::$_counter++;
 	}
 
 	/**
