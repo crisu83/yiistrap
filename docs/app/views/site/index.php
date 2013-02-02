@@ -167,7 +167,7 @@ $this->pageTitle=Yii::app()->name;
 		array('label'=>'Profile','url'=>'#'),
 		array('label'=>'Messages','url'=>'#'),
 		array('label'=>'Dropdown','items'=>array(
-			array('label'=>'Heading'),
+			array('label'=>'Header'),
 			array('label'=>'Action','url'=>'#'),
 			array('label'=>'Another action','url'=>'#'),
 			array('label'=>'Something else here','url'=>'#'),

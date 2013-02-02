@@ -8,7 +8,6 @@
 
 class TbActiveForm extends CActiveForm
 {
-
 	public $errorMessageCssClass = TbHtml::STYLE_ERROR;
 
     /**
