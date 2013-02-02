@@ -8,6 +8,14 @@
 
 class TbActiveForm extends CActiveForm
 {
+
+	const TYPE_INLINE = 'inline';
+	const TYPE_HORIZONTAL = 'horizontal';
+	const TYPE_VERTICAL = 'vertical';
+
+
+	public $type = self::TYPE_VERTICAL;
+
 	public $errorMessageCssClass = TbHtml::STYLE_ERROR;
 
     /**
@@ -24,8 +32,7 @@ class TbActiveForm extends CActiveForm
      */
     public function errorSummary($models, $header = null, $footer = null, $htmlOptions = array())
     {
-        if (!isset($htmlOptions['class']))
-            $htmlOptions['class'] = 'alert alert-block alert-error'; // Bootstrap error class as default
+		$htmlOptions = TbHtml::addClassName('alert alert-block alert-error', $htmlOptions);
 
         return parent::errorSummary($models, $header, $footer, $htmlOptions);
     }
