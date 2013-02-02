@@ -12,11 +12,14 @@
  */
 class TbPager extends CBasePager
 {
+	/**
+	 * @var string the pager size.
+	 */
 	public $size;
 	/**
 	 * @var integer maximum number of page buttons that can be displayed.
 	 */
-	public $maxButtonCount = 10;
+	public $maxButtonCount = 5;
 	/**
 	 * @var string the text label for the next page button.
 	 */
@@ -28,11 +31,11 @@ class TbPager extends CBasePager
 	/**
 	 * @var string the text label for the first page button.
 	 */
-	public $firstPageLabel = '&larr;';
+	public $firstPageLabel = '&laquo;';
 	/**
 	 * @var string the text label for the last page button.
 	 */
-	public $lastPageLabel = '&rarr;';
+	public $lastPageLabel = '&raquo;';
 	/**
 	 * @var array HTML attributes for the pager container tag.
 	 */
@@ -44,7 +47,6 @@ class TbPager extends CBasePager
 	public function init()
 	{
 		$this->htmlOptions = TbHtml::defaultOption('id', $this->getId(), $this->htmlOptions);
-
 		if (isset($this->size))
 			$this->htmlOptions = TbHtml::defaultOption('size', $this->size, $this->htmlOptions);
 	}
@@ -54,16 +56,16 @@ class TbPager extends CBasePager
 	 */
 	public function run()
 	{
-		$buttons = $this->createPageButtons();
-		if (!empty($buttons))
-			echo TbHtml::pagination($buttons, $this->htmlOptions);
+		$links = $this->createPageLinks();
+		if (!empty($links))
+			echo TbHtml::pagination($links, $this->htmlOptions);
 	}
 
 	/**
 	 * Creates the page buttons.
 	 * @return array a list of page buttons (in HTML code).
 	 */
-	protected function createPageButtons()
+	protected function createPageLinks()
 	{
 		if (($pageCount = $this->getPageCount()) <= 1)
 			return array();
@@ -74,7 +76,7 @@ class TbPager extends CBasePager
 		$buttons = array();
 
 		// first page
-		$buttons[] = $this->createPageButton(
+		$buttons[] = $this->createPageLink(
 			$this->firstPageLabel,
 			0,
 			$currentPage <= 0,
@@ -85,7 +87,7 @@ class TbPager extends CBasePager
 		if (($page = $currentPage - 1) < 0)
 			$page = 0;
 
-		$buttons[] = $this->createPageButton(
+		$buttons[] = $this->createPageLink(
 			$this->prevPageLabel,
 			$page,
 			$currentPage <= 0,
@@ -95,7 +97,7 @@ class TbPager extends CBasePager
 		// internal pages
 		for ($i = $beginPage; $i <= $endPage; ++$i)
 		{
-			$buttons[] = $this->createPageButton(
+			$buttons[] = $this->createPageLink(
 				$i + 1,
 				$i,
 				false,
@@ -107,7 +109,7 @@ class TbPager extends CBasePager
 		if (($page = $currentPage + 1) >= $pageCount - 1)
 			$page = $pageCount - 1;
 
-		$buttons[] = $this->createPageButton(
+		$buttons[] = $this->createPageLink(
 			$this->nextPageLabel,
 			$page,
 			$currentPage >= $pageCount - 1,
@@ -115,7 +117,7 @@ class TbPager extends CBasePager
 		);
 
 		// last page
-		$buttons[] = $this->createPageButton(
+		$buttons[] = $this->createPageLink(
 			$this->lastPageLabel,
 			$pageCount - 1,
 			$currentPage >= $pageCount - 1,
@@ -126,15 +128,14 @@ class TbPager extends CBasePager
 	}
 
 	/**
-	 * Creates a page button.
-	 * You may override this method to customize the page buttons.
-	 * @param string $label the text label for the button
-	 * @param integer $page the page number
-	 * @param boolean $visible whether this page button is visible
-	 * @param boolean $active whether this page button is active
-	 * @return string the generated button
+	 * Creates a page link.
+	 * @param string $label the link label text.
+	 * @param integer $page the page number.
+	 * @param boolean $visible whether the link is disabled.
+	 * @param boolean $active whether the link is active.
+	 * @return string the generated link.
 	 */
-	protected function createPageButton($label, $page, $disabled, $active)
+	protected function createPageLink($label, $page, $disabled, $active)
 	{
 		return array(
 			'label' => $label,

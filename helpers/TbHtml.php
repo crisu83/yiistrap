@@ -70,7 +70,7 @@ class TbHtml extends CHtml
 	static $progressStyles = array(self::STYLE_INFO, self::STYLE_SUCCESS, self::STYLE_WARNING, self::STYLE_DANGER);
 	static $addons = array(self::ADDON_PREPEND, self::ADDON_APPEND);
 
-	private static $_counter;
+	private static $_counter = 0;
 
 	//
 	// Buttons
@@ -583,14 +583,14 @@ class TbHtml extends CHtml
 
 	/**
 	 * Generates a pagination.
-	 * @param array $buttons the pagination buttons.
+	 * @param array $links the pagination buttons.
 	 * @param array $htmlOptions additional HTML attributes.
 	 * @return string the generated pagination.
 	 * @see http://twitter.github.com/bootstrap/components.html#pagination
 	 */
-	public static function pagination($buttons, $htmlOptions = array())
+	public static function pagination($links, $htmlOptions = array())
 	{
-		if (is_array($buttons) && !empty($buttons))
+		if (is_array($links) && !empty($links))
 		{
 			$htmlOptions = self::addClassName('pagination', $htmlOptions);
 
@@ -607,14 +607,14 @@ class TbHtml extends CHtml
 			ob_start();
 			echo parent::openTag('div', $htmlOptions) . PHP_EOL;
 			echo parent::openTag('ul', $listOptions) . PHP_EOL;
-			foreach ($buttons as $itemOptions)
+			foreach ($links as $itemOptions)
 			{
 				$options = self::popOption('htmlOptions', $itemOptions, array());
 				if (!empty($options))
 					$itemOptions = self::mergeOptions($options, $itemOptions);
 				$label = self::popOption('label', $itemOptions, '');
 				$url = self::popOption('url', $itemOptions, false);
-				echo self::paginationButton($label, $url, $itemOptions) . PHP_EOL;
+				echo self::paginationLink($label, $url, $itemOptions) . PHP_EOL;
 			}
 			echo '</ul>' . PHP_EOL . '</div>' . PHP_EOL;
 			return ob_get_clean();
@@ -629,7 +629,7 @@ class TbHtml extends CHtml
 	 * @param array $htmlOptions additional HTML attributes.
 	 * @return string the generated link.
 	 */
-	public static function paginationButton($label, $url, $htmlOptions = array())
+	public static function paginationLink($label, $url, $htmlOptions = array())
 	{
 		$active = self::popOption('active', $htmlOptions);
 		$disabled = self::popOption('disabled', $htmlOptions);
@@ -650,26 +650,26 @@ class TbHtml extends CHtml
 
 	/**
 	 * Generates a pager.
-	 * @param array $buttons the pager buttons.
+	 * @param array $links the pager buttons.
 	 * @param array $htmlOptions additional HTML attributes.
 	 * @return string the generated pager.
 	 * @see http://twitter.github.com/bootstrap/components.html#pagination
 	 */
-	public static function pager($buttons, $htmlOptions = array())
+	public static function pager($links, $htmlOptions = array())
 	{
-		if (is_array($buttons) && !empty($buttons))
+		if (is_array($links) && !empty($links))
 		{
 			$htmlOptions = self::addClassName('pager', $htmlOptions);
 			ob_start();
 			echo parent::openTag('ul', $htmlOptions) . PHP_EOL;
-			foreach ($buttons as $itemOptions)
+			foreach ($links as $itemOptions)
 			{
 				$options = self::popOption('htmlOptions', $itemOptions, array());
 				if (!empty($options))
 					$itemOptions = self::mergeOptions($options, $itemOptions);
 				$label = self::popOption('label', $itemOptions, '');
 				$url = self::popOption('url', $itemOptions, false);
-				echo self::pagerButton($label, $url, $itemOptions) . PHP_EOL;
+				echo self::pagerLink($label, $url, $itemOptions) . PHP_EOL;
 			}
 			echo '</ul>' . PHP_EOL;
 			return ob_get_clean();
@@ -684,7 +684,7 @@ class TbHtml extends CHtml
 	 * @param array $htmlOptions additional HTML attributes.
 	 * @return string the generated link.
 	 */
-	public static function pagerButton($label, $url, $htmlOptions = array())
+	public static function pagerLink($label, $url, $htmlOptions = array())
 	{
 		$previous = self::popOption('previous', $htmlOptions);
 		$next = self::popOption('next', $htmlOptions);
@@ -872,9 +872,6 @@ class TbHtml extends CHtml
 				$options = self::popOption('htmlOptions', $barOptions, array());
 				if (!empty($options))
 					$barOptions = self::mergeOptions($options, $barOptions);
-				$style = self::popOption('style', $barOptions);
-				if (isset($style))
-					$barOptions = self::defaultOption('style', $style, $barOptions);
 				$width = self::popOption('width', $barOptions, 0);
 				echo self::bar($width, $barOptions);
 			}

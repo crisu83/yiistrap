@@ -18,17 +18,13 @@ class TbAffix extends TbWrap
 	 * @var mixed pixels to offset from screen when calculating position of scroll.
 	 */
 	public $offset;
-	/**
-	 * @var array the JavaScript options for the plugin.
-	 */
-	public $options = array();
 
 	/**
 	 * Initializes the widget.
 	 */
 	public function init()
 	{
-		$this->options = TbHtml::defaultOption('data-spy', 'affix', $this->options);
+		$this->htmlOptions['data-spy'] = 'affix';
 		if (isset($this->offset))
 		{
 			if (is_string($this->offset))
@@ -42,15 +38,5 @@ class TbAffix extends TbWrap
 			}
 		}
 		parent::init();
-	}
-
-	/**
-	 * Runs the widget.
-	 */
-	public function run()
-	{
-		parent::run();
-		$selector = $this->htmlOptions['id'];
-		$this->registerPlugin(TbApi::PLUGIN_AFFIX, $selector, $this->options);
 	}
 }
