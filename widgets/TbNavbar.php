@@ -4,9 +4,8 @@
  * @author Christoffer Niska <christoffer.niska@gmail.com>
  * @copyright Copyright &copy; Christoffer Niska 2013-
  * @license http://www.opensource.org/licenses/bsd-license.php New BSD License
+ * @package bootstrap.widgets
  */
-
-Yii::import('bootstrap.widgets.TbCollapse');
 
 /**
  * Bootstrap navbar widget.
@@ -111,7 +110,7 @@ class TbNavbar extends CWidget
 			$collapseId = TbHtml::getNextId();
 			echo TbHtml::collapseIcon('#' . $collapseId);
 			echo $brand;
-			$this->controller->beginWidget('TbCollapse', array(
+			$this->controller->beginWidget('bootstrap.widgets.TbCollapse', array(
 				'id' => $collapseId,
 				'toggle' => false, // navbars are collapsed by default
 				'htmlOptions' => array('class' => 'nav-collapse'),

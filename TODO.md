@@ -7,14 +7,16 @@ TODO
  - detail view
  - grid view
  - modal
- - scroll spy
  - tabs
  - thumbnails
  - typeahead
 
 ## Helpers
 
- - ?
+ - carousel
+ - modal
+ - thumbnails
+ - typeahead
 
 ## Other
 
