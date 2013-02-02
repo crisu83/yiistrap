@@ -420,7 +420,31 @@ $this->pageTitle=Yii::app()->name;
 
 </div>
 
+<div class="tooltips">
+	<h3>Tooltips</h3>
+
+	<h5>Tooltip</h5>
+
+	<p class="muted">
+		Tight pants next level keffiyeh
+		<?php echo TbHtml::tooltip('you probably','#','Default tooltip'); ?> haven't heard of them. Photo booth beard raw denim letterpress vegan messenger bag stumptown. Farm-to-table seitan, mcsweeney's fixie sustainable quinoa 8-bit american apparel
+		<?php echo TbHtml::tooltip('have a','#','Another tooltip',array('placement'=>'bottom')); ?> terry richardson vinyl chambray. Beard stumptown, cardigans banh mi lomo thundercats. Tofu biodiesel williamsburg marfa, four loko mcsweeney's cleanse vegan chambray. A really ironic artisan
+		<?php echo TbHtml::tooltip('whatever keytar','#','Another one here too',array('placement'=>'right')); ?>, scenester farm-to-table banksy Austin
+		<?php echo TbHtml::tooltip('twitter handle','#','The last tip!',array('placement'=>'left')) ;?> freegan cred raw denim single-origin coffee viral.
+	</p>
+
+	<h5>Popovers</h5>
+
+	<?php echo TbHtml::popover('Popover on top', 'Popover on top', 'Vivamus sagittis lacus vel augue laoreet rutrum faucibus.', array('class'=>'btn','placement'=>'top','trigger'=>'hover')); ?>
+	<?php echo TbHtml::popover('Popover on right', 'Popover on right', 'Vivamus sagittis lacus vel augue laoreet rutrum faucibus.', array('class'=>'btn','placement'=>'right')); ?>
+	<?php echo TbHtml::popover('Popover on bottom', 'Popover on bottom', 'Vivamus sagittis lacus vel augue laoreet rutrum faucibus.', array('class'=>'btn','placement'=>'bottom')); ?>
+	<?php echo TbHtml::popover('Popover on left', 'Popover on left', 'Vivamus sagittis lacus vel augue laoreet rutrum faucibus.', array('class'=>'btn','placement'=>'left')); ?>
+
+</div>
+
 <div class="search-forms">
+	<h3>Forms</h3>
+
 	<h5>Append</h5>
 	<?php echo TbHtml::searchForm('','post', array(
 		'addon' => 'append',

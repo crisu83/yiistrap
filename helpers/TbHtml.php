@@ -46,10 +46,21 @@ class TbHtml extends CHtml
 	const PROGRESS_STRIPED = 'striped';
 	const PROGRESS_ACTIVE = 'active';
 
+	// Tooltip placements.
+	const PLACEMENT_TOP = 'top';
+	const PLACEMENT_BOTTOM = 'bottom';
+	const PLACEMENT_LEFT = 'left';
+	const PLACEMENT_RIGHT = 'right';
+
+	// Tooltip triggers.
+	const TRIGGER_CLICK = 'click';
+	const TRIGGER_HOVER = 'hover';
+	const TRIGGER_FOCUS = 'focus';
+	const TRIGGER_MANUAL = 'manual';
+
 	// Addon types.
 	const ADDON_PREPEND = 'prepend';
 	const ADDON_APPEND = 'append';
-
 
 	// Default close text.
 	const CLOSE_TEXT = '&times;';
@@ -69,8 +80,12 @@ class TbHtml extends CHtml
 	static $alignments = array(self::ALIGN_CENTER, self::ALIGN_RIGHT);
 	static $alertStyles = array(self::STYLE_SUCCESS, self::STYLE_INFO, self::STYLE_WARNING, self::STYLE_ERROR);
 	static $progressStyles = array(self::STYLE_INFO, self::STYLE_SUCCESS, self::STYLE_WARNING, self::STYLE_DANGER);
+	static $placements = array(self::PLACEMENT_TOP, self::PLACEMENT_BOTTOM, self::PLACEMENT_LEFT, self::PLACEMENT_RIGHT);
+	static $triggers = array(self::TRIGGER_CLICK, self::TRIGGER_HOVER, self::TRIGGER_FOCUS, self::TRIGGER_MANUAL);
 	static $addons = array(self::ADDON_PREPEND, self::ADDON_APPEND);
 
+	private static $_tooltip = false;
+	private static $_popover = false;
 	private static $_counter = 0;
 
 	//
@@ -1008,6 +1023,68 @@ class TbHtml extends CHtml
 			return parent::openTag($tag, $htmlOptions) . parent::closeTag($tag); // tag won't work in this case
 		}
 		return '';
+	}
+
+	//
+	// Tooltips
+	// --------------------------------------------------
+
+	/**
+	 * Generates a tooltip.
+	 * @param string $label the tooltip link label text.
+	 * @param mixed $url the link url.
+	 * @param string $content the tooltip content text.
+	 * @param array $htmlOptions additional HTML attributes.
+	 * @return string the generated tooltip.
+	 */
+	public static function tooltip($label, $url, $content, $htmlOptions = array())
+	{
+		$htmlOptions['rel'] = 'tooltip';
+		return self::tooltipPopover($label, $url, $content, $htmlOptions);
+	}
+
+	/**
+	 * Generates a popover.
+	 * @param string $label the popover link label text.
+	 * @param string $title the popover title text.
+	 * @param string $content the popover content text.
+	 * @param array $htmlOptions additional HTML attributes.
+	 * @return string the generated popover.
+	 */
+	public static function popover($label, $title, $content, $htmlOptions = array())
+	{
+		$htmlOptions['rel'] = 'popover';
+		$htmlOptions = self::defaultOption('data-content', $content, $htmlOptions);
+		return self::tooltipPopover($label, '#', $title, $htmlOptions);
+	}
+
+	/**
+	 * Generates a base tooltip.
+	 * @param string $label the tooltip link label text.
+	 * @param mixed $url the link url.
+	 * @param string $title the tooltip title text.
+	 * @param array $htmlOptions additional HTML attributes.
+	 * @return string the generated tooltip.
+	 */
+	protected static function tooltipPopover($label, $url, $title, $htmlOptions)
+	{
+		$htmlOptions = self::defaultOption('title', $title, $htmlOptions);
+		if (self::popOption('animation', $htmlOptions))
+			$htmlOptions = self::defaultOption('data-animation', true, $htmlOptions);
+		if (self::popOption('html', $htmlOptions))
+			$htmlOptions = self::defaultOption('data-html', true, $htmlOptions);
+		$placement = self::popOption('placement', $htmlOptions);
+		if (isset($placement) && in_array($placement, self::$placements))
+			$htmlOptions = self::defaultOption('data-placement', $placement, $htmlOptions);
+		if (self::popOption('selector', $htmlOptions))
+			$htmlOptions = self::defaultOption('data-selector', true, $htmlOptions);
+		$trigger = self::popOption('trigger', $htmlOptions);
+		if (isset($trigger) && in_array($trigger, self::$triggers))
+			$htmlOptions = self::defaultOption('data-trigger', $trigger, $htmlOptions);
+		$delay = self::popOption('delay', $htmlOptions);
+		if ($delay)
+			$htmlOptions = self::defaultOption('data-delay', $delay, $htmlOptions);
+		return parent::link($label, $url, $htmlOptions);
 	}
 
 	//
