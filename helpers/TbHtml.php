@@ -64,9 +64,9 @@ class TbHtml extends CHtml
 	static $navStyles			= array(self::NAV_TABS, self::NAV_PILLS, self::NAV_LIST);
 	static $wellSizes			= array(self::SIZE_LARGE, self::SIZE_SMALL, self::SIZE_MINI);
 
-    //
-    // Buttons
-    // --------------------------------------------------
+	//
+	// Buttons
+	// --------------------------------------------------
 
 	/**
 	 * Generates a button.
@@ -122,133 +122,133 @@ class TbHtml extends CHtml
 		return self::tag($tag, $htmlOptions, $label);
 	}
 
-    //
-    // Images
-    // --------------------------------------------------
+	//
+	// Images
+	// --------------------------------------------------
 
-    /**
-     * Generates an image tag with rounded corners.
-     * @param string $src the image URL.
-     * @param string $alt the alternative text display.
-     * @param array $htmlOptions additional HTML attributes.
-     * @return string the generated image tag.
-     * @see http://twitter.github.com/bootstrap/base-css.html#images
-     */
-    public static function imageRounded($src, $alt = '', $htmlOptions = array())
-    {
-        return parent::image($src, $alt, self::addClassName('img-rounded', $htmlOptions));
-    }
+	/**
+	 * Generates an image tag with rounded corners.
+	 * @param string $src the image URL.
+	 * @param string $alt the alternative text display.
+	 * @param array $htmlOptions additional HTML attributes.
+	 * @return string the generated image tag.
+	 * @see http://twitter.github.com/bootstrap/base-css.html#images
+	 */
+	public static function imageRounded($src, $alt = '', $htmlOptions = array())
+	{
+		return parent::image($src, $alt, self::addClassName('img-rounded', $htmlOptions));
+	}
 
-    /**
-     * Generates an image tag with circle.
-     * ***Important*** `.img-rounded` and `.img-circle` do not work in IE7-8 due to lack of border-radius support.
-     * @param string $src the image URL.
-     * @param string $alt the alternative text display.
-     * @param array $htmlOptions additional HTML attributes.
-     * @return string the generated image tag.
-     * @see http://twitter.github.com/bootstrap/base-css.html#images
-     */
-    public static function imageCircle($src, $alt = '', $htmlOptions = array())
-    {
-        return parent::image($src, $alt, self::addClassName('img-circle', $htmlOptions));
-    }
+	/**
+	 * Generates an image tag with circle.
+	 * ***Important*** `.img-rounded` and `.img-circle` do not work in IE7-8 due to lack of border-radius support.
+	 * @param string $src the image URL.
+	 * @param string $alt the alternative text display.
+	 * @param array $htmlOptions additional HTML attributes.
+	 * @return string the generated image tag.
+	 * @see http://twitter.github.com/bootstrap/base-css.html#images
+	 */
+	public static function imageCircle($src, $alt = '', $htmlOptions = array())
+	{
+		return parent::image($src, $alt, self::addClassName('img-circle', $htmlOptions));
+	}
 
-    /**
-     * Generates an image tag within polaroid frame.
-     * @param string $src the image URL.
-     * @param string $alt the alternative text display.
-     * @param array $htmlOptions additional HTML attributes.
-     * @return string the generated image tag.
-     * @see http://twitter.github.com/bootstrap/base-css.html#images
-     */
-    public static function imagePolaroid($src, $alt = '', $htmlOptions = array())
-    {
-        return parent::image($src, $alt, self::addClassName('img-polaroid', $htmlOptions));
-    }
+	/**
+	 * Generates an image tag within polaroid frame.
+	 * @param string $src the image URL.
+	 * @param string $alt the alternative text display.
+	 * @param array $htmlOptions additional HTML attributes.
+	 * @return string the generated image tag.
+	 * @see http://twitter.github.com/bootstrap/base-css.html#images
+	 */
+	public static function imagePolaroid($src, $alt = '', $htmlOptions = array())
+	{
+		return parent::image($src, $alt, self::addClassName('img-polaroid', $htmlOptions));
+	}
 
-    //
-    // Button groups
-    // --------------------------------------------------
+	//
+	// Button groups
+	// --------------------------------------------------
 
-    /**
-     * Generates a button group.
-     * @param array $buttons the button configurations.
-     * @param array $htmlOptions additional HTML options. The following special options are recognized:
-     * todo: write the options
-     * @return string the generated button group.
-     */
-    public static function buttonGroup($buttons, $htmlOptions = array())
-    {
-        if (is_array($buttons) && !empty($buttons))
-        {
-            $htmlOptions = self::addClassName('btn-group', $htmlOptions);
+	/**
+	 * Generates a button group.
+	 * @param array $buttons the button configurations.
+	 * @param array $htmlOptions additional HTML options. The following special options are recognized:
+	 * todo: write the options
+	 * @return string the generated button group.
+	 */
+	public static function buttonGroup($buttons, $htmlOptions = array())
+	{
+		if (is_array($buttons) && !empty($buttons))
+		{
+			$htmlOptions = self::addClassName('btn-group', $htmlOptions);
 
-            if (self::popOption('vertical', $htmlOptions, false))
-                $htmlOptions = self::addClassName('btn-group-vertical', $htmlOptions);
+			if (self::popOption('vertical', $htmlOptions, false))
+				$htmlOptions = self::addClassName('btn-group-vertical', $htmlOptions);
 
-            $parentOptions = array(
-                'style' => self::popOption('style', $htmlOptions),
-                'size' => self::popOption('size', $htmlOptions),
-                'disabled' => self::popOption('disabled', $htmlOptions)
-            );
+			$parentOptions = array(
+				'style' => self::popOption('style', $htmlOptions),
+				'size' => self::popOption('size', $htmlOptions),
+				'disabled' => self::popOption('disabled', $htmlOptions)
+			);
 
-            ob_start();
-            echo parent::openTag('div', $htmlOptions);
-            foreach ($buttons as $button)
-            {
-                $button = self::copyOptions(array('style', 'size', 'disabled'), $parentOptions, $button);
-                $buttonLabel = self::popOption('label', $button, '');
-                $buttonOptions = self::popOption('htmlOptions', $button, array());
-                $buttonOptions = self::moveOptions(array('icon', 'style', 'size', 'disabled'), $button, $buttonOptions);
-                echo self::button($buttonLabel, $buttonOptions);
-            }
-            echo '</div>';
-            return ob_get_clean();
-        }
-        return '';
-    }
+			ob_start();
+			echo parent::openTag('div', $htmlOptions);
+			foreach ($buttons as $button)
+			{
+				$button = self::copyOptions(array('style', 'size', 'disabled'), $parentOptions, $button);
+				$buttonLabel = self::popOption('label', $button, '');
+				$buttonOptions = self::popOption('htmlOptions', $button, array());
+				$buttonOptions = self::moveOptions(array('icon', 'style', 'size', 'disabled'), $button, $buttonOptions);
+				echo self::button($buttonLabel, $buttonOptions);
+			}
+			echo '</div>';
+			return ob_get_clean();
+		}
+		return '';
+	}
 
-    /**
-     * Generates a button toolbar.
-     * @param array $groups the button group configurations.
-     * @param array $htmlOptions additional HTML options. The following special options are recognized:
-     * todo: write the options
-     * @return string the generated button toolbar.
-     */
-    public static function buttonToolbar($groups, $htmlOptions = array())
-    {
-        if(is_array($groups) && !empty($groups))
-        {
-            $htmlOptions = self::addClassName('btn-toolbar', $htmlOptions);
+	/**
+	 * Generates a button toolbar.
+	 * @param array $groups the button group configurations.
+	 * @param array $htmlOptions additional HTML options. The following special options are recognized:
+	 * todo: write the options
+	 * @return string the generated button toolbar.
+	 */
+	public static function buttonToolbar($groups, $htmlOptions = array())
+	{
+		if(is_array($groups) && !empty($groups))
+		{
+			$htmlOptions = self::addClassName('btn-toolbar', $htmlOptions);
 
-            $parentOptions = array(
-                'style' => self::popOption('style', $htmlOptions),
-                'size' => self::popOption('size', $htmlOptions),
-                'disabled' => self::popOption('disabled', $htmlOptions)
-            );
+			$parentOptions = array(
+				'style' => self::popOption('style', $htmlOptions),
+				'size' => self::popOption('size', $htmlOptions),
+				'disabled' => self::popOption('disabled', $htmlOptions)
+			);
 
-            ob_start();
-            echo parent::openTag('div', $htmlOptions);
-            foreach ($groups as $group)
-            {
-                $items = self::getOption('items', $group, array());
-                if (empty($items))
-                    continue;
+			ob_start();
+			echo parent::openTag('div', $htmlOptions);
+			foreach ($groups as $group)
+			{
+				$items = self::getOption('items', $group, array());
+				if (empty($items))
+					continue;
 
-                $group = self::copyOptions(array('style', 'size', 'disabled'), $parentOptions, $group);
-                $groupOptions = self::getOption('htmlOptions', $group, array());
-                $groupOptions = self::moveOptions(array('style', 'size', 'disabled'), $group, $groupOptions);
-                echo self::buttonGroup($items, $groupOptions);
-            }
-            echo '</div>';
-            return ob_get_clean();
-        }
-        return '';
-    }
+				$group = self::copyOptions(array('style', 'size', 'disabled'), $parentOptions, $group);
+				$groupOptions = self::getOption('htmlOptions', $group, array());
+				$groupOptions = self::moveOptions(array('style', 'size', 'disabled'), $group, $groupOptions);
+				echo self::buttonGroup($items, $groupOptions);
+			}
+			echo '</div>';
+			return ob_get_clean();
+		}
+		return '';
+	}
 
-    //
-    // Button dropdowns
-    // --------------------------------------------------
+	//
+	// Button dropdowns
+	// --------------------------------------------------
 
 	/**
 	 * Generates a button with a dropdown menu.
@@ -259,9 +259,9 @@ class TbHtml extends CHtml
 	 */
 	public static function buttonDropdown($label, $items, $htmlOptions = array())
 	{
-        $menuOptions = self::popOption('menuOptions', $htmlOptions, array());
-        $groupOptions = self::popOption('groupOptions', $htmlOptions, array());
-        $groupOptions = self::addClassName('btn-group', $groupOptions);
+		$menuOptions = self::popOption('menuOptions', $htmlOptions, array());
+		$groupOptions = self::popOption('groupOptions', $htmlOptions, array());
+		$groupOptions = self::addClassName('btn-group', $groupOptions);
 
 		ob_start();
 		echo parent::openTag('div', $groupOptions);
@@ -278,123 +278,123 @@ class TbHtml extends CHtml
 		return ob_get_clean();
 	}
 
-    //
-    // Navs
-    // --------------------------------------------------
+	//
+	// Navs
+	// --------------------------------------------------
 
-    /**
-     * Generates a menu.
-     * @param array $items the menu items.
-     * @param array $htmlOptions additional HTML attributes.
-     * @return string the generated menu.
-     */
-    public static function menu($items, $htmlOptions = array())
-    {
-        ob_start();
-        echo parent::openTag('ul', $htmlOptions);
-        foreach ($items as $menuItem)
-        {
-            if (is_string($menuItem))
-                echo self::menuDivider();
-            else
-            {
-                // todo: I'm not quite happy with the logic below but it will have to do for now.
-                $label = self::getOption('label', $menuItem, '');
-                $itemOptions = self::getOption('itemOptions', $menuItem, array());
+	/**
+	 * Generates a menu.
+	 * @param array $items the menu items.
+	 * @param array $htmlOptions additional HTML attributes.
+	 * @return string the generated menu.
+	 */
+	public static function menu($items, $htmlOptions = array())
+	{
+		ob_start();
+		echo parent::openTag('ul', $htmlOptions);
+		foreach ($items as $menuItem)
+		{
+			if (is_string($menuItem))
+				echo self::menuDivider();
+			else
+			{
+				// todo: I'm not quite happy with the logic below but it will have to do for now.
+				$label = self::getOption('label', $menuItem, '');
+				$itemOptions = self::getOption('itemOptions', $menuItem, array());
 
-                if (self::getOption('active', $menuItem, false))
-                    $itemOptions = self::addClassName('active', $itemOptions);
+				if (self::getOption('active', $menuItem, false))
+					$itemOptions = self::addClassName('active', $itemOptions);
 
-                if (self::getOption('header', $menuItem, false))
-                    echo self::menuHeader($label, $itemOptions);
-                else
-                {
-                    $itemOptions['linkOptions'] = self::getOption('linkOptions', $menuItem, array());
+				if (self::getOption('header', $menuItem, false))
+					echo self::menuHeader($label, $itemOptions);
+				else
+				{
+					$itemOptions['linkOptions'] = self::getOption('linkOptions', $menuItem, array());
 
-                    if (isset($menuItem['icon']))
-                        $label = self::icon(self::popOption('icon', $menuItem)) . ' ' . $label;
+					if (isset($menuItem['icon']))
+						$label = self::icon(self::popOption('icon', $menuItem)) . ' ' . $label;
 
-                    $items = self::getOption('items', $menuItem, array());
-                    if (empty($items))
-                    {
-                        $url = self::getOption('url', false, $menuItem);
-                        echo self::menuLink($label, $url, $itemOptions);
-                    }
-                    else
-                        echo self::menuDropdown($label, $items, $itemOptions);
-                }
-            }
-        }
-        echo '</ul>';
-        return ob_get_clean();
-    }
+					$items = self::getOption('items', $menuItem, array());
+					if (empty($items))
+					{
+						$url = self::getOption('url', false, $menuItem);
+						echo self::menuLink($label, $url, $itemOptions);
+					}
+					else
+						echo self::menuDropdown($label, $items, $itemOptions);
+				}
+			}
+		}
+		echo '</ul>';
+		return ob_get_clean();
+	}
 
-    /**
-     * Generates a menu link.
-     * @param string $label the link label.
-     * @param array $url the link url.
-     * @param array $htmlOptions additional HTML attributes.
-     * @return string the generated menu item.
-     */
-    public static function menuLink($label, $url, $htmlOptions = array())
-    {
-        $linkOptions = self::popOption('linkOptions', $htmlOptions, array());
+	/**
+	 * Generates a menu link.
+	 * @param string $label the link label.
+	 * @param array $url the link url.
+	 * @param array $htmlOptions additional HTML attributes.
+	 * @return string the generated menu item.
+	 */
+	public static function menuLink($label, $url, $htmlOptions = array())
+	{
+		$linkOptions = self::popOption('linkOptions', $htmlOptions, array());
 
-        ob_start();
-        echo parent::openTag('li', $htmlOptions);
-        echo parent::link($label, $url, $linkOptions);
-        echo '</li>';
-        return ob_get_clean();
-    }
+		ob_start();
+		echo parent::openTag('li', $htmlOptions);
+		echo parent::link($label, $url, $linkOptions);
+		echo '</li>';
+		return ob_get_clean();
+	}
 
-    /**
-     * Generates a menu dropdown.
-     * @param string $label the link label.
-     * @param array $items the menu configuration.
-     * @param array $htmlOptions additional HTML attributes.
-     * @return string the generated dropdown.
-     */
-    public static function menuDropdown($label, $items, $htmlOptions)
-    {
-        $htmlOptions = self::addClassName('dropdown', $htmlOptions);
-        $linkOptions = self::popOption('linkOptions', $htmlOptions, array());
-        $menuOptions = self::popOption('menuOptions', $htmlOptions, array());
-        $menuOptions = self::addClassName('dropdown-menu', $menuOptions);
+	/**
+	 * Generates a menu dropdown.
+	 * @param string $label the link label.
+	 * @param array $items the menu configuration.
+	 * @param array $htmlOptions additional HTML attributes.
+	 * @return string the generated dropdown.
+	 */
+	public static function menuDropdown($label, $items, $htmlOptions)
+	{
+		$htmlOptions = self::addClassName('dropdown', $htmlOptions);
+		$linkOptions = self::popOption('linkOptions', $htmlOptions, array());
+		$menuOptions = self::popOption('menuOptions', $htmlOptions, array());
+		$menuOptions = self::addClassName('dropdown-menu', $menuOptions);
 
-        if (self::popOption('active', $htmlOptions, false))
-            $htmlOptions = self::addClassName('active', $htmlOptions);
+		if (self::popOption('active', $htmlOptions, false))
+			$htmlOptions = self::addClassName('active', $htmlOptions);
 
-        ob_start();
-        echo parent::openTag('li', $htmlOptions);
-        echo self::dropdownToggleMenuItem($label, $linkOptions);
-        echo self::menu($items, $menuOptions);
-        echo '</li>';
-        return ob_get_clean();
-    }
+		ob_start();
+		echo parent::openTag('li', $htmlOptions);
+		echo self::dropdownToggleMenuItem($label, $linkOptions);
+		echo self::menu($items, $menuOptions);
+		echo '</li>';
+		return ob_get_clean();
+	}
 
-    /**
-     * Generates a menu header.
-     * @param string $label the header text.
-     * @param array $htmlOptions additional HTML options.
-     * @return string the generated header.
-     */
-    public static function menuHeader($label, $htmlOptions = array())
-    {
-        $htmlOptions = self::addClassName('nav-header', $htmlOptions);
-        return parent::tag('li', $htmlOptions, $label);
-    }
+	/**
+	 * Generates a menu header.
+	 * @param string $label the header text.
+	 * @param array $htmlOptions additional HTML options.
+	 * @return string the generated header.
+	 */
+	public static function menuHeader($label, $htmlOptions = array())
+	{
+		$htmlOptions = self::addClassName('nav-header', $htmlOptions);
+		return parent::tag('li', $htmlOptions, $label);
+	}
 
-    /**
-     * Generates a menu divider.
-     * @param string $className the divider CSS class.
-     * @param array $htmlOptions additional HTML attributes.
-     * @return string the generated menu item.
-     */
-    public static function menuDivider($className = 'divider', $htmlOptions = array())
-    {
-        $htmlOptions = self::addClassName($className, $htmlOptions);
-        return parent::tag('li', $htmlOptions);
-    }
+	/**
+	 * Generates a menu divider.
+	 * @param string $className the divider CSS class.
+	 * @param array $htmlOptions additional HTML attributes.
+	 * @return string the generated menu item.
+	 */
+	public static function menuDivider($className = 'divider', $htmlOptions = array())
+	{
+		$htmlOptions = self::addClassName($className, $htmlOptions);
+		return parent::tag('li', $htmlOptions);
+	}
 
 	/**
 	 * Generates a navigation menu.
@@ -418,9 +418,9 @@ class TbHtml extends CHtml
 		return ob_get_clean();
 	}
 
-    //
-    // Dropdowns
-    // --------------------------------------------------
+	//
+	// Dropdowns
+	// --------------------------------------------------
 
 	/**
 	 * Generates a dropdown menu.
@@ -438,64 +438,64 @@ class TbHtml extends CHtml
 		return ob_get_clean();
 	}
 
-    /**
-     * Generates a dropdown toggle link.
-     * @param string $label the link label text.
-     * @param array $htmlOptions additional HTML attributes.
-     * @return string the generated link.
-     * http://twitter.github.com/bootstrap/components.html#buttonDropdowns
-     */
-    public static function dropdownToggleLink($label, $htmlOptions = array())
-    {
-        return self::dropdownToggle('a', $label, $htmlOptions);
-    }
+	/**
+	 * Generates a dropdown toggle link.
+	 * @param string $label the link label text.
+	 * @param array $htmlOptions additional HTML attributes.
+	 * @return string the generated link.
+	 * http://twitter.github.com/bootstrap/components.html#buttonDropdowns
+	 */
+	public static function dropdownToggleLink($label, $htmlOptions = array())
+	{
+		return self::dropdownToggle('a', $label, $htmlOptions);
+	}
 
-    /**
-     * Generates a dropdown toggle button.
-     * @param string $label the button label text.
-     * @param array $htmlOptions additional HTML attributes.
-     * @return string the generated button.
-     * http://twitter.github.com/bootstrap/components.html#buttonDropdowns
-     */
-    public static function dropdownToggleButton($label = '', $htmlOptions = array())
-    {
-        return self::dropdownToggle('button', $label, $htmlOptions);
-    }
+	/**
+	 * Generates a dropdown toggle button.
+	 * @param string $label the button label text.
+	 * @param array $htmlOptions additional HTML attributes.
+	 * @return string the generated button.
+	 * http://twitter.github.com/bootstrap/components.html#buttonDropdowns
+	 */
+	public static function dropdownToggleButton($label = '', $htmlOptions = array())
+	{
+		return self::dropdownToggle('button', $label, $htmlOptions);
+	}
 
-    /**
-     * Generates a dropdown toggle element.
-     * @param string $tag the HTML tag.
-     * @param string $label the element text.
-     * @param array $htmlOptions additional HTML attributes.
-     * @return string the generated element.
-     * http://twitter.github.com/bootstrap/components.html#dropdowns
-     */
-    public static function dropdownToggle($tag, $label, $htmlOptions)
-    {
-        $htmlOptions = self::addClassName('dropdown-toggle', $htmlOptions);
-        $htmlOptions = self::defaultOption('data-toggle', 'dropdown', $htmlOptions);
-        $label .= ' <b class="caret"></b>';
-        return self::btn($tag, $label, $htmlOptions);
-    }
+	/**
+	 * Generates a dropdown toggle element.
+	 * @param string $tag the HTML tag.
+	 * @param string $label the element text.
+	 * @param array $htmlOptions additional HTML attributes.
+	 * @return string the generated element.
+	 * http://twitter.github.com/bootstrap/components.html#dropdowns
+	 */
+	public static function dropdownToggle($tag, $label, $htmlOptions)
+	{
+		$htmlOptions = self::addClassName('dropdown-toggle', $htmlOptions);
+		$htmlOptions = self::defaultOption('data-toggle', 'dropdown', $htmlOptions);
+		$label .= ' <b class="caret"></b>';
+		return self::btn($tag, $label, $htmlOptions);
+	}
 
-    /**
-     * Generates a dropdown toggle menu item.
-     * @param string $label the menu item text.
-     * @param array $htmlOptions additional HTML attributes.
-     * @return string the generated menu item.
-     * http://twitter.github.com/bootstrap/components.html#dropdowns
-     */
-    public static function dropdownToggleMenuItem($label, $htmlOptions = array())
-    {
-        $htmlOptions = self::addClassName('dropdown-toggle', $htmlOptions);
-        $htmlOptions = self::defaultOption('data-toggle', 'dropdown', $htmlOptions);
-        $label .= ' <b class="caret"></b>';
-        return parent::link($label, '#', $htmlOptions);
-    }
+	/**
+	 * Generates a dropdown toggle menu item.
+	 * @param string $label the menu item text.
+	 * @param array $htmlOptions additional HTML attributes.
+	 * @return string the generated menu item.
+	 * http://twitter.github.com/bootstrap/components.html#dropdowns
+	 */
+	public static function dropdownToggleMenuItem($label, $htmlOptions = array())
+	{
+		$htmlOptions = self::addClassName('dropdown-toggle', $htmlOptions);
+		$htmlOptions = self::defaultOption('data-toggle', 'dropdown', $htmlOptions);
+		$label .= ' <b class="caret"></b>';
+		return parent::link($label, '#', $htmlOptions);
+	}
 
-    //
-    // Breadcrumbs
-    // --------------------------------------------------
+	//
+	// Breadcrumbs
+	// --------------------------------------------------
 
 	/**
 	 * Generates a breadcrumb menu.
@@ -525,9 +525,9 @@ class TbHtml extends CHtml
 		return ob_get_clean();
 	}
 
-    //
-    // Alerts
-    // --------------------------------------------------
+	//
+	// Alerts
+	// --------------------------------------------------
 
 	/**
 	 * @param string $style the style of the alert.
@@ -568,230 +568,230 @@ class TbHtml extends CHtml
 		return ob_get_clean();
 	}
 
-    //
-    // Pagination
-    // --------------------------------------------------
+	//
+	// Pagination
+	// --------------------------------------------------
 
-    //
-    // Labels and badges
-    // --------------------------------------------------
+	//
+	// Labels and badges
+	// --------------------------------------------------
 
-    /**
-     * Generates a label span.
-     * @param string $label the label text.
-     * @param array $htmlOptions additional HTML attributes.
-     * @return string the generated span.
-     * @see http://twitter.github.com/bootstrap/components.html#labels-badges
-     */
-    public static function labelSpan($label, $htmlOptions = array())
-    {
-        return self::labelBadgeSpan('label', $label, $htmlOptions);
-    }
+	/**
+	 * Generates a label span.
+	 * @param string $label the label text.
+	 * @param array $htmlOptions additional HTML attributes.
+	 * @return string the generated span.
+	 * @see http://twitter.github.com/bootstrap/components.html#labels-badges
+	 */
+	public static function labelSpan($label, $htmlOptions = array())
+	{
+		return self::labelBadgeSpan('label', $label, $htmlOptions);
+	}
 
-    /**
-     * Generates a badge span.
-     * @param string $label the badge text.
-     * @param array $htmlOptions additional HTML attributes.
-     * @return string the generated span.
-     * @see http://twitter.github.com/bootstrap/components.html#labels-badges
-     *
-     */
-    public static function badgeSpan($label, $htmlOptions = array())
-    {
-        return self::labelBadgeSpan('badge', $label, $htmlOptions);
-    }
+	/**
+	 * Generates a badge span.
+	 * @param string $label the badge text.
+	 * @param array $htmlOptions additional HTML attributes.
+	 * @return string the generated span.
+	 * @see http://twitter.github.com/bootstrap/components.html#labels-badges
+	 *
+	 */
+	public static function badgeSpan($label, $htmlOptions = array())
+	{
+		return self::labelBadgeSpan('badge', $label, $htmlOptions);
+	}
 
-    /**
-     * Generates a label or badge span.
-     * @param string $type the span type.
-     * @param string $label the label text.
-     * @param array $htmlOptions additional HTML attributes.
-     * @return string the generated span.
-     * @see http://twitter.github.com/bootstrap/components.html#labels-badges
-     */
-    public static function labelBadgeSpan($type, $label, $htmlOptions = array())
-    {
-        $htmlOptions = self::addClassName($type, $htmlOptions);
-        $style = self::popOption('style', $htmlOptions);
-        if (isset($style) && in_array($style, self::$labelBadgeStyles))
-            $htmlOptions = self::addClassName($type . '-' . $style, $htmlOptions);
-        return self::tag('span', $htmlOptions, $label);
-    }
+	/**
+	 * Generates a label or badge span.
+	 * @param string $type the span type.
+	 * @param string $label the label text.
+	 * @param array $htmlOptions additional HTML attributes.
+	 * @return string the generated span.
+	 * @see http://twitter.github.com/bootstrap/components.html#labels-badges
+	 */
+	public static function labelBadgeSpan($type, $label, $htmlOptions = array())
+	{
+		$htmlOptions = self::addClassName($type, $htmlOptions);
+		$style = self::popOption('style', $htmlOptions);
+		if (isset($style) && in_array($style, self::$labelBadgeStyles))
+			$htmlOptions = self::addClassName($type . '-' . $style, $htmlOptions);
+		return self::tag('span', $htmlOptions, $label);
+	}
 
-    //
-    // Typography
-    // --------------------------------------------------
+	//
+	// Typography
+	// --------------------------------------------------
 
-    /**
-     * Generates a hero unit.
-     * @param string $heading the heading text.
-     * @param string $content the content text.
-     * @param array $htmlOptions additional HTML attributes.
-     * @return string the generated hero unit.
-     */
-    public static function heroUnit($heading, $content, $htmlOptions = array())
-    {
-        $htmlOptions = self::addClassName('hero-unit', $htmlOptions);
-        $headingOptions = self::popOption('headingOptions', $htmlOptions, array());
-        ob_start();
-        echo parent::tag('div', $htmlOptions);
-        echo parent::tag('h1', $headingOptions, $heading);
-        echo $content;
-        echo '</div>';
-        return ob_get_clean();
-    }
+	/**
+	 * Generates a hero unit.
+	 * @param string $heading the heading text.
+	 * @param string $content the content text.
+	 * @param array $htmlOptions additional HTML attributes.
+	 * @return string the generated hero unit.
+	 */
+	public static function heroUnit($heading, $content, $htmlOptions = array())
+	{
+		$htmlOptions = self::addClassName('hero-unit', $htmlOptions);
+		$headingOptions = self::popOption('headingOptions', $htmlOptions, array());
+		ob_start();
+		echo parent::tag('div', $htmlOptions);
+		echo parent::tag('h1', $headingOptions, $heading);
+		echo $content;
+		echo '</div>';
+		return ob_get_clean();
+	}
 
-    /**
-     * Generates a pager header.
-     * @param string $heading the heading text.
-     * @param string $subtext the subtext.
-     * @param array $htmlOptions additional HTML attributes.
-     * @return string the generated pager header.
-     */
-    public static function pageHeader($heading, $subtext, $htmlOptions = array())
-    {
-        $htmlOptions = self::addClassName('page-header', $htmlOptions);
-        $headerOptions = self::popOption('headerOptions', $htmlOptions, array());
-        $subtextOptions = self::popOption('subtextOptions', $htmlOptions, array());
-        ob_start();
-        echo parent::openTag('div', $htmlOptions);
-        echo parent::openTag('h1', $headerOptions);
-        echo parent::encode($heading) . ' ' . parent::tag('small', $subtextOptions, $subtext);
-        echo '</h1></div>';
-        return ob_get_clean();
-    }
+	/**
+	 * Generates a pager header.
+	 * @param string $heading the heading text.
+	 * @param string $subtext the subtext.
+	 * @param array $htmlOptions additional HTML attributes.
+	 * @return string the generated pager header.
+	 */
+	public static function pageHeader($heading, $subtext, $htmlOptions = array())
+	{
+		$htmlOptions = self::addClassName('page-header', $htmlOptions);
+		$headerOptions = self::popOption('headerOptions', $htmlOptions, array());
+		$subtextOptions = self::popOption('subtextOptions', $htmlOptions, array());
+		ob_start();
+		echo parent::openTag('div', $htmlOptions);
+		echo parent::openTag('h1', $headerOptions);
+		echo parent::encode($heading) . ' ' . parent::tag('small', $subtextOptions, $subtext);
+		echo '</h1></div>';
+		return ob_get_clean();
+	}
 
-    //
-    // Progress bars
-    // --------------------------------------------------
+	//
+	// Progress bars
+	// --------------------------------------------------
 
-    /**
-     * Generates a progress bar.
-     * @param integer $width the progress in percent.
-     * @param array $htmlOptions additional HTML attributes.
-     * @return string the generated progress bar.
-     */
-    public static function progressBar($width = 0, $htmlOptions = array())
-    {
-        $htmlOptions = self::addClassName('progress', $htmlOptions);
+	/**
+	 * Generates a progress bar.
+	 * @param integer $width the progress in percent.
+	 * @param array $htmlOptions additional HTML attributes.
+	 * @return string the generated progress bar.
+	 */
+	public static function progressBar($width = 0, $htmlOptions = array())
+	{
+		$htmlOptions = self::addClassName('progress', $htmlOptions);
 
-        $style = self::popOption('style', $htmlOptions);
-        if (isset($style) && in_array($style, self::$progressStyles))
-            $htmlOptions = self::addClassName('progress-' . $style, $htmlOptions);
+		$style = self::popOption('style', $htmlOptions);
+		if (isset($style) && in_array($style, self::$progressStyles))
+			$htmlOptions = self::addClassName('progress-' . $style, $htmlOptions);
 
-        $striped = self::popOption('striped', $htmlOptions, false);
-        if ($striped)
-        {
-            $htmlOptions = self::addClassName('progress-striped', $htmlOptions);
-            $animated = self::popOption('animated', $htmlOptions, false);
-            if ($animated)
-                $htmlOptions = self::addClassName('active', $htmlOptions);
-        }
+		$striped = self::popOption('striped', $htmlOptions, false);
+		if ($striped)
+		{
+			$htmlOptions = self::addClassName('progress-striped', $htmlOptions);
+			$animated = self::popOption('animated', $htmlOptions, false);
+			if ($animated)
+				$htmlOptions = self::addClassName('active', $htmlOptions);
+		}
 
-        $barOptions = self::getOption('barOptions', $htmlOptions, array());
-        $barOptions = self::defaultOption('content', self::getOption('content', $htmlOptions, ''), $barOptions);
+		$barOptions = self::getOption('barOptions', $htmlOptions, array());
+		$barOptions = self::defaultOption('content', self::getOption('content', $htmlOptions, ''), $barOptions);
 
-        ob_start();
-        echo parent::openTag('div', $htmlOptions);
-        echo self::bar($width, $barOptions);
-        echo '</div>';
-        return ob_get_clean();
-    }
+		ob_start();
+		echo parent::openTag('div', $htmlOptions);
+		echo self::bar($width, $barOptions);
+		echo '</div>';
+		return ob_get_clean();
+	}
 
-    /**
-     * Generates a striped progress bar.
-     * @param integer $width the progress in percent.
-     * @param array $htmlOptions additional HTML attributes.
-     * @return string the generated progress bar.
-     */
-    public static function stripedProgressBar($width = 0, $htmlOptions = array())
-    {
-        $htmlOptions = self::defaultOption('striped', true, $htmlOptions);
-        return self::progressBar($width, $htmlOptions);
-    }
+	/**
+	 * Generates a striped progress bar.
+	 * @param integer $width the progress in percent.
+	 * @param array $htmlOptions additional HTML attributes.
+	 * @return string the generated progress bar.
+	 */
+	public static function stripedProgressBar($width = 0, $htmlOptions = array())
+	{
+		$htmlOptions = self::defaultOption('striped', true, $htmlOptions);
+		return self::progressBar($width, $htmlOptions);
+	}
 
-    /**
-     * Generates an animated progress bar.
-     * @param integer $width the progress in percent.
-     * @param array $htmlOptions additional HTML attributes.
-     * @return string the generated progress bar.
-     */
-    public static function animatedProgressBar($width = 0, $htmlOptions = array())
-    {
-        $htmlOptions = self::defaultOption('animated', true, $htmlOptions);
-        return self::stripedProgressBar($width, $htmlOptions);
-    }
+	/**
+	 * Generates an animated progress bar.
+	 * @param integer $width the progress in percent.
+	 * @param array $htmlOptions additional HTML attributes.
+	 * @return string the generated progress bar.
+	 */
+	public static function animatedProgressBar($width = 0, $htmlOptions = array())
+	{
+		$htmlOptions = self::defaultOption('animated', true, $htmlOptions);
+		return self::stripedProgressBar($width, $htmlOptions);
+	}
 
-    /**
-     * Generates a stacked progress bar.
-     * @param array $bars the bar configurations.
-     * @param array $htmlOptions additional HTML attributes.
-     * @return string the generated progress bar.
-     */
-    public static function stackedProgressBar($bars, $htmlOptions = array())
-    {
-        if (is_array($bars) && !empty($bars))
-        {
-            $htmlOptions = self::addClassName('progress', $htmlOptions);
-            ob_start();
-            echo parent::openTag('div', $htmlOptions);
-            foreach ($bars as $bar)
-            {
-                $width = self::popOption('width', $bar, 0);
-                $barOptions = self::popOption('htmlOptions', $bar, array());
-                $barOptions = self::defaultOption('style', self::popOption('style', $bar), $barOptions);
-                echo self::bar($width, $barOptions);
-            }
-            echo '</div>';
-            return ob_get_clean();
-        }
-        return '';
-    }
+	/**
+	 * Generates a stacked progress bar.
+	 * @param array $bars the bar configurations.
+	 * @param array $htmlOptions additional HTML attributes.
+	 * @return string the generated progress bar.
+	 */
+	public static function stackedProgressBar($bars, $htmlOptions = array())
+	{
+		if (is_array($bars) && !empty($bars))
+		{
+			$htmlOptions = self::addClassName('progress', $htmlOptions);
+			ob_start();
+			echo parent::openTag('div', $htmlOptions);
+			foreach ($bars as $bar)
+			{
+				$width = self::popOption('width', $bar, 0);
+				$barOptions = self::popOption('htmlOptions', $bar, array());
+				$barOptions = self::defaultOption('style', self::popOption('style', $bar), $barOptions);
+				echo self::bar($width, $barOptions);
+			}
+			echo '</div>';
+			return ob_get_clean();
+		}
+		return '';
+	}
 
-    /**
-     * Generates a progress bar.
-     * @param integer $width the progress in percent.
-     * @param array $htmlOptions additional HTML attributes.
-     * @return string the generated bar.
-     */
-    public static function bar($width = 0, $htmlOptions = array())
-    {
-        $htmlOptions = self::addClassName('bar', $htmlOptions);
+	/**
+	 * Generates a progress bar.
+	 * @param integer $width the progress in percent.
+	 * @param array $htmlOptions additional HTML attributes.
+	 * @return string the generated bar.
+	 */
+	public static function bar($width = 0, $htmlOptions = array())
+	{
+		$htmlOptions = self::addClassName('bar', $htmlOptions);
 
-        $style = self::popOption('style', $htmlOptions);
-        if (isset($style) && in_array($style, self::$progressStyles))
-            $htmlOptions = self::addClassName('bar-' . $style, $htmlOptions);
+		$style = self::popOption('style', $htmlOptions);
+		if (isset($style) && in_array($style, self::$progressStyles))
+			$htmlOptions = self::addClassName('bar-' . $style, $htmlOptions);
 
-        if ($width < 0)
-            $width = 0;
-        if ($width > 100)
-            $width = 100;
+		if ($width < 0)
+			$width = 0;
+		if ($width > 100)
+			$width = 100;
 
-        $htmlOptions = self::addStyles("width: {$width}%;", $htmlOptions);
-        $content = self::popOption('content', $htmlOptions, '');
-        return parent::tag('div', $htmlOptions, $content);
-    }
+		$htmlOptions = self::addStyles("width: {$width}%;", $htmlOptions);
+		$content = self::popOption('content', $htmlOptions, '');
+		return parent::tag('div', $htmlOptions, $content);
+	}
 
-    //
-    // Misc
-    // --------------------------------------------------
+	//
+	// Misc
+	// --------------------------------------------------
 
-    /**
-     * Generates a well element.
-     * @param string $content the well content.
-     * @param array $htmlOptions additional HTML attributes.
-     * @return string the generated well.
-     * @see http://twitter.github.com/bootstrap/components.html#misc
-     */
-    public static function well($content, $htmlOptions = array())
-    {
-        $size = self::popOption('size', $htmlOptions);
-        if (isset($size) && in_array($size, self::$wellSizes))
-            $htmlOptions = self::addClassName('well-' . $size, $htmlOptions);
-        ob_start();
-        parent::tag('div', $htmlOptions, $content);
-        return ob_get_clean();
-    }
+	/**
+	 * Generates a well element.
+	 * @param string $content the well content.
+	 * @param array $htmlOptions additional HTML attributes.
+	 * @return string the generated well.
+	 * @see http://twitter.github.com/bootstrap/components.html#misc
+	 */
+	public static function well($content, $htmlOptions = array())
+	{
+		$size = self::popOption('size', $htmlOptions);
+		if (isset($size) && in_array($size, self::$wellSizes))
+			$htmlOptions = self::addClassName('well-' . $size, $htmlOptions);
+		ob_start();
+		parent::tag('div', $htmlOptions, $content);
+		return ob_get_clean();
+	}
 
 	/**
 	 * Generates a close link.
@@ -818,19 +818,19 @@ class TbHtml extends CHtml
 		return self::closeIcon('button', $label, $htmlOptions);
 	}
 
-    /**
-     * Generates a close element.
-     * @param string $label the element label text.
-     * @param array $htmlOptions additional HTML attributes.
-     * @return string the generated element.
-     * @see http://twitter.github.com/bootstrap/components.html#misc
-     */
-    public static function closeIcon($tag = 'a', $label, $htmlOptions = array())
-    {
-        $htmlOptions = self::addClassName('close', $htmlOptions);
-        $htmlOptions = self::defaultOption('data-dismiss', 'alert', $htmlOptions);
-        return parent::tag($tag, $htmlOptions, $label);
-    }
+	/**
+	 * Generates a close element.
+	 * @param string $label the element label text.
+	 * @param array $htmlOptions additional HTML attributes.
+	 * @return string the generated element.
+	 * @see http://twitter.github.com/bootstrap/components.html#misc
+	 */
+	public static function closeIcon($tag = 'a', $label, $htmlOptions = array())
+	{
+		$htmlOptions = self::addClassName('close', $htmlOptions);
+		$htmlOptions = self::defaultOption('data-dismiss', 'alert', $htmlOptions);
+		return parent::tag($tag, $htmlOptions, $label);
+	}
 
 	/**
 	 * Generates a collapse icon.
@@ -841,10 +841,10 @@ class TbHtml extends CHtml
 	public static function collapseIcon($target, $htmlOptions = array())
 	{
 		$htmlOptions = self::addClassName('btn btn-navbar', $htmlOptions);
-        $htmlOptions = self::defaultOptions($htmlOptions, array(
-            'data-toggle' => 'collapse',
-            'data-target' => $target,
-        ));
+		$htmlOptions = self::defaultOptions($htmlOptions, array(
+			'data-toggle' => 'collapse',
+			'data-target' => $target,
+		));
 		ob_start();
 		echo parent::openTag('a', $htmlOptions);
 		echo '<span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span>';
@@ -852,27 +852,27 @@ class TbHtml extends CHtml
 		return ob_get_clean();
 	}
 
-    /**
-     * Generates a Glyph icon.
-     * @param string $icon the icon type.
-     * @param array $htmlOptions additional HTML attributes.
-     * @param string $tag the icon tag.
-     * @return string the generated icon.
-     * @see http://twitter.github.com/bootstrap/base-css.html#icons
-     */
-    public static function icon($icon, $htmlOptions = array(), $tag = 'i')
-    {
-        if (strpos($icon, 'icon') === false)
-            $icon = 'icon-' . implode(' icon-', explode(' ', $icon));
-        $htmlOptions = self::addClassName($icon, $htmlOptions);
-        return parent::openTag($tag, $htmlOptions) . parent::closeTag($tag); // tag won't work in this case
-    }
+	/**
+	 * Generates a Glyph icon.
+	 * @param string $icon the icon type.
+	 * @param array $htmlOptions additional HTML attributes.
+	 * @param string $tag the icon tag.
+	 * @return string the generated icon.
+	 * @see http://twitter.github.com/bootstrap/base-css.html#icons
+	 */
+	public static function icon($icon, $htmlOptions = array(), $tag = 'i')
+	{
+		if (strpos($icon, 'icon') === false)
+			$icon = 'icon-' . implode(' icon-', explode(' ', $icon));
+		$htmlOptions = self::addClassName($icon, $htmlOptions);
+		return parent::openTag($tag, $htmlOptions) . parent::closeTag($tag); // tag won't work in this case
+	}
 
-    //
-    // Forms
-    // --------------------------------------------------
+	//
+	// Forms
+	// --------------------------------------------------
 
-    // todo: move the form sections up to its right place.
+	// todo: move the form sections up to its right place.
 
 	/**
 	 * Generates a search form.
@@ -1226,9 +1226,9 @@ EOD;
 		return $addOn;
 	}
 
-    //
-    // Utilities
-    // --------------------------------------------------
+	//
+	// Utilities
+	// --------------------------------------------------
 
 	/**
 	 * Appends new class names to the named index "class" at the `$htmlOptions` parameter.
@@ -1296,18 +1296,18 @@ EOD;
 		return $options;
 	}
 
-    public static function defaultOptions($options, $defaults)
-    {
-        if (is_array($defaults) && is_array($options))
-        {
-            foreach ($defaults as $name => $value)
-            {
-                if (!isset($options[$name]))
-                    $options[$name] = $defaults[$name];
-            }
-        }
-        return $options;
-    }
+	public static function defaultOptions($options, $defaults)
+	{
+		if (is_array($defaults) && is_array($options))
+		{
+			foreach ($defaults as $name => $value)
+			{
+				if (!isset($options[$name]))
+					$options[$name] = $defaults[$name];
+			}
+		}
+		return $options;
+	}
 
 	/**
 	 * Merges two options arrays.
@@ -1385,13 +1385,13 @@ EOD;
 	 * @see CModel::getErrors
 	 * @see errorMessageCss
 	 * @see $errorContainerTag
-     * @todo move this method up to the form section.
+	 * @todo move this method up to the form section.
 	 */
 	public static function error($model, $attribute, $htmlOptions = array())
 	{
 		self::resolveName($model, $attribute); // turn [a][b]attr into attr
 		$error = $model->getError($attribute);
-        // todo: logic below needs to cleaned up, nested ternary operations are messy.
+		// todo: logic below needs to cleaned up, nested ternary operations are messy.
 		return $error != ''
 			? self::tag('span', (!isset($htmlOptions['class'])
 				? self::addClassName(self::$errorMessageCss, $htmlOptions)
