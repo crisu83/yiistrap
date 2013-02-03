@@ -30,6 +30,8 @@ class TbHeroUnit extends CWidget
 	 */
 	public $htmlOptions = array();
 
+	/* @todo: i would probably allow the use of some $data for the view */
+
 	/**
 	 * Initializes the widget.
 	 */

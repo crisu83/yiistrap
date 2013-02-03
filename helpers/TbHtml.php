@@ -65,6 +65,15 @@ class TbHtml extends CHtml
 	// Default close text.
 	const CLOSE_TEXT = '&times;';
 
+	// Help types.
+	const HELP_TYPE_INLINE = 'inline';
+	const HELP_TYPE_BLOCK = 'block';
+
+	// form types
+	const FORM_TYPE_INLINE = 'inline';
+	const FORM_TYPE_HORIZONTAL = 'horizontal';
+	const FORM_TYPE_VERTICAL = 'vertical';
+
 	// Scope constants.
 	static $sizes = array(self::SIZE_LARGE, self::SIZE_SMALL, self::SIZE_MINI);
 	static $buttonStyles = array(
@@ -1150,6 +1159,31 @@ class TbHtml extends CHtml
 		return self::searchForm($action, $method, $htmlOptions);
 	}
 
+
+	/**
+	 * Generates a label tag.
+	 * @param string $label label text. Note, you should HTML-encode the text if needed.
+	 * @param string $for the ID of the HTML element that this label is associated with.
+	 * If this is false, the 'for' attribute for the label tag will not be rendered.
+	 * @param array $htmlOptions additional HTML attributes.
+	 * The following HTML option is recognized:
+	 * <ul>
+	 * <li>required: if this is set and is true, the label will be styled
+	 * with CSS class 'required' (customizable with CHtml::$requiredCss),
+	 * and be decorated with {@link CHtml::beforeRequiredLabel} and
+	 * {@link CHtml::afterRequiredLabel}.</li>
+	 * </ul>
+	 * @return string the generated label tag
+	 */
+	public static function label($label,$for,$htmlOptions=array())
+	{
+		$formType = self::popOption('formType',$htmlOptions);
+		if($formType == TbHtml::FORM_TYPE_HORIZONTAL)
+			$htmlOptions = self::addClassName('control-label', $htmlOptions);
+
+		return self::tag('label',$htmlOptions,$label);
+	}
+
 	/**
 	 * Generates a text field input.
 	 * @param string $name the input name
@@ -1164,7 +1198,27 @@ class TbHtml extends CHtml
 	{
 		parent::clientChange('change', $htmlOptions);
 
-		return  self::inputField('text', $name, $value, $htmlOptions);
+		return self::inputField('text', $name, $value, $htmlOptions);
+	}
+
+	/**
+	 * Generates a text area input.
+	 * @param string $name the input name
+	 * @param string $value the input value
+	 * @param array $htmlOptions additional HTML attributes. Besides normal HTML attributes, a few special
+	 * attributes are also recognized (see {@link clientChange} and {@link tag} for more details.)
+	 * @return string the generated text area
+	 * @see clientChange
+	 * @see inputField
+	 */
+	public static function textArea($name,$value='',$htmlOptions=array())
+	{
+		$help = self::getHelp($htmlOptions);
+
+		ob_start();
+		echo parent::textArea($name, $value, $htmlOptions);
+		echo $help;
+		return ob_get_clean();
 	}
 
 	/**
@@ -1200,6 +1254,90 @@ class TbHtml extends CHtml
 		}
 
 		return $checkBox;
+	}
+
+	/**
+	 * Generates a drop down list.
+	 * @param string $name the input name
+	 * @param string $select the selected value
+	 * @param array $data data for generating the list options (value=>display).
+	 * You may use {@link listData} to generate this data.
+	 * Please refer to {@link listOptions} on how this data is used to generate the list options.
+	 * Note, the values and labels will be automatically HTML-encoded by this method.
+	 * @param array $htmlOptions additional HTML attributes. Besides normal HTML attributes, a few special
+	 * attributes are recognized. See {@link clientChange} and {@link tag} for more details.
+	 * In addition, the following options are also supported specifically for dropdown list:
+	 * <ul>
+	 * <li>encode: boolean, specifies whether to encode the values. Defaults to true.</li>
+	 * <li>prompt: string, specifies the prompt text shown as the first list option. Its value is empty. Note, the prompt text will NOT be HTML-encoded.</li>
+	 * <li>empty: string, specifies the text corresponding to empty selection. Its value is empty.
+	 * The 'empty' option can also be an array of value-label pairs.
+	 * Each pair will be used to render a list option at the beginning. Note, the text label will NOT be HTML-encoded.</li>
+	 * <li>options: array, specifies additional attributes for each OPTION tag.
+	 *     The array keys must be the option values, and the array values are the extra
+	 *     OPTION tag attributes in the name-value pairs. For example,
+	 * <pre>
+	 *     array(
+	 *         'value1'=>array('disabled'=>true, 'label'=>'value 1'),
+	 *         'value2'=>array('label'=>'value 2'),
+	 *     );
+	 * </pre>
+	 * </li>
+	 * </ul>
+	 * @return string the generated drop down list
+	 * @see clientChange
+	 * @see inputField
+	 * @see listData
+	 */
+	public static function dropDownList($name,$select,$data,$htmlOptions=array())
+	{
+		$help = self::getHelp($htmlOptions);
+		ob_start();
+		echo parent::dropDownList($name, $select, $data, $htmlOptions);
+		echo $help;
+		return ob_get_clean();
+	}
+
+	/**
+	 * Generates a list box.
+	 * @param string $name the input name
+	 * @param mixed $select the selected value(s). This can be either a string for single selection or an array for multiple selections.
+	 * @param array $data data for generating the list options (value=>display)
+	 * You may use {@link listData} to generate this data.
+	 * Please refer to {@link listOptions} on how this data is used to generate the list options.
+	 * Note, the values and labels will be automatically HTML-encoded by this method.
+	 * @param array $htmlOptions additional HTML attributes. Besides normal HTML attributes, a few special
+	 * attributes are also recognized. See {@link clientChange} and {@link tag} for more details.
+	 * In addition, the following options are also supported specifically for list box:
+	 * <ul>
+	 * <li>encode: boolean, specifies whether to encode the values. Defaults to true.</li>
+	 * <li>prompt: string, specifies the prompt text shown as the first list option. Its value is empty. Note, the prompt text will NOT be HTML-encoded.</li>
+	 * <li>empty: string, specifies the text corresponding to empty selection. Its value is empty.
+	 * The 'empty' option can also be an array of value-label pairs.
+	 * Each pair will be used to render a list option at the beginning. Note, the text label will NOT be HTML-encoded.</li>
+	 * <li>options: array, specifies additional attributes for each OPTION tag.
+	 *     The array keys must be the option values, and the array values are the extra
+	 *     OPTION tag attributes in the name-value pairs. For example,
+	 * <pre>
+	 *     array(
+	 *         'value1'=>array('disabled'=>true, 'label'=>'value 1'),
+	 *         'value2'=>array('label'=>'value 2'),
+	 *     );
+	 * </pre>
+	 * </li>
+	 * </ul>
+	 * @return string the generated list box
+	 * @see clientChange
+	 * @see inputField
+	 * @see listData
+	 */
+	public static function listBox($name,$select,$data,$htmlOptions=array())
+	{
+		$help = self::getHelp($htmlOptions);
+		ob_start();
+		echo parent::listBox($name, $select, $data, $htmlOptions);
+		echo $help;
+		return ob_get_clean();
 	}
 
 	/**
@@ -1635,6 +1773,27 @@ EOD;
 	}
 
 	/**
+	 * Extracts the help section of htmlOptions if any. The help option is setup as:
+	 * <code>
+	 *      // ...
+	 * 		'help'=>array('text'=>'This is help text','type'=>'inline')
+	 * 		// ...
+	 * </code>
+	 * @param $htmlOptions
+	 * @return mixed|string
+	 */
+	public static function getHelp(&$htmlOptions)
+	{
+		$help = self::popOption('help', $htmlOptions);
+		if(null !== $help && is_array($help))
+		{
+			$text = self::popOption('text', $help, 'help');
+			$type = self::popOption('type', $help,  self::HELP_TYPE_BLOCK);
+			$help = self::tag('span', array('class'=>'help-'.$type, $text));
+		}
+		return $help;
+	}
+	/**
 	 * Generates an input HTML tag.
 	 * This method generates an input HTML tag based on the given input name and value.
 	 * @param string $type the input type (e.g. 'text', 'radio')
@@ -1643,8 +1802,9 @@ EOD;
 	 * @param array $htmlOptions additional HTML attributes for the HTML tag (see {@link tag}). The following special
 	 * attributes are supported:
 	 * <ul>
-	 * 	<li>append: string, append addon to the input types: text, password, date</li>
-	 *  <li>prepend: string, prepend addon to the input types: text, password, date</li>
+	 *	<li>append: string, append addon to the input types: text, password, date</li>
+	 *	<li>prepend: string, prepend addon to the input types: text, password, date</li>
+	 *	<li>help: array, see {@link getHelp}
 	 * </ul>
 	 * @return string the generated input tag
 	 */
@@ -1652,6 +1812,7 @@ EOD;
 	{
 		$inputOptions = self::removeOptions($htmlOptions, array('append', 'prepend'));
 		$addOnClasses = self::getAddOnClasses($htmlOptions);
+		$help = self::getHelp($htmlOptions);
 
 		ob_start();
 		if (!empty($addOnClasses))
@@ -1664,6 +1825,303 @@ EOD;
 		if (!empty($addOnClasses))
 			echo '</div>';
 
+		echo $help;
+
 		return ob_get_clean();
 	}
+
+	// Active Fields
+
+	public static function activeCheckBox($model, $attribute, $htmlOptions = array())
+	{
+		/* todo: is there another way to extract parents hidden input? */
+		self::resolveNameID($model, $attribute, $htmlOptions);
+
+		$htmlOptions = self::defaultOption('value', 1, $htmlOptions);
+
+		if (!isset($htmlOptions['checked']) && self::resolveValue($model, $attribute) == $htmlOptions['value'])
+			$htmlOptions['checked'] = 'checked';
+		self::clientChange('click', $htmlOptions);
+
+		if (array_key_exists('uncheckValue', $htmlOptions))
+		{
+			$uncheck = $htmlOptions['uncheckValue'];
+			unset($htmlOptions['uncheckValue']);
+		} else
+			$uncheck = '0';
+
+		$hiddenOptions = isset($htmlOptions['id']) ? array('id' => self::ID_PREFIX . $htmlOptions['id']) : array('id' => false);
+		$hidden = $uncheck !== null ? self::hiddenField($htmlOptions['name'], $uncheck, $hiddenOptions) : '';
+
+		$name = parent::resolveName($model, $attribute);
+
+		/* todo: checkbox and radio have different label layout. Test whether this solution works */
+		return $hidden . self::checkBox($name, $uncheck, $htmlOptions);
+	}
+
+	/**
+	 * Generates a radio button for a model attribute.
+	 * If the attribute has input error, the input field's CSS class will
+	 * be appended with {@link errorCss}.
+	 * @param CModel $model the data model
+	 * @param string $attribute the attribute
+	 * @param array $htmlOptions additional HTML attributes. Besides normal HTML attributes, a few special
+	 * attributes are also recognized (see {@link clientChange} and {@link tag} for more details.)
+	 * A special option named 'uncheckValue' is available that can be used to specify
+	 * the value returned when the radio button is not checked. By default, this value is '0'.
+	 * Internally, a hidden field is rendered so that when the radio button is not checked,
+	 * we can still obtain the posted uncheck value.
+	 * If 'uncheckValue' is set as NULL, the hidden field will not be rendered.
+	 * @return string the generated radio button
+	 * @see clientChange
+	 * @see activeInputField
+	 */
+	public static function activeRadioButton($model, $attribute, $htmlOptions = array())
+	{
+		self::resolveNameID($model, $attribute, $htmlOptions);
+
+		$htmlOptions = self::defaultOption('value', 1, $htmlOptions);
+
+		if (!isset($htmlOptions['checked']) && self::resolveValue($model, $attribute) == $htmlOptions['value'])
+			$htmlOptions['checked'] = 'checked';
+
+		self::clientChange('click', $htmlOptions);
+
+		if (array_key_exists('uncheckValue', $htmlOptions))
+		{
+			$uncheck = $htmlOptions['uncheckValue'];
+			unset($htmlOptions['uncheckValue']);
+		} else
+			$uncheck = '0';
+
+		$hiddenOptions = isset($htmlOptions['id']) ? array('id' => self::ID_PREFIX . $htmlOptions['id']) : array('id' => false);
+		$hidden = $uncheck !== null ? self::hiddenField($htmlOptions['name'], $uncheck, $hiddenOptions) : '';
+
+		$name = parent::resolveName($model, $attribute);
+
+		/* todo: checkbox and radio have different label layout. Test whether this solution works */
+		// add a hidden field so that if the radio button is not selected, it still submits a value
+		return $hidden . self::radioButton($name, $uncheck, $htmlOptions);
+	}
+
+	/**
+	 * Generates an input HTML tag for a model attribute.
+	 * This method generates an input HTML tag based on the given data model and attribute.
+	 * If the attribute has input error, the input field's CSS class will
+	 * be appended with {@link errorCss}.
+	 * This enables highlighting the incorrect input.
+	 * @param string $type the input type (e.g. 'text', 'radio')
+	 * @param CModel $model the data model
+	 * @param string $attribute the attribute
+	 * @param array $htmlOptions additional HTML attributes for the HTML tag
+	 * @return string the generated input tag
+	 */
+	protected static function activeInputField($type, $model, $attribute, $htmlOptions)
+	{
+		$inputOptions = self::removeOptions($htmlOptions, array('append', 'prepend'));
+		$addOnClasses = self::getAddOnClasses($htmlOptions);
+		$help = self::getHelp($htmlOptions);
+
+		ob_start();
+		if (!empty($addOnClasses))
+			echo '<div class="' . $addOnClasses . '">';
+
+		echo self::getPrepend($htmlOptions);
+		echo parent::activeInputField($type, $model, $attribute, $inputOptions);
+		echo self::getAppend($htmlOptions);
+
+		if (!empty($addOnClasses))
+			echo '</div>';
+
+		echo $help;
+
+		return ob_get_clean();
+	}
+
+	/**
+	 * Generates a url field input for a model attribute.
+	 * If the attribute has input error, the input field's CSS class will
+	 * be appended with {@link errorCss}.
+	 * @param CModel $model the data model
+	 * @param string $attribute the attribute
+	 * @param array $htmlOptions additional HTML attributes. Besides normal HTML attributes, a few special
+	 * attributes are also recognized (see {@link clientChange} and {@link tag} for more details.)
+	 * @return string the generated input field
+	 * @see clientChange
+	 * @see activeInputField
+	 * @since 1.1.11
+	 */
+	public static function activeUrlField($model,$attribute,$htmlOptions=array())
+	{
+		parent::resolveNameID($model,$attribute,$htmlOptions);
+		parent::clientChange('change',$htmlOptions);
+		return self::activeInputField('url',$model,$attribute,$htmlOptions);
+	}
+	/**
+	 * Generates an email field input for a model attribute.
+	 * If the attribute has input error, the input field's CSS class will
+	 * be appended with {@link errorCss}.
+	 * @param CModel $model the data model
+	 * @param string $attribute the attribute
+	 * @param array $htmlOptions additional HTML attributes. Besides normal HTML attributes, a few special
+	 * attributes are also recognized (see {@link clientChange} and {@link tag} for more details.)
+	 * @return string the generated input field
+	 * @see clientChange
+	 * @see activeInputField
+	 * @since 1.1.11
+	 */
+	public static function activeEmailField($model,$attribute,$htmlOptions=array())
+	{
+		parent::resolveNameID($model,$attribute,$htmlOptions);
+		parent::clientChange('change',$htmlOptions);
+		return self::activeInputField('email',$model,$attribute,$htmlOptions);
+	}
+
+	/**
+	 * Generates a number field input for a model attribute.
+	 * If the attribute has input error, the input field's CSS class will
+	 * be appended with {@link errorCss}.
+	 * @param CModel $model the data model
+	 * @param string $attribute the attribute
+	 * @param array $htmlOptions additional HTML attributes. Besides normal HTML attributes, a few special
+	 * attributes are also recognized (see {@link clientChange} and {@link tag} for more details.)
+	 * @return string the generated input field
+	 * @see clientChange
+	 * @see activeInputField
+	 * @since 1.1.11
+	 */
+	public static function activeNumberField($model,$attribute,$htmlOptions=array())
+	{
+		parent::resolveNameID($model,$attribute,$htmlOptions);
+		parent::clientChange('change',$htmlOptions);
+		return self::activeInputField('number',$model,$attribute,$htmlOptions);
+	}
+
+	/**
+	 * Generates a range field input for a model attribute.
+	 * If the attribute has input error, the input field's CSS class will
+	 * be appended with {@link errorCss}.
+	 * @param CModel $model the data model
+	 * @param string $attribute the attribute
+	 * @param array $htmlOptions additional HTML attributes. Besides normal HTML attributes, a few special
+	 * attributes are also recognized (see {@link clientChange} and {@link tag} for more details.)
+	 * @return string the generated input field
+	 * @see clientChange
+	 * @see activeInputField
+	 * @since 1.1.11
+	 */
+	public static function activeRangeField($model,$attribute,$htmlOptions=array())
+	{
+		parent::resolveNameID($model,$attribute,$htmlOptions);
+		parent::clientChange('change',$htmlOptions);
+		return self::activeInputField('range',$model,$attribute,$htmlOptions);
+	}
+
+	/**
+	 * Generates a date field input for a model attribute.
+	 * If the attribute has input error, the input field's CSS class will
+	 * be appended with {@link errorCss}.
+	 * @param CModel $model the data model
+	 * @param string $attribute the attribute
+	 * @param array $htmlOptions additional HTML attributes. Besides normal HTML attributes, a few special
+	 * attributes are also recognized (see {@link clientChange} and {@link tag} for more details.)
+	 * @return string the generated input field
+	 * @see clientChange
+	 * @see activeInputField
+	 * @since 1.1.11
+	 */
+	public static function activeDateField($model,$attribute,$htmlOptions=array())
+	{
+		parent::resolveNameID($model,$attribute,$htmlOptions);
+		parent::clientChange('change',$htmlOptions);
+		return self::activeInputField('date',$model,$attribute,$htmlOptions);
+	}
+
+	/**
+	 * Generates a password field input for a model attribute.
+	 * If the attribute has input error, the input field's CSS class will
+	 * be appended with {@link errorCss}.
+	 * @param CModel $model the data model
+	 * @param string $attribute the attribute
+	 * @param array $htmlOptions additional HTML attributes. Besides normal HTML attributes, a few special
+	 * attributes are also recognized (see {@link clientChange} and {@link tag} for more details.)
+	 * @return string the generated input field
+	 * @see clientChange
+	 * @see activeInputField
+	 */
+	public static function activePasswordField($model,$attribute,$htmlOptions=array())
+	{
+		parent::resolveNameID($model,$attribute,$htmlOptions);
+		parent::clientChange('change',$htmlOptions);
+		return self::activeInputField('password',$model,$attribute,$htmlOptions);
+	}
+
+	/**
+	 * Generates a text area input for a model attribute.
+	 * If the attribute has input error, the input field's CSS class will
+	 * be appended with {@link errorCss}.
+	 * @param CModel $model the data model
+	 * @param string $attribute the attribute
+	 * @param array $htmlOptions additional HTML attributes. Besides normal HTML attributes, a few special
+	 * attributes are also recognized (see {@link clientChange} and {@link tag} for more details.)
+	 * @return string the generated text area
+	 * @see clientChange
+	 */
+	public static function activeTextArea($model,$attribute,$htmlOptions=array())
+	{
+		parent::resolveNameID($model,$attribute,$htmlOptions);
+		parent::clientChange('change',$htmlOptions);
+		if($model->hasErrors($attribute))
+			self::addErrorCss($htmlOptions);
+
+		$text = self::popOption('value', $htmlOptions, self::resolveValue($model, $attribute));
+		$help = self::getHelp($htmlOptions);
+
+		ob_start();
+		self::tag('textarea',$htmlOptions, isset($htmlOptions['encode']) && !$htmlOptions['encode'] ? $text : self::encode($text));
+		echo $help;
+		return ob_get_clean();
+	}
+
+	/**
+	 * Generates a file input for a model attribute.
+	 * Note, you have to set the enclosing form's 'enctype' attribute to be 'multipart/form-data'.
+	 * After the form is submitted, the uploaded file information can be obtained via $_FILES (see
+	 * PHP documentation).
+	 * @param CModel $model the data model
+	 * @param string $attribute the attribute
+	 * @param array $htmlOptions additional HTML attributes (see {@link tag}).
+	 * @return string the generated input field
+	 * @see activeInputField
+	 */
+	public static function activeFileField($model,$attribute,$htmlOptions=array())
+	{
+		self::resolveNameID($model,$attribute,$htmlOptions);
+		// add a hidden field so that if a model only has a file field, we can
+		// still use isset($_POST[$modelClass]) to detect if the input is submitted
+		$hiddenOptions=isset($htmlOptions['id']) ? array('id'=>self::ID_PREFIX.$htmlOptions['id']) : array('id'=>false);
+		return self::hiddenField($htmlOptions['name'],'',$hiddenOptions)
+			. self::activeInputField('file',$model,$attribute,$htmlOptions);
+	}
+
+	/**
+	 * Generates a text field input for a model attribute.
+	 * If the attribute has input error, the input field's CSS class will
+	 * be appended with {@link errorCss}.
+	 * @param CModel $model the data model
+	 * @param string $attribute the attribute
+	 * @param array $htmlOptions additional HTML attributes. Besides normal HTML attributes, a few special
+	 * attributes are also recognized (see {@link clientChange} and {@link tag} for more details.)
+	 * @return string the generated input field
+	 * @see clientChange
+	 * @see activeInputField
+	 */
+	public static function activeTextField($model,$attribute,$htmlOptions=array())
+	{
+		parent::resolveNameID($model,$attribute,$htmlOptions);
+		parent::clientChange('change',$htmlOptions);
+		parent::clientChange('change',$htmlOptions);
+		return self::activeInputField('text',$model,$attribute,$htmlOptions);
+	}
+
 }
