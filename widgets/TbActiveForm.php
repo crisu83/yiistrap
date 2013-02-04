@@ -40,6 +40,154 @@ class TbActiveForm extends CActiveForm
 	}
 
 	/**
+	 * Displays the first validation error for a model attribute.
+	 * @param CModel $model the data model
+	 * @param string $attribute the attribute name
+	 * @param array $htmlOptions additional HTML attributes to be rendered in the container div tag.
+	 * @param boolean $enableAjaxValidation whether to enable AJAX validation for the specified attribute.
+	 * @param boolean $enableClientValidation whether to enable client-side validation for the specified attribute.
+	 * @return string the validation result (error display or success message).
+	 */
+	public function error($model, $attribute, $htmlOptions = array(), $enableAjaxValidation = true, $enableClientValidation = true)
+	{
+		if (!$this->enableAjaxValidation)
+			$enableAjaxValidation = false;
+
+		if (!$this->enableClientValidation)
+			$enableClientValidation = false;
+
+		if (!isset($htmlOptions['class']))
+			$htmlOptions['class'] = $this->errorMessageCssClass;
+
+		if (!$enableAjaxValidation && !$enableClientValidation)
+			return $this->renderError($model, $attribute, $htmlOptions);
+
+		$id = TbHtml::activeId($model, $attribute);
+		$inputID = TbHtml::getOption('inputID', $htmlOptions, $id);
+		unset($htmlOptions['inputID']);
+
+		if (!isset($htmlOptions['id']))
+			$htmlOptions['id'] = $inputID . '_em_';
+
+		$option = array(
+			'id' => $id,
+			'inputID' => $inputID,
+			'errorID' => $htmlOptions['id'],
+			'model' => get_class($model),
+			'name' => TbHtml::resolveName($model, $attribute),
+			'enableAjaxValidation' => $enableAjaxValidation,
+			'inputContainer' => 'div.control-group', // Bootstrap requires this ;)
+		);
+
+		$optionNames = array(
+			'validationDelay',
+			'validateOnChange',
+			'validateOnType',
+			'hideErrorMessage',
+			'inputContainer',
+			'errorCssClass',
+			'successCssClass',
+			'validatingCssClass',
+			'beforeValidateAttribute',
+			'afterValidateAttribute',
+		);
+
+		foreach ($optionNames as $name)
+		{
+			$option[$name] = TbHtml::getOption($name, $htmlOptions);
+			unset($htmlOptions[$name]);
+		}
+
+		if ($model instanceof CActiveRecord && !$model->isNewRecord)
+			$option['status'] = 1;
+
+		if ($enableClientValidation)
+		{
+			$validators = TbHtml::getOption('clientValidation', $htmlOptions, array());
+
+			$attributeName = $attribute;
+			if (($pos = strrpos($attribute, ']')) !== false && $pos !== strlen($attribute) - 1) // e.g. [a]name
+				$attributeName = substr($attribute, $pos + 1);
+
+			foreach ($model->getValidators($attributeName) as $validator)
+			{
+				if ($validator->enableClientValidation)
+					if (($js = $validator->clientValidateAttribute($model, $attributeName)) != '')
+						$validators[] = $js;
+			}
+
+			if ($validators !== array())
+				$option['clientValidation'] = "js:function(value, messages, attribute) {\n" . implode("\n", $validators) . "\n}";
+		}
+
+		$html = TbHtml::error($model, $attribute, $htmlOptions);
+
+		if ($html === '')
+		{
+			$htmlOptions = TbHtml::addStyles('display:none', $htmlOptions);
+			$html = TbHtml::tag('span', $htmlOptions, '');
+		}
+
+		$this->attributes[$inputID] = $option;
+
+		return $html;
+	}
+
+
+	/**
+	 * Displays a summary of validation errors for one or several models.
+	 * This method is very similar to {@link TbHtml::errorSummary} except that it also works
+	 * when AJAX validation is performed.
+	 * @param mixed $models the models whose input errors are to be displayed. This can be either
+	 * a single model or an array of models.
+	 * @param string $header a piece of HTML code that appears in front of the errors
+	 * @param string $footer a piece of HTML code that appears at the end of the errors
+	 * @param array $htmlOptions additional HTML attributes to be rendered in the container div tag.
+	 * @return string the error summary. Empty if no errors are found.
+	 * @see TbHtml::errorSummary
+	 */
+	public function errorSummary($models, $header = null, $footer = null, $htmlOptions = array())
+	{
+		$htmlOptions = TbHtml::addClassName('alert alert-block alert-error', $htmlOptions);
+
+		return parent::errorSummary($models, $header, $footer, $htmlOptions);
+	}
+
+	/**
+	 * Renders an HTML label for a model attribute.
+	 * This method is a wrapper of {@link TbHtml::activeLabel}.
+	 * Please check {@link TbHtml::activeLabel} for detailed information
+	 * about the parameters for this method.
+	 * @param CModel $model the data model
+	 * @param string $attribute the attribute
+	 * @param array $htmlOptions additional HTML attributes.
+	 * @return string the generated label tag
+	 */
+	public function label($model, $attribute, $htmlOptions = array())
+	{
+		if($this->type == TbHtml::FORM_TYPE_HORIZONTAL)
+			$htmlOptions = TbHtml::addClassName('control-label', $htmlOptions);
+		return parent::label($model, $attribute, $htmlOptions);
+	}
+
+	/**
+	 * Renders an HTML label for a model attribute.
+	 * This method is a wrapper of {@link TbHtml::activeLabelEx}.
+	 * Please check {@link TbHtml::activeLabelEx} for detailed information
+	 * about the parameters for this method.
+	 * @param CModel $model the data model
+	 * @param string $attribute the attribute
+	 * @param array $htmlOptions additional HTML attributes.
+	 * @return string the generated label tag
+	 */
+	public function labelEx($model, $attribute, $htmlOptions = array())
+	{
+		if($this->type == TbHtml::FORM_TYPE_HORIZONTAL)
+			$htmlOptions = TbHtml::addClassName('control-label', $htmlOptions);
+		return parent::labelEx($model, $attribute, $htmlOptions);
+	}
+
+	/**
 	 * Renders a url field for a model attribute.
 	 * This method is a wrapper of {@link TbHtml::activeUrlField}.
 	 * Please check {@link TbHtml::activeUrlField} for detailed information
@@ -210,37 +358,61 @@ class TbActiveForm extends CActiveForm
 	}
 
 	/**
-	 * Renders an HTML label for a model attribute.
-	 * This method is a wrapper of {@link TbHtml::activeLabel}.
-	 * Please check {@link TbHtml::activeLabel} for detailed information
+	 * Renders a dropdown list for a model attribute.
+	 * This method is a wrapper of {@link CHtml::activeDropDownList}.
+	 * Please check {@link CHtml::activeDropDownList} for detailed information
 	 * about the parameters for this method.
 	 * @param CModel $model the data model
 	 * @param string $attribute the attribute
+	 * @param array $data data for generating the list options (value=>display)
 	 * @param array $htmlOptions additional HTML attributes.
-	 * @return string the generated label tag
+	 * @return string the generated drop down list
 	 */
-	public function label($model, $attribute, $htmlOptions = array())
+	public function dropDownList($model,$attribute,$data,$htmlOptions=array())
 	{
-		if($this->type == TbHtml::FORM_TYPE_HORIZONTAL)
-			$htmlOptions = TbHtml::addClassName('control-label', $htmlOptions);
-		return parent::label($model, $attribute, $htmlOptions);
+		return $this->wrapControl(TbHtml::activeDropDownList($model,$attribute,$data,$htmlOptions));
 	}
 
 	/**
-	 * Renders an HTML label for a model attribute.
-	 * This method is a wrapper of {@link TbHtml::activeLabelEx}.
-	 * Please check {@link TbHtml::activeLabelEx} for detailed information
+	 * Renders a list box for a model attribute.
+	 * This method is a wrapper of {@link CHtml::activeListBox}.
+	 * Please check {@link CHtml::activeListBox} for detailed information
 	 * about the parameters for this method.
 	 * @param CModel $model the data model
 	 * @param string $attribute the attribute
+	 * @param array $data data for generating the list options (value=>display)
 	 * @param array $htmlOptions additional HTML attributes.
-	 * @return string the generated label tag
+	 * @return string the generated list box
 	 */
-	public function labelEx($model, $attribute, $htmlOptions = array())
+	public function listBox($model,$attribute,$data,$htmlOptions=array())
 	{
-		if($this->type == TbHtml::FORM_TYPE_HORIZONTAL)
-			$htmlOptions = TbHtml::addClassName('control-label', $htmlOptions);
-		return parent::labelEx($model, $attribute, $htmlOptions);
+		return $this->wrapControl(TbHtml::activeListBox($model,$attribute,$data,$htmlOptions));
+	}
+
+	/**
+	 * @todo write phpDoc
+	 * @param $model
+	 * @param $attribute
+	 * @param $data
+	 * @param array $htmlOptions
+	 * @return string
+	 */
+	public function inlineCheckBoxList($model,$attribute,$data,$htmlOptions=array())
+	{
+		return $this->wrapControl(TbHtml::activeInlineCheckBoxList($model, $attribute, $data, $htmlOptions));
+	}
+
+	/**
+	 * @todo write phpDoc
+	 * @param $model
+	 * @param $attribute
+	 * @param $data
+	 * @param array $htmlOptions
+	 * @return string
+	 */
+	public function inlineRadioButtonList($model, $attribute, $data, $htmlOptions = array())
+	{
+		return $this->wrapControl(TbHtml::activeInlineRadioButtonList($model, $attribute, $data, $htmlOptions));
 	}
 
 	/**
@@ -259,118 +431,5 @@ class TbActiveForm extends CActiveForm
 			$control = ob_get_clean();
 		}
 		return $control;
-	}
-
-	/**
-	 * Displays a summary of validation errors for one or several models.
-	 * This method is very similar to {@link TbHtml::errorSummary} except that it also works
-	 * when AJAX validation is performed.
-	 * @param mixed $models the models whose input errors are to be displayed. This can be either
-	 * a single model or an array of models.
-	 * @param string $header a piece of HTML code that appears in front of the errors
-	 * @param string $footer a piece of HTML code that appears at the end of the errors
-	 * @param array $htmlOptions additional HTML attributes to be rendered in the container div tag.
-	 * @return string the error summary. Empty if no errors are found.
-	 * @see TbHtml::errorSummary
-	 */
-	public function errorSummary($models, $header = null, $footer = null, $htmlOptions = array())
-	{
-		$htmlOptions = TbHtml::addClassName('alert alert-block alert-error', $htmlOptions);
-
-		return parent::errorSummary($models, $header, $footer, $htmlOptions);
-	}
-
-	/**
-	 * Displays the first validation error for a model attribute.
-	 * @param CModel $model the data model
-	 * @param string $attribute the attribute name
-	 * @param array $htmlOptions additional HTML attributes to be rendered in the container div tag.
-	 * @param boolean $enableAjaxValidation whether to enable AJAX validation for the specified attribute.
-	 * @param boolean $enableClientValidation whether to enable client-side validation for the specified attribute.
-	 * @return string the validation result (error display or success message).
-	 */
-	public function error($model, $attribute, $htmlOptions = array(), $enableAjaxValidation = true, $enableClientValidation = true)
-	{
-		if (!$this->enableAjaxValidation)
-			$enableAjaxValidation = false;
-
-		if (!$this->enableClientValidation)
-			$enableClientValidation = false;
-
-		if (!isset($htmlOptions['class']))
-			$htmlOptions['class'] = $this->errorMessageCssClass;
-
-		if (!$enableAjaxValidation && !$enableClientValidation)
-			return $this->renderError($model, $attribute, $htmlOptions);
-
-		$id = TbHtml::activeId($model, $attribute);
-		$inputID = TbHtml::getOption('inputID', $htmlOptions, $id);
-		unset($htmlOptions['inputID']);
-
-		if (!isset($htmlOptions['id']))
-			$htmlOptions['id'] = $inputID . '_em_';
-
-		$option = array(
-			'id' => $id,
-			'inputID' => $inputID,
-			'errorID' => $htmlOptions['id'],
-			'model' => get_class($model),
-			'name' => TbHtml::resolveName($model, $attribute),
-			'enableAjaxValidation' => $enableAjaxValidation,
-			'inputContainer' => 'div.control-group', // Bootstrap requires this ;)
-		);
-
-		$optionNames = array(
-			'validationDelay',
-			'validateOnChange',
-			'validateOnType',
-			'hideErrorMessage',
-			'inputContainer',
-			'errorCssClass',
-			'successCssClass',
-			'validatingCssClass',
-			'beforeValidateAttribute',
-			'afterValidateAttribute',
-		);
-
-		foreach ($optionNames as $name)
-		{
-			$option[$name] = TbHtml::getOption($name, $htmlOptions);
-			unset($htmlOptions[$name]);
-		}
-
-		if ($model instanceof CActiveRecord && !$model->isNewRecord)
-			$option['status'] = 1;
-
-		if ($enableClientValidation)
-		{
-			$validators = TbHtml::getOption('clientValidation', $htmlOptions, array());
-
-			$attributeName = $attribute;
-			if (($pos = strrpos($attribute, ']')) !== false && $pos !== strlen($attribute) - 1) // e.g. [a]name
-				$attributeName = substr($attribute, $pos + 1);
-
-			foreach ($model->getValidators($attributeName) as $validator)
-			{
-				if ($validator->enableClientValidation)
-					if (($js = $validator->clientValidateAttribute($model, $attributeName)) != '')
-						$validators[] = $js;
-			}
-
-			if ($validators !== array())
-				$option['clientValidation'] = "js:function(value, messages, attribute) {\n" . implode("\n", $validators) . "\n}";
-		}
-
-		$html = TbHtml::error($model, $attribute, $htmlOptions);
-
-		if ($html === '')
-		{
-			$htmlOptions = TbHtml::addStyles('display:none', $htmlOptions);
-			$html = TbHtml::tag('span', $htmlOptions, '');
-		}
-
-		$this->attributes[$inputID] = $option;
-
-		return $html;
 	}
 }
