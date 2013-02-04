@@ -1096,12 +1096,6 @@ class TbHtml extends CHtml
 		return parent::link($label, $url, $htmlOptions);
 	}
 
-	//
-	// Forms
-	// --------------------------------------------------
-
-	// todo: move the form sections up to its right place.
-
 	/**
 	 * Generates a search form.
 	 * @param mixed $action the form action URL.
@@ -1159,6 +1153,283 @@ class TbHtml extends CHtml
 		return self::searchForm($action, $method, $htmlOptions);
 	}
 
+	/**
+	 * Returns the add-on classes if any from `$htmlOptions`.
+	 * @param array $htmlOptions the HTML tag options
+	 * @return array|string the resulting classes
+	 */
+	public static function getAddOnClasses($htmlOptions)
+	{
+		$classes = array();
+		if (self::getOption('append', $htmlOptions))
+			$classes[] = 'input-append';
+		if (self::getOption('prepend', $htmlOptions))
+			$classes[] = 'input-prepend';
+		return !empty($classes) ? implode(' ', $classes) : $classes;
+	}
+
+	/**
+	 * Extracts append add-on from `$htmlOptions` if any.
+	 * @param array $htmlOptions
+	 */
+	public static function getAppend($htmlOptions)
+	{
+		return self::getAddOn('append', $htmlOptions);
+	}
+
+	/**
+	 * Extracts prepend add-on from `$htmlOptions` if any.
+	 * @param array $htmlOptions
+	 */
+	public static function getPrepend($htmlOptions)
+	{
+		return self::getAddOn('prepend', $htmlOptions);
+	}
+
+	/**
+	 * Extracs append add-ons from `$htmlOptions` if any.
+	 * @param array $htmlOptions
+	 */
+	public static function getAddOn($type, $htmlOptions)
+	{
+		$addOn = '';
+		if (self::getOption($type, $htmlOptions))
+		{
+			$addOn = strpos($htmlOptions[$type], 'button')
+				? $htmlOptions[$type]
+				: CHtml::tag('span', array('class' => 'add-on'), $htmlOptions[$type]);
+		}
+		return $addOn;
+	}
+
+	//
+	// Utilities
+	// --------------------------------------------------
+
+	/**
+	 * Appends new class names to the named index "class" at the `$htmlOptions` parameter.
+	 * @param mixed $className the class(es) to append to `$htmlOptions`
+	 * @param array $htmlOptions the HTML tag attributes to modify
+	 * @return array the options.
+	 */
+	public static function addClassName($className, $htmlOptions)
+	{
+		if (is_array($className))
+			$className = implode(' ', $className);
+		$htmlOptions['class'] = isset($htmlOptions['class']) ? $htmlOptions['class'] . ' ' . $className : $className;
+		return $htmlOptions;
+	}
+
+	/**
+	 * Appends a CSS style string to the given options.
+	 * @param string $styles the CSS style string.
+	 * @param array $htmlOptions the options.
+	 * @return array the options.
+	 */
+	public static function addStyles($styles, $htmlOptions)
+	{
+		$htmlOptions['style'] = isset($htmlOptions['style']) ? $htmlOptions['style'] . ' ' . $styles : $styles;
+		return $htmlOptions;
+	}
+
+	/**
+	 * Copies the option values from one option array to another.
+	 * @param array $names the option names to copy.
+	 * @param array $fromOptions the options to copy from.
+	 * @param array $options the options to copy to.
+	 * @return array the options.
+	 */
+	public static function copyOptions($names, $fromOptions, $options)
+	{
+		if (is_array($fromOptions) && is_array($options))
+		{
+			foreach ($names as $key)
+			{
+				if (isset($fromOptions[$key]) && !isset($options[$key]))
+					$options[$key] = self::getOption($key, $fromOptions);
+			}
+		}
+		return $options;
+	}
+
+	/**
+	 * Moves the option values from one option array to another.
+	 * @param array $names the option names to move.
+	 * @param array $fromOptions the options to move from.
+	 * @param array $options the options to move to.
+	 * @return array the options.
+	 */
+	public static function moveOptions($names, $fromOptions, $options)
+	{
+		if (is_array($fromOptions) && is_array($options))
+		{
+			foreach ($names as $key)
+			{
+				if (isset($fromOptions[$key]) && !isset($options[$key]))
+					$options[$key] = self::popOption($key, $fromOptions);
+			}
+		}
+		return $options;
+	}
+
+	/**
+	 * Sets multiple default options for the given options array.
+	 * @param array $options the options to set defaults for.
+	 * @param array $defaults the default options.
+	 * @return array the options with default values.
+	 */
+	public static function defaultOptions($options, $defaults)
+	{
+		if (is_array($defaults) && is_array($options))
+		{
+			foreach ($defaults as $name => $value)
+				$options = self::defaultOption($name, $value, $options);
+		}
+		return $options;
+	}
+
+	/**
+	 * Merges two options arrays.
+	 * @param array $a options to be merged to
+	 * @param array $b options to be merged from
+	 * @return array the merged options.
+	 */
+	public static function mergeOptions($a, $b)
+	{
+		return CMap::mergeArray($a, $b); // yeah I know but we might want to change this to be something else later
+	}
+
+	/**
+	 * Returns an item from the given options or the default value if it's not set.
+	 * @param string $name the name of the item.
+	 * @param array $options the options to get from.
+	 * @param mixed $defaultValue the default value.
+	 * @return mixed the value.
+	 */
+	public static function getOption($name, $options, $defaultValue = null)
+	{
+		return (is_array($options) && isset($options[$name])) ? $options[$name] : $defaultValue;
+	}
+
+	/**
+	 * Removes an item from the given options and returns the value.
+	 * @param string $name the name of the item.
+	 * @param array $options the options to remove the item from.
+	 * @param mixed $defaultValue the default value.
+	 * @return mixed the value.
+	 */
+	public static function popOption($name, &$options, $defaultValue = null)
+	{
+		if (is_array($options))
+		{
+			$value = self::getOption($name, $options, $defaultValue);
+			unset($options[$name]);
+			return $value;
+		} else
+			return $defaultValue;
+	}
+
+	/**
+	 * Sets the default value for an item in the given options.
+	 * @param string $name the name of the item.
+	 * @param mixed $value the default value.
+	 * @param array $options the options.
+	 * @return mixed
+	 */
+	public static function defaultOption($name, $value, $options)
+	{
+		if (is_array($options) && !isset($options[$name]))
+			$options[$name] = $value;
+		return $options;
+	}
+
+	/**
+	 * Removes the option values from the given options.
+	 * @param array $options the options to remove from.
+	 * @param array $names names to remove from the options.
+	 * @return array the options.
+	 */
+	public static function removeOptions($options, $names)
+	{
+		return array_diff_key($options, array_flip($names));
+	}
+
+	/**
+	 * Returns the next free id.
+	 * @return string the id string.
+	 */
+	public static function getNextId()
+	{
+		return 'tb' . self::$_counter++;
+	}
+
+	/**
+	 * Displays the first validation error for a model attribute.
+	 * @param CModel $model the data model
+	 * @param string $attribute the attribute name
+	 * @param array $htmlOptions additional HTML attributes to be rendered in the container tag.
+	 * @return string the error display. Empty if no errors are found.
+	 * @see CModel::getErrors
+	 * @see errorMessageCss
+	 * @see $errorContainerTag
+	 *
+	 */
+	public static function error($model, $attribute, $htmlOptions = array())
+	{
+		self::resolveName($model, $attribute); // turn [a][b]attr into attr
+		$error = $model->getError($attribute);
+		return $error != ''
+			? self::tag('span', self::defaultOption('class', self::$errorMessageCss, $htmlOptions), $error)
+			: '';
+	}
+
+	/**
+	 * Displays a summary of validation errors for one or several models.
+	 * @param mixed $model the models whose input errors are to be displayed. This can be either
+	 * a single model or an array of models.
+	 * @param string $header a piece of HTML code that appears in front of the errors
+	 * @param string $footer a piece of HTML code that appears at the end of the errors
+	 * @param array $htmlOptions additional HTML attributes to be rendered in the container div tag.
+	 * A special option named 'firstError' is recognized, which when set true, will
+	 * make the error summary to show only the first error message of each attribute.
+	 * If this is not set or is false, all error messages will be displayed.
+	 * This option has been available since version 1.1.3.
+	 * @return string the error summary. Empty if no errors are found.
+	 * @see CModel::getErrors
+	 * @see errorSummaryCss
+	 */
+	public static function errorSummary($model, $header = null, $footer = null, $htmlOptions = array())
+	{
+		$htmlOptions = TbHtml::addClassName('alert alert-block alert-error', $htmlOptions);
+
+		return parent::errorSummary($model, $header, $footer, $htmlOptions);
+	}
+
+	/**
+	 * Extracts the help section of htmlOptions if any. The help option is setup as:
+	 * <code>
+	 *      // ...
+	 * 		'help'=>array('text'=>'This is help text','type'=>'inline')
+	 * 		// ...
+	 * </code>
+	 * @param $htmlOptions
+	 * @return mixed|string
+	 */
+	public static function getHelp(&$htmlOptions)
+	{
+		$help = self::popOption('help', $htmlOptions);
+		if(null !== $help && is_array($help))
+		{
+			$text = self::popOption('text', $help, 'help');
+			$type = self::popOption('type', $help,  self::HELP_TYPE_BLOCK);
+			$help = self::tag('span', array('class'=>'help-'.$type, $text));
+		}
+		return $help;
+	}
+
+	//
+	// Forms
+	// --------------------------------------------------
 
 	/**
 	 * Generates a label tag.
@@ -1521,279 +1792,6 @@ EOD;
 	}
 
 	/**
-	 * Returns the add-on classes if any from `$htmlOptions`.
-	 * @param array $htmlOptions the HTML tag options
-	 * @return array|string the resulting classes
-	 */
-	public static function getAddOnClasses($htmlOptions)
-	{
-		$classes = array();
-		if (self::getOption('append', $htmlOptions))
-			$classes[] = 'input-append';
-		if (self::getOption('prepend', $htmlOptions))
-			$classes[] = 'input-prepend';
-		return !empty($classes) ? implode(' ', $classes) : $classes;
-	}
-
-	/**
-	 * Extracts append add-on from `$htmlOptions` if any.
-	 * @param array $htmlOptions
-	 */
-	public static function getAppend($htmlOptions)
-	{
-		return self::getAddOn('append', $htmlOptions);
-	}
-
-	/**
-	 * Extracts prepend add-on from `$htmlOptions` if any.
-	 * @param array $htmlOptions
-	 */
-	public static function getPrepend($htmlOptions)
-	{
-		return self::getAddOn('prepend', $htmlOptions);
-	}
-
-	/**
-	 * Extracs append add-ons from `$htmlOptions` if any.
-	 * @param array $htmlOptions
-	 */
-	public static function getAddOn($type, $htmlOptions)
-	{
-		$addOn = '';
-		if (self::getOption($type, $htmlOptions))
-		{
-			$addOn = strpos($htmlOptions[$type], 'button')
-				? $htmlOptions[$type]
-				: CHtml::tag('span', array('class' => 'add-on'), $htmlOptions[$type]);
-		}
-		return $addOn;
-	}
-
-	//
-	// Utilities
-	// --------------------------------------------------
-
-	/**
-	 * Appends new class names to the named index "class" at the `$htmlOptions` parameter.
-	 * @param mixed $className the class(es) to append to `$htmlOptions`
-	 * @param array $htmlOptions the HTML tag attributes to modify
-	 * @return array the options.
-	 */
-	public static function addClassName($className, $htmlOptions)
-	{
-		if (is_array($className))
-			$className = implode(' ', $className);
-		$htmlOptions['class'] = isset($htmlOptions['class']) ? $htmlOptions['class'] . ' ' . $className : $className;
-		return $htmlOptions;
-	}
-
-	/**
-	 * Appends a CSS style string to the given options.
-	 * @param string $styles the CSS style string.
-	 * @param array $htmlOptions the options.
-	 * @return array the options.
-	 */
-	public static function addStyles($styles, $htmlOptions)
-	{
-		$htmlOptions['style'] = isset($htmlOptions['style']) ? $htmlOptions['style'] . ' ' . $styles : $styles;
-		return $htmlOptions;
-	}
-
-	/**
-	 * Copies the option values from one option array to another.
-	 * @param array $names the option names to copy.
-	 * @param array $fromOptions the options to copy from.
-	 * @param array $options the options to copy to.
-	 * @return array the options.
-	 */
-	public static function copyOptions($names, $fromOptions, $options)
-	{
-		if (is_array($fromOptions) && is_array($options))
-		{
-			foreach ($names as $key)
-			{
-				if (isset($fromOptions[$key]) && !isset($options[$key]))
-					$options[$key] = self::getOption($key, $fromOptions);
-			}
-		}
-		return $options;
-	}
-
-	/**
-	 * Moves the option values from one option array to another.
-	 * @param array $names the option names to move.
-	 * @param array $fromOptions the options to move from.
-	 * @param array $options the options to move to.
-	 * @return array the options.
-	 */
-	public static function moveOptions($names, $fromOptions, $options)
-	{
-		if (is_array($fromOptions) && is_array($options))
-		{
-			foreach ($names as $key)
-			{
-				if (isset($fromOptions[$key]) && !isset($options[$key]))
-					$options[$key] = self::popOption($key, $fromOptions);
-			}
-		}
-		return $options;
-	}
-
-	/**
-	 * Sets multiple default options for the given options array.
-	 * @param array $options the options to set defaults for.
-	 * @param array $defaults the default options.
-	 * @return array the options with default values.
-	 */
-	public static function defaultOptions($options, $defaults)
-	{
-		if (is_array($defaults) && is_array($options))
-		{
-			foreach ($defaults as $name => $value)
-				$options = self::defaultOption($name, $value, $options);
-		}
-		return $options;
-	}
-
-	/**
-	 * Merges two options arrays.
-	 * @param array $a options to be merged to
-	 * @param array $b options to be merged from
-	 * @return array the merged options.
-	 */
-	public static function mergeOptions($a, $b)
-	{
-		return CMap::mergeArray($a, $b); // yeah I know but we might want to change this to be something else later
-	}
-
-	/**
-	 * Returns an item from the given options or the default value if it's not set.
-	 * @param string $name the name of the item.
-	 * @param array $options the options to get from.
-	 * @param mixed $defaultValue the default value.
-	 * @return mixed the value.
-	 */
-	public static function getOption($name, $options, $defaultValue = null)
-	{
-		return (is_array($options) && isset($options[$name])) ? $options[$name] : $defaultValue;
-	}
-
-	/**
-	 * Removes an item from the given options and returns the value.
-	 * @param string $name the name of the item.
-	 * @param array $options the options to remove the item from.
-	 * @param mixed $defaultValue the default value.
-	 * @return mixed the value.
-	 */
-	public static function popOption($name, &$options, $defaultValue = null)
-	{
-		if (is_array($options))
-		{
-			$value = self::getOption($name, $options, $defaultValue);
-			unset($options[$name]);
-			return $value;
-		} else
-			return $defaultValue;
-	}
-
-	/**
-	 * Sets the default value for an item in the given options.
-	 * @param string $name the name of the item.
-	 * @param mixed $value the default value.
-	 * @param array $options the options.
-	 * @return mixed
-	 */
-	public static function defaultOption($name, $value, $options)
-	{
-		if (is_array($options) && !isset($options[$name]))
-			$options[$name] = $value;
-		return $options;
-	}
-
-	/**
-	 * Removes the option values from the given options.
-	 * @param array $options the options to remove from.
-	 * @param array $names names to remove from the options.
-	 * @return array the options.
-	 */
-	public static function removeOptions($options, $names)
-	{
-		return array_diff_key($options, array_flip($names));
-	}
-
-	/**
-	 * Returns the next free id.
-	 * @return string the id string.
-	 */
-	public static function getNextId()
-	{
-		return 'tb' . self::$_counter++;
-	}
-
-	/**
-	 * Displays the first validation error for a model attribute.
-	 * @param CModel $model the data model
-	 * @param string $attribute the attribute name
-	 * @param array $htmlOptions additional HTML attributes to be rendered in the container tag.
-	 * @return string the error display. Empty if no errors are found.
-	 * @see CModel::getErrors
-	 * @see errorMessageCss
-	 * @see $errorContainerTag
-	 *
-	 */
-	public static function error($model, $attribute, $htmlOptions = array())
-	{
-		self::resolveName($model, $attribute); // turn [a][b]attr into attr
-		$error = $model->getError($attribute);
-		return $error != ''
-			? self::tag('span', self::defaultOption('class', self::$errorMessageCss, $htmlOptions), $error)
-			: '';
-	}
-
-	/**
-	 * Displays a summary of validation errors for one or several models.
-	 * @param mixed $model the models whose input errors are to be displayed. This can be either
-	 * a single model or an array of models.
-	 * @param string $header a piece of HTML code that appears in front of the errors
-	 * @param string $footer a piece of HTML code that appears at the end of the errors
-	 * @param array $htmlOptions additional HTML attributes to be rendered in the container div tag.
-	 * A special option named 'firstError' is recognized, which when set true, will
-	 * make the error summary to show only the first error message of each attribute.
-	 * If this is not set or is false, all error messages will be displayed.
-	 * This option has been available since version 1.1.3.
-	 * @return string the error summary. Empty if no errors are found.
-	 * @see CModel::getErrors
-	 * @see errorSummaryCss
-	 */
-	public static function errorSummary($model, $header = null, $footer = null, $htmlOptions = array())
-	{
-		$htmlOptions = TbHtml::addClassName('alert alert-block alert-error', $htmlOptions);
-
-		return parent::errorSummary($model, $header, $footer, $htmlOptions);
-	}
-
-	/**
-	 * Extracts the help section of htmlOptions if any. The help option is setup as:
-	 * <code>
-	 *      // ...
-	 * 		'help'=>array('text'=>'This is help text','type'=>'inline')
-	 * 		// ...
-	 * </code>
-	 * @param $htmlOptions
-	 * @return mixed|string
-	 */
-	public static function getHelp(&$htmlOptions)
-	{
-		$help = self::popOption('help', $htmlOptions);
-		if(null !== $help && is_array($help))
-		{
-			$text = self::popOption('text', $help, 'help');
-			$type = self::popOption('type', $help,  self::HELP_TYPE_BLOCK);
-			$help = self::tag('span', array('class'=>'help-'.$type, $text));
-		}
-		return $help;
-	}
-	/**
 	 * Generates an input HTML tag.
 	 * This method generates an input HTML tag based on the given input name and value.
 	 * @param string $type the input type (e.g. 'text', 'radio')
@@ -1832,6 +1830,24 @@ EOD;
 
 	// Active Fields
 
+	/**
+	 * Generates a check box for a model attribute.
+	 * The attribute is assumed to take either true or false value.
+	 * If the attribute has input error, the input field's CSS class will
+	 * be appended with {@link errorCss}.
+	 * @param CModel $model the data model
+	 * @param string $attribute the attribute
+	 * @param array $htmlOptions additional HTML attributes. Besides normal HTML attributes, a few special
+	 * attributes are also recognized (see {@link clientChange} and {@link tag} for more details.)
+	 * A special option named 'uncheckValue' is available that can be used to specify
+	 * the value returned when the checkbox is not checked. By default, this value is '0'.
+	 * Internally, a hidden field is rendered so that when the checkbox is not checked,
+	 * we can still obtain the posted uncheck value.
+	 * If 'uncheckValue' is set as NULL, the hidden field will not be rendered.
+	 * @return string the generated check box
+	 * @see clientChange
+	 * @see activeInputField
+	 */
 	public static function activeCheckBox($model, $attribute, $htmlOptions = array())
 	{
 		/* todo: is there another way to extract parents hidden input? */
@@ -1905,40 +1921,6 @@ EOD;
 	}
 
 	/**
-	 * Generates an input HTML tag for a model attribute.
-	 * This method generates an input HTML tag based on the given data model and attribute.
-	 * If the attribute has input error, the input field's CSS class will
-	 * be appended with {@link errorCss}.
-	 * This enables highlighting the incorrect input.
-	 * @param string $type the input type (e.g. 'text', 'radio')
-	 * @param CModel $model the data model
-	 * @param string $attribute the attribute
-	 * @param array $htmlOptions additional HTML attributes for the HTML tag
-	 * @return string the generated input tag
-	 */
-	protected static function activeInputField($type, $model, $attribute, $htmlOptions)
-	{
-		$inputOptions = self::removeOptions($htmlOptions, array('append', 'prepend'));
-		$addOnClasses = self::getAddOnClasses($htmlOptions);
-		$help = self::getHelp($htmlOptions);
-
-		ob_start();
-		if (!empty($addOnClasses))
-			echo '<div class="' . $addOnClasses . '">';
-
-		echo self::getPrepend($htmlOptions);
-		echo parent::activeInputField($type, $model, $attribute, $inputOptions);
-		echo self::getAppend($htmlOptions);
-
-		if (!empty($addOnClasses))
-			echo '</div>';
-
-		echo $help;
-
-		return ob_get_clean();
-	}
-
-	/**
 	 * Generates a url field input for a model attribute.
 	 * If the attribute has input error, the input field's CSS class will
 	 * be appended with {@link errorCss}.
@@ -1957,6 +1939,7 @@ EOD;
 		parent::clientChange('change',$htmlOptions);
 		return self::activeInputField('url',$model,$attribute,$htmlOptions);
 	}
+
 	/**
 	 * Generates an email field input for a model attribute.
 	 * If the attribute has input error, the input field's CSS class will
@@ -2057,33 +2040,6 @@ EOD;
 	}
 
 	/**
-	 * Generates a text area input for a model attribute.
-	 * If the attribute has input error, the input field's CSS class will
-	 * be appended with {@link errorCss}.
-	 * @param CModel $model the data model
-	 * @param string $attribute the attribute
-	 * @param array $htmlOptions additional HTML attributes. Besides normal HTML attributes, a few special
-	 * attributes are also recognized (see {@link clientChange} and {@link tag} for more details.)
-	 * @return string the generated text area
-	 * @see clientChange
-	 */
-	public static function activeTextArea($model,$attribute,$htmlOptions=array())
-	{
-		parent::resolveNameID($model,$attribute,$htmlOptions);
-		parent::clientChange('change',$htmlOptions);
-		if($model->hasErrors($attribute))
-			self::addErrorCss($htmlOptions);
-
-		$text = self::popOption('value', $htmlOptions, self::resolveValue($model, $attribute));
-		$help = self::getHelp($htmlOptions);
-
-		ob_start();
-		self::tag('textarea',$htmlOptions, isset($htmlOptions['encode']) && !$htmlOptions['encode'] ? $text : self::encode($text));
-		echo $help;
-		return ob_get_clean();
-	}
-
-	/**
 	 * Generates a file input for a model attribute.
 	 * Note, you have to set the enclosing form's 'enctype' attribute to be 'multipart/form-data'.
 	 * After the form is submitted, the uploaded file information can be obtained via $_FILES (see
@@ -2121,6 +2077,67 @@ EOD;
 		parent::resolveNameID($model,$attribute,$htmlOptions);
 		parent::clientChange('change',$htmlOptions);
 		return self::activeInputField('text',$model,$attribute,$htmlOptions);
+	}
+
+	/**
+	 * Generates a text area input for a model attribute.
+	 * If the attribute has input error, the input field's CSS class will
+	 * be appended with {@link errorCss}.
+	 * @param CModel $model the data model
+	 * @param string $attribute the attribute
+	 * @param array $htmlOptions additional HTML attributes. Besides normal HTML attributes, a few special
+	 * attributes are also recognized (see {@link clientChange} and {@link tag} for more details.)
+	 * @return string the generated text area
+	 * @see clientChange
+	 */
+	public static function activeTextArea($model,$attribute,$htmlOptions=array())
+	{
+		parent::resolveNameID($model,$attribute,$htmlOptions);
+		parent::clientChange('change',$htmlOptions);
+		if($model->hasErrors($attribute))
+			self::addErrorCss($htmlOptions);
+
+		$text = self::popOption('value', $htmlOptions, self::resolveValue($model, $attribute));
+		$help = self::getHelp($htmlOptions);
+
+		ob_start();
+		self::tag('textarea',$htmlOptions, isset($htmlOptions['encode']) && !$htmlOptions['encode'] ? $text : self::encode($text));
+		echo $help;
+		return ob_get_clean();
+	}
+
+	/**
+	 * Generates an input HTML tag for a model attribute.
+	 * This method generates an input HTML tag based on the given data model and attribute.
+	 * If the attribute has input error, the input field's CSS class will
+	 * be appended with {@link errorCss}.
+	 * This enables highlighting the incorrect input.
+	 * @param string $type the input type (e.g. 'text', 'radio')
+	 * @param CModel $model the data model
+	 * @param string $attribute the attribute
+	 * @param array $htmlOptions additional HTML attributes for the HTML tag
+	 * @return string the generated input tag
+	 */
+	protected static function activeInputField($type, $model, $attribute, $htmlOptions)
+	{
+		$inputOptions = self::removeOptions($htmlOptions, array('append', 'prepend'));
+		$addOnClasses = self::getAddOnClasses($htmlOptions);
+		$help = self::getHelp($htmlOptions);
+
+		ob_start();
+		if (!empty($addOnClasses))
+			echo '<div class="' . $addOnClasses . '">';
+
+		echo self::getPrepend($htmlOptions);
+		echo parent::activeInputField($type, $model, $attribute, $inputOptions);
+		echo self::getAppend($htmlOptions);
+
+		if (!empty($addOnClasses))
+			echo '</div>';
+
+		echo $help;
+
+		return ob_get_clean();
 	}
 
 }
