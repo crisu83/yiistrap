@@ -38,16 +38,16 @@ class TbThumbnails extends TbListView
 		{
 			$owner = $this->getOwner();
 			$render = $owner instanceof CController ? 'renderPartial' : 'render';
-			foreach ($data as $i => $item)
+			foreach ($data as $i => $row)
 			{
 				$thumbnail = array();
-				$data = $this->viewData;
-				$data['index'] = $i;
-				$data['data'] = $item;
-				$data['widget'] = $this;
-				$thumbnail['content'] = $owner->$render($this->itemView, $data, true);
+				$d = $this->viewData;
+				$d['index'] = $i;
+				$d['data'] = $row;
+				$d['widget'] = $this;
+				$thumbnail['content'] = $owner->$render($this->itemView, $d, true);
 				if (isset($this->url))
-					$thumbnail['url'] = $this->evaluateExpression($this->url, array('data' => $item));
+					$thumbnail['url'] = $this->evaluateExpression($this->url, array('data' => $row));
 				if (isset($this->span))
 					$thumbnail['span'] = $this->span;
 				$thumbnails[] = $thumbnail;

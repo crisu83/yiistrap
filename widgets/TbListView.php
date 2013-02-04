@@ -28,4 +28,8 @@ class TbListView extends CListView
 	 * Defaults to false, meaning that no CSS will be included.
 	 */
 	public $cssFile = false;
+	/**
+	 * @var string the template to be used to control the layout of various sections in the view.
+	 */
+	public $template = "{items}\n<div class=\"row-fluid\"><div class=\"span6\">{pager}</div><div class=\"span6\">{summary}</div></div>";
 }

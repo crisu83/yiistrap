@@ -3,26 +3,29 @@ TODO
 
 ## Widgets
 
- - carousel
- - detail view
- - grid view
- - modal
- - tabs
- - thumbnails
- - typeahead
+### High prio
+
  - activeform
  - media object
 
+### Low prio
+
+ - tabs
+ - grid view
+ - detail view
+ - modal
+ - typeahead
 
 ## Helpers
 
- - carousel
+### Low prio
+
  - modal
- - thumbnails
  - typeahead
 
 ## Other
 
+ - Move navbar rendering logic to TbHtml
  - TbHtml regular input fields
  - TbHtml active methods
  - TbActiveForm wrap methods for TbHtml active methods

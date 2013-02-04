@@ -464,6 +464,28 @@ $this->pageTitle=Yii::app()->name;
 
 </div>
 
+<div class="carousels">
+	<h3>Carousel</h3>
+
+	<?php echo TbHtml::carousel(array(
+		array(
+			'content'=>'<img src="http://placehold.it/660x380&text=Slide1" />',
+			'label'=>'First Thumbnail label',
+			'caption'=>'Cras justo odio, dapibus ac facilisis in, egestas eget quam. Donec id elit non mi porta gravida at eget metus. Nullam id dolor id nibh ultricies vehicula ut id elit.',
+		),
+		array(
+			'content'=>'<img src="http://placehold.it/660x380&text=Slide2" />',
+			'label'=>'Second Thumbnail label',
+			'caption'=>'Cras justo odio, dapibus ac facilisis in, egestas eget quam. Donec id elit non mi porta gravida at eget metus. Nullam id dolor id nibh ultricies vehicula ut id elit.',
+		),
+		array(
+			'content'=>'<img src="http://placehold.it/660x380&text=Slide3" />',
+			'label'=>'Third Thumbnail label',
+			'caption'=>'Cras justo odio, dapibus ac facilisis in, egestas eget quam. Donec id elit non mi porta gravida at eget metus. Nullam id dolor id nibh ultricies vehicula ut id elit.',
+		),
+	),array('style'=>'width: 660px;')); ?>
+</div>
+
 <div class="search-forms">
 	<h3>Forms</h3>
 

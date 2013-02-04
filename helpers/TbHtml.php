@@ -2488,6 +2488,118 @@ EOD;
 		return parent::link($label, $url, $htmlOptions);
 	}
 
+	// Carousel
+	// http://twitter.github.com/bootstrap/javascript.html#carousel
+	// --------------------------------------------------
+
+	/**
+	 * Generates an image carousel.
+	 * @param array $items the item configurations.
+	 * @param array $htmlOptions additional HTML attributes.
+	 * @return string the generated carousel.
+	 */
+	public static function carousel($items, $htmlOptions = array())
+	{
+		if (is_array($items) && !empty($items))
+		{
+			$id = self::getOption('id', $htmlOptions, self::getNextId());
+			$htmlOptions = self::defaultOption('id', $id, $htmlOptions);
+			$selector = '#' . $id;
+			$htmlOptions = self::addClassName('carousel', $htmlOptions);
+			if (self::popOption('slide', $htmlOptions, true))
+				$htmlOptions = self::addClassName('slide', $htmlOptions);
+			$interval = self::popOption('data-interval', $htmlOptions);
+			if ($interval)
+				$htmlOptions = self::defaultOption('data-interval', $interval, $htmlOptions);
+			$pause = self::popOption('data-interval', $htmlOptions);
+			if ($pause) // todo: add attribute validation if seen necessary.
+				$htmlOptions = self::defaultOption('data-pause', $pause, $htmlOptions);
+			$innerOptions = self::popOption('innerOptions', $htmlOptions, array());
+			$innerOptions = self::addClassName('carousel-inner', $innerOptions);
+			$prevOptions = self::popOption('prevOptions', $htmlOptions, array());
+			$prevLabel = self::popOption('label', $prevOptions, '&lsaquo;');
+			$nextOptions = self::popOption('nextOptions', $htmlOptions, array());
+			$nextLabel = self::popOption('label', $nextOptions, '&rsaquo;');
+			ob_start();
+			echo parent::openTag('div', $htmlOptions) . PHP_EOL;
+			echo parent::openTag('div', $innerOptions) . PHP_EOL;
+			foreach ($items as $i => $itemOptions)
+			{
+				$itemOptions = self::addClassName('item', $itemOptions);
+				if ($i === 0) // first item should be active
+					$itemOptions = self::addClassName('active', $itemOptions);
+				$content = self::popOption('content', $itemOptions, '');
+				$label = self::popOption('label', $itemOptions);
+				$caption = self::popOption('caption', $itemOptions);
+				echo self::carouselItem($content, $label, $caption, $itemOptions);
+			}
+			echo '</div>' . PHP_EOL;
+			echo self::carouselPrevLink($prevLabel, $selector, $prevOptions) . PHP_EOL;
+			echo self::carouselNextLink($nextLabel, $selector, $nextOptions) . PHP_EOL;
+			echo '</div>' . PHP_EOL;
+			return ob_get_clean();
+		}
+		return '';
+	}
+
+	/**
+	 * Generates a carousel item.
+	 * @param string $content the content.
+	 * @param string $label the item label text.
+	 * @param string $caption the item caption text.
+	 * @param array $htmlOptions additional HTML attributes.
+	 * @return string the generated item.
+	 */
+	public static function carouselItem($content, $label, $caption, $htmlOptions = array())
+	{
+		$overlayOptions = self::popOption('overlayOptions', $htmlOptions, array());
+		$overlayOptions = self::addClassName('carousel-caption', $overlayOptions);
+		$labelOptions = self::popOption('labelOptions', $htmlOptions, array());
+		$captionOptions = self::popOption('captionOptions', $htmlOptions, array());
+		ob_start();
+		echo parent::openTag('div', $htmlOptions) . PHP_EOL;
+		echo $content . PHP_EOL;
+		if (isset($label) || isset($caption))
+		{
+			echo parent::openTag('div', $overlayOptions) . PHP_EOL;
+			if ($label)
+				echo parent::tag('h4', $labelOptions, $label);
+			if ($caption)
+				echo parent::tag('p', $captionOptions, $caption);
+			echo '</div>' . PHP_EOL;
+		}
+		echo '</div>' . PHP_EOL;
+		return ob_get_clean();
+	}
+
+	/**
+	 * Generates a previous link for the carousel.
+	 * @param string $label the link label text.
+	 * @param mixed $url the link url.
+	 * @param array $htmlOptions additional HTML attributes.
+	 * @return string the generated link.
+	 */
+	public static function carouselPrevLink($label, $url, $htmlOptions = array())
+	{
+		$htmlOptions = self::addClassName('carousel-control left', $htmlOptions);
+		$htmlOptions = self::defaultOption('data-slide', 'prev', $htmlOptions);
+		return parent::link($label, $url, $htmlOptions);
+	}
+
+	/**
+	 * Generates a next link for the carousel.
+	 * @param string $label the link label text.
+	 * @param mixed $url the link url.
+	 * @param array $htmlOptions additional HTML attributes.
+	 * @return string the generated link.
+	 */
+	public static function carouselNextLink($label, $url, $htmlOptions = array())
+	{
+		$htmlOptions = self::addClassName('carousel-control right', $htmlOptions);
+		$htmlOptions = self::defaultOption('data-slide', 'next', $htmlOptions);
+		return parent::link($label, $url, $htmlOptions);
+	}
+
 	// UTILITIES
 	// --------------------------------------------------
 
