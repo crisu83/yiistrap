@@ -212,7 +212,7 @@ class TbHtml extends CHtml
 	 * @param array $htmlOptions additional HTML attributes.
 	 * @return string the generated snippet.
 	 */
-	public static function code($code, $htmlOptions = array())
+	public static function snippet($code, $htmlOptions = array())
 	{
 		return parent::tag('code', $htmlOptions, $code);
 	}
@@ -223,7 +223,7 @@ class TbHtml extends CHtml
 	 * @param array $htmlOptions additional HTML attributes.
 	 * @return string the generated block.
 	 */
-	public static function codeBlock($code, $htmlOptions = array())
+	public static function code($code, $htmlOptions = array())
 	{
 		return parent::tag('pre', $htmlOptions, $code);
 	}
