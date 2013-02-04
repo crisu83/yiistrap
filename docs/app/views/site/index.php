@@ -66,7 +66,7 @@ $this->pageTitle=Yii::app()->name;
 
 	<div style="margin-bottom: 20px;">
 		<?php echo TbHtml::buttonGroup(array(
-			array('label'=>'Left', 'htmlOptions'=>array('style'=>'success')),
+			array('label'=>'Left', 'htmlOptions'=>array('style'=>'')),
 			array('label'=>'Middle'),
 			array('label'=>'Right'),
 		),array('style'=>'primary')); ?>
@@ -343,6 +343,42 @@ $this->pageTitle=Yii::app()->name;
     <?php echo TbHtml::pageHeader('Header text', 'Subtext for header'); ?>
 </div>
 
+<div class="thumbs" style="width: 870px;">
+	<h3>Thumbnails</h3>
+
+	<?php $thumbnail=array(
+		'content'=>'<img src="http://placehold.it/260x180" />',
+		'url'=>'#',
+	); ?>
+
+	<h5>Default thumbnails</h5>
+
+	<div class="row-fluid">
+		<?php echo TbHtml::thumbnails(array($thumbnail,$thumbnail,$thumbnail,$thumbnail)); ?>
+	</div>
+
+	<?php $captionThumbnail=array(
+		'content'=>'<img src="http://placehold.it/300x200" /><div class="caption"><h3>Thumbnail label</h3><p>Cras justo odio, dapibus ac facilisis in, egestas eget quam. Donec id elit non mi porta gravida at eget metus. Nullam id dolor id nibh ultricies vehicula ut id elit.</p>'.TbHtml::button('Action',array('style'=>'primary')).' '.TbHtml::button('Action').'</div>',
+		'span'=>3,
+	); ?>
+
+	<h5>Thumbnails with caption</h5>
+
+	<?php echo TbHtml::thumbnails(array($captionThumbnail,$captionThumbnail,$captionThumbnail)); ?>
+
+	<h5>Different sizes</h5>
+
+	<?php echo TbHtml::thumbnails(array(
+		array('content'=>'<img src="http://placehold.it/360x270" />','url'=>'#','span'=>4),
+		array('content'=>'<img src="http://placehold.it/260x120" />','url'=>'#','span'=>3),
+		array('content'=>'<img src="http://placehold.it/160x120" />','url'=>'#','span'=>2),
+		array('content'=>'<img src="http://placehold.it/260x120" />','url'=>'#','span'=>3),
+		array('content'=>'<img src="http://placehold.it/160x120" />','url'=>'#','span'=>2),
+	)); ?>
+
+	<h3>Media objects</h3>
+</div>
+
 <div class="alerts">
     <h3>Alerts</h3>
 
@@ -421,10 +457,10 @@ $this->pageTitle=Yii::app()->name;
 
 	<h5>Popovers</h5>
 
-	<?php echo TbHtml::popover('Popover on top', 'Popover on top', 'Vivamus sagittis lacus vel augue laoreet rutrum faucibus.', array('class'=>'btn','placement'=>'top','trigger'=>'hover')); ?>
-	<?php echo TbHtml::popover('Popover on right', 'Popover on right', 'Vivamus sagittis lacus vel augue laoreet rutrum faucibus.', array('class'=>'btn','placement'=>'right')); ?>
-	<?php echo TbHtml::popover('Popover on bottom', 'Popover on bottom', 'Vivamus sagittis lacus vel augue laoreet rutrum faucibus.', array('class'=>'btn','placement'=>'bottom')); ?>
-	<?php echo TbHtml::popover('Popover on left', 'Popover on left', 'Vivamus sagittis lacus vel augue laoreet rutrum faucibus.', array('class'=>'btn','placement'=>'left')); ?>
+	<?php echo TbHtml::popover('Popover on top', 'Popover on top', 'Vivamus sagittis lacus vel augue laoreet rutrum faucibus.', array('class'=>'btn','placement'=>'top','onclick'=>'return false;')); ?>
+	<?php echo TbHtml::popover('Popover on right', 'Popover on right', 'Vivamus sagittis lacus vel augue laoreet rutrum faucibus.', array('class'=>'btn','placement'=>'right','onclick'=>'return false;')); ?>
+	<?php echo TbHtml::popover('Popover on bottom', 'Popover on bottom', 'Vivamus sagittis lacus vel augue laoreet rutrum faucibus.', array('class'=>'btn','placement'=>'bottom','onclick'=>'return false;')); ?>
+	<?php echo TbHtml::popover('Popover on left', 'Popover on left', 'Vivamus sagittis lacus vel augue laoreet rutrum faucibus.', array('class'=>'btn','placement'=>'left','onclick'=>'return false;')); ?>
 
 </div>
 

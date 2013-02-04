@@ -973,6 +973,84 @@ class TbHtml extends CHtml
 		return ob_get_clean();
 	}
 
+	//
+	// Thumbnails
+	// --------------------------------------------------
+
+	/**
+	 * Generates a list of thumbnails.
+	 * @param array $thumbnails the list configuration.
+	 * @param array $htmlOptions additional HTML attributes.
+	 * @return string the generated thumbnails.
+	 * @see http://twitter.github.com/bootstrap/components.html#thumbnails
+	 */
+	public static function thumbnails($thumbnails, $htmlOptions = array())
+	{
+		if (is_array($thumbnails) && !empty($thumbnails))
+		{
+			$htmlOptions = self::addClassName('thumbnails', $htmlOptions);
+			ob_start();
+			echo parent::openTag('ul', $htmlOptions);
+			foreach ($thumbnails as $thumbnailOptions)
+			{
+				$options = self::popOption('htmlOptions', $thumbnailOptions, array());
+				if (!empty($options))
+					$thumbnailOptions = self::mergeOptions($options, $thumbnailOptions);
+				$span = self::popOption('span', $thumbnailOptions, 3);
+				$content = self::popOption('content', $thumbnailOptions, '');
+				$url = self::popOption('url', $thumbnailOptions, false);
+				echo $url !== false
+					? self::thumbnailLink($span, $content, $url, $thumbnailOptions)
+					: self::thumbnail($span, $content, $thumbnailOptions);
+			}
+			echo '</ul>';
+			return ob_get_clean();
+		}
+		return '';
+	}
+
+	/**
+	 * Generates a thumbnail.
+	 * @param integer $span the number of grid columns that the thumbnail spans over.
+	 * @param string $content the thumbnail content.
+	 * @param array $htmlOptions additional HTML attributes.
+	 * @return string the generated thumbnail.
+	 */
+	public static function thumbnail($span, $content, $htmlOptions = array())
+	{
+		$itemOptions = self::popOption('itemOptions', $htmlOptions, array());
+		$itemOptions = self::addClassName('span' . $span, $itemOptions);
+		$htmlOptions = self::addClassName('thumbnail', $htmlOptions);
+		ob_start();
+		echo parent::openTag('li', $itemOptions) . PHP_EOL;
+		echo parent::openTag('div', $htmlOptions) . PHP_EOL;
+		echo $content . PHP_EOL;
+		echo '</div>' . PHP_EOL;
+		echo '</li>' . PHP_EOL;
+		return ob_get_clean();
+	}
+
+	/**
+	 * Generates a link thumbnail.
+	 * @param integer $span the number of grid columns that the thumbnail spans over.
+	 * @param string $content the thumbnail content.
+	 * @param mixed $url the url that the thumbnail links to.
+	 * @param array $htmlOptions additional HTML attributes.
+	 * @return string the generated thumbnail.
+	 */
+	public static function thumbnailLink($span, $content, $url, $htmlOptions = array())
+	{
+		$itemOptions = self::popOption('itemOptions', $htmlOptions, array());
+		$itemOptions = self::addClassName('span' . $span, $itemOptions);
+		$htmlOptions = self::addClassName('thumbnail', $htmlOptions);
+		ob_start();
+		echo parent::openTag('li', $itemOptions) . PHP_EOL;
+		echo parent::link($content, $url, $htmlOptions) . PHP_EOL;
+		echo '</li>' . PHP_EOL;
+		return ob_get_clean();
+	}
+
+	//
 	// Thumbnails
 	// http://twitter.github.com/bootstrap/components.html#thumbnails
 	// --------------------------------------------------
@@ -1050,9 +1128,9 @@ class TbHtml extends CHtml
 		$barOptions = self::defaultOption('content', self::getOption('content', $htmlOptions, ''), $barOptions);
 
 		ob_start();
-		echo parent::openTag('div', $htmlOptions);
+		echo parent::openTag('div', $htmlOptions) . PHP_EOL;
 		echo self::bar($width, $barOptions);
-		echo '</div>';
+		echo '</div>' . PHP_EOL;
 		return ob_get_clean();
 	}
 
@@ -1092,7 +1170,7 @@ class TbHtml extends CHtml
 		{
 			$htmlOptions = self::addClassName('progress', $htmlOptions);
 			ob_start();
-			echo parent::openTag('div', $htmlOptions);
+			echo parent::openTag('div', $htmlOptions) . PHP_EOL;
 			foreach ($bars as $barOptions)
 			{
 				$options = self::popOption('htmlOptions', $barOptions, array());
@@ -1101,7 +1179,7 @@ class TbHtml extends CHtml
 				$width = self::popOption('width', $barOptions, 0);
 				echo self::bar($width, $barOptions);
 			}
-			echo '</div>';
+			echo '</div>' . PHP_EOL;
 			return ob_get_clean();
 		}
 		return '';
@@ -1128,7 +1206,7 @@ class TbHtml extends CHtml
 
 		$htmlOptions = self::addStyles("width: {$width}%;", $htmlOptions);
 		$content = self::popOption('content', $htmlOptions, '');
-		return parent::tag('div', $htmlOptions, $content);
+		return parent::tag('div', $htmlOptions, $content) . PHP_EOL;
 	}
 
 	// Media objects
@@ -1153,7 +1231,7 @@ class TbHtml extends CHtml
 		if (isset($size) && in_array($size, self::$sizes))
 			$htmlOptions = self::addClassName('well-' . $size, $htmlOptions);
 		ob_start();
-		parent::tag('div', $htmlOptions, $content);
+		parent::tag('div', $htmlOptions, $content) . PHP_EOL;
 		return ob_get_clean();
 	}
 
@@ -1190,7 +1268,7 @@ class TbHtml extends CHtml
 	{
 		$htmlOptions = self::addClassName('close', $htmlOptions);
 		$htmlOptions = self::defaultOption('data-dismiss', 'alert', $htmlOptions);
-		return parent::tag($tag, $htmlOptions, $label);
+		return parent::tag($tag, $htmlOptions, $label) . PHP_EOL;
 	}
 
 	/**
@@ -1274,8 +1352,7 @@ class TbHtml extends CHtml
 		$trigger = self::popOption('trigger', $htmlOptions);
 		if (isset($trigger) && in_array($trigger, self::$triggers))
 			$htmlOptions = self::defaultOption('data-trigger', $trigger, $htmlOptions);
-		$delay = self::popOption('delay', $htmlOptions);
-		if ($delay)
+		if (($delay = self::popOption('delay', $htmlOptions)) !== null)
 			$htmlOptions = self::defaultOption('data-delay', $delay, $htmlOptions);
 		return parent::link($label, $url, $htmlOptions);
 	}
