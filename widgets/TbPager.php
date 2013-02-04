@@ -74,58 +74,31 @@ class TbPager extends CBasePager
 		list($beginPage, $endPage) = $this->getPageRange();
 
 		$currentPage = $this->getCurrentPage(false); // currentPage is calculated in getPageRange()
-		$buttons = array();
+		$links = array();
 
 		// first page
-		$buttons[] = $this->createPageLink(
-			$this->firstPageLabel,
-			0,
-			$currentPage <= 0,
-			false
-		);
+		$links[] = $this->createPageLink($this->firstPageLabel, 0, $currentPage <= 0, false);
 
 		// prev page
 		if (($page = $currentPage - 1) < 0)
 			$page = 0;
 
-		$buttons[] = $this->createPageLink(
-			$this->prevPageLabel,
-			$page,
-			$currentPage <= 0,
-			false
-		);
+		$links[] = $this->createPageLink($this->prevPageLabel, $page, $currentPage <= 0, false);
 
 		// internal pages
 		for ($i = $beginPage; $i <= $endPage; ++$i)
-		{
-			$buttons[] = $this->createPageLink(
-				$i + 1,
-				$i,
-				false,
-				$i == $currentPage
-			);
-		}
+			$links[] = $this->createPageLink($i + 1, $i, false, $i == $currentPage);
 
 		// next page
 		if (($page = $currentPage + 1) >= $pageCount - 1)
 			$page = $pageCount - 1;
 
-		$buttons[] = $this->createPageLink(
-			$this->nextPageLabel,
-			$page,
-			$currentPage >= $pageCount - 1,
-			false
-		);
+		$links[] = $this->createPageLink($this->nextPageLabel, $page, $currentPage >= $pageCount - 1, false);
 
 		// last page
-		$buttons[] = $this->createPageLink(
-			$this->lastPageLabel,
-			$pageCount - 1,
-			$currentPage >= $pageCount - 1,
-			false
-		);
+		$links[] = $this->createPageLink($this->lastPageLabel, $pageCount - 1, $currentPage >= $pageCount - 1, false);
 
-		return $buttons;
+		return $links;
 	}
 
 	/**

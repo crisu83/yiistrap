@@ -29,8 +29,10 @@ class TbHeroUnit extends CWidget
 	 * @var array the HTML attributes for the container tag.
 	 */
 	public $htmlOptions = array();
-
-	/* @todo: i would probably allow the use of some $data for the view */
+	/**
+	 * @var array additional data to be passed to the view.
+	 */
+	public $viewData = array();
 
 	/**
 	 * Initializes the widget.
@@ -39,7 +41,7 @@ class TbHeroUnit extends CWidget
 	{
 		$controller = $this->getController();
 		if (isset($controller) && $controller->getViewFile($this->content) !== false)
-			$this->content = $this->controller->renderPartial($this->content, null/* no data */, true);
+			$this->content = $this->controller->renderPartial($this->content, $this->viewData, true);
 		$this->htmlOptions['headingOptions'] = $this->headingOptions;
 	}
 

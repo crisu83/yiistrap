@@ -76,6 +76,7 @@ class TbHtml extends CHtml
 
 	// Scope constants.
 	static $sizes = array(self::SIZE_LARGE, self::SIZE_SMALL, self::SIZE_MINI);
+	static $textStyles = array(self::STYLE_ERROR, self::STYLE_INFO, self::STYLE_SUCCESS, self::STYLE_WARNING);
 	static $buttonStyles = array(
 		self::STYLE_PRIMARY, self::STYLE_INFO, self::STYLE_SUCCESS, self::STYLE_WARNING,
 		self::STYLE_DANGER, self::STYLE_INVERSE, self::STYLE_LINK,
@@ -93,12 +94,156 @@ class TbHtml extends CHtml
 	static $triggers = array(self::TRIGGER_CLICK, self::TRIGGER_HOVER, self::TRIGGER_FOCUS, self::TRIGGER_MANUAL);
 	static $addons = array(self::ADDON_PREPEND, self::ADDON_APPEND);
 
-	private static $_tooltip = false;
-	private static $_popover = false;
 	private static $_counter = 0;
 
 	//
+	// BASE CSS
+	// --------------------------------------------------
+
+	// Typography
+	// http://twitter.github.com/bootstrap/base-css.html#typography
+	// --------------------------------------------------
+
+	/**
+	 * Generates a paragraph that stands out.
+	 * @param string $text the lead text.
+	 * @param array $htmlOptions additional HTML attributes.
+	 * @return string the generated paragraph.
+	 */
+	public static function lead($text, $htmlOptions = array())
+	{
+		$htmlOptions = self::addClassName('lead', $htmlOptions);
+		return parent::tag('p', $htmlOptions, $text);
+	}
+
+	/**
+	 * Generates small text.
+	 * @param string $text the text to style.
+	 * @param array $htmlOptions additional HTML attributes.
+	 * @return string the generated text.
+	 */
+	public static function small($text, $htmlOptions = array())
+	{
+		return parent::tag('small', $htmlOptions, $text);
+	}
+
+	/**
+	 * Generates bold text.
+	 * @param string $text the text to style.
+	 * @param array $htmlOptions additional HTML attributes.
+	 * @return string the generated text.
+	 */
+	public static function b($text, $htmlOptions = array())
+	{
+		return parent::tag('strong', $htmlOptions, $text);
+	}
+
+	/**
+	 * Generates italic text.
+	 * @param string $text the text to style.
+	 * @param array $htmlOptions additional HTML attributes.
+	 * @return string the generated text.
+	 */
+	public static function i($text, $htmlOptions = array())
+	{
+		return parent::tag('em', $htmlOptions, $text);
+	}
+
+	/**
+	 * Generates an emphasized text block.
+	 * @param string$text the text to emphasize.
+	 * @param array $htmlOptions additional HTML attributes.
+	 * @return string the generated text block.
+	 */
+	public static function em($text, $htmlOptions = array())
+	{
+		$style = self::popOption('style', $htmlOptions);
+		if (self::popOption('muted', $htmlOptions, false))
+			$htmlOptions = self::addClassName('muted', $htmlOptions);
+		else if ($style && in_array($style, self::$textStyles))
+			$htmlOptions = self::addClassName('text-' . $style, $htmlOptions);
+		return parent::tag('p', $htmlOptions, $text);
+	}
+
+	/**
+	 * Generates an abbreviation with a help text.
+	 * @param string $text the abbreviation.
+	 * @param string $word the word the abbreviation is for.
+	 * @param array $htmlOptions additional HTML attributes.
+	 * @return string the generated abbreviation.
+	 */
+	public static function abbr($text, $word, $htmlOptions = array())
+	{
+		if (self::popOption('smaller', $htmlOptions, false))
+			$htmlOptions = self::addClassName('initialism', $htmlOptions);
+		$htmlOptions = self::defaultOption('title', $word, $htmlOptions);
+		return parent::tag('abbr', $htmlOptions, $text);
+	}
+
+	/**
+	 * Generates an address block.
+	 * @param string $quote the address text.
+	 * @param array $htmlOptions additional HTML attributes.
+	 * @return string the generated block.
+	 */
+	public static function address($text, $htmlOptions = array())
+	{
+		return parent::tag('address', $htmlOptions, $text);
+	}
+
+	/**
+	 * Generates a quote.
+	 * @param string $text the quoted text.
+	 * @param array $htmlOptions additional HTML attributes.
+	 * @return string the generated quote.
+	 */
+	public static function quote($text, $htmlOptions = array())
+	{
+		return parent::tag('blockquote', $htmlOptions, $text);
+	}
+
+	// Code
+	// http://twitter.github.com/bootstrap/base-css.html#code
+	// --------------------------------------------------
+
+	/**
+	 * Generates a code snippet.
+	 * @param string $code the code.
+	 * @param array $htmlOptions additional HTML attributes.
+	 * @return string the generated snippet.
+	 * http://twitter.github.com/bootstrap/base-css.html#code
+	 */
+	public static function code($code, $htmlOptions = array())
+	{
+		return parent::tag('code', $htmlOptions, $code);
+	}
+
+	/**
+	 * Generates a code block.
+	 * @param string $code the code.
+	 * @param array $htmlOptions additional HTML attributes.
+	 * @return string the generated block.
+	 * http://twitter.github.com/bootstrap/base-css.html#code
+	 */
+	public static function codeBlock($code, $htmlOptions = array())
+	{
+		return parent::tag('pre', $htmlOptions, $code);
+	}
+
+	// Tables
+	// http://twitter.github.com/bootstrap/base-css.html#forms
+	// --------------------------------------------------
+
+	// todo: create table methods here.
+
+	// Forms
+	// http://twitter.github.com/bootstrap/base-css.html#tables
+	// --------------------------------------------------
+
+	// todo: move form methods here.
+
 	// Buttons
+	// http://twitter.github.com/bootstrap/base-css.html#buttons
 	// --------------------------------------------------
 
 	/**
@@ -158,8 +303,8 @@ class TbHtml extends CHtml
 		return self::tag($tag, $htmlOptions, $label);
 	}
 
-	//
 	// Images
+	// http://twitter.github.com/bootstrap/base-css.html#images
 	// --------------------------------------------------
 
 	/**
@@ -203,7 +348,90 @@ class TbHtml extends CHtml
 	}
 
 	//
+	// COMPONENTS
+	// --------------------------------------------------
+
+	// Dropdowns
+	// http://twitter.github.com/bootstrap/components.html#dropdowns
+	// --------------------------------------------------
+
+	/**
+	 * Generates a dropdown menu.
+	 * @param array $items the menu items.
+	 * @param array $htmlOptions additional HTML attributes.
+	 * @return string the generated menu.
+	 */
+	public static function dropdown($items, $htmlOptions = array())
+	{
+		// todo: think about how to apply this, now it applies to all depths while it should only apply for the first.
+		//$htmlOptions = self::setDefaultValue('role', 'menu', $htmlOptions);
+		$htmlOptions = self::addClassName('dropdown-menu', $htmlOptions);
+
+		if (self::popOption('dropup', $htmlOptions, false))
+			$htmlOptions = self::addClassName('dropup', $htmlOptions);
+
+		ob_start();
+		echo self::menu($items, $htmlOptions);
+		return ob_get_clean();
+	}
+
+	/**
+	 * Generates a dropdown toggle link.
+	 * @param string $label the link label text.
+	 * @param array $htmlOptions additional HTML attributes.
+	 * @return string the generated link.
+	 * http://twitter.github.com/bootstrap/components.html#buttonDropdowns
+	 */
+	public static function dropdownToggleLink($label, $htmlOptions = array())
+	{
+		return self::dropdownToggle('a', $label, $htmlOptions);
+	}
+
+	/**
+	 * Generates a dropdown toggle button.
+	 * @param string $label the button label text.
+	 * @param array $htmlOptions additional HTML attributes.
+	 * @return string the generated button.
+	 * http://twitter.github.com/bootstrap/components.html#buttonDropdowns
+	 */
+	public static function dropdownToggleButton($label = '', $htmlOptions = array())
+	{
+		return self::dropdownToggle('button', $label, $htmlOptions);
+	}
+
+	/**
+	 * Generates a dropdown toggle element.
+	 * @param string $tag the HTML tag.
+	 * @param string $label the element text.
+	 * @param array $htmlOptions additional HTML attributes.
+	 * @return string the generated element.
+	 * http://twitter.github.com/bootstrap/components.html#dropdowns
+	 */
+	public static function dropdownToggle($tag, $label, $htmlOptions)
+	{
+		$htmlOptions = self::addClassName('dropdown-toggle', $htmlOptions);
+		$htmlOptions = self::defaultOption('data-toggle', 'dropdown', $htmlOptions);
+		$label .= ' <b class="caret"></b>';
+		return self::btn($tag, $label, $htmlOptions);
+	}
+
+	/**
+	 * Generates a dropdown toggle menu item.
+	 * @param string $label the menu item text.
+	 * @param array $htmlOptions additional HTML attributes.
+	 * @return string the generated menu item.
+	 * http://twitter.github.com/bootstrap/components.html#dropdowns
+	 */
+	public static function dropdownToggleMenuLink($label, $htmlOptions = array())
+	{
+		$htmlOptions = self::addClassName('dropdown-toggle', $htmlOptions);
+		$htmlOptions = self::defaultOption('data-toggle', 'dropdown', $htmlOptions);
+		$label .= ' <b class="caret"></b>';
+		return parent::link($label, '#', $htmlOptions);
+	}
+
 	// Button groups
+	// http://twitter.github.com/bootstrap/components.html#buttonGroups
 	// --------------------------------------------------
 
 	/**
@@ -283,8 +511,8 @@ class TbHtml extends CHtml
 		return '';
 	}
 
-	//
 	// Button dropdowns
+	// http://twitter.github.com/bootstrap/components.html#buttonDropdowns
 	// --------------------------------------------------
 
 	/**
@@ -314,9 +542,31 @@ class TbHtml extends CHtml
 		return ob_get_clean();
 	}
 
-	//
 	// Navs
+	// http://twitter.github.com/bootstrap/components.html#navs
 	// --------------------------------------------------
+
+	/**
+	 * Generates a navigation menu.
+	 * @param string $style the menu style.
+	 * @param array $items the menu items.
+	 * @param array $htmlOptions additional HTML attributes.
+	 * @return string the generated menu.
+	 */
+	public static function nav($style, $items, $htmlOptions = array())
+	{
+		$htmlOptions = self::addClassName('nav', $htmlOptions);
+
+		if (in_array($style, self::$navStyles))
+			$htmlOptions = self::addClassName('nav-' . $style, $htmlOptions);
+
+		if (self::popOption('stacked', $htmlOptions, false))
+			$htmlOptions = self::addClassName('nav-stacked', $htmlOptions);
+
+		ob_start();
+		echo self::menu($items, $htmlOptions);
+		return ob_get_clean();
+	}
 
 	/**
 	 * Generates a menu.
@@ -431,109 +681,14 @@ class TbHtml extends CHtml
 		return parent::tag('li', $htmlOptions);
 	}
 
-	/**
-	 * Generates a navigation menu.
-	 * @param string $style the menu style.
-	 * @param array $items the menu items.
-	 * @param array $htmlOptions additional HTML attributes.
-	 * @return string the generated menu.
-	 */
-	public static function nav($style, $items, $htmlOptions = array())
-	{
-		$htmlOptions = self::addClassName('nav', $htmlOptions);
-
-		if (in_array($style, self::$navStyles))
-			$htmlOptions = self::addClassName('nav-' . $style, $htmlOptions);
-
-		if (self::popOption('stacked', $htmlOptions, false))
-			$htmlOptions = self::addClassName('nav-stacked', $htmlOptions);
-
-		ob_start();
-		echo self::menu($items, $htmlOptions);
-		return ob_get_clean();
-	}
-
-	//
-	// Dropdowns
+	// Navbar
+	// http://twitter.github.com/bootstrap/components.html#navbar
 	// --------------------------------------------------
 
-	/**
-	 * Generates a dropdown menu.
-	 * @param array $items the menu items.
-	 * @param array $htmlOptions additional HTML attributes.
-	 * @return string the generated menu.
-	 */
-	public static function dropdown($items, $htmlOptions = array())
-	{
-		// todo: think about how to apply this, now it applies to all depths while it should only apply for the first.
-		//$htmlOptions = self::setDefaultValue('role', 'menu', $htmlOptions);
-		$htmlOptions = self::addClassName('dropdown-menu', $htmlOptions);
+	// todo: consider moving navbar rendering logic here.
 
-		if (self::popOption('dropup', $htmlOptions, false))
-			$htmlOptions = self::addClassName('dropup', $htmlOptions);
-
-		ob_start();
-		echo self::menu($items, $htmlOptions);
-		return ob_get_clean();
-	}
-
-	/**
-	 * Generates a dropdown toggle link.
-	 * @param string $label the link label text.
-	 * @param array $htmlOptions additional HTML attributes.
-	 * @return string the generated link.
-	 * http://twitter.github.com/bootstrap/components.html#buttonDropdowns
-	 */
-	public static function dropdownToggleLink($label, $htmlOptions = array())
-	{
-		return self::dropdownToggle('a', $label, $htmlOptions);
-	}
-
-	/**
-	 * Generates a dropdown toggle button.
-	 * @param string $label the button label text.
-	 * @param array $htmlOptions additional HTML attributes.
-	 * @return string the generated button.
-	 * http://twitter.github.com/bootstrap/components.html#buttonDropdowns
-	 */
-	public static function dropdownToggleButton($label = '', $htmlOptions = array())
-	{
-		return self::dropdownToggle('button', $label, $htmlOptions);
-	}
-
-	/**
-	 * Generates a dropdown toggle element.
-	 * @param string $tag the HTML tag.
-	 * @param string $label the element text.
-	 * @param array $htmlOptions additional HTML attributes.
-	 * @return string the generated element.
-	 * http://twitter.github.com/bootstrap/components.html#dropdowns
-	 */
-	public static function dropdownToggle($tag, $label, $htmlOptions)
-	{
-		$htmlOptions = self::addClassName('dropdown-toggle', $htmlOptions);
-		$htmlOptions = self::defaultOption('data-toggle', 'dropdown', $htmlOptions);
-		$label .= ' <b class="caret"></b>';
-		return self::btn($tag, $label, $htmlOptions);
-	}
-
-	/**
-	 * Generates a dropdown toggle menu item.
-	 * @param string $label the menu item text.
-	 * @param array $htmlOptions additional HTML attributes.
-	 * @return string the generated menu item.
-	 * http://twitter.github.com/bootstrap/components.html#dropdowns
-	 */
-	public static function dropdownToggleMenuLink($label, $htmlOptions = array())
-	{
-		$htmlOptions = self::addClassName('dropdown-toggle', $htmlOptions);
-		$htmlOptions = self::defaultOption('data-toggle', 'dropdown', $htmlOptions);
-		$label .= ' <b class="caret"></b>';
-		return parent::link($label, '#', $htmlOptions);
-	}
-
-	//
 	// Breadcrumbs
+	// http://twitter.github.com/bootstrap/components.html#breadcrumbs
 	// --------------------------------------------------
 
 	/**
@@ -556,58 +711,16 @@ class TbHtml extends CHtml
 				echo parent::link($label, parent::normalizeUrl($url));
 				echo parent::tag('span', array('class' => 'divider'), $divider);
 				echo '</li>';
-			} else
+			}
+			else
 				echo parent::tag('li', array('class' => 'active'), $url);
 		}
 		echo '</ul>';
 		return ob_get_clean();
 	}
 
-	//
-	// Alerts
-	// --------------------------------------------------
-
-	/**
-	 * @param string $style the style of the alert.
-	 * @param string $message the message to display  within the alert box
-	 * @param array $htmlOptions additional HTML options. The following special options are recognized:
-	 * <ul>
-	 * <li>block: boolean, specifies whether to increase the padding on top and bottom of the alert wrapper.</li>
-	 * <li>fade: boolean, specifies whether to have fade in/out effect when showing/hiding the alert.
-	 * Defaults to `true`.</li>
-	 * <li>closeText: string, the text to use as closing button. If none specified, no close button will be shown.</li>
-	 * </ul>
-	 * @see http://twitter.github.com/bootstrap/components.html#alerts
-	 */
-	public static function alert($style, $message, $htmlOptions = array())
-	{
-		$htmlOptions = self::addClassName('alert', $htmlOptions);
-
-		if (isset($style) && in_array($style, self::$alertStyles))
-			$htmlOptions = self::addClassName('alert-' . $style, $htmlOptions);
-
-		if (self::popOption('in', $htmlOptions, true))
-			$htmlOptions = self::addClassName('in', $htmlOptions);
-
-		if (self::popOption('block', $htmlOptions, false))
-			$htmlOptions = self::addClassName('alert-block', $htmlOptions);
-
-		if (self::popOption('fade', $htmlOptions, true))
-			$htmlOptions = self::addClassName('fade', $htmlOptions);
-
-		$closeText = self::popOption('closeText', $htmlOptions, self::CLOSE_TEXT);
-		$closeOptions = self::popOption('closeOptions', $htmlOptions, array());
-
-		ob_start();
-		echo parent::openTag('div', $htmlOptions);
-		echo $closeText !== false ? self::closeLink($closeText, $closeOptions) : '';
-		echo $message;
-		echo '</div>';
-		return ob_get_clean();
-	}
-
-	//
 	// Pagination
+	// http://twitter.github.com/bootstrap/components.html#pagination
 	// --------------------------------------------------
 
 	/**
@@ -735,8 +848,8 @@ class TbHtml extends CHtml
 		return ob_get_clean();
 	}
 
-	//
 	// Labels and badges
+	// http://twitter.github.com/bootstrap/components.html#labels-badges
 	// --------------------------------------------------
 
 	/**
@@ -781,8 +894,8 @@ class TbHtml extends CHtml
 		return self::tag('span', $htmlOptions, $label);
 	}
 
-	//
 	// Typography
+	// http://twitter.github.com/bootstrap/components.html#typography
 	// --------------------------------------------------
 
 	/**
@@ -824,8 +937,57 @@ class TbHtml extends CHtml
 		return ob_get_clean();
 	}
 
-	//
+	// Thumbnails
+	// http://twitter.github.com/bootstrap/components.html#thumbnails
+	// --------------------------------------------------
+
+	// todo: move thumbnail methods here.
+
+	// Alerts
+	// http://twitter.github.com/bootstrap/components.html#alerts
+	// --------------------------------------------------
+
+	/**
+	 * @param string $style the style of the alert.
+	 * @param string $message the message to display  within the alert box
+	 * @param array $htmlOptions additional HTML options. The following special options are recognized:
+	 * <ul>
+	 * <li>block: boolean, specifies whether to increase the padding on top and bottom of the alert wrapper.</li>
+	 * <li>fade: boolean, specifies whether to have fade in/out effect when showing/hiding the alert.
+	 * Defaults to `true`.</li>
+	 * <li>closeText: string, the text to use as closing button. If none specified, no close button will be shown.</li>
+	 * </ul>
+	 * @see http://twitter.github.com/bootstrap/components.html#alerts
+	 */
+	public static function alert($style, $message, $htmlOptions = array())
+	{
+		$htmlOptions = self::addClassName('alert', $htmlOptions);
+
+		if (isset($style) && in_array($style, self::$alertStyles))
+			$htmlOptions = self::addClassName('alert-' . $style, $htmlOptions);
+
+		if (self::popOption('in', $htmlOptions, true))
+			$htmlOptions = self::addClassName('in', $htmlOptions);
+
+		if (self::popOption('block', $htmlOptions, false))
+			$htmlOptions = self::addClassName('alert-block', $htmlOptions);
+
+		if (self::popOption('fade', $htmlOptions, true))
+			$htmlOptions = self::addClassName('fade', $htmlOptions);
+
+		$closeText = self::popOption('closeText', $htmlOptions, self::CLOSE_TEXT);
+		$closeOptions = self::popOption('closeOptions', $htmlOptions, array());
+
+		ob_start();
+		echo parent::openTag('div', $htmlOptions);
+		echo $closeText !== false ? self::closeLink($closeText, $closeOptions) : '';
+		echo $message;
+		echo '</div>';
+		return ob_get_clean();
+	}
+
 	// Progress bars
+	// http://twitter.github.com/bootstrap/components.html#progress
 	// --------------------------------------------------
 
 	/**
@@ -934,8 +1096,14 @@ class TbHtml extends CHtml
 		return parent::tag('div', $htmlOptions, $content);
 	}
 
-	//
+	// Media objects
+	// http://twitter.github.com/bootstrap/components.html#media
+	// --------------------------------------------------
+
+	// todo: create media object methods here.
+
 	// Misc
+	// http://twitter.github.com/bootstrap/components.html#misc
 	// --------------------------------------------------
 
 	/**
@@ -1035,7 +1203,12 @@ class TbHtml extends CHtml
 	}
 
 	//
-	// Tooltips
+	// JAVASCRIPT
+	// --------------------------------------------------
+
+	// Tooltips and Popovers
+	// http://twitter.github.com/bootstrap/javascript.html#tooltips
+	// http://twitter.github.com/bootstrap/javascript.html#popovers
 	// --------------------------------------------------
 
 	/**
