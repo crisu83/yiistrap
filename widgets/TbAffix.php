@@ -7,18 +7,26 @@
  * @package bootstrap.widgets
  */
 
-Yii::import('bootstrap.widgets.TbWrap');
+Yii::import('bootstrap.widgets.TbWidget');
 
 /**
  * Bootstrap affix widget.
  * @see http://twitter.github.com/bootstrap/javascript.html#affix
  */
-class TbAffix extends TbWrap
+class TbAffix extends TbWidget
 {
+	/**
+	 * @var string the HTML tag for the container.
+	 */
+	public $tagName = 'div';
 	/**
 	 * @var mixed pixels to offset from screen when calculating position of scroll.
 	 */
 	public $offset;
+	/**
+	 * @var array the HTML attributes for the container.
+	 */
+	public $htmlOptions = array();
 
 	/**
 	 * Initializes the widget.
@@ -38,6 +46,14 @@ class TbAffix extends TbWrap
 					$this->options = TbHtml::defaultOption('data-offset-' . $position, $offset, $this->options);
 			}
 		}
-		parent::init();
+		echo CHtml::openTag($this->tagName, $this->htmlOptions);
+	}
+
+	/**
+	 * Runs the widget.
+	 */
+	public function run()
+	{
+		echo CHtml::closeTag($this->tagName);
 	}
 }
