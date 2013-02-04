@@ -446,10 +446,27 @@ class TbHtml extends CHtml
 	// --------------------------------------------------
 
 	/**
-	 * Generates a button group.
+	 * Generates a button group. Example:
+	 *
+	 * <pre>
+	 * 	echo TbHtml::buttonGroup(array(
+	 * 		array('label'=>'testA'),
+	 * 		array('label'=>'testB')
+	 * ));
+	 * </pre>
+	 *
 	 * @param array $buttons the button configurations.
 	 * @param array $htmlOptions additional HTML options. The following special options are recognized:
-	 * @todo write the options
+	 * <ul>
+	 * <li>
+	 * 		items: array, the list of buttons to be inserted into the group (see {@link button} function to see available
+	 *  	config options for buttons.
+	 * </li>
+	 * <li>
+	 * 		vertical: string, whether to render the group vertically instead of horizontally.
+	 * </li>
+	 * </ul>
+	 *
 	 * @return string the generated button group.
 	 */
 	public static function buttonGroup($buttons, $htmlOptions = array())
@@ -485,10 +502,23 @@ class TbHtml extends CHtml
 	}
 
 	/**
-	 * Generates a button toolbar.
+	 * Generates a button toolbar. Example:
+	 *
+	 * echo TbHtml::multipleButtonGroup(array(
+	 * 	array(
+	 * 		'items' => array(
+	 * 			array('label'=>'testA'),
+	 * 			array('label'=>'testB')
+	 * 		)
+	 * 	),
+	 * 	array(
+	 * 		'items' => array(
+	 * 			array('label'=>'testC')
+	 * 		)
+	 * )));
+	 *
 	 * @param array $groups the button group configurations.
-	 * @param array $htmlOptions additional HTML options. The following special options are recognized:
-	 * @todo write the options
+	 * @param array $htmlOptions additional HTML options.
 	 * @return string the generated button toolbar.
 	 */
 	public static function buttonToolbar($groups, $htmlOptions = array())
