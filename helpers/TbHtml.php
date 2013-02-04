@@ -1906,7 +1906,7 @@ EOD;
 		$divider = self::popOption('divider', $htmlOptions, '/');
 		$htmlOptions = self::addClassName('breadcrumb', $htmlOptions);
 		ob_start();
-		echo parent::openTag('ul', $htmlOptions);
+		echo parent::openTag('ul', $htmlOptions) . PHP_EOL;
 		foreach ($links as $label => $url)
 		{
 			if (is_string($label))
@@ -1914,12 +1914,12 @@ EOD;
 				echo parent::openTag('li');
 				echo parent::link($label, parent::normalizeUrl($url));
 				echo parent::tag('span', array('class' => 'divider'), $divider);
-				echo '</li>';
+				echo '</li>' . PHP_EOL;
 			}
 			else
 				echo parent::tag('li', array('class' => 'active'), $url);
 		}
-		echo '</ul>';
+		echo '</ul>' . PHP_EOL;
 		return ob_get_clean();
 	}
 
@@ -1938,17 +1938,13 @@ EOD;
 		if (is_array($links) && !empty($links))
 		{
 			$htmlOptions = self::addClassName('pagination', $htmlOptions);
-
 			$size = self::popOption('size', $htmlOptions);
 			if (isset($size) && in_array($size, self::$sizes))
 				$htmlOptions = self::addClassName('pagination-' . $size, $htmlOptions);
-
 			$align = self::popOption('align', $htmlOptions);
 			if (isset($align) && in_array($align, self::$alignments))
 				$htmlOptions = self::addClassName('pagination-' . $align, $htmlOptions);
-
 			$listOptions = self::popOption('listOptions', $htmlOptions, array());
-
 			ob_start();
 			echo parent::openTag('div', $htmlOptions) . PHP_EOL;
 			echo parent::openTag('ul', $listOptions) . PHP_EOL;
@@ -1959,7 +1955,7 @@ EOD;
 					$itemOptions = self::mergeOptions($options, $itemOptions);
 				$label = self::popOption('label', $itemOptions, '');
 				$url = self::popOption('url', $itemOptions, false);
-				echo self::paginationLink($label, $url, $itemOptions) . PHP_EOL;
+				echo self::paginationLink($label, $url, $itemOptions);
 			}
 			echo '</ul>' . PHP_EOL . '</div>' . PHP_EOL;
 			return ob_get_clean();
@@ -1978,14 +1974,11 @@ EOD;
 	{
 		$active = self::popOption('active', $htmlOptions);
 		$disabled = self::popOption('disabled', $htmlOptions);
-
 		if ($active)
 			$htmlOptions = self::addClassName('active', $htmlOptions);
 		else if ($disabled)
 			$htmlOptions = self::addClassName('disabled', $htmlOptions);
-
 		$linkOptions = self::popOption('linkOptions', $itemOptions, array());
-
 		ob_start();
 		echo parent::openTag('li', $htmlOptions) . PHP_EOL;
 		echo parent::link($label, $url, $linkOptions) . PHP_EOL;
@@ -2013,7 +2006,7 @@ EOD;
 					$itemOptions = self::mergeOptions($options, $itemOptions);
 				$label = self::popOption('label', $itemOptions, '');
 				$url = self::popOption('url', $itemOptions, false);
-				echo self::pagerLink($label, $url, $itemOptions) . PHP_EOL;
+				echo self::pagerLink($label, $url, $itemOptions);
 			}
 			echo '</ul>' . PHP_EOL;
 			return ob_get_clean();
@@ -2032,17 +2025,13 @@ EOD;
 	{
 		$previous = self::popOption('previous', $htmlOptions);
 		$next = self::popOption('next', $htmlOptions);
-
 		if ($previous)
 			$htmlOptions = self::addClassName('previous', $htmlOptions);
 		else if ($next)
 			$htmlOptions = self::addClassName('next', $htmlOptions);
-
 		if (self::popOption('disabled', $htmlOptions, false))
 			$htmlOptions = self::addClassName('disabled', $htmlOptions);
-
 		$linkOptions = self::popOption('linkOptions', $itemOptions, array());
-
 		ob_start();
 		echo parent::openTag('li', $htmlOptions) . PHP_EOL;
 		echo parent::link($label, $url, $linkOptions) . PHP_EOL;
@@ -2231,22 +2220,16 @@ EOD;
 	public static function alert($style, $message, $htmlOptions = array())
 	{
 		$htmlOptions = self::addClassName('alert', $htmlOptions);
-
 		if (isset($style) && in_array($style, self::$alertStyles))
 			$htmlOptions = self::addClassName('alert-' . $style, $htmlOptions);
-
 		if (self::popOption('in', $htmlOptions, true))
 			$htmlOptions = self::addClassName('in', $htmlOptions);
-
 		if (self::popOption('block', $htmlOptions, false))
 			$htmlOptions = self::addClassName('alert-block', $htmlOptions);
-
 		if (self::popOption('fade', $htmlOptions, true))
 			$htmlOptions = self::addClassName('fade', $htmlOptions);
-
 		$closeText = self::popOption('closeText', $htmlOptions, self::CLOSE_TEXT);
 		$closeOptions = self::popOption('closeOptions', $htmlOptions, array());
-
 		ob_start();
 		echo parent::openTag('div', $htmlOptions);
 		echo $closeText !== false ? self::closeLink($closeText, $closeOptions) : '';
@@ -2268,21 +2251,17 @@ EOD;
 	public static function progressBar($width = 0, $htmlOptions = array())
 	{
 		$htmlOptions = self::addClassName('progress', $htmlOptions);
-
 		$style = self::popOption('style', $htmlOptions);
 		if (isset($style) && in_array($style, self::$progressStyles))
 			$htmlOptions = self::addClassName('progress-' . $style, $htmlOptions);
-
 		if (self::popOption('striped', $htmlOptions, false))
 		{
 			$htmlOptions = self::addClassName('progress-striped', $htmlOptions);
 			if (self::popOption('animated', $htmlOptions, false))
 				$htmlOptions = self::addClassName('active', $htmlOptions);
 		}
-
 		$barOptions = self::getOption('barOptions', $htmlOptions, array());
 		$barOptions = self::defaultOption('content', self::getOption('content', $htmlOptions, ''), $barOptions);
-
 		ob_start();
 		echo parent::openTag('div', $htmlOptions) . PHP_EOL;
 		echo self::bar($width, $barOptions);
@@ -2350,16 +2329,13 @@ EOD;
 	public static function bar($width = 0, $htmlOptions = array())
 	{
 		$htmlOptions = self::addClassName('bar', $htmlOptions);
-
 		$style = self::popOption('style', $htmlOptions);
 		if (isset($style) && in_array($style, self::$progressStyles))
 			$htmlOptions = self::addClassName('bar-' . $style, $htmlOptions);
-
 		if ($width < 0)
 			$width = 0;
 		if ($width > 100)
 			$width = 100;
-
 		$htmlOptions = self::addStyles("width: {$width}%;", $htmlOptions);
 		$content = self::popOption('content', $htmlOptions, '');
 		return parent::tag('div', $htmlOptions, $content) . PHP_EOL;
