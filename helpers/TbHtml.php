@@ -973,8 +973,8 @@ class TbHtml extends CHtml
 		return ob_get_clean();
 	}
 
-	//
 	// Thumbnails
+	// http://twitter.github.com/bootstrap/components.html#thumbnails
 	// --------------------------------------------------
 
 	/**
@@ -982,7 +982,6 @@ class TbHtml extends CHtml
 	 * @param array $thumbnails the list configuration.
 	 * @param array $htmlOptions additional HTML attributes.
 	 * @return string the generated thumbnails.
-	 * @see http://twitter.github.com/bootstrap/components.html#thumbnails
 	 */
 	public static function thumbnails($thumbnails, $htmlOptions = array())
 	{
@@ -990,7 +989,7 @@ class TbHtml extends CHtml
 		{
 			$htmlOptions = self::addClassName('thumbnails', $htmlOptions);
 			ob_start();
-			echo parent::openTag('ul', $htmlOptions);
+			echo parent::openTag('ul', $htmlOptions) . PHP_EOL;
 			foreach ($thumbnails as $thumbnailOptions)
 			{
 				$options = self::popOption('htmlOptions', $thumbnailOptions, array());
@@ -1003,7 +1002,7 @@ class TbHtml extends CHtml
 					? self::thumbnailLink($span, $content, $url, $thumbnailOptions)
 					: self::thumbnail($span, $content, $thumbnailOptions);
 			}
-			echo '</ul>';
+			echo '</ul>' . PHP_EOL;
 			return ob_get_clean();
 		}
 		return '';
@@ -1049,13 +1048,6 @@ class TbHtml extends CHtml
 		echo '</li>' . PHP_EOL;
 		return ob_get_clean();
 	}
-
-	//
-	// Thumbnails
-	// http://twitter.github.com/bootstrap/components.html#thumbnails
-	// --------------------------------------------------
-
-	// todo: move thumbnail methods here.
 
 	// Alerts
 	// http://twitter.github.com/bootstrap/components.html#alerts
@@ -1231,7 +1223,7 @@ class TbHtml extends CHtml
 		if (isset($size) && in_array($size, self::$sizes))
 			$htmlOptions = self::addClassName('well-' . $size, $htmlOptions);
 		ob_start();
-		parent::tag('div', $htmlOptions, $content) . PHP_EOL;
+		echo parent::tag('div', $htmlOptions, $content) . PHP_EOL;
 		return ob_get_clean();
 	}
 
