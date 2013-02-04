@@ -1845,18 +1845,18 @@ EOD;
 
 		if (array_key_exists('uncheckValue', $htmlOptions))
 		{
-			$uncheck = $htmlOptions['uncheckValue'];
+			$unCheck = $htmlOptions['uncheckValue'];
 			unset($htmlOptions['uncheckValue']);
 		} else
-			$uncheck = '0';
+			$unCheck = '0';
 
 		$hiddenOptions = isset($htmlOptions['id']) ? array('id' => self::ID_PREFIX . $htmlOptions['id']) : array('id' => false);
-		$hidden = $uncheck !== null ? self::hiddenField($htmlOptions['name'], $uncheck, $hiddenOptions) : '';
+		$hidden = $unCheck !== null ? self::hiddenField($htmlOptions['name'], $unCheck, $hiddenOptions) : '';
 
 		$name = parent::resolveName($model, $attribute);
 
 		/* todo: checkbox and radio have different label layout. Test whether this solution works */
-		return $hidden . self::checkBox($name, $uncheck, $htmlOptions);
+		return $hidden . self::checkBox($name, $unCheck, $htmlOptions);
 	}
 
 	/**
@@ -1889,19 +1889,19 @@ EOD;
 
 		if (array_key_exists('uncheckValue', $htmlOptions))
 		{
-			$uncheck = $htmlOptions['uncheckValue'];
+			$unCheck = $htmlOptions['uncheckValue'];
 			unset($htmlOptions['uncheckValue']);
 		} else
-			$uncheck = '0';
+			$unCheck = '0';
 
 		$hiddenOptions = isset($htmlOptions['id']) ? array('id' => self::ID_PREFIX . $htmlOptions['id']) : array('id' => false);
-		$hidden = $uncheck !== null ? self::hiddenField($htmlOptions['name'], $uncheck, $hiddenOptions) : '';
+		$hidden = $unCheck !== null ? self::hiddenField($htmlOptions['name'], $unCheck, $hiddenOptions) : '';
 
 		$name = parent::resolveName($model, $attribute);
 
 		/* todo: checkbox and radio have different label layout. Test whether this solution works */
 		// add a hidden field so that if the radio button is not selected, it still submits a value
-		return $hidden . self::radioButton($name, $uncheck, $htmlOptions);
+		return $hidden . self::radioButton($name, $unCheck, $htmlOptions);
 	}
 
 	/**
@@ -2119,7 +2119,6 @@ EOD;
 	public static function activeTextField($model,$attribute,$htmlOptions=array())
 	{
 		parent::resolveNameID($model,$attribute,$htmlOptions);
-		parent::clientChange('change',$htmlOptions);
 		parent::clientChange('change',$htmlOptions);
 		return self::activeInputField('text',$model,$attribute,$htmlOptions);
 	}
