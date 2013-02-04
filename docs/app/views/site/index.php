@@ -113,7 +113,7 @@ $this->pageTitle=Yii::app()->name;
 		array('label'=>'Action','url'=>'#'),
 		array('label'=>'Another action','url'=>'#'),
 		array('label'=>'Something else here','url'=>'#'),
-		'---',
+		TbHtml::menuDivider(),
 		array('label'=>'Separate link','url'=>'#'),
 	); ?>
 
@@ -171,7 +171,7 @@ $this->pageTitle=Yii::app()->name;
 			array('label'=>'Action','url'=>'#'),
 			array('label'=>'Another action','url'=>'#'),
 			array('label'=>'Something else here','url'=>'#'),
-			'---',
+			TbHtml::menuDivider(),
 			array('label'=>'Separate link','url'=>'#'),
 		)),
 	); ?>

@@ -20,6 +20,10 @@ class TbCollapse extends TbWidget
 	 */
 	public $tagName = 'div';
 	/**
+	 * @var string the content text or path to a partial view with the content.
+	 */
+	public $content;
+	/**
 	 * @var string the CSS selector for the parent element.
 	 */
 	public $parent;
@@ -35,6 +39,10 @@ class TbCollapse extends TbWidget
 	 * @var array the HTML attributes for the container.
 	 */
 	public $htmlOptions = array();
+	/**
+	 * @var array additional data to be passed to the view.
+	 */
+	public $viewData = array();
 
 	/**
 	 * Initializes the widget.
@@ -48,7 +56,10 @@ class TbCollapse extends TbWidget
 			$this->htmlOptions = TbHtml::defaultOption('data-parent', $this->parent, $this->htmlOptions);
 		if (isset($this->toggle) && $this->toggle)
 			$this->htmlOptions = TbHtml::addClassName('in', $this->htmlOptions);
-		echo CHtml::openTag($this->tagName, $this->htmlOptions);
+		$controller = $this->getController();
+		if (isset($controller) && $controller->getViewFile($this->content) !== false)
+			$this->content = $this->controller->renderPartial($this->content, $this->viewData, true);
+		echo CHtml::tag($this->tagName, $this->htmlOptions, $this->content);
 	}
 
 	/**
@@ -56,7 +67,6 @@ class TbCollapse extends TbWidget
 	 */
 	public function run()
 	{
-		echo CHtml::closeTag($this->tagName);
 		$selector = '#' . $this->htmlOptions['id'];
 		$this->registerEvents($selector, $this->events);
 	}

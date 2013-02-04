@@ -1414,25 +1414,19 @@ EOD;
 	public static function btn($tag, $label, $htmlOptions = array())
 	{
 		$htmlOptions = self::addClassName('btn', $htmlOptions);
-
 		$style = self::popOption('style', $htmlOptions);
 		if (isset($style) && in_array($style, self::$buttonStyles))
 			$htmlOptions = self::addClassName('btn-' . $style, $htmlOptions);
-
 		$size = self::popOption('size', $htmlOptions);
 		if (isset($size) && in_array($size, self::$sizes))
 			$htmlOptions = self::addClassName('btn-' . $size, $htmlOptions);
-
 		if (self::popOption('block', $htmlOptions, false))
 			$htmlOptions = self::addClassName('btn-block', $htmlOptions);
-
 		if (self::popOption('disabled', $htmlOptions, false))
 			$htmlOptions = self::addClassName('disabled', $htmlOptions);
-
 		$icon = self::popOption('icon', $htmlOptions);
 		if (isset($icon))
 			$label = self::icon($icon) . $label;
-
 		return self::tag($tag, $htmlOptions, $label);
 	}
 
@@ -1519,10 +1513,8 @@ EOD;
 		// todo: think about how to apply this, now it applies to all depths while it should only apply for the first.
 		//$htmlOptions = self::setDefaultValue('role', 'menu', $htmlOptions);
 		$htmlOptions = self::addClassName('dropdown-menu', $htmlOptions);
-
 		if (self::popOption('dropup', $htmlOptions, false))
 			$htmlOptions = self::addClassName('dropup', $htmlOptions);
-
 		ob_start();
 		echo self::menu($items, $htmlOptions);
 		return ob_get_clean();
@@ -1562,7 +1554,7 @@ EOD;
 		$htmlOptions = self::addClassName('dropdown-toggle', $htmlOptions);
 		$htmlOptions = self::defaultOption('data-toggle', 'dropdown', $htmlOptions);
 		$label .= ' <b class="caret"></b>';
-		return self::btn($tag, $label, $htmlOptions);
+		return self::btn($tag, $label, $htmlOptions) . PHP_EOL;
 	}
 
 	/**
@@ -1576,7 +1568,7 @@ EOD;
 		$htmlOptions = self::addClassName('dropdown-toggle', $htmlOptions);
 		$htmlOptions = self::defaultOption('data-toggle', 'dropdown', $htmlOptions);
 		$label .= ' <b class="caret"></b>';
-		return parent::link($label, '#', $htmlOptions);
+		return parent::link($label, '#', $htmlOptions) . PHP_EOL;
 	}
 
 	// Button groups
@@ -1612,18 +1604,15 @@ EOD;
 		if (is_array($buttons) && !empty($buttons))
 		{
 			$htmlOptions = self::addClassName('btn-group', $htmlOptions);
-
 			if (self::popOption('vertical', $htmlOptions, false))
 				$htmlOptions = self::addClassName('btn-group-vertical', $htmlOptions);
-
 			$parentOptions = array(
 				'style' => self::popOption('style', $htmlOptions),
 				'size' => self::popOption('size', $htmlOptions),
 				'disabled' => self::popOption('disabled', $htmlOptions)
 			);
-
 			ob_start();
-			echo parent::openTag('div', $htmlOptions);
+			echo parent::openTag('div', $htmlOptions) . PHP_EOL;
 			foreach ($buttons as $buttonOptions)
 			{
 				$options = self::popOption('htmlOptions', $buttonOptions, array());
@@ -1633,7 +1622,7 @@ EOD;
 				$buttonOptions = self::copyOptions(array('style', 'size', 'disabled'), $parentOptions, $buttonOptions);
 				echo self::button($buttonLabel, $buttonOptions);
 			}
-			echo '</div>';
+			echo '</div>' . PHP_EOL;
 			return ob_get_clean();
 		}
 		return '';
@@ -1664,15 +1653,13 @@ EOD;
 		if (is_array($groups) && !empty($groups))
 		{
 			$htmlOptions = self::addClassName('btn-toolbar', $htmlOptions);
-
 			$parentOptions = array(
 				'style' => self::popOption('style', $htmlOptions),
 				'size' => self::popOption('size', $htmlOptions),
 				'disabled' => self::popOption('disabled', $htmlOptions)
 			);
-
 			ob_start();
-			echo parent::openTag('div', $htmlOptions);
+			echo parent::openTag('div', $htmlOptions) . PHP_EOL;
 			foreach ($groups as $groupOptions)
 			{
 				$items = self::popOption('items', $groupOptions, array());
@@ -1684,7 +1671,7 @@ EOD;
 				$groupOptions = self::copyOptions(array('style', 'size', 'disabled'), $parentOptions, $groupOptions);
 				echo self::buttonGroup($items, $groupOptions);
 			}
-			echo '</div>';
+			echo '</div>' . PHP_EOL;
 			return ob_get_clean();
 		}
 		return '';
@@ -1706,18 +1693,16 @@ EOD;
 		$menuOptions = self::popOption('menuOptions', $htmlOptions, array());
 		$groupOptions = self::popOption('groupOptions', $htmlOptions, array());
 		$groupOptions = self::addClassName('btn-group', $groupOptions);
-
 		ob_start();
-		echo parent::openTag('div', $groupOptions);
+		echo parent::openTag('div', $groupOptions) . PHP_EOL;
 		if (self::popOption('split', $htmlOptions, false))
 		{
 			echo self::linkButton($label, $htmlOptions);
 			echo self::dropdownToggleButton('', $htmlOptions);
 		} else
 			echo self::dropdownToggleLink($label, $htmlOptions);
-
 		echo self::dropdown($items, $menuOptions);
-		echo '</div>';
+		echo '</div>' . PHP_EOL;
 		return ob_get_clean();
 	}
 
@@ -1735,13 +1720,10 @@ EOD;
 	public static function nav($style, $items, $htmlOptions = array())
 	{
 		$htmlOptions = self::addClassName('nav', $htmlOptions);
-
 		if (in_array($style, self::$navStyles))
 			$htmlOptions = self::addClassName('nav-' . $style, $htmlOptions);
-
 		if (self::popOption('stacked', $htmlOptions, false))
 			$htmlOptions = self::addClassName('nav-stacked', $htmlOptions);
-
 		ob_start();
 		echo self::menu($items, $htmlOptions);
 		return ob_get_clean();
@@ -1760,13 +1742,12 @@ EOD;
 		foreach ($items as $itemOptions)
 		{
 			if (is_string($itemOptions))
-				echo self::menuDivider();
+				echo $itemOptions;
 			else
 			{
 				$options = self::popOption('itemOptions', $itemOptions, array());
 				if (!empty($options))
 					$itemOptions = self::mergeOptions($options, $itemOptions);
-
 				// todo: I'm not quite happy with the logic below but it will have to do for now.
 				$label = self::popOption('label', $itemOptions, '');
 				if (self::popOption('active', $itemOptions, false))
@@ -1789,7 +1770,7 @@ EOD;
 				}
 			}
 		}
-		echo '</ul>';
+		echo '</ul>' . PHP_EOL;
 		return ob_get_clean();
 	}
 
@@ -1803,11 +1784,10 @@ EOD;
 	public static function menuLink($label, $url, $htmlOptions = array())
 	{
 		$linkOptions = self::popOption('linkOptions', $htmlOptions, array());
-
 		ob_start();
-		echo parent::openTag('li', $htmlOptions);
-		echo parent::link($label, $url, $linkOptions);
-		echo '</li>';
+		echo parent::openTag('li', $htmlOptions) . PHP_EOL;
+		echo parent::link($label, $url, $linkOptions) . PHP_EOL;
+		echo '</li>' . PHP_EOL;
 		return ob_get_clean();
 	}
 
@@ -1824,15 +1804,13 @@ EOD;
 		$linkOptions = self::popOption('linkOptions', $htmlOptions, array());
 		$menuOptions = self::popOption('menuOptions', $htmlOptions, array());
 		$menuOptions = self::addClassName('dropdown-menu', $menuOptions);
-
 		if (self::popOption('active', $htmlOptions, false))
 			$htmlOptions = self::addClassName('active', $htmlOptions);
-
 		ob_start();
-		echo parent::openTag('li', $htmlOptions);
+		echo parent::openTag('li', $htmlOptions) . PHP_EOL;
 		echo self::dropdownToggleMenuLink($label, $linkOptions);
 		echo self::menu($items, $menuOptions);
-		echo '</li>';
+		echo '</li>' . PHP_EOL;
 		return ob_get_clean();
 	}
 
@@ -1845,26 +1823,73 @@ EOD;
 	public static function menuHeader($label, $htmlOptions = array())
 	{
 		$htmlOptions = self::addClassName('nav-header', $htmlOptions);
-		return parent::tag('li', $htmlOptions, $label);
+		return parent::tag('li', $htmlOptions, $label) . PHP_EOL;
 	}
 
 	/**
 	 * Generates a menu divider.
-	 * @param string $className the divider CSS class.
 	 * @param array $htmlOptions additional HTML attributes.
 	 * @return string the generated menu item.
 	 */
-	public static function menuDivider($className = 'divider', $htmlOptions = array())
+	public static function menuDivider($htmlOptions = array())
 	{
-		$htmlOptions = self::addClassName($className, $htmlOptions);
-		return parent::tag('li', $htmlOptions);
+		$htmlOptions = self::addClassName('divider', $htmlOptions);
+		return parent::tag('li', $htmlOptions) . PHP_EOL;
 	}
 
 	// Navbar
 	// http://twitter.github.com/bootstrap/components.html#navbar
 	// --------------------------------------------------
 
-	// todo: consider moving navbar rendering logic here.
+	/**
+	 * Generates a navbar.
+	 * @param string $content the navbar content.
+	 * @param array $htmlOptions additional HTML attributes.
+	 * @return string the generated navbar.
+	 */
+	public static function navbar($content, $htmlOptions = array())
+	{
+		$htmlOptions = self::addClassName('navbar', $htmlOptions);
+		$position = self::popOption('position', $htmlOptions);
+		$static = self::popOption('static', $htmlOptions, false);
+		if (isset($position) && in_array($position, self::$positions))
+			$htmlOptions = self::addClassName('navbar-fixed-' . $position, $htmlOptions);
+		else if ($static) // navbar cannot be both fixed and static
+			$htmlOptions = self::addClassName('navbar-static-top', $htmlOptions);
+		$style = self::popOption('style', $htmlOptions);
+		if (isset($style) && in_array($style, self::$navbarStyles))
+			$htmlOptions = self::addClassName('navbar-' . $style, $htmlOptions);
+		$innerOptions = self::popOption('innerOptions', $htmlOptions, array());
+		$innerOptions = self::addClassName('navbar-inner', $innerOptions);
+		echo parent::openTag('div', $htmlOptions) . PHP_EOL;
+		echo parent::tag('div', $innerOptions, $content) . PHP_EOL;
+		echo '</div>' . PHP_EOL;
+		return ob_get_clean();
+	}
+
+	/**
+	 * Generates a brand link for the navbar.
+	 * @param string $label the link label text.
+	 * @param string $url the link url.
+	 * @param array $htmlOptions additional HTML attributes.
+	 * @return string the generated link.
+	 */
+	public static function navbarBrandLink($label, $url, $htmlOptions = array())
+	{
+		$htmlOptions = self::addClassName('brand', $htmlOptions);
+		return parent::link($label, $url, $htmlOptions);
+	}
+
+	/**
+	 * Generates a menu divider for the navbar.
+	 * @param array $htmlOptions additional HTML attributes.
+	 * @return string the generated divider.
+	 */
+	public static function navbarMenuDivider($htmlOptions = array())
+	{
+		$htmlOptions = self::addClassName('divider-vertical', $htmlOptions);
+		return parent::tag('li', $htmlOptions) . PHP_EOL;
+	}
 
 	// Breadcrumbs
 	// http://twitter.github.com/bootstrap/components.html#breadcrumbs
