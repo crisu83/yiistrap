@@ -1508,6 +1508,46 @@ class TbHtml extends CHtml
 	}
 
 	/**
+	 * Generates a radio button.
+	 * @param string $name the input name
+	 * @param boolean $checked whether the radio button is checked
+	 * @param array $htmlOptions additional HTML attributes. Besides normal HTML attributes, a few special
+	 * attributes are also recognized (see {@link clientChange} {@link getOption} and {@link tag} for more details.)
+	 * Since version 1.1.2, a special option named 'uncheckValue' is available that can be used to specify
+	 * the value returned when the radio button is not checked. When set, a hidden field is rendered so that
+	 * when the radio button is not checked, we can still obtain the posted uncheck value.
+	 * If 'uncheckValue' is not set or set to NULL, the hidden field will not be rendered.
+	 * The following special options are recognized:
+	 * <ul>
+	 * <li>labelOptions: array, specifies the additional HTML attributes to be rendered
+	 * for every label tag in the list.</li>
+	 * </ul>
+	 * @return string the generated radio button
+	 * @see clientChange
+	 * @see inputField
+	 */
+	public static function radioButton($name, $checked = false, $htmlOptions = array())
+	{
+		$label = self::getOption('label', $htmlOptions);
+		$labelOptions = self::popOption('labelOptions', $htmlOptions, array());
+		$radioButton = parent::radioButton($name, $checked, $htmlOptions);
+
+		if ($label)
+		{
+			$labelOptions = self::addClassName('radio', $labelOptions);
+
+			ob_start();
+			echo '<label ' . parent::renderAttributes($labelOptions) . '>';
+			echo $radioButton;
+			echo $label;
+			echo '</label>';
+			return ob_get_clean();
+		}
+
+		return $radioButton;
+	}
+
+	/**
 	 * Generates a check box.
 	 * @param string $name the input name
 	 * @param boolean $checked whether the check box is checked
@@ -1624,46 +1664,6 @@ class TbHtml extends CHtml
 		echo parent::listBox($name, $select, $data, $htmlOptions);
 		echo $help;
 		return ob_get_clean();
-	}
-
-	/**
-	 * Generates a radio button.
-	 * @param string $name the input name
-	 * @param boolean $checked whether the radio button is checked
-	 * @param array $htmlOptions additional HTML attributes. Besides normal HTML attributes, a few special
-	 * attributes are also recognized (see {@link clientChange} {@link getOption} and {@link tag} for more details.)
-	 * Since version 1.1.2, a special option named 'uncheckValue' is available that can be used to specify
-	 * the value returned when the radio button is not checked. When set, a hidden field is rendered so that
-	 * when the radio button is not checked, we can still obtain the posted uncheck value.
-	 * If 'uncheckValue' is not set or set to NULL, the hidden field will not be rendered.
-	 * The following special options are recognized:
-	 * <ul>
-	 * <li>labelOptions: array, specifies the additional HTML attributes to be rendered
-	 * for every label tag in the list.</li>
-	 * </ul>
-	 * @return string the generated radio button
-	 * @see clientChange
-	 * @see inputField
-	 */
-	public static function radioButton($name, $checked = false, $htmlOptions = array())
-	{
-		$label = self::getOption('label', $htmlOptions);
-		$labelOptions = isset($htmlOptions['labelOptions']) ? $htmlOptions['labelOptions'] : array();
-		$radioButton = parent::radioButton($name, $checked, self::removeOptions($htmlOptions, array('label', 'labelOptions')));
-
-		if ($label)
-		{
-			$labelOptions = self::addClassName('radio', $labelOptions);
-
-			ob_start();
-			echo '<label ' . parent::renderAttributes($labelOptions) . '>';
-			echo $radioButton;
-			echo $label;
-			echo '</label>';
-			return ob_get_clean();
-		}
-
-		return $radioButton;
 	}
 
 	/**
@@ -1840,93 +1840,73 @@ EOD;
 	// Active Fields
 
 	/**
-	 * Generates a check box for a model attribute.
-	 * The attribute is assumed to take either true or false value.
-	 * If the attribute has input error, the input field's CSS class will
-	 * be appended with {@link errorCss}.
+	 * Generates a label tag for a model attribute.
+	 * The label text is the attribute label and the label is associated with
+	 * the input for the attribute (see {@link CModel::getAttributeLabel}.
+	 * If the attribute has input error, the label's CSS class will be appended with {@link errorCss}.
 	 * @param CModel $model the data model
 	 * @param string $attribute the attribute
-	 * @param array $htmlOptions additional HTML attributes. Besides normal HTML attributes, a few special
-	 * attributes are also recognized (see {@link clientChange} and {@link tag} for more details.)
-	 * A special option named 'uncheckValue' is available that can be used to specify
-	 * the value returned when the checkbox is not checked. By default, this value is '0'.
-	 * Internally, a hidden field is rendered so that when the checkbox is not checked,
-	 * we can still obtain the posted uncheck value.
-	 * If 'uncheckValue' is set as NULL, the hidden field will not be rendered.
-	 * @return string the generated check box
-	 * @see clientChange
-	 * @see activeInputField
+	 * @param array $htmlOptions additional HTML attributes. The following special options are recognized:
+	 * <ul>
+	 * <li>required: if this is set and is true, the label will be styled
+	 * with CSS class 'required' (customizable with CHtml::$requiredCss),
+	 * and be decorated with {@link CHtml::beforeRequiredLabel} and
+	 * {@link CHtml::afterRequiredLabel}.</li>
+	 * <li>label: this specifies the label to be displayed. If this is not set,
+	 * {@link CModel::getAttributeLabel} will be called to get the label for display.
+	 * If the label is specified as false, no label will be rendered.</li>
+	 * </ul>
+	 * @return string the generated label tag
 	 */
-	public static function activeCheckBox($model, $attribute, $htmlOptions = array())
+	public static function activeLabel($model,$attribute,$htmlOptions=array())
 	{
-		/* todo: is there another way to extract parents hidden input? */
-		self::resolveNameID($model, $attribute, $htmlOptions);
+		$for = self::popOption('for', $htmlOptions, parent::getIdByName(parent::resolveName($model, $attribute)));
+		$label = self::popOption('label', $htmlOptions, $model->getAttributeLabel($attribute));
 
-		$htmlOptions = self::defaultOption('value', 1, $htmlOptions);
-
-		if (!isset($htmlOptions['checked']) && self::resolveValue($model, $attribute) == $htmlOptions['value'])
-			$htmlOptions['checked'] = 'checked';
-		self::clientChange('click', $htmlOptions);
-
-		if (array_key_exists('uncheckValue', $htmlOptions))
-		{
-			$unCheck = $htmlOptions['uncheckValue'];
-			unset($htmlOptions['uncheckValue']);
-		} else
-			$unCheck = '0';
-
-		$hiddenOptions = isset($htmlOptions['id']) ? array('id' => self::ID_PREFIX . $htmlOptions['id']) : array('id' => false);
-		$hidden = $unCheck !== null ? self::hiddenField($htmlOptions['name'], $unCheck, $hiddenOptions) : '';
-
-		$name = parent::resolveName($model, $attribute);
-
-		/* todo: checkbox and radio have different label layout. Test whether this solution works */
-		return $hidden . self::checkBox($name, $unCheck, $htmlOptions);
+		if($model->hasErrors($attribute))
+			self::addErrorCss($htmlOptions);
+		return self::label($label,$for,$htmlOptions);
 	}
 
 	/**
-	 * Generates a radio button for a model attribute.
+	 * Generates a label tag for a model attribute.
+	 * This is an enhanced version of {@link activeLabel}. It will render additional
+	 * CSS class and mark when the attribute is required.
+	 * In particular, it calls {@link CModel::isAttributeRequired} to determine
+	 * if the attribute is required.
+	 * If so, it will add a CSS class {@link CHtml::requiredCss} to the label,
+	 * and decorate the label with {@link CHtml::beforeRequiredLabel} and
+	 * {@link CHtml::afterRequiredLabel}.
+	 * @param CModel $model the data model
+	 * @param string $attribute the attribute
+	 * @param array $htmlOptions additional HTML attributes.
+	 * @return string the generated label tag
+	 */
+	public static function activeLabelEx($model,$attribute,$htmlOptions=array())
+	{
+		$realAttribute=$attribute;
+		self::resolveName($model,$attribute); // strip off square brackets if any
+		$htmlOptions['required']=$model->isAttributeRequired($attribute);
+		return self::activeLabel($model,$realAttribute,$htmlOptions);
+	}
+
+	/**
+	 * Generates a text field input for a model attribute.
 	 * If the attribute has input error, the input field's CSS class will
 	 * be appended with {@link errorCss}.
 	 * @param CModel $model the data model
 	 * @param string $attribute the attribute
 	 * @param array $htmlOptions additional HTML attributes. Besides normal HTML attributes, a few special
 	 * attributes are also recognized (see {@link clientChange} and {@link tag} for more details.)
-	 * A special option named 'uncheckValue' is available that can be used to specify
-	 * the value returned when the radio button is not checked. By default, this value is '0'.
-	 * Internally, a hidden field is rendered so that when the radio button is not checked,
-	 * we can still obtain the posted uncheck value.
-	 * If 'uncheckValue' is set as NULL, the hidden field will not be rendered.
-	 * @return string the generated radio button
+	 * @return string the generated input field
 	 * @see clientChange
 	 * @see activeInputField
 	 */
-	public static function activeRadioButton($model, $attribute, $htmlOptions = array())
+	public static function activeTextField($model,$attribute,$htmlOptions=array())
 	{
-		self::resolveNameID($model, $attribute, $htmlOptions);
-
-		$htmlOptions = self::defaultOption('value', 1, $htmlOptions);
-
-		if (!isset($htmlOptions['checked']) && self::resolveValue($model, $attribute) == $htmlOptions['value'])
-			$htmlOptions['checked'] = 'checked';
-
-		self::clientChange('click', $htmlOptions);
-
-		if (array_key_exists('uncheckValue', $htmlOptions))
-		{
-			$unCheck = $htmlOptions['uncheckValue'];
-			unset($htmlOptions['uncheckValue']);
-		} else
-			$unCheck = '0';
-
-		$hiddenOptions = isset($htmlOptions['id']) ? array('id' => self::ID_PREFIX . $htmlOptions['id']) : array('id' => false);
-		$hidden = $unCheck !== null ? self::hiddenField($htmlOptions['name'], $unCheck, $hiddenOptions) : '';
-
-		$name = parent::resolveName($model, $attribute);
-
-		/* todo: checkbox and radio have different label layout. Test whether this solution works */
-		// add a hidden field so that if the radio button is not selected, it still submits a value
-		return $hidden . self::radioButton($name, $unCheck, $htmlOptions);
+		parent::resolveNameID($model,$attribute,$htmlOptions);
+		parent::clientChange('change',$htmlOptions);
+		return self::activeInputField('text',$model,$attribute,$htmlOptions);
 	}
 
 	/**
@@ -2049,46 +2029,6 @@ EOD;
 	}
 
 	/**
-	 * Generates a file input for a model attribute.
-	 * Note, you have to set the enclosing form's 'enctype' attribute to be 'multipart/form-data'.
-	 * After the form is submitted, the uploaded file information can be obtained via $_FILES (see
-	 * PHP documentation).
-	 * @param CModel $model the data model
-	 * @param string $attribute the attribute
-	 * @param array $htmlOptions additional HTML attributes (see {@link tag}).
-	 * @return string the generated input field
-	 * @see activeInputField
-	 */
-	public static function activeFileField($model,$attribute,$htmlOptions=array())
-	{
-		self::resolveNameID($model,$attribute,$htmlOptions);
-		// add a hidden field so that if a model only has a file field, we can
-		// still use isset($_POST[$modelClass]) to detect if the input is submitted
-		$hiddenOptions=isset($htmlOptions['id']) ? array('id'=>self::ID_PREFIX.$htmlOptions['id']) : array('id'=>false);
-		return self::hiddenField($htmlOptions['name'],'',$hiddenOptions)
-			. self::activeInputField('file',$model,$attribute,$htmlOptions);
-	}
-
-	/**
-	 * Generates a text field input for a model attribute.
-	 * If the attribute has input error, the input field's CSS class will
-	 * be appended with {@link errorCss}.
-	 * @param CModel $model the data model
-	 * @param string $attribute the attribute
-	 * @param array $htmlOptions additional HTML attributes. Besides normal HTML attributes, a few special
-	 * attributes are also recognized (see {@link clientChange} and {@link tag} for more details.)
-	 * @return string the generated input field
-	 * @see clientChange
-	 * @see activeInputField
-	 */
-	public static function activeTextField($model,$attribute,$htmlOptions=array())
-	{
-		parent::resolveNameID($model,$attribute,$htmlOptions);
-		parent::clientChange('change',$htmlOptions);
-		return self::activeInputField('text',$model,$attribute,$htmlOptions);
-	}
-
-	/**
 	 * Generates a text area input for a model attribute.
 	 * If the attribute has input error, the input field's CSS class will
 	 * be appended with {@link errorCss}.
@@ -2115,6 +2055,298 @@ EOD;
 		return ob_get_clean();
 	}
 
+	/**
+	 * Generates a check box for a model attribute.
+	 * The attribute is assumed to take either true or false value.
+	 * If the attribute has input error, the input field's CSS class will
+	 * be appended with {@link errorCss}.
+	 * @param CModel $model the data model
+	 * @param string $attribute the attribute
+	 * @param array $htmlOptions additional HTML attributes. Besides normal HTML attributes, a few special
+	 * attributes are also recognized (see {@link clientChange} and {@link tag} for more details.)
+	 * A special option named 'uncheckValue' is available that can be used to specify
+	 * the value returned when the checkbox is not checked. By default, this value is '0'.
+	 * Internally, a hidden field is rendered so that when the checkbox is not checked,
+	 * we can still obtain the posted uncheck value.
+	 * If 'uncheckValue' is set as NULL, the hidden field will not be rendered.
+	 * @return string the generated check box
+	 * @see clientChange
+	 * @see activeInputField
+	 */
+	public static function activeCheckBox($model, $attribute, $htmlOptions = array())
+	{
+		/* todo: is there another way to extract parents hidden input? */
+		self::resolveNameID($model, $attribute, $htmlOptions);
+
+		$htmlOptions = self::defaultOption('value', 1, $htmlOptions);
+
+		if (!isset($htmlOptions['checked']) && self::resolveValue($model, $attribute) == $htmlOptions['value'])
+			$htmlOptions['checked'] = 'checked';
+		self::clientChange('click', $htmlOptions);
+
+		if (array_key_exists('uncheckValue', $htmlOptions))
+		{
+			$unCheck = $htmlOptions['uncheckValue'];
+			unset($htmlOptions['uncheckValue']);
+		} else
+			$unCheck = '0';
+
+		$hiddenOptions = isset($htmlOptions['id']) ? array('id' => self::ID_PREFIX . $htmlOptions['id']) : array('id' => false);
+		$hidden = $unCheck !== null ? self::hiddenField($htmlOptions['name'], $unCheck, $hiddenOptions) : '';
+
+		$name = parent::resolveName($model, $attribute);
+
+		/* todo: checkbox and radio have different label layout. Test whether this solution works */
+		return $hidden . self::checkBox($name, $unCheck, $htmlOptions);
+	}
+
+	/**
+	 * Generates a radio button for a model attribute.
+	 * If the attribute has input error, the input field's CSS class will
+	 * be appended with {@link errorCss}.
+	 * @param CModel $model the data model
+	 * @param string $attribute the attribute
+	 * @param array $htmlOptions additional HTML attributes. Besides normal HTML attributes, a few special
+	 * attributes are also recognized (see {@link clientChange} and {@link tag} for more details.)
+	 * A special option named 'uncheckValue' is available that can be used to specify
+	 * the value returned when the radio button is not checked. By default, this value is '0'.
+	 * Internally, a hidden field is rendered so that when the radio button is not checked,
+	 * we can still obtain the posted uncheck value.
+	 * If 'uncheckValue' is set as NULL, the hidden field will not be rendered.
+	 * @return string the generated radio button
+	 * @see clientChange
+	 * @see activeInputField
+	 */
+	public static function activeRadioButton($model, $attribute, $htmlOptions = array())
+	{
+		self::resolveNameID($model, $attribute, $htmlOptions);
+
+		$htmlOptions = self::defaultOption('value', 1, $htmlOptions);
+
+		if (!isset($htmlOptions['checked']) && self::resolveValue($model, $attribute) == $htmlOptions['value'])
+			$htmlOptions['checked'] = 'checked';
+
+		self::clientChange('click', $htmlOptions);
+
+		$unCheck = self::popOption('uncheckValue', $htmlOptions, '0');
+
+		$hiddenOptions = isset($htmlOptions['id']) ? array('id' => self::ID_PREFIX . $htmlOptions['id']) : array('id' => false);
+		$hidden = $unCheck !== null ? self::hiddenField($htmlOptions['name'], $unCheck, $hiddenOptions) : '';
+
+		$name = parent::resolveName($model, $attribute);
+
+		/* todo: checkbox and radio have different label layout. Test whether this solution works */
+		// add a hidden field so that if the radio button is not selected, it still submits a value
+		return $hidden . self::radioButton($name, $unCheck, $htmlOptions);
+	}
+
+	/**
+	 * Generates a drop down list for a model attribute.
+	 * If the attribute has input error, the input field's CSS class will
+	 * be appended with {@link errorCss}.
+	 * @param CModel $model the data model
+	 * @param string $attribute the attribute
+	 * @param array $data data for generating the list options (value=>display)
+	 * You may use {@link listData} to generate this data.
+	 * Please refer to {@link listOptions} on how this data is used to generate the list options.
+	 * Note, the values and labels will be automatically HTML-encoded by this method.
+	 * @param array $htmlOptions additional HTML attributes. Besides normal HTML attributes, a few special
+	 * attributes are recognized. See {@link clientChange} and {@link tag} for more details.
+	 * In addition, the following options are also supported:
+	 * <ul>
+	 * <li>encode: boolean, specifies whether to encode the values. Defaults to true.</li>
+	 * <li>prompt: string, specifies the prompt text shown as the first list option. Its value is empty.  Note, the prompt text will NOT be HTML-encoded.</li>
+	 * <li>empty: string, specifies the text corresponding to empty selection. Its value is empty.
+	 * The 'empty' option can also be an array of value-label pairs.
+	 * Each pair will be used to render a list option at the beginning. Note, the text label will NOT be HTML-encoded.</li>
+	 * <li>options: array, specifies additional attributes for each OPTION tag.
+	 *     The array keys must be the option values, and the array values are the extra
+	 *     OPTION tag attributes in the name-value pairs. For example,
+	 * <pre>
+	 *     array(
+	 *         'value1'=>array('disabled'=>true, 'label'=>'value 1'),
+	 *         'value2'=>array('label'=>'value 2'),
+	 *     );
+	 * </pre>
+	 * </li>
+	 * </ul>
+	 * @return string the generated drop down list
+	 * @see clientChange
+	 * @see listData
+	 */
+	public static function activeDropDownList($model,$attribute,$data,$htmlOptions=array())
+	{
+		self::resolveNameID($model,$attribute,$htmlOptions);
+		$selection=self::resolveValue($model,$attribute);
+		$options="\n".self::listOptions($selection,$data,$htmlOptions);
+		self::clientChange('change',$htmlOptions);
+		if($model->hasErrors($attribute))
+			self::addErrorCss($htmlOptions);
+		if(isset($htmlOptions['multiple']))
+		{
+			if(substr($htmlOptions['name'],-2)!=='[]')
+				$htmlOptions['name'].='[]';
+		}
+		$help = self::getHelp($htmlOptions);
+		ob_start();
+		echo self::tag('select',$htmlOptions,$options);
+		echo $help;
+		return ob_get_clean();
+	}
+
+	/**
+	 * Generates a list box for a model attribute.
+	 * The model attribute value is used as the selection.
+	 * If the attribute has input error, the input field's CSS class will
+	 * be appended with {@link errorCss}.
+	 * @param CModel $model the data model
+	 * @param string $attribute the attribute
+	 * @param array $data data for generating the list options (value=>display)
+	 * You may use {@link listData} to generate this data.
+	 * Please refer to {@link listOptions} on how this data is used to generate the list options.
+	 * Note, the values and labels will be automatically HTML-encoded by this method.
+	 * @param array $htmlOptions additional HTML attributes. Besides normal HTML attributes, a few special
+	 * attributes are recognized. See {@link clientChange} and {@link tag} for more details.
+	 * In addition, the following options are also supported:
+	 * <ul>
+	 * <li>encode: boolean, specifies whether to encode the values. Defaults to true.</li>
+	 * <li>prompt: string, specifies the prompt text shown as the first list option. Its value is empty. Note, the prompt text will NOT be HTML-encoded.</li>
+	 * <li>empty: string, specifies the text corresponding to empty selection. Its value is empty.
+	 * The 'empty' option can also be an array of value-label pairs.
+	 * Each pair will be used to render a list option at the beginning. Note, the text label will NOT be HTML-encoded.</li>
+	 * <li>options: array, specifies additional attributes for each OPTION tag.
+	 *     The array keys must be the option values, and the array values are the extra
+	 *     OPTION tag attributes in the name-value pairs. For example,
+	 * <pre>
+	 *     array(
+	 *         'value1'=>array('disabled'=>true, 'label'=>'value 1'),
+	 *         'value2'=>array('label'=>'value 2'),
+	 *     );
+	 * </pre>
+	 * </li>
+	 * </ul>
+	 * @return string the generated list box
+	 * @see clientChange
+	 * @see listData
+	 */
+	public static function activeListBox($model,$attribute,$data,$htmlOptions=array())
+	{
+		$htmlOptions = self::defaultOption('size', 4, $htmlOptions);
+		return self::activeDropDownList($model,$attribute,$data,$htmlOptions);
+	}
+
+	/**
+	 * Generates a file input for a model attribute.
+	 * Note, you have to set the enclosing form's 'enctype' attribute to be 'multipart/form-data'.
+	 * After the form is submitted, the uploaded file information can be obtained via $_FILES (see
+	 * PHP documentation).
+	 * @param CModel $model the data model
+	 * @param string $attribute the attribute
+	 * @param array $htmlOptions additional HTML attributes (see {@link tag}).
+	 * @return string the generated input field
+	 * @see activeInputField
+	 */
+	public static function activeFileField($model,$attribute,$htmlOptions=array())
+	{
+		self::resolveNameID($model,$attribute,$htmlOptions);
+		// add a hidden field so that if a model only has a file field, we can
+		// still use isset($_POST[$modelClass]) to detect if the input is submitted
+		$hiddenOptions=isset($htmlOptions['id']) ? array('id'=>self::ID_PREFIX.$htmlOptions['id']) : array('id'=>false);
+		return self::hiddenField($htmlOptions['name'],'',$hiddenOptions)
+			. self::activeInputField('file',$model,$attribute,$htmlOptions);
+	}
+
+	/**
+	 * Generates a check box list for a model attribute.
+	 * The model attribute value is used as the selection.
+	 * If the attribute has input error, the input field's CSS class will
+	 * be appended with {@link errorCss}.
+	 * Note that a check box list allows multiple selection, like {@link listBox}.
+	 * As a result, the corresponding POST value is an array. In case no selection
+	 * is made, the corresponding POST value is an empty string.
+	 * @param CModel $model the data model
+	 * @param string $attribute the attribute
+	 * @param array $data value-label pairs used to generate the check box list.
+	 * Note, the values will be automatically HTML-encoded, while the labels will not.
+	 * @param array $htmlOptions addtional HTML options. The options will be applied to
+	 * each checkbox input. The following special options are recognized:
+	 * <ul>
+	 * <li>template: string, specifies how each checkbox is rendered. Defaults
+	 * to "{input} {label}", where "{input}" will be replaced by the generated
+	 * check box input tag while "{label}" will be replaced by the corresponding check box label.</li>
+	 * <li>separator: string, specifies the string that separates the generated check boxes.</li>
+	 * <li>checkAll: string, specifies the label for the "check all" checkbox.
+	 * If this option is specified, a 'check all' checkbox will be displayed. Clicking on
+	 * this checkbox will cause all checkboxes checked or unchecked.</li>
+	 * <li>checkAllLast: boolean, specifies whether the 'check all' checkbox should be
+	 * displayed at the end of the checkbox list. If this option is not set (default)
+	 * or is false, the 'check all' checkbox will be displayed at the beginning of
+	 * the checkbox list.</li>
+	 * <li>encode: boolean, specifies whether to encode HTML-encode tag attributes and values. Defaults to true.</li>
+	 * </ul>
+	 * Since 1.1.7, a special option named 'uncheckValue' is available. It can be used to set the value
+	 * that will be returned when the checkbox is not checked. By default, this value is ''.
+	 * Internally, a hidden field is rendered so when the checkbox is not checked, we can still
+	 * obtain the value. If 'uncheckValue' is set to NULL, there will be no hidden field rendered.
+	 * @return string the generated check box list
+	 * @see checkBoxList
+	 */
+	public static function activeInlineCheckBoxList($model,$attribute,$data,$htmlOptions=array())
+	{
+		self::resolveNameID($model,$attribute,$htmlOptions);
+		$selection=self::resolveValue($model,$attribute);
+		if($model->hasErrors($attribute))
+			self::addErrorCss($htmlOptions);
+		$name = self::popOption('name', $htmlOptions);
+
+		$unCheck = self::popOption('uncheckValue', $htmlOptions, '');
+
+		$hiddenOptions=isset($htmlOptions['id']) ? array('id'=>self::ID_PREFIX.$htmlOptions['id']) : array('id'=>false);
+		$hidden=$unCheck!==null ? self::hiddenField($name,$unCheck,$hiddenOptions) : '';
+
+		return $hidden . self::inlineCheckBoxList($name,$selection,$data,$htmlOptions);
+	}
+
+	/**
+	 * Generates a radio button list for a model attribute.
+	 * The model attribute value is used as the selection.
+	 * If the attribute has input error, the input field's CSS class will
+	 * be appended with {@link errorCss}.
+	 * @param CModel $model the data model
+	 * @param string $attribute the attribute
+	 * @param array $data value-label pairs used to generate the radio button list.
+	 * Note, the values will be automatically HTML-encoded, while the labels will not.
+	 * @param array $htmlOptions addtional HTML options. The options will be applied to
+	 * each radio button input. The following special options are recognized:
+	 * <ul>
+	 * <li>template: string, specifies how each radio button is rendered. Defaults
+	 * to "{input} {label}", where "{input}" will be replaced by the generated
+	 * radio button input tag while "{label}" will be replaced by the corresponding radio button label.</li>
+	 * <li>separator: string, specifies the string that separates the generated radio buttons. Defaults to new line (<br/>).</li>
+	 * <li>encode: boolean, specifies whether to encode HTML-encode tag attributes and values. Defaults to true.</li>
+	 * </ul>
+	 * Since version 1.1.7, a special option named 'uncheckValue' is available that can be used to specify the value
+	 * returned when the radio button is not checked. By default, this value is ''. Internally, a hidden field is
+	 * rendered so that when the radio button is not checked, we can still obtain the posted uncheck value.
+	 * If 'uncheckValue' is set as NULL, the hidden field will not be rendered.
+	 * @return string the generated radio button list
+	 * @see radioButtonList
+	 */
+	public static function activeInlineRadioButtonList($model,$attribute,$data,$htmlOptions=array())
+	{
+		self::resolveNameID($model,$attribute,$htmlOptions);
+		$selection=self::resolveValue($model,$attribute);
+		if($model->hasErrors($attribute))
+			self::addErrorCss($htmlOptions);
+		$name = self::popOption('name', $htmlOptions);
+		$unCheck = self::popOption('uncheckValue', $htmlOptions, '');
+
+
+		$hiddenOptions=isset($htmlOptions['id']) ? array('id'=>self::ID_PREFIX.$htmlOptions['id']) : array('id'=>false);
+		$hidden=$unCheck!==null ? self::hiddenField($name,$unCheck,$hiddenOptions) : '';
+
+		return $hidden . self::inlineRadioButtonList($name,$selection,$data,$htmlOptions);
+	}
 	/**
 	 * Generates an input HTML tag for a model attribute.
 	 * This method generates an input HTML tag based on the given data model and attribute.
