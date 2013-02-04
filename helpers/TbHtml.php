@@ -66,15 +66,18 @@ class TbHtml extends CHtml
 	const CLOSE_TEXT = '&times;';
 
 	// Help types.
+	// todo: maybe drop the word 'type'? it's a bit redundant here.
 	const HELP_TYPE_INLINE = 'inline';
 	const HELP_TYPE_BLOCK = 'block';
 
 	// form types
+	// todo: maybe drop the word 'type'? it's a bit redundant here.
 	const FORM_TYPE_INLINE = 'inline';
 	const FORM_TYPE_HORIZONTAL = 'horizontal';
 	const FORM_TYPE_VERTICAL = 'vertical';
 
 	// field types
+	// todo: maybe drop the word 'type'? it's a bit redundant here.
 	const INPUT_TYPE_URL = 'urlField';
 	const INPUT_TYPE_EMAIL = 'emailField';
 	const INPUT_TYPE_NUMBER = 'numberField';
@@ -91,8 +94,8 @@ class TbHtml extends CHtml
 	const INPUT_TYPE_CHECKBOXLIST = 'inlineCheckBoxList';
 	const INPUT_TYPE_RADIOBUTTONLIST = 'inlineRadioButtonList';
 
-
 	// Scope constants.
+	// todo: this could also simply be $types.
 	static $inputTypes = array(self::INPUT_TYPE_CHECKBOX, self::INPUT_TYPE_CHECKBOXLIST, self::INPUT_TYPE_DATE,
 		self::INPUT_TYPE_DROPDOWN, self::INPUT_TYPE_EMAIL, self::INPUT_TYPE_FILE, self::INPUT_TYPE_LISTBOX,
 		self::INPUT_TYPE_NUMBER, self::INPUT_TYPE_PASSWORD, self::INPUT_TYPE_RADIOBUTTON, self::INPUT_TYPE_RANGE,
