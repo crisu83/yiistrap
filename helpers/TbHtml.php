@@ -1468,8 +1468,23 @@ class TbHtml extends CHtml
 	public static function textField($name, $value = '', $htmlOptions = array())
 	{
 		parent::clientChange('change', $htmlOptions);
-
 		return self::inputField('text', $name, $value, $htmlOptions);
+	}
+
+	/**
+	 * Generates a password field input.
+	 * @param string $name the input name
+	 * @param string $value the input value
+	 * @param array $htmlOptions additional HTML attributes. Besides normal HTML attributes, a few special
+	 * attributes are also recognized (see {@link clientChange} and {@link tag} for more details.)
+	 * @return string the generated input field
+	 * @see clientChange
+	 * @see inputField
+	 */
+	public static function passwordField($name,$value='',$htmlOptions=array())
+	{
+		parent::clientChange('change',$htmlOptions);
+		return self::inputField('password',$name,$value,$htmlOptions);
 	}
 
 	/**
@@ -1508,9 +1523,9 @@ class TbHtml extends CHtml
 	 */
 	public static function checkBox($name, $checked = false, $htmlOptions = array())
 	{
-		$label = self::getOption('label', $htmlOptions);
-		$labelOptions = isset($htmlOptions['labelOptions']) ? $htmlOptions['labelOptions'] : array();
-		$checkBox = parent::checkBox($name, $checked, self::removeOptions($htmlOptions, array('label', 'labelOptions')));
+		$label = self::popOption('label', $htmlOptions, '');
+		$labelOptions = sel::popOption('labelOption', $htmlOptions, array());
+		$checkBox = parent::checkBox($name, $checked, $htmlOptions);
 
 		if ($label)
 		{
@@ -1673,8 +1688,7 @@ class TbHtml extends CHtml
 	public static function inlineRadioButtonList($name, $select, $data, $htmlOptions = array())
 	{
 		$separator = " ";
-		$container = isset($htmlOptions['container']) ? $htmlOptions['container'] : null;
-		unset($htmlOptions['separator'], $htmlOptions['container']);
+		$container = self::popOption('container', $htmlOptions);
 
 		$items = array();
 		$baseID = self::getIdByName($name);
@@ -1724,18 +1738,13 @@ class TbHtml extends CHtml
 	public static function inlineCheckBoxList($name, $select, $data, $htmlOptions = array())
 	{
 		$separator = " ";
-		$container = isset($htmlOptions['container']) ? $htmlOptions['container'] : null;
-		unset($htmlOptions['separator'], $htmlOptions['container']);
+		$container = self::popOption('container', $htmlOptions);
 
 		if (substr($name, -2) !== '[]')
 			$name .= '[]';
 
-		if (isset($htmlOptions['checkAll']))
-		{
-			$checkAllLabel = $htmlOptions['checkAll'];
-			$checkAllLast = isset($htmlOptions['checkAllLast']) && $htmlOptions['checkAllLast'];
-		}
-		unset($htmlOptions['checkAll'], $htmlOptions['checkAllLast']);
+		$checkAllLabel = self::popOption('checkAll', $htmlOptions);
+		$checkAllLast = self::popOption('checkAllLast', $htmlOptions);
 
 		$labelOptions = self::popOption('labelOptions', $htmlOptions, array());
 
