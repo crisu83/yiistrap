@@ -211,7 +211,6 @@ class TbHtml extends CHtml
 	 * @param string $code the code.
 	 * @param array $htmlOptions additional HTML attributes.
 	 * @return string the generated snippet.
-	 * http://twitter.github.com/bootstrap/base-css.html#code
 	 */
 	public static function code($code, $htmlOptions = array())
 	{
@@ -223,7 +222,6 @@ class TbHtml extends CHtml
 	 * @param string $code the code.
 	 * @param array $htmlOptions additional HTML attributes.
 	 * @return string the generated block.
-	 * http://twitter.github.com/bootstrap/base-css.html#code
 	 */
 	public static function codeBlock($code, $htmlOptions = array())
 	{
@@ -251,7 +249,6 @@ class TbHtml extends CHtml
 	 * @param string $label the button label text.
 	 * @param array $htmlOptions additional HTML attributes.
 	 * @return string the generated button.
-	 * @see http://twitter.github.com/bootstrap/base-css.html#buttons
 	 */
 	public static function button($label, $htmlOptions = array())
 	{
@@ -263,7 +260,6 @@ class TbHtml extends CHtml
 	 * @param string $label the button label text.
 	 * @param array $htmlOptions the HTML attributes for the button.
 	 * @return string the generated button.
-	 * @see http://twitter.github.com/bootstrap/base-css.html#buttons
 	 */
 	public static function linkButton($label, $htmlOptions = array())
 	{
@@ -276,7 +272,6 @@ class TbHtml extends CHtml
 	 * @param string $label the button label text.
 	 * @param array $htmlOptions additional HTML attributes.
 	 * @return string the generated button.
-	 * @see http://twitter.github.com/bootstrap/base-css.html#buttons
 	 */
 	public static function btn($tag, $label, $htmlOptions = array())
 	{
@@ -313,7 +308,6 @@ class TbHtml extends CHtml
 	 * @param string $alt the alternative text display.
 	 * @param array $htmlOptions additional HTML attributes.
 	 * @return string the generated image tag.
-	 * @see http://twitter.github.com/bootstrap/base-css.html#images
 	 */
 	public static function imageRounded($src, $alt = '', $htmlOptions = array())
 	{
@@ -327,7 +321,6 @@ class TbHtml extends CHtml
 	 * @param string $alt the alternative text display.
 	 * @param array $htmlOptions additional HTML attributes.
 	 * @return string the generated image tag.
-	 * @see http://twitter.github.com/bootstrap/base-css.html#images
 	 */
 	public static function imageCircle($src, $alt = '', $htmlOptions = array())
 	{
@@ -340,11 +333,33 @@ class TbHtml extends CHtml
 	 * @param string $alt the alternative text display.
 	 * @param array $htmlOptions additional HTML attributes.
 	 * @return string the generated image tag.
-	 * @see http://twitter.github.com/bootstrap/base-css.html#images
 	 */
 	public static function imagePolaroid($src, $alt = '', $htmlOptions = array())
 	{
 		return parent::image($src, $alt, self::addClassName('img-polaroid', $htmlOptions));
+	}
+
+	// Icons by Glyphicons
+	// http://twitter.github.com/bootstrap/base-css.html#icons
+	// --------------------------------------------------
+
+	/**
+	 * Generates an icon.
+	 * @param string $icon the icon type.
+	 * @param array $htmlOptions additional HTML attributes.
+	 * @param string $tagName the icon HTML tag.
+	 * @return string the generated icon.
+	 */
+	public static function icon($icon, $htmlOptions = array(), $tagName = 'i')
+	{
+		if (is_string($icon))
+		{
+			if (strpos($icon, 'icon') === false)
+				$icon = 'icon-' . implode(' icon-', explode(' ', $icon));
+			$htmlOptions = self::addClassName($icon, $htmlOptions);
+			return parent::openTag($tagName, $htmlOptions) . parent::closeTag($tagName); // tag won't work in this case
+		}
+		return '';
 	}
 
 	//
@@ -380,7 +395,6 @@ class TbHtml extends CHtml
 	 * @param string $label the link label text.
 	 * @param array $htmlOptions additional HTML attributes.
 	 * @return string the generated link.
-	 * http://twitter.github.com/bootstrap/components.html#buttonDropdowns
 	 */
 	public static function dropdownToggleLink($label, $htmlOptions = array())
 	{
@@ -392,7 +406,6 @@ class TbHtml extends CHtml
 	 * @param string $label the button label text.
 	 * @param array $htmlOptions additional HTML attributes.
 	 * @return string the generated button.
-	 * http://twitter.github.com/bootstrap/components.html#buttonDropdowns
 	 */
 	public static function dropdownToggleButton($label = '', $htmlOptions = array())
 	{
@@ -405,7 +418,6 @@ class TbHtml extends CHtml
 	 * @param string $label the element text.
 	 * @param array $htmlOptions additional HTML attributes.
 	 * @return string the generated element.
-	 * http://twitter.github.com/bootstrap/components.html#dropdowns
 	 */
 	public static function dropdownToggle($tag, $label, $htmlOptions)
 	{
@@ -420,7 +432,6 @@ class TbHtml extends CHtml
 	 * @param string $label the menu item text.
 	 * @param array $htmlOptions additional HTML attributes.
 	 * @return string the generated menu item.
-	 * http://twitter.github.com/bootstrap/components.html#dropdowns
 	 */
 	public static function dropdownToggleMenuLink($label, $htmlOptions = array())
 	{
@@ -438,7 +449,7 @@ class TbHtml extends CHtml
 	 * Generates a button group.
 	 * @param array $buttons the button configurations.
 	 * @param array $htmlOptions additional HTML options. The following special options are recognized:
-	 * todo: write the options
+	 * @todo write the options
 	 * @return string the generated button group.
 	 */
 	public static function buttonGroup($buttons, $htmlOptions = array())
@@ -477,7 +488,7 @@ class TbHtml extends CHtml
 	 * Generates a button toolbar.
 	 * @param array $groups the button group configurations.
 	 * @param array $htmlOptions additional HTML options. The following special options are recognized:
-	 * todo: write the options
+	 * @todo write the options
 	 * @return string the generated button toolbar.
 	 */
 	public static function buttonToolbar($groups, $htmlOptions = array())
@@ -728,7 +739,6 @@ class TbHtml extends CHtml
 	 * @param array $links the pagination buttons.
 	 * @param array $htmlOptions additional HTML attributes.
 	 * @return string the generated pagination.
-	 * @see http://twitter.github.com/bootstrap/components.html#pagination
 	 */
 	public static function pagination($links, $htmlOptions = array())
 	{
@@ -795,7 +805,6 @@ class TbHtml extends CHtml
 	 * @param array $links the pager buttons.
 	 * @param array $htmlOptions additional HTML attributes.
 	 * @return string the generated pager.
-	 * @see http://twitter.github.com/bootstrap/components.html#pagination
 	 */
 	public static function pager($links, $htmlOptions = array())
 	{
@@ -857,7 +866,6 @@ class TbHtml extends CHtml
 	 * @param string $label the label text.
 	 * @param array $htmlOptions additional HTML attributes.
 	 * @return string the generated span.
-	 * @see http://twitter.github.com/bootstrap/components.html#labels-badges
 	 */
 	public static function labelSpan($label, $htmlOptions = array())
 	{
@@ -869,7 +877,6 @@ class TbHtml extends CHtml
 	 * @param string $label the badge text.
 	 * @param array $htmlOptions additional HTML attributes.
 	 * @return string the generated span.
-	 * @see http://twitter.github.com/bootstrap/components.html#labels-badges
 	 *
 	 */
 	public static function badgeSpan($label, $htmlOptions = array())
@@ -883,7 +890,6 @@ class TbHtml extends CHtml
 	 * @param string $label the label text.
 	 * @param array $htmlOptions additional HTML attributes.
 	 * @return string the generated span.
-	 * @see http://twitter.github.com/bootstrap/components.html#labels-badges
 	 */
 	public static function labelBadgeSpan($type, $label, $htmlOptions = array())
 	{
@@ -957,7 +963,6 @@ class TbHtml extends CHtml
 	 * Defaults to `true`.</li>
 	 * <li>closeText: string, the text to use as closing button. If none specified, no close button will be shown.</li>
 	 * </ul>
-	 * @see http://twitter.github.com/bootstrap/components.html#alerts
 	 */
 	public static function alert($style, $message, $htmlOptions = array())
 	{
@@ -1111,7 +1116,6 @@ class TbHtml extends CHtml
 	 * @param string $content the well content.
 	 * @param array $htmlOptions additional HTML attributes.
 	 * @return string the generated well.
-	 * @see http://twitter.github.com/bootstrap/components.html#misc
 	 */
 	public static function well($content, $htmlOptions = array())
 	{
@@ -1128,7 +1132,6 @@ class TbHtml extends CHtml
 	 * @param string $label the link label text.
 	 * @param array $htmlOptions additional HTML attributes.
 	 * @return string the generated link.
-	 * @see http://twitter.github.com/bootstrap/components.html#misc
 	 */
 	public static function closeLink($label = self::CLOSE_TEXT, $htmlOptions = array())
 	{
@@ -1141,7 +1144,6 @@ class TbHtml extends CHtml
 	 * @param string $label the button label text.
 	 * @param array $htmlOptions the HTML options for the button.
 	 * @return string the generated button.
-	 * @see http://twitter.github.com/bootstrap/components.html#misc
 	 */
 	public static function closeButton($label = self::CLOSE_TEXT, $htmlOptions = array())
 	{
@@ -1153,9 +1155,8 @@ class TbHtml extends CHtml
 	 * @param string $label the element label text.
 	 * @param array $htmlOptions additional HTML attributes.
 	 * @return string the generated element.
-	 * @see http://twitter.github.com/bootstrap/components.html#misc
 	 */
-	public static function closeIcon($tag = 'a', $label, $htmlOptions = array())
+	public static function closeIcon($tag, $label, $htmlOptions = array())
 	{
 		$htmlOptions = self::addClassName('close', $htmlOptions);
 		$htmlOptions = self::defaultOption('data-dismiss', 'alert', $htmlOptions);
@@ -1180,26 +1181,6 @@ class TbHtml extends CHtml
 		echo '<span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span>';
 		echo '</a>';
 		return ob_get_clean();
-	}
-
-	/**
-	 * Generates a Glyph icon.
-	 * @param string $icon the icon type.
-	 * @param array $htmlOptions additional HTML attributes.
-	 * @param string $tag the icon tag.
-	 * @return string the generated icon.
-	 * @see http://twitter.github.com/bootstrap/base-css.html#icons
-	 */
-	public static function icon($icon, $htmlOptions = array(), $tag = 'i')
-	{
-		if (is_string($icon))
-		{
-			if (strpos($icon, 'icon') === false)
-				$icon = 'icon-' . implode(' icon-', explode(' ', $icon));
-			$htmlOptions = self::addClassName($icon, $htmlOptions);
-			return parent::openTag($tag, $htmlOptions) . parent::closeTag($tag); // tag won't work in this case
-		}
-		return '';
 	}
 
 	//

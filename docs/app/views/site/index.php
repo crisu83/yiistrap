@@ -80,7 +80,7 @@ $this->pageTitle=Yii::app()->name;
 				array('label'=>'1'),
 				array('label'=>'2'),
 				array('label'=>'3'),
-				array('label'=>'4'),
+				array('label'=>'4','htmlOptions'=>array('style'=>'danger')),
 			),'htmlOptions'=>array('style'=>'warning')),
 			array('items'=>array(
 				array('label'=>'5'),
@@ -181,21 +181,21 @@ $this->pageTitle=Yii::app()->name;
 	<h5>Nav tabs</h5>
 
 	<div style="margin-bottom: 20px;">
-		<?php $this->widget('bootstrap.widgets.TbNav', array('style'=>'tabs','items'=>$navItems)); ?>
+		<?php $this->widget('bootstrap.widgets.TbNav',array('style'=>'tabs','items'=>$navItems)); ?>
 	</div>
 
 	<div style="margin-bottom: 20px;">
-		<?php $this->widget('bootstrap.widgets.TbNav', array('style'=>'tabs','stacked'=>true,'items'=>$navItems)); ?>
+		<?php $this->widget('bootstrap.widgets.TbNav',array('style'=>'tabs','stacked'=>true,'items'=>$navItems)); ?>
 	</div>
 
 	<h5>Nav pills</h5>
 
 	<div style="margin-bottom: 20px;">
-		<?php $this->widget('bootstrap.widgets.TbNav', array('style'=>'pills','items'=>$navItems)); ?>
+		<?php $this->widget('bootstrap.widgets.TbNav',array('style'=>'pills','items'=>$navItems)); ?>
 	</div>
 
 	<div style="margin-bottom: 20px;">
-		<?php $this->widget('bootstrap.widgets.TbNav', array('style'=>'pills','stacked'=>true,'items'=>$navItems)); ?>
+		<?php $this->widget('bootstrap.widgets.TbNav',array('style'=>'pills','stacked'=>true,'items'=>$navItems)); ?>
 	</div>
 
 	<h5>Nav list</h5>
@@ -298,20 +298,6 @@ $this->pageTitle=Yii::app()->name;
 		array('label'=>'Older &larr;','previous'=>true,'disabled'=>true),
 		array('label'=>'Newer &rarr;','next'=>true),
 	)); ?>
-
-	<h5>Widget</h5>
-
-	<?php
-	$rawData=array();
-	for($i=0;$i<800;$i++)
-		$rawData[]=array('id'=>$i+1);
-	$dp=new CArrayDataProvider($rawData);
-	$this->widget('bootstrap.widgets.TbListView',array(
-		'dataProvider'=>$dp,
-		'template'=>"{pager}",
-		'itemView'=>'_empty',
-	));
-	?>
 
 </div>
 
