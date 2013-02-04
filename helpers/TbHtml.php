@@ -74,7 +74,29 @@ class TbHtml extends CHtml
 	const FORM_TYPE_HORIZONTAL = 'horizontal';
 	const FORM_TYPE_VERTICAL = 'vertical';
 
+	// field types
+	const INPUT_TYPE_URL = 'urlField';
+	const INPUT_TYPE_EMAIL = 'emailField';
+	const INPUT_TYPE_NUMBER = 'numberField';
+	const INPUT_TYPE_RANGE = 'rangeField';
+	const INPUT_TYPE_DATE = 'dateField';
+	const INPUT_TYPE_TEXT = 'textField';
+	const INPUT_TYPE_PASSWORD = 'passwordField';
+	const INPUT_TYPE_TEXTAREA = 'textArea';
+	const INPUT_TYPE_FILE = 'fileField';
+	const INPUT_TYPE_RADIOBUTTON = 'radioButton';
+	const INPUT_TYPE_CHECKBOX = 'checkBox';
+	const INPUT_TYPE_DROPDOWN = 'dropDownList';
+	const INPUT_TYPE_LISTBOX = 'listBox';
+	const INPUT_TYPE_CHECKBOXLIST = 'inlineCheckBoxList';
+	const INPUT_TYPE_RADIOBUTTONLIST = 'inlineRadioButtonList';
+
+
 	// Scope constants.
+	static $inputTypes = array(self::INPUT_TYPE_CHECKBOX, self::INPUT_TYPE_CHECKBOXLIST, self::INPUT_TYPE_DATE,
+		self::INPUT_TYPE_DROPDOWN, self::INPUT_TYPE_EMAIL, self::INPUT_TYPE_FILE, self::INPUT_TYPE_LISTBOX,
+		self::INPUT_TYPE_NUMBER, self::INPUT_TYPE_PASSWORD, self::INPUT_TYPE_RADIOBUTTON, self::INPUT_TYPE_RANGE,
+		self::INPUT_TYPE_TEXT, self::INPUT_TYPE_TEXTAREA, self::INPUT_TYPE_URL);
 	static $sizes = array(self::SIZE_LARGE, self::SIZE_SMALL, self::SIZE_MINI);
 	static $textStyles = array(self::STYLE_ERROR, self::STYLE_INFO, self::STYLE_SUCCESS, self::STYLE_WARNING);
 	static $buttonStyles = array(
