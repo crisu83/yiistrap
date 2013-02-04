@@ -307,23 +307,23 @@ $this->pageTitle=Yii::app()->name;
 	<h5>Labels</h5>
 
 	<div style="margin-bottom: 10px;">
-		<?php echo TbHtml::labelSpan('Default'); ?>
-		<?php echo TbHtml::labelSpan('Success',array('style'=>'success')); ?>
-		<?php echo TbHtml::labelSpan('Warning',array('style'=>'warning')); ?>
-		<?php echo TbHtml::labelSpan('Important',array('style'=>'important')); ?>
-		<?php echo TbHtml::labelSpan('Info',array('style'=>'info')); ?>
-		<?php echo TbHtml::labelSpan('Inverse',array('style'=>'inverse')); ?>
+		<?php echo TbHtml::labelTb('Default'); ?>
+		<?php echo TbHtml::labelTb('Success',array('style'=>'success')); ?>
+		<?php echo TbHtml::labelTb('Warning',array('style'=>'warning')); ?>
+		<?php echo TbHtml::labelTb('Important',array('style'=>'important')); ?>
+		<?php echo TbHtml::labelTb('Info',array('style'=>'info')); ?>
+		<?php echo TbHtml::labelTb('Inverse',array('style'=>'inverse')); ?>
 	</div>
 
 	<h5>Badges</h5>
 
 	<div style="margin-bottom: 10px;">
-		<?php echo TbHtml::badgeSpan('1'); ?>
-		<?php echo TbHtml::badgeSpan('2',array('style'=>'success')); ?>
-		<?php echo TbHtml::badgeSpan('4',array('style'=>'warning')); ?>
-		<?php echo TbHtml::badgeSpan('6',array('style'=>'important')); ?>
-		<?php echo TbHtml::badgeSpan('8',array('style'=>'info')); ?>
-		<?php echo TbHtml::badgeSpan('10',array('style'=>'inverse')); ?>
+		<?php echo TbHtml::badge('1'); ?>
+		<?php echo TbHtml::badge('2',array('style'=>'success')); ?>
+		<?php echo TbHtml::badge('4',array('style'=>'warning')); ?>
+		<?php echo TbHtml::badge('6',array('style'=>'important')); ?>
+		<?php echo TbHtml::badge('8',array('style'=>'info')); ?>
+		<?php echo TbHtml::badge('10',array('style'=>'inverse')); ?>
 	</div>
 </div>
 

@@ -2013,9 +2013,9 @@ EOD;
 	 * @param array $htmlOptions additional HTML attributes.
 	 * @return string the generated span.
 	 */
-	public static function labelSpan($label, $htmlOptions = array())
+	public static function labelTb($label, $htmlOptions = array())
 	{
-		return self::labelBadgeSpan('label', $label, $htmlOptions);
+		return self::labelBadge('label', $label, $htmlOptions);
 	}
 
 	/**
@@ -2025,9 +2025,9 @@ EOD;
 	 * @return string the generated span.
 	 *
 	 */
-	public static function badgeSpan($label, $htmlOptions = array())
+	public static function badge($label, $htmlOptions = array())
 	{
-		return self::labelBadgeSpan('badge', $label, $htmlOptions);
+		return self::labelBadge('badge', $label, $htmlOptions);
 	}
 
 	/**
@@ -2037,7 +2037,7 @@ EOD;
 	 * @param array $htmlOptions additional HTML attributes.
 	 * @return string the generated span.
 	 */
-	public static function labelBadgeSpan($type, $label, $htmlOptions = array())
+	public static function labelBadge($type, $label, $htmlOptions = array())
 	{
 		$htmlOptions = self::addClassName($type, $htmlOptions);
 		$style = self::popOption('style', $htmlOptions);
@@ -2062,10 +2062,10 @@ EOD;
 		$htmlOptions = self::addClassName('hero-unit', $htmlOptions);
 		$headingOptions = self::popOption('headingOptions', $htmlOptions, array());
 		ob_start();
-		echo parent::tag('div', $htmlOptions);
-		echo parent::tag('h1', $headingOptions, $heading);
+		echo parent::tag('div', $htmlOptions) . PHP_EOL;
+		echo parent::tag('h1', $headingOptions, $heading) . PHP_EOL;
 		echo $content;
-		echo '</div>';
+		echo '</div>' . PHP_EOL;
 		return ob_get_clean();
 	}
 
@@ -2082,10 +2082,11 @@ EOD;
 		$headerOptions = self::popOption('headerOptions', $htmlOptions, array());
 		$subtextOptions = self::popOption('subtextOptions', $htmlOptions, array());
 		ob_start();
-		echo parent::openTag('div', $htmlOptions);
+		echo parent::openTag('div', $htmlOptions) . PHP_EOL;
 		echo parent::openTag('h1', $headerOptions);
 		echo parent::encode($heading) . ' ' . parent::tag('small', $subtextOptions, $subtext);
-		echo '</h1></div>';
+		echo '</h1>' . PHP_EOL;
+		echo '</div>' . PHP_EOL;
 		return ob_get_clean();
 	}
 
