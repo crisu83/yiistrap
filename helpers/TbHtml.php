@@ -920,7 +920,8 @@ EOD;
 		$hidden = $unCheck !== null ? self::hiddenField($htmlOptions['name'], $unCheck, $hiddenOptions) : '';
 
 		$name = parent::resolveName($model, $attribute);
-		var_dump($htmlOptions);
+		$htmlOptions = self::defaultOption('label', $model->getAttributeLabel($attribute), $htmlOptions);
+
 		/* todo: checkbox and radio have different label layout. Test whether this solution works */
 		return $hidden . self::checkBox($name, $unCheck, $htmlOptions);
 	}

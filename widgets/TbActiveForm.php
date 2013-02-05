@@ -460,10 +460,6 @@ class TbActiveForm extends CActiveForm
 
 		$labelOptions = TbHtml::defaultOption('formType', $this->type, $labelOptions);
 
-		$params = in_array($type, TbHtml::$dataInputs)
-			? array($model, $attribute, $data, $htmlOptions)
-			: array($model, $attribute, $htmlOptions);
-
 		ob_start();
 
 		if ($this->type == TbHtml::FORM_HORIZONTAL)
@@ -475,6 +471,12 @@ class TbActiveForm extends CActiveForm
 		// form's inline do not render labels and radio|checkbox input types render label's differently
 		if ($this->type != TbHtml::FORM_INLINE && !preg_match('/radio|checkbox/i',$type))
 			echo TbHtml::activeLabel($model, $attribute, $labelOptions);
+		elseif (preg_match('/radio|checkbox/i', $type))
+			$htmlOptions['labelOptions'] = $labelOptions;
+
+		$params = in_array($type, TbHtml::$dataInputs)
+			? array($model, $attribute, $data, $htmlOptions)
+			: array($model, $attribute, $htmlOptions);
 
 		echo $this->wrapControl(call_user_func_array('TbHtml::active' . ucfirst($type), $params)); /* since PHP 5.3 */
 
