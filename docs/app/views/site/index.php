@@ -580,7 +580,11 @@ $this->pageTitle = Yii::app()->name;
 
 	<?php echo $form->row(TbHtml::INPUT_CHECKBOX, $model, 'checkbox');?>
 
-	<?php echo $form->row(TbHtml::INPUT_RADIOBUTTON, $model, 'checkbox');?>
+	<?php echo $form->row(TbHtml::INPUT_RADIOBUTTON, $model, 'radioButton');?>
+
+	<?php echo $form->row(TbHtml::INPUT_RADIOBUTTONLIST, $model, 'radioButton',array(), array('papa' => 'Superman', '4' => 'test'));?>
+
+	<?php echo $form->row(TbHtml::INPUT_CHECKBOXLIST, $model, 'radioButton', array('checkAll' => 'All'), array('papa' => 'Superman', '4' => 'test'));?>
 
 	<?php $this->endWidget();?>
 </div>
