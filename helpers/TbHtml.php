@@ -1188,6 +1188,9 @@ EOD;
 	 */
 	protected static function activeInputField($type, $model, $attribute, $htmlOptions)
 	{
+		if (self::popOption('block', $htmlOptions, false))
+			$htmlOptions = self::addClassName('input-block-level', $htmlOptions);
+
 		$inputOptions = self::removeOptions($htmlOptions, array('append', 'prepend'));
 		$addOnClasses = self::getAddOnClasses($htmlOptions);
 		$help = self::getHelp($htmlOptions);
