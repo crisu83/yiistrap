@@ -456,7 +456,7 @@ class TbActiveForm extends CActiveForm
 
 		$labelOptions = TbHtml::popOption('labelOptions', $htmlOptions, array());
 		$errorOptions = TbHtml::popOption('errorOptions', $htmlOptions, array());
-		$containerOptions = TbHtml::addClassName('control-group', TbHtml::popOption('containerOptions', $htmlOptions, array()));
+		$containerOptions = TbHtml::popOption('containerOptions', $htmlOptions, array());
 
 		$labelOptions = TbHtml::defaultOption('formType', $this->type, $labelOptions);
 
@@ -469,7 +469,7 @@ class TbActiveForm extends CActiveForm
 		if ($this->type == TbHtml::FORM_HORIZONTAL)
 		{
 			// make sure it holds the class control-label
-			echo CHtml::openTag('div', $containerOptions);
+			echo CHtml::openTag('div', TbHtml::addClassName('control-group', $containerOptions));
 		}
 
 		// form's inline do not render labels and radio|checkbox input types render label's differently
