@@ -960,6 +960,7 @@ EOD;
 		$hidden = $unCheck !== null ? self::hiddenField($htmlOptions['name'], $unCheck, $hiddenOptions) : '';
 
 		$name = parent::resolveName($model, $attribute);
+		$htmlOptions = self::defaultOption('label', $model->getAttributeLabel($attribute), $htmlOptions);
 
 		/* todo: checkbox and radio have different label layout. Test whether this solution works */
 		// add a hidden field so that if the radio button is not selected, it still submits a value

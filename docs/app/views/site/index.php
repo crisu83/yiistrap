@@ -570,5 +570,7 @@ $this->pageTitle = Yii::app()->name;
 
 	<?php echo $form->row(TbHtml::INPUT_CHECKBOX, $model, 'checkbox');?>
 
+	<?php echo $form->row(TbHtml::INPUT_RADIOBUTTON, $model, 'checkbox');?>
+
 	<?php $this->endWidget();?>
 </div>
