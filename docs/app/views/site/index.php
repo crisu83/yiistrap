@@ -535,10 +535,10 @@ $this->pageTitle = Yii::app()->name;
 
 	<h5>Input types</h5>
 
-	<strong>Text Fields</strong>
+	<p><strong>Text Fields</strong></p>
 	<?php echo TbHtml::textField('test', '', array('placeholder'=>'Test'));?>
 
-	<strong>prepend - append</strong>
+	<p><strong>prepend - append</strong></p>
 	<?php
 	echo TbHtml::textField('manolo','test', array(
 		'prepend'=>'$',
@@ -550,4 +550,25 @@ $this->pageTitle = Yii::app()->name;
 		'append'=> TbHtml::button('Another test')
 	));
 ?>
+	<p><strong>password</strong></p>
+	<?php
+	echo TbHtml::passwordField('password', '', array('placeholder'=>'password'));
+?>
+	<h5>Active Forms</h5>
+	<?php /* @var $form TbActiveForm */ ?>
+	<?php $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
+	'type' => TbHtml::FORM_HORIZONTAL
+));?>
+	<strong>Using regular</strong>
+	<div class="control-group">
+	<?php echo $form->label($model, 'textField');?>
+	<?php echo $form->textField($model, 'textField');?>
+	<?php echo $form->error($model, 'textField');?>
+    </div>
+	<strong>Using Row</strong>
+	<?php echo $form->row(TbHtml::INPUT_TEXT, $model, 'textField');?>
+
+	<?php echo $form->row(TbHtml::INPUT_CHECKBOX, $model, 'checkbox');?>
+
+	<?php $this->endWidget();?>
 </div>

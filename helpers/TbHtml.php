@@ -97,7 +97,7 @@ class TbHtml extends CHtml
 		self::INPUT_NUMBER, self::INPUT_PASSWORD, self::INPUT_RADIOBUTTON, self::INPUT_RANGE,
 		self::INPUT_TEXT, self::INPUT_TEXTAREA, self::INPUT_URL, self::INPUT_RADIOBUTTONLIST);
 	static $dataInputs = array(self::INPUT_CHECKBOXLIST, self::INPUT_DROPDOWN, self::INPUT_LISTBOX,
-		self::INPUT_NUMBER, self::INPUT_RADIOBUTTONLIST); // Which one requires
+		self::INPUT_RADIOBUTTONLIST); // Which one requires data
 	static $sizes = array(self::SIZE_LARGE, self::SIZE_SMALL, self::SIZE_MINI);
 	static $textStyles = array(self::STYLE_ERROR, self::STYLE_INFO, self::STYLE_SUCCESS, self::STYLE_WARNING);
 	static $buttonStyles = array(
@@ -394,7 +394,7 @@ class TbHtml extends CHtml
 	public static function checkBox($name, $checked = false, $htmlOptions = array())
 	{
 		$label = self::popOption('label', $htmlOptions, '');
-		$labelOptions = sel::popOption('labelOption', $htmlOptions, array());
+		$labelOptions = self::popOption('labelOptions', $htmlOptions, array());
 		$checkBox = parent::checkBox($name, $checked, $htmlOptions);
 
 		if ($label)
@@ -914,18 +914,13 @@ EOD;
 			$htmlOptions['checked'] = 'checked';
 		self::clientChange('click', $htmlOptions);
 
-		if (array_key_exists('uncheckValue', $htmlOptions))
-		{
-			$unCheck = $htmlOptions['uncheckValue'];
-			unset($htmlOptions['uncheckValue']);
-		} else
-			$unCheck = '0';
+		$unCheck = self::popOption('unCheckValue', $htmlOptions, '0');
 
 		$hiddenOptions = isset($htmlOptions['id']) ? array('id' => self::ID_PREFIX . $htmlOptions['id']) : array('id' => false);
 		$hidden = $unCheck !== null ? self::hiddenField($htmlOptions['name'], $unCheck, $hiddenOptions) : '';
 
 		$name = parent::resolveName($model, $attribute);
-
+		var_dump($htmlOptions);
 		/* todo: checkbox and radio have different label layout. Test whether this solution works */
 		return $hidden . self::checkBox($name, $unCheck, $htmlOptions);
 	}

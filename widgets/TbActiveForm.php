@@ -451,11 +451,14 @@ class TbActiveForm extends CActiveForm
 	 */
 	public function row($type, $model, $attribute, $htmlOptions = array(), $data = array())
 	{
-		if (!in_array($type, TbHtml::$inputTypes))
+		if (!in_array($type, TbHtml::$inputs))
 			throw new CException(Yii::t('tb', 'Unrecognized input type'));
 
 		$labelOptions = TbHtml::popOption('labelOptions', $htmlOptions, array());
 		$errorOptions = TbHtml::popOption('errorOptions', $htmlOptions, array());
+		$containerOptions = TbHtml::addClassName('control-group', TbHtml::popOption('containerOptions', $htmlOptions, array()));
+
+		$labelOptions = TbHtml::defaultOption('formType', $this->type, $labelOptions);
 
 		$params = in_array($type, TbHtml::$dataInputs)
 			? array($model, $attribute, $data, $htmlOptions)
@@ -466,8 +469,7 @@ class TbActiveForm extends CActiveForm
 		if ($this->type == TbHtml::FORM_HORIZONTAL)
 		{
 			// make sure it holds the class control-label
-			$labelOptions = TbHtml::defaultOption('formType', TbHtml::FORM_HORIZONTAL, $labelOptions);
-			echo CHtml::openTag('div', array('class' => 'control-group ' . $this->getContainerCssClass()));
+			echo CHtml::openTag('div', $containerOptions);
 		}
 
 		// form's inline do not render labels and radio|checkbox input types render label's differently
@@ -476,10 +478,10 @@ class TbActiveForm extends CActiveForm
 
 		echo $this->wrapControl(call_user_func_array('TbHtml::active' . ucfirst($type), $params)); /* since PHP 5.3 */
 
-		if ($type->type != TbHtml::FORM_INLINE)
+		if ($this->type != TbHtml::FORM_INLINE)
 			echo TbHtml::error($model, $attribute, $errorOptions);
 
-		if ($type->type == TbHtml::FORM_HORIZONTAL)
+		if ($this->type == TbHtml::FORM_HORIZONTAL)
 			echo '</div>';
 
 		return ob_get_clean();
