@@ -1392,7 +1392,53 @@ EOD;
 	 */
 	public static function button($label = 'button', $htmlOptions = array())
 	{
+		if (!isset($htmlOptions['name']))
+			$htmlOptions['name'] = CHtml::ID_PREFIX . CHtml::$count++;
+		self::clientChange('click',$htmlOptions);
 		return self::btn('button', $label, $htmlOptions);
+	}
+
+	/**
+	 * Generates a submit button.
+	 * @param string $label the button label
+	 * @param array $htmlOptions additional HTML attributes. Besides normal HTML attributes, a few special
+	 * attributes are also recognized (see {@link clientChange} and {@link tag} for more details.)
+	 * @return string the generated button tag
+	 * @see clientChange
+	 */
+	public static function submitButton($label = 'submit', $htmlOptions = array())
+	{
+		$htmlOptions['type'] = 'submit';
+		return self::button($label, $htmlOptions);
+	}
+
+	/**
+	 * Generates a reset button.
+	 * @param string $label the button label
+	 * @param array $htmlOptions additional HTML attributes. Besides normal HTML attributes, a few special
+	 * attributes are also recognized (see {@link clientChange} and {@link tag} for more details.)
+	 * @return string the generated button tag
+	 * @see clientChange
+	 */
+	public static function resetButton($label = 'reset', $htmlOptions = array())
+	{
+		$htmlOptions['type'] = 'reset';
+		return self::button($label, $htmlOptions);
+	}
+
+	/**
+	 * Generates an image submit button.
+	 * @param string $src the image URL
+	 * @param array $htmlOptions additional HTML attributes. Besides normal HTML attributes, a few special
+	 * attributes are also recognized (see {@link clientChange} and {@link tag} for more details.)
+	 * @return string the generated button tag
+	 * @see clientChange
+	 */
+	public static function imageButton($src, $htmlOptions = array())
+	{
+		$htmlOptions['src'] = $src;
+		$htmlOptions['type'] = 'image';
+		return self::button('submit', $htmlOptions);
 	}
 
 	/**
@@ -1405,6 +1451,8 @@ EOD;
 	{
 		return self::btn('a', $label, $htmlOptions);
 	}
+
+	// todo: add support for ajax buttons and links.
 
 	/**
 	 * Generates a button.
