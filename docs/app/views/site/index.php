@@ -588,3 +588,31 @@ $this->pageTitle = Yii::app()->name;
 
 	<?php $this->endWidget();?>
 </div>
+
+<div class="media-objects">
+	<h5>Media Objects</h5>
+	<?php
+	echo TbHtml::mediaObject("http://placehold.it/64x64",
+		"Media heading",
+		"Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin commodo. Cras purus
+		odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla.
+		Donec lacinia congue felis in faucibus.", array(
+			'items' => array(
+				array(
+					'image' => "http://placehold.it/64x64",
+					'heading' => "Media heading",
+					'content' => "Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin commodo. Cras purus
+						odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla.
+						Donec lacinia congue felis in faucibus."
+				),
+				array(
+					'image' => "http://placehold.it/64x64",
+					'heading' => "Media heading",
+					'content' => "Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin commodo. Cras purus
+						odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla.
+						Donec lacinia congue felis in faucibus."
+				)
+			)
+		));
+	?>
+</div>
