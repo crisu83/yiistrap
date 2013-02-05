@@ -5,25 +5,23 @@ TODO
 
 ### High prio
 
- - activeform
- - media object
+ - media object (@tonydspaniard)
 
 ### Low prio
 
- - tabs
- - grid view
- - detail view
- - modal
- - typeahead
+ - tabs (@Crisu83)
+ - grid view (@Crisu83)
+ - detail view (@Crisu83)
+ - modal (?)
+ - typeahead (?)
 
 ## Helpers
 
 ### Low prio
 
- - modal
- - typeahead
+ - modal (@Crisu83)
+ - typeahead (?)
 
 ## Other
 
- - Move navbar rendering logic to TbHtml
- - Implement 'row' methods
+ -
