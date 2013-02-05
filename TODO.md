@@ -26,7 +26,4 @@ TODO
 ## Other
 
  - Move navbar rendering logic to TbHtml
- - TbHtml regular input fields
- - TbHtml active methods
- - TbActiveForm wrap methods for TbHtml active methods
- - TbActiveForm wrap control-group method
+ - Implement 'row' methods
