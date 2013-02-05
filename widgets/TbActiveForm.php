@@ -37,6 +37,22 @@ class TbActiveForm extends CActiveForm
 	public function run()
 	{
 		/* todo: override this parent's method in order to register our own js */
+		parent::run();
+	}
+
+	/**
+	 * Displays the first validation error for a model attribute.
+	 * @param CModel $model the data model
+	 * @param string $attribute the attribute name
+	 * @param array $htmlOptions additional HTML attributes to be rendered in the container div tag.
+	 * @return string the error display. Empty if no errors are found.
+	 * @see CModel::getErrors
+	 * @see errorMessageCss
+	 */
+	protected function renderError($model, $attribute, $htmlOptions = array())
+	{
+		$htmlOptions = TbHtml::defaultOption('formType', $this->type, $htmlOptions);
+		return TbHtml::error($model, $attribute, $htmlOptions);
 	}
 
 	/**
