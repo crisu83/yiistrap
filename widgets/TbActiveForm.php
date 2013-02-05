@@ -481,7 +481,7 @@ class TbActiveForm extends CActiveForm
 		echo $this->wrapControl(call_user_func_array('TbHtml::active' . ucfirst($type), $params)); /* since PHP 5.3 */
 
 		if ($this->type != TbHtml::FORM_INLINE)
-			echo TbHtml::error($model, $attribute, $errorOptions);
+			echo $this->error($model, $attribute, $errorOptions);
 
 		if ($this->type == TbHtml::FORM_HORIZONTAL)
 			echo '</div>';

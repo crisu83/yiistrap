@@ -515,15 +515,15 @@ $this->pageTitle = Yii::app()->name;
 	array('label' => 'testA'),
 	array('label' => 'testB')
 ));
-?>
-	<div style="clear:both;height:23px"></div>
-	<h5>Button Toolbar</h5>
-<?php
+	?>
+    <div style="clear:both;height:23px"></div>
+    <h5>Button Toolbar</h5>
+	<?php
 	echo TbHtml::buttonToolbar(array(
 		array(
 			'items' => array(
 				array('label' => 'testA'),
-				array('label' => 'testB', 'style'=>TbHtml::STYLE_PRIMARY)
+				array('label' => 'testB', 'style' => TbHtml::STYLE_PRIMARY)
 			)
 		),
 		array(
@@ -533,39 +533,49 @@ $this->pageTitle = Yii::app()->name;
 		)
 	));?>
 
-	<h5>Input types</h5>
+    <h5>Input types</h5>
 
-	<p><strong>Text Fields</strong></p>
-	<?php echo TbHtml::textField('test', '', array('placeholder'=>'Test'));?>
+    <p><strong>Text Fields</strong></p>
+	<?php echo TbHtml::textField('test', '', array('placeholder' => 'Test'));?>
 
-	<p><strong>prepend - append</strong></p>
+    <p><strong>prepend - append</strong></p>
 	<?php
-	echo TbHtml::textField('manolo','test', array(
-		'prepend'=>'$',
-		'append'=>'USD'
+	echo TbHtml::textField('manolo', 'test', array(
+		'prepend' => '$',
+		'append' => 'USD'
 	));
 
-	echo TbHtml::textField('manolo','test', array(
-		'prepend'=> TbHtml::button('Test'),
-		'append'=> TbHtml::button('Another test')
+	echo TbHtml::textField('manolo', 'test', array(
+		'prepend' => TbHtml::button('Test'),
+		'append' => TbHtml::button('Another test')
 	));
-?>
-	<p><strong>password</strong></p>
+	?>
+    <p><strong>password</strong></p>
 	<?php
-	echo TbHtml::passwordField('password', '', array('placeholder'=>'password'));
-?>
-	<h5>Active Forms</h5>
+	echo TbHtml::passwordField('password', '', array('placeholder' => 'password'));
+	?>
+    <p><strong>inlineRadioButtonList</strong></p>
+	<?php
+	echo TbHtml::inlineRadioButtonList('testB', 0, array('papa' => 'Superman', '4' => 'test'));
+	?>
+	<br/>
+    <p><strong>inlineCheckBoxList</strong></p>
+	<?php
+	echo TbHtml::inlineCheckBoxList('testC', 0, array('papa' => 'Superman', '4' => 'test'), array('checkAll' => 'All'));
+	?>
+    <h5>Active Forms</h5>
 	<?php /* @var $form TbActiveForm */ ?>
 	<?php $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 	'type' => TbHtml::FORM_HORIZONTAL
 ));?>
-	<strong>Using regular</strong>
-	<div class="control-group">
-	<?php echo $form->label($model, 'textField');?>
-	<?php echo $form->textField($model, 'textField');?>
-	<?php echo $form->error($model, 'textField');?>
+    <strong>Using regular</strong>
+
+    <div class="control-group">
+		<?php echo $form->label($model, 'textField');?>
+		<?php echo $form->textField($model, 'textField');?>
+		<?php echo $form->error($model, 'textField');?>
     </div>
-	<strong>Using Row</strong>
+    <strong>Using Row</strong>
 	<?php echo $form->row(TbHtml::INPUT_TEXT, $model, 'textField');?>
 
 	<?php echo $form->row(TbHtml::INPUT_CHECKBOX, $model, 'checkbox');?>
