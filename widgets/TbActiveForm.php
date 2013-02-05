@@ -434,22 +434,204 @@ class TbActiveForm extends CActiveForm
 	}
 
 	/**
+	 * Generates a text field row.
+	 * @param CModel $model the data model.
+	 * @param string $attribute the attribute name.
+	 * @param array $htmlOptions additional HTML attributes.
+	 * @return string the generated row.
+	 */
+	public function textFieldRow($model, $attribute, $htmlOptions = array())
+	{
+		return $this->row(TbHtml::INPUT_TEXT, $model, $attribute, null/* no data */, $htmlOptions);
+	}
+
+	/**
+	 * Generates an url field row.
+	 * @param CModel $model the data model.
+	 * @param string $attribute the attribute name.
+	 * @param array $htmlOptions additional HTML attributes.
+	 * @return string the generated row.
+	 */
+	public function urlFieldRow($model, $attribute, $htmlOptions = array())
+	{
+		return $this->row(TbHtml::INPUT_URL, $model, $attribute, null/* no data */, $htmlOptions);
+	}
+
+	/**
+	 * Generates an email field row.
+	 * @param CModel $model the data model.
+	 * @param string $attribute the attribute name.
+	 * @param array $htmlOptions additional HTML attributes.
+	 * @return string the generated row.
+	 */
+	public function emailFieldRow($model, $attribute, $htmlOptions = array())
+	{
+		return $this->row(TbHtml::INPUT_EMAIL, $model, $attribute, null/* no data */, $htmlOptions);
+	}
+
+	/**
+	 * Generates a number field row.
+	 * @param CModel $model the data model.
+	 * @param string $attribute the attribute name.
+	 * @param array $htmlOptions additional HTML attributes.
+	 * @return string the generated row.
+	 */
+	public function numberFieldRow($model, $attribute, $htmlOptions = array())
+	{
+		return $this->row(TbHtml::INPUT_NUMBER, $model, $attribute, null/* no data */, $htmlOptions);
+	}
+
+	/**
+	 * Generates a range field row.
+	 * @param CModel $model the data model.
+	 * @param string $attribute the attribute name.
+	 * @param array $htmlOptions additional HTML attributes.
+	 * @return string the generated row.
+	 */
+	public function rangeFieldRow($model, $attribute, $htmlOptions = array())
+	{
+		return $this->row(TbHtml::INPUT_RANGE, $model, $attribute, null/* no data */, $htmlOptions);
+	}
+
+	/**
+	 * Generates a date field row.
+	 * @param CModel $model the data model.
+	 * @param string $attribute the attribute name.
+	 * @param array $htmlOptions additional HTML attributes.
+	 * @return string the generated row.
+	 */
+	public function dateFieldRow($model, $attribute, $htmlOptions = array())
+	{
+		return $this->row(TbHtml::INPUT_DATE, $model, $attribute, null/* no data */, $htmlOptions);
+	}
+
+	/**
+	 * Generates a password field row.
+	 * @param CModel $model the data model.
+	 * @param string $attribute the attribute name.
+	 * @param array $htmlOptions additional HTML attributes.
+	 * @return string the generated row.
+	 */
+	public function passwordFieldRow($model, $attribute, $htmlOptions = array())
+	{
+		return $this->row(TbHtml::INPUT_PASSWORD, $model, $attribute, null/* no data */, $htmlOptions);
+	}
+
+	/**
+	 * Generates a text area row.
+	 * @param CModel $model the data model.
+	 * @param string $attribute the attribute name.
+	 * @param array $htmlOptions additional HTML attributes.
+	 * @return string the generated row.
+	 */
+	public function textAreaRow($model, $attribute, $htmlOptions = array())
+	{
+		return $this->row(TbHtml::INPUT_TEXTAREA, $model, $attribute, null/* no data */, $htmlOptions);
+	}
+
+	/**
+	 * Generates a check box row.
+	 * @param CModel $model the data model.
+	 * @param string $attribute the attribute name.
+	 * @param array $htmlOptions additional HTML attributes.
+	 * @return string the generated row.
+	 */
+	public function checkBoxRow($model, $attribute, $htmlOptions = array())
+	{
+		return $this->row(TbHtml::INPUT_CHECKBOX, $model, $attribute, null/* no data */, $htmlOptions);
+	}
+
+	/**
+	 * Generates a radio button row.
+	 * @param CModel $model the data model.
+	 * @param string $attribute the attribute name.
+	 * @param array $htmlOptions additional HTML attributes.
+	 * @return string the generated row.
+	 */
+	public function radioButtonRow($model, $attribute, $htmlOptions = array())
+	{
+		return $this->row(TbHtml::INPUT_RADIOBUTTON, $model, $attribute, null/* no data */, $htmlOptions);
+	}
+
+	/**
+	 * Generates a drop down list row.
+	 * @param CModel $model the data model.
+	 * @param string $attribute the attribute name.
+	 * @param array $htmlOptions additional HTML attributes.
+	 * @return string the generated row.
+	 */
+	public function dropDownListRow($model, $attribute, $data, $htmlOptions = array())
+	{
+		return $this->row(TbHtml::INPUT_DROPDOWN, $model, $attribute, $data, $htmlOptions);
+	}
+
+	/**
+	 * Generates a list box row.
+	 * @param CModel $model the data model.
+	 * @param string $attribute the attribute name.
+	 * @param array $htmlOptions additional HTML attributes.
+	 * @return string the generated row.
+	 */
+	public function listBoxRow($model, $attribute, $data, $htmlOptions = array())
+	{
+		return $this->row(TbHtml::INPUT_LISTBOX, $model, $attribute, $data, $htmlOptions);
+	}
+
+	/**
+	 * Generates a file field row.
+	 * @param CModel $model the data model.
+	 * @param string $attribute the attribute name.
+	 * @param array $htmlOptions additional HTML attributes.
+	 * @return string the generated row.
+	 */
+	public function fileFieldRow($model, $attribute, $htmlOptions = array())
+	{
+		return $this->row(TbHtml::INPUT_FILE, $model, $attribute, null/* no data */, $htmlOptions);
+	}
+
+	/**
+	 * Generates a check box list row.
+	 * @param CModel $model the data model.
+	 * @param string $attribute the attribute name.
+	 * @param array $data data for generating the list options (value=>display).
+	 * @param array $htmlOptions additional HTML attributes.
+	 * @return string the generated row.
+	 */
+	public function checkBoxListRow($model, $attribute, $data, $htmlOptions = array())
+	{
+		return $this->row(TbHtml::INPUT_CHECKBOXLIST, $model, $attribute, $data, $htmlOptions);
+	}
+
+	/**
+	 * Generates a radio button list row.
+	 * @param CModel $model the data model.
+	 * @param string $attribute the attribute name.
+	 * @param array $data data for generating the list options (value=>display).
+	 * @param array $htmlOptions additional HTML attributes.
+	 * @return string the generated row.
+	 */
+	public function radioButtonListRow($model, $attribute, $data, $htmlOptions = array())
+	{
+		return $this->row(TbHtml::INPUT_RADIOBUTTONLIST, $model, $attribute, $data, $htmlOptions);
+	}
+
+	/**
 	 * Helper method to display different input types for the different complain bootstrap forms wrapped with their
 	 * labels, help and error messages. This method is a replacement of the old 'typeRow' methods from Yii-Bootstrap
 	 * extension. Example:
 	 * <pre>
 	 * 	$form->row(TbHtml::INPUT_TEXT, $model, 'attribute', array('style'=>'width:125px'));
-	 *	$form->row(TbHtml::INPUT_DROPDOWN, $model, 'attribute', array(), array('a'=>'A','b'=>'B'));
+	 *	$form->row(TbHtml::INPUT_DROPDOWN, $model, 'attribute', array('a'=>'A','b'=>'B'), array());
 	 * </pre>
-	 * @param $type ty
+	 * @param $type
 	 * @param $model
 	 * @param $attribute
-	 * @param array $htmlOptions
 	 * @param $data
+	 * @param array $htmlOptions
 	 * @return string
 	 * @throws CException
 	 */
-	public function row($type, $model, $attribute, $htmlOptions = array(), $data = array())
+	public function row($type, $model, $attribute, $data = array(), $htmlOptions = array())
 	{
 		if (!in_array($type, TbHtml::$inputs))
 			throw new CException(Yii::t('tb', 'Unrecognized input type'));
@@ -473,6 +655,9 @@ class TbActiveForm extends CActiveForm
 			echo TbHtml::activeLabel($model, $attribute, $labelOptions);
 		elseif (preg_match('/radio|checkbox/i', $type))
 			$htmlOptions['labelOptions'] = $labelOptions;
+
+		if (TbHtml::popOption('block', $htmlOptions, false))
+			$htmlOptions = TbHtml::addClassName('input-block-level', $htmlOptions);
 
 		$params = in_array($type, TbHtml::$dataInputs)
 			? array($model, $attribute, $data, $htmlOptions)
