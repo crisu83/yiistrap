@@ -17,15 +17,15 @@ class TbActiveForm extends CActiveForm
 
 	public function init()
 	{
-		if(!in_array($this->type, array(TbHtml::FORM_TYPE_HORIZONTAL, TbHtml::FORM_TYPE_INLINE, TbHtml::FORM_TYPE_VERTICAL)))
-			$this->type = TbHtml::FORM_TYPE_VERTICAL;
+		if (!in_array($this->type, array(TbHtml::FORM_HORIZONTAL, TbHtml::FORM_INLINE, TbHtml::FORM_VERTICAL)))
+			$this->type = TbHtml::FORM_VERTICAL;
 
 		$this->htmlOptions = TbHtml::addClassName('form-' . $this->type, $this->htmlOptions);
 
 		if (null === $this->helpType)
-			$this->helpType = $this->type == TbHtml::FORM_TYPE_HORIZONTAL
-				? TbHtml::HELP_TYPE_INLINE
-				: TbHtml::HELP_TYPE_BLOCK;
+			$this->helpType = $this->type == TbHtml::FORM_HORIZONTAL
+				? TbHtml::HELP_INLINE
+				: TbHtml::HELP_BLOCK;
 
 		parent::init();
 	}
@@ -165,7 +165,7 @@ class TbActiveForm extends CActiveForm
 	 */
 	public function label($model, $attribute, $htmlOptions = array())
 	{
-		if($this->type == TbHtml::FORM_TYPE_HORIZONTAL)
+		if ($this->type == TbHtml::FORM_HORIZONTAL)
 			$htmlOptions = TbHtml::addClassName('control-label', $htmlOptions);
 		return parent::label($model, $attribute, $htmlOptions);
 	}
@@ -182,7 +182,7 @@ class TbActiveForm extends CActiveForm
 	 */
 	public function labelEx($model, $attribute, $htmlOptions = array())
 	{
-		if($this->type == TbHtml::FORM_TYPE_HORIZONTAL)
+		if ($this->type == TbHtml::FORM_HORIZONTAL)
 			$htmlOptions = TbHtml::addClassName('control-label', $htmlOptions);
 		return parent::labelEx($model, $attribute, $htmlOptions);
 	}
@@ -198,9 +198,9 @@ class TbActiveForm extends CActiveForm
 	 * @return string the generated input field
 	 * @since Yii 1.1.11
 	 */
-	public function urlField($model,$attribute,$htmlOptions=array())
+	public function urlField($model, $attribute, $htmlOptions = array())
 	{
-		return $this->wrapControl(TbHtml::activeUrlField($model,$attribute,$htmlOptions));
+		return $this->wrapControl(TbHtml::activeUrlField($model, $attribute, $htmlOptions));
 	}
 
 	/**
@@ -214,9 +214,9 @@ class TbActiveForm extends CActiveForm
 	 * @return string the generated input field
 	 * @since 1.1.11
 	 */
-	public function emailField($model,$attribute,$htmlOptions=array())
+	public function emailField($model, $attribute, $htmlOptions = array())
 	{
-		return $this->wrapControl(TbHtml::activeEmailField($model,$attribute,$htmlOptions));
+		return $this->wrapControl(TbHtml::activeEmailField($model, $attribute, $htmlOptions));
 	}
 
 	/**
@@ -230,9 +230,9 @@ class TbActiveForm extends CActiveForm
 	 * @return string the generated input field
 	 * @since 1.1.11
 	 */
-	public function numberField($model,$attribute,$htmlOptions=array())
+	public function numberField($model, $attribute, $htmlOptions = array())
 	{
-		return $this->wrapControl(TbHtml::activeNumberField($model,$attribute,$htmlOptions));
+		return $this->wrapControl(TbHtml::activeNumberField($model, $attribute, $htmlOptions));
 	}
 
 	/**
@@ -246,9 +246,9 @@ class TbActiveForm extends CActiveForm
 	 * @return string the generated input field
 	 * @since 1.1.11
 	 */
-	public function rangeField($model,$attribute,$htmlOptions=array())
+	public function rangeField($model, $attribute, $htmlOptions = array())
 	{
-		return $this->wrapControl(TbHtml::activeRangeField($model,$attribute,$htmlOptions));
+		return $this->wrapControl(TbHtml::activeRangeField($model, $attribute, $htmlOptions));
 	}
 
 	/**
@@ -262,9 +262,9 @@ class TbActiveForm extends CActiveForm
 	 * @return string the generated input field
 	 * @since 1.1.11
 	 */
-	public function dateField($model,$attribute,$htmlOptions=array())
+	public function dateField($model, $attribute, $htmlOptions = array())
 	{
-		return $this->wrapControl(TbHtml::activeDateField($model,$attribute,$htmlOptions));
+		return $this->wrapControl(TbHtml::activeDateField($model, $attribute, $htmlOptions));
 	}
 
 	/**
@@ -277,9 +277,9 @@ class TbActiveForm extends CActiveForm
 	 * @param array $htmlOptions additional HTML attributes.
 	 * @return string the generated input field
 	 */
-	public function textField($model,$attribute,$htmlOptions=array())
+	public function textField($model, $attribute, $htmlOptions = array())
 	{
-		return $this->wrapControl(TbHtml::activeTextField($model,$attribute,$htmlOptions));
+		return $this->wrapControl(TbHtml::activeTextField($model, $attribute, $htmlOptions));
 	}
 
 	/**
@@ -292,9 +292,9 @@ class TbActiveForm extends CActiveForm
 	 * @param array $htmlOptions additional HTML attributes.
 	 * @return string the generated input field
 	 */
-	public function passwordField($model,$attribute,$htmlOptions=array())
+	public function passwordField($model, $attribute, $htmlOptions = array())
 	{
-		return $this->wrapControl(TbHtml::activePasswordField($model,$attribute,$htmlOptions));
+		return $this->wrapControl(TbHtml::activePasswordField($model, $attribute, $htmlOptions));
 	}
 
 	/**
@@ -307,9 +307,9 @@ class TbActiveForm extends CActiveForm
 	 * @param array $htmlOptions additional HTML attributes.
 	 * @return string the generated text area
 	 */
-	public function textArea($model,$attribute,$htmlOptions=array())
+	public function textArea($model, $attribute, $htmlOptions = array())
 	{
-		return $this->wrapControl(TbHtml::activeTextArea($model,$attribute,$htmlOptions));
+		return $this->wrapControl(TbHtml::activeTextArea($model, $attribute, $htmlOptions));
 	}
 
 	/**
@@ -322,9 +322,9 @@ class TbActiveForm extends CActiveForm
 	 * @param array $htmlOptions additional HTML attributes
 	 * @return string the generated input field
 	 */
-	public function fileField($model,$attribute,$htmlOptions=array())
+	public function fileField($model, $attribute, $htmlOptions = array())
 	{
-		return $this->wrapControl(TbHtml::activeFileField($model,$attribute,$htmlOptions));
+		return $this->wrapControl(TbHtml::activeFileField($model, $attribute, $htmlOptions));
 	}
 
 	/**
@@ -337,9 +337,9 @@ class TbActiveForm extends CActiveForm
 	 * @param array $htmlOptions additional HTML attributes.
 	 * @return string the generated radio button
 	 */
-	public function radioButton($model,$attribute,$htmlOptions=array())
+	public function radioButton($model, $attribute, $htmlOptions = array())
 	{
-		return $this->wrapControl(TbHtml::activeRadioButton($model,$attribute,$htmlOptions));
+		return $this->wrapControl(TbHtml::activeRadioButton($model, $attribute, $htmlOptions));
 	}
 
 	/**
@@ -368,9 +368,9 @@ class TbActiveForm extends CActiveForm
 	 * @param array $htmlOptions additional HTML attributes.
 	 * @return string the generated drop down list
 	 */
-	public function dropDownList($model,$attribute,$data,$htmlOptions=array())
+	public function dropDownList($model, $attribute, $data, $htmlOptions = array())
 	{
-		return $this->wrapControl(TbHtml::activeDropDownList($model,$attribute,$data,$htmlOptions));
+		return $this->wrapControl(TbHtml::activeDropDownList($model, $attribute, $data, $htmlOptions));
 	}
 
 	/**
@@ -384,26 +384,28 @@ class TbActiveForm extends CActiveForm
 	 * @param array $htmlOptions additional HTML attributes.
 	 * @return string the generated list box
 	 */
-	public function listBox($model,$attribute,$data,$htmlOptions=array())
+	public function listBox($model, $attribute, $data, $htmlOptions = array())
 	{
-		return $this->wrapControl(TbHtml::activeListBox($model,$attribute,$data,$htmlOptions));
+		return $this->wrapControl(TbHtml::activeListBox($model, $attribute, $data, $htmlOptions));
 	}
 
 	/**
-	 * @todo write phpDoc
+	 * Renders and inline checkbox list.
+	 * Please check {@link TbHtml::activeInlieCheckBoxList} for detailed information
 	 * @param $model
 	 * @param $attribute
 	 * @param $data
 	 * @param array $htmlOptions
 	 * @return string
 	 */
-	public function inlineCheckBoxList($model,$attribute,$data,$htmlOptions=array())
+	public function inlineCheckBoxList($model, $attribute, $data, $htmlOptions = array())
 	{
 		return $this->wrapControl(TbHtml::activeInlineCheckBoxList($model, $attribute, $data, $htmlOptions));
 	}
 
 	/**
-	 * @todo write phpDoc
+	 * Renders an inlineRadioButtonList
+	 * Please check {@link TbHtml::activeInlineRadioButtonList} for detailed information
 	 * @param $model
 	 * @param $attribute
 	 * @param $data
@@ -416,13 +418,66 @@ class TbActiveForm extends CActiveForm
 	}
 
 	/**
+	 * Helper method to display different input types for the different complain bootstrap forms wrapped with their
+	 * labels, help and error messages. This method is a replacement of the old 'typeRow' methods from Yii-Bootstrap
+	 * extension. Example:
+	 * <pre>
+	 * 	$form->row(TbHtml::INPUT_TEXT, $model, 'attribute', array('style'=>'width:125px'));
+	 *	$form->row(TbHtml::INPUT_DROPDOWN, $model, 'attribute', array(), array('a'=>'A','b'=>'B'));
+	 * </pre>
+	 * @param $type ty
+	 * @param $model
+	 * @param $attribute
+	 * @param array $htmlOptions
+	 * @param $data
+	 * @return string
+	 * @throws CException
+	 */
+	public function row($type, $model, $attribute, $htmlOptions = array(), $data = array())
+	{
+		if (!in_array($type, TbHtml::$inputTypes))
+			throw new CException(Yii::t('tb', 'Unrecognized input type'));
+
+		$labelOptions = TbHtml::popOption('labelOptions', $htmlOptions, array());
+		$errorOptions = TbHtml::popOption('errorOptions', $htmlOptions, array());
+
+		$params = in_array($type, TbHtml::$dataInputs)
+			? array($model, $attribute, $data, $htmlOptions)
+			: array($model, $attribute, $htmlOptions);
+
+		ob_start();
+
+		if ($this->type == TbHtml::FORM_HORIZONTAL)
+		{
+			// make sure it holds the class control-label
+			$labelOptions = TbHtml::defaultOption('formType', TbHtml::FORM_HORIZONTAL, $labelOptions);
+			echo CHtml::openTag('div', array('class' => 'control-group ' . $this->getContainerCssClass()));
+		}
+
+		// form's inline do not render labels and radio|checkbox input types render label's differently
+		if ($this->type != TbHtml::FORM_INLINE && !preg_match('/radio|checkbox/i',$type))
+			echo TbHtml::activeLabel($model, $attribute, $labelOptions);
+
+		echo $this->wrapControl(call_user_func_array('TbHtml::active' . ucfirst($type), $params)); /* since PHP 5.3 */
+
+		if ($type->type != TbHtml::FORM_INLINE)
+			echo TbHtml::error($model, $attribute, $errorOptions);
+
+		if ($type->type == TbHtml::FORM_HORIZONTAL)
+			echo '</div>';
+
+		return ob_get_clean();
+
+	}
+
+	/**
 	 * Makes sure whether the form control requires wrapping (normally set by the type of form)
 	 * @param $control
 	 * @return string
 	 */
 	protected function wrapControl($control)
 	{
-		if ($this->type == TbHtml::FORM_TYPE_HORIZONTAL)
+		if ($this->type == TbHtml::FORM_HORIZONTAL)
 		{
 			ob_start();
 			echo '<div class="controls">';

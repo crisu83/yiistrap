@@ -66,40 +66,38 @@ class TbHtml extends CHtml
 	const CLOSE_TEXT = '&times;';
 
 	// Help types.
-	// todo: maybe drop the word 'type'? it's a bit redundant here.
-	const HELP_TYPE_INLINE = 'inline';
-	const HELP_TYPE_BLOCK = 'block';
+	const HELP_INLINE = 'inline';
+	const HELP_BLOCK = 'block';
 
 	// form types
-	// todo: maybe drop the word 'type'? it's a bit redundant here.
-	const FORM_TYPE_INLINE = 'inline';
-	const FORM_TYPE_HORIZONTAL = 'horizontal';
-	const FORM_TYPE_VERTICAL = 'vertical';
+	const FORM_INLINE = 'inline';
+	const FORM_HORIZONTAL = 'horizontal';
+	const FORM_VERTICAL = 'vertical';
 
 	// field types
-	// todo: maybe drop the word 'type'? it's a bit redundant here.
-	const INPUT_TYPE_URL = 'urlField';
-	const INPUT_TYPE_EMAIL = 'emailField';
-	const INPUT_TYPE_NUMBER = 'numberField';
-	const INPUT_TYPE_RANGE = 'rangeField';
-	const INPUT_TYPE_DATE = 'dateField';
-	const INPUT_TYPE_TEXT = 'textField';
-	const INPUT_TYPE_PASSWORD = 'passwordField';
-	const INPUT_TYPE_TEXTAREA = 'textArea';
-	const INPUT_TYPE_FILE = 'fileField';
-	const INPUT_TYPE_RADIOBUTTON = 'radioButton';
-	const INPUT_TYPE_CHECKBOX = 'checkBox';
-	const INPUT_TYPE_DROPDOWN = 'dropDownList';
-	const INPUT_TYPE_LISTBOX = 'listBox';
-	const INPUT_TYPE_CHECKBOXLIST = 'inlineCheckBoxList';
-	const INPUT_TYPE_RADIOBUTTONLIST = 'inlineRadioButtonList';
+	const INPUT_URL = 'urlField';
+	const INPUT_EMAIL = 'emailField';
+	const INPUT_NUMBER = 'numberField';
+	const INPUT_RANGE = 'rangeField';
+	const INPUT_DATE = 'dateField';
+	const INPUT_TEXT = 'textField';
+	const INPUT_PASSWORD = 'passwordField';
+	const INPUT_TEXTAREA = 'textArea';
+	const INPUT_FILE = 'fileField';
+	const INPUT_RADIOBUTTON = 'radioButton';
+	const INPUT_CHECKBOX = 'checkBox';
+	const INPUT_DROPDOWN = 'dropDownList';
+	const INPUT_LISTBOX = 'listBox';
+	const INPUT_CHECKBOXLIST = 'inlineCheckBoxList';
+	const INPUT_RADIOBUTTONLIST = 'inlineRadioButtonList';
 
 	// Scope constants.
-	// todo: this could also simply be $types.
-	static $inputTypes = array(self::INPUT_TYPE_CHECKBOX, self::INPUT_TYPE_CHECKBOXLIST, self::INPUT_TYPE_DATE,
-		self::INPUT_TYPE_DROPDOWN, self::INPUT_TYPE_EMAIL, self::INPUT_TYPE_FILE, self::INPUT_TYPE_LISTBOX,
-		self::INPUT_TYPE_NUMBER, self::INPUT_TYPE_PASSWORD, self::INPUT_TYPE_RADIOBUTTON, self::INPUT_TYPE_RANGE,
-		self::INPUT_TYPE_TEXT, self::INPUT_TYPE_TEXTAREA, self::INPUT_TYPE_URL);
+	static $inputs = array(self::INPUT_CHECKBOX, self::INPUT_CHECKBOXLIST, self::INPUT_DATE,
+		self::INPUT_DROPDOWN, self::INPUT_EMAIL, self::INPUT_FILE, self::INPUT_LISTBOX,
+		self::INPUT_NUMBER, self::INPUT_PASSWORD, self::INPUT_RADIOBUTTON, self::INPUT_RANGE,
+		self::INPUT_TEXT, self::INPUT_TEXTAREA, self::INPUT_URL, self::INPUT_RADIOBUTTONLIST);
+	static $dataInputs = array(self::INPUT_CHECKBOXLIST, self::INPUT_DROPDOWN, self::INPUT_LISTBOX,
+		self::INPUT_NUMBER, self::INPUT_RADIOBUTTONLIST); // Which one requires
 	static $sizes = array(self::SIZE_LARGE, self::SIZE_SMALL, self::SIZE_MINI);
 	static $textStyles = array(self::STYLE_ERROR, self::STYLE_INFO, self::STYLE_SUCCESS, self::STYLE_WARNING);
 	static $buttonStyles = array(
@@ -278,13 +276,13 @@ class TbHtml extends CHtml
 	 * </ul>
 	 * @return string the generated label tag
 	 */
-	public static function label($label,$for,$htmlOptions=array())
+	public static function label($label, $for, $htmlOptions = array())
 	{
-		$formType = self::popOption('formType',$htmlOptions);
-		if($formType == TbHtml::FORM_TYPE_HORIZONTAL)
+		$formType = self::popOption('formType', $htmlOptions);
+		if ($formType == TbHtml::FORM_HORIZONTAL)
 			$htmlOptions = self::addClassName('control-label', $htmlOptions);
 
-		return self::tag('label',$htmlOptions,$label);
+		return self::tag('label', $htmlOptions, $label);
 	}
 
 	/**
@@ -313,10 +311,10 @@ class TbHtml extends CHtml
 	 * @see clientChange
 	 * @see inputField
 	 */
-	public static function passwordField($name,$value='',$htmlOptions=array())
+	public static function passwordField($name, $value = '', $htmlOptions = array())
 	{
-		parent::clientChange('change',$htmlOptions);
-		return self::inputField('password',$name,$value,$htmlOptions);
+		parent::clientChange('change', $htmlOptions);
+		return self::inputField('password', $name, $value, $htmlOptions);
 	}
 
 	/**
@@ -329,7 +327,7 @@ class TbHtml extends CHtml
 	 * @see clientChange
 	 * @see inputField
 	 */
-	public static function textArea($name,$value='',$htmlOptions=array())
+	public static function textArea($name, $value = '', $htmlOptions = array())
 	{
 		$help = self::getHelp($htmlOptions);
 
@@ -447,7 +445,7 @@ class TbHtml extends CHtml
 	 * @see inputField
 	 * @see listData
 	 */
-	public static function dropDownList($name,$select,$data,$htmlOptions=array())
+	public static function dropDownList($name, $select, $data, $htmlOptions = array())
 	{
 		$help = self::getHelp($htmlOptions);
 		ob_start();
@@ -489,7 +487,7 @@ class TbHtml extends CHtml
 	 * @see inputField
 	 * @see listData
 	 */
-	public static function listBox($name,$select,$data,$htmlOptions=array())
+	public static function listBox($name, $select, $data, $htmlOptions = array())
 	{
 		$help = self::getHelp($htmlOptions);
 		ob_start();
@@ -641,9 +639,9 @@ EOD;
 	 * @param array $htmlOptions additional HTML attributes for the HTML tag (see {@link tag}). The following special
 	 * attributes are supported:
 	 * <ul>
-	 *	<li>append: string, append addon to the input types: text, password, date</li>
-	 *	<li>prepend: string, prepend addon to the input types: text, password, date</li>
-	 *	<li>help: array, see {@link getHelp}
+	 *    <li>append: string, append addon to the input types: text, password, date</li>
+	 *    <li>prepend: string, prepend addon to the input types: text, password, date</li>
+	 *    <li>help: array, see {@link getHelp}
 	 * </ul>
 	 * @return string the generated input tag
 	 */
@@ -690,14 +688,14 @@ EOD;
 	 * </ul>
 	 * @return string the generated label tag
 	 */
-	public static function activeLabel($model,$attribute,$htmlOptions=array())
+	public static function activeLabel($model, $attribute, $htmlOptions = array())
 	{
 		$for = self::popOption('for', $htmlOptions, parent::getIdByName(parent::resolveName($model, $attribute)));
 		$label = self::popOption('label', $htmlOptions, $model->getAttributeLabel($attribute));
 
-		if($model->hasErrors($attribute))
+		if ($model->hasErrors($attribute))
 			self::addErrorCss($htmlOptions);
-		return self::label($label,$for,$htmlOptions);
+		return self::label($label, $for, $htmlOptions);
 	}
 
 	/**
@@ -714,12 +712,12 @@ EOD;
 	 * @param array $htmlOptions additional HTML attributes.
 	 * @return string the generated label tag
 	 */
-	public static function activeLabelEx($model,$attribute,$htmlOptions=array())
+	public static function activeLabelEx($model, $attribute, $htmlOptions = array())
 	{
-		$realAttribute=$attribute;
-		self::resolveName($model,$attribute); // strip off square brackets if any
-		$htmlOptions['required']=$model->isAttributeRequired($attribute);
-		return self::activeLabel($model,$realAttribute,$htmlOptions);
+		$realAttribute = $attribute;
+		self::resolveName($model, $attribute); // strip off square brackets if any
+		$htmlOptions['required'] = $model->isAttributeRequired($attribute);
+		return self::activeLabel($model, $realAttribute, $htmlOptions);
 	}
 
 	/**
@@ -734,11 +732,11 @@ EOD;
 	 * @see clientChange
 	 * @see activeInputField
 	 */
-	public static function activeTextField($model,$attribute,$htmlOptions=array())
+	public static function activeTextField($model, $attribute, $htmlOptions = array())
 	{
-		parent::resolveNameID($model,$attribute,$htmlOptions);
-		parent::clientChange('change',$htmlOptions);
-		return self::activeInputField('text',$model,$attribute,$htmlOptions);
+		parent::resolveNameID($model, $attribute, $htmlOptions);
+		parent::clientChange('change', $htmlOptions);
+		return self::activeInputField('text', $model, $attribute, $htmlOptions);
 	}
 
 	/**
@@ -754,11 +752,11 @@ EOD;
 	 * @see activeInputField
 	 * @since 1.1.11
 	 */
-	public static function activeUrlField($model,$attribute,$htmlOptions=array())
+	public static function activeUrlField($model, $attribute, $htmlOptions = array())
 	{
-		parent::resolveNameID($model,$attribute,$htmlOptions);
-		parent::clientChange('change',$htmlOptions);
-		return self::activeInputField('url',$model,$attribute,$htmlOptions);
+		parent::resolveNameID($model, $attribute, $htmlOptions);
+		parent::clientChange('change', $htmlOptions);
+		return self::activeInputField('url', $model, $attribute, $htmlOptions);
 	}
 
 	/**
@@ -774,11 +772,11 @@ EOD;
 	 * @see activeInputField
 	 * @since 1.1.11
 	 */
-	public static function activeEmailField($model,$attribute,$htmlOptions=array())
+	public static function activeEmailField($model, $attribute, $htmlOptions = array())
 	{
-		parent::resolveNameID($model,$attribute,$htmlOptions);
-		parent::clientChange('change',$htmlOptions);
-		return self::activeInputField('email',$model,$attribute,$htmlOptions);
+		parent::resolveNameID($model, $attribute, $htmlOptions);
+		parent::clientChange('change', $htmlOptions);
+		return self::activeInputField('email', $model, $attribute, $htmlOptions);
 	}
 
 	/**
@@ -794,11 +792,11 @@ EOD;
 	 * @see activeInputField
 	 * @since 1.1.11
 	 */
-	public static function activeNumberField($model,$attribute,$htmlOptions=array())
+	public static function activeNumberField($model, $attribute, $htmlOptions = array())
 	{
-		parent::resolveNameID($model,$attribute,$htmlOptions);
-		parent::clientChange('change',$htmlOptions);
-		return self::activeInputField('number',$model,$attribute,$htmlOptions);
+		parent::resolveNameID($model, $attribute, $htmlOptions);
+		parent::clientChange('change', $htmlOptions);
+		return self::activeInputField('number', $model, $attribute, $htmlOptions);
 	}
 
 	/**
@@ -814,11 +812,11 @@ EOD;
 	 * @see activeInputField
 	 * @since 1.1.11
 	 */
-	public static function activeRangeField($model,$attribute,$htmlOptions=array())
+	public static function activeRangeField($model, $attribute, $htmlOptions = array())
 	{
-		parent::resolveNameID($model,$attribute,$htmlOptions);
-		parent::clientChange('change',$htmlOptions);
-		return self::activeInputField('range',$model,$attribute,$htmlOptions);
+		parent::resolveNameID($model, $attribute, $htmlOptions);
+		parent::clientChange('change', $htmlOptions);
+		return self::activeInputField('range', $model, $attribute, $htmlOptions);
 	}
 
 	/**
@@ -834,11 +832,11 @@ EOD;
 	 * @see activeInputField
 	 * @since 1.1.11
 	 */
-	public static function activeDateField($model,$attribute,$htmlOptions=array())
+	public static function activeDateField($model, $attribute, $htmlOptions = array())
 	{
-		parent::resolveNameID($model,$attribute,$htmlOptions);
-		parent::clientChange('change',$htmlOptions);
-		return self::activeInputField('date',$model,$attribute,$htmlOptions);
+		parent::resolveNameID($model, $attribute, $htmlOptions);
+		parent::clientChange('change', $htmlOptions);
+		return self::activeInputField('date', $model, $attribute, $htmlOptions);
 	}
 
 	/**
@@ -853,11 +851,11 @@ EOD;
 	 * @see clientChange
 	 * @see activeInputField
 	 */
-	public static function activePasswordField($model,$attribute,$htmlOptions=array())
+	public static function activePasswordField($model, $attribute, $htmlOptions = array())
 	{
-		parent::resolveNameID($model,$attribute,$htmlOptions);
-		parent::clientChange('change',$htmlOptions);
-		return self::activeInputField('password',$model,$attribute,$htmlOptions);
+		parent::resolveNameID($model, $attribute, $htmlOptions);
+		parent::clientChange('change', $htmlOptions);
+		return self::activeInputField('password', $model, $attribute, $htmlOptions);
 	}
 
 	/**
@@ -871,18 +869,18 @@ EOD;
 	 * @return string the generated text area
 	 * @see clientChange
 	 */
-	public static function activeTextArea($model,$attribute,$htmlOptions=array())
+	public static function activeTextArea($model, $attribute, $htmlOptions = array())
 	{
-		parent::resolveNameID($model,$attribute,$htmlOptions);
-		parent::clientChange('change',$htmlOptions);
-		if($model->hasErrors($attribute))
+		parent::resolveNameID($model, $attribute, $htmlOptions);
+		parent::clientChange('change', $htmlOptions);
+		if ($model->hasErrors($attribute))
 			self::addErrorCss($htmlOptions);
 
 		$text = self::popOption('value', $htmlOptions, self::resolveValue($model, $attribute));
 		$help = self::getHelp($htmlOptions);
 
 		ob_start();
-		self::tag('textarea',$htmlOptions, isset($htmlOptions['encode']) && !$htmlOptions['encode'] ? $text : self::encode($text));
+		self::tag('textarea', $htmlOptions, isset($htmlOptions['encode']) && !$htmlOptions['encode'] ? $text : self::encode($text));
 		echo $help;
 		return ob_get_clean();
 	}
@@ -1006,22 +1004,22 @@ EOD;
 	 * @see clientChange
 	 * @see listData
 	 */
-	public static function activeDropDownList($model,$attribute,$data,$htmlOptions=array())
+	public static function activeDropDownList($model, $attribute, $data, $htmlOptions = array())
 	{
-		self::resolveNameID($model,$attribute,$htmlOptions);
-		$selection=self::resolveValue($model,$attribute);
-		$options="\n".self::listOptions($selection,$data,$htmlOptions);
-		self::clientChange('change',$htmlOptions);
-		if($model->hasErrors($attribute))
+		self::resolveNameID($model, $attribute, $htmlOptions);
+		$selection = self::resolveValue($model, $attribute);
+		$options = "\n" . self::listOptions($selection, $data, $htmlOptions);
+		self::clientChange('change', $htmlOptions);
+		if ($model->hasErrors($attribute))
 			self::addErrorCss($htmlOptions);
-		if(isset($htmlOptions['multiple']))
+		if (isset($htmlOptions['multiple']))
 		{
-			if(substr($htmlOptions['name'],-2)!=='[]')
-				$htmlOptions['name'].='[]';
+			if (substr($htmlOptions['name'], -2) !== '[]')
+				$htmlOptions['name'] .= '[]';
 		}
 		$help = self::getHelp($htmlOptions);
 		ob_start();
-		echo self::tag('select',$htmlOptions,$options);
+		echo self::tag('select', $htmlOptions, $options);
 		echo $help;
 		return ob_get_clean();
 	}
@@ -1061,10 +1059,10 @@ EOD;
 	 * @see clientChange
 	 * @see listData
 	 */
-	public static function activeListBox($model,$attribute,$data,$htmlOptions=array())
+	public static function activeListBox($model, $attribute, $data, $htmlOptions = array())
 	{
 		$htmlOptions = self::defaultOption('size', 4, $htmlOptions);
-		return self::activeDropDownList($model,$attribute,$data,$htmlOptions);
+		return self::activeDropDownList($model, $attribute, $data, $htmlOptions);
 	}
 
 	/**
@@ -1078,14 +1076,14 @@ EOD;
 	 * @return string the generated input field
 	 * @see activeInputField
 	 */
-	public static function activeFileField($model,$attribute,$htmlOptions=array())
+	public static function activeFileField($model, $attribute, $htmlOptions = array())
 	{
-		self::resolveNameID($model,$attribute,$htmlOptions);
+		self::resolveNameID($model, $attribute, $htmlOptions);
 		// add a hidden field so that if a model only has a file field, we can
 		// still use isset($_POST[$modelClass]) to detect if the input is submitted
-		$hiddenOptions=isset($htmlOptions['id']) ? array('id'=>self::ID_PREFIX.$htmlOptions['id']) : array('id'=>false);
-		return self::hiddenField($htmlOptions['name'],'',$hiddenOptions)
-			. self::activeInputField('file',$model,$attribute,$htmlOptions);
+		$hiddenOptions = isset($htmlOptions['id']) ? array('id' => self::ID_PREFIX . $htmlOptions['id']) : array('id' => false);
+		return self::hiddenField($htmlOptions['name'], '', $hiddenOptions)
+			. self::activeInputField('file', $model, $attribute, $htmlOptions);
 	}
 
 	/**
@@ -1123,20 +1121,20 @@ EOD;
 	 * @return string the generated check box list
 	 * @see checkBoxList
 	 */
-	public static function activeInlineCheckBoxList($model,$attribute,$data,$htmlOptions=array())
+	public static function activeInlineCheckBoxList($model, $attribute, $data, $htmlOptions = array())
 	{
-		self::resolveNameID($model,$attribute,$htmlOptions);
-		$selection=self::resolveValue($model,$attribute);
-		if($model->hasErrors($attribute))
+		self::resolveNameID($model, $attribute, $htmlOptions);
+		$selection = self::resolveValue($model, $attribute);
+		if ($model->hasErrors($attribute))
 			self::addErrorCss($htmlOptions);
 		$name = self::popOption('name', $htmlOptions);
 
 		$unCheck = self::popOption('uncheckValue', $htmlOptions, '');
 
-		$hiddenOptions=isset($htmlOptions['id']) ? array('id'=>self::ID_PREFIX.$htmlOptions['id']) : array('id'=>false);
-		$hidden=$unCheck!==null ? self::hiddenField($name,$unCheck,$hiddenOptions) : '';
+		$hiddenOptions = isset($htmlOptions['id']) ? array('id' => self::ID_PREFIX . $htmlOptions['id']) : array('id' => false);
+		$hidden = $unCheck !== null ? self::hiddenField($name, $unCheck, $hiddenOptions) : '';
 
-		return $hidden . self::inlineCheckBoxList($name,$selection,$data,$htmlOptions);
+		return $hidden . self::inlineCheckBoxList($name, $selection, $data, $htmlOptions);
 	}
 
 	/**
@@ -1164,20 +1162,21 @@ EOD;
 	 * @return string the generated radio button list
 	 * @see radioButtonList
 	 */
-	public static function activeInlineRadioButtonList($model,$attribute,$data,$htmlOptions=array())
+	public static function activeInlineRadioButtonList($model, $attribute, $data, $htmlOptions = array())
 	{
-		self::resolveNameID($model,$attribute,$htmlOptions);
-		$selection=self::resolveValue($model,$attribute);
-		if($model->hasErrors($attribute))
+		self::resolveNameID($model, $attribute, $htmlOptions);
+		$selection = self::resolveValue($model, $attribute);
+		if ($model->hasErrors($attribute))
 			self::addErrorCss($htmlOptions);
 		$name = self::popOption('name', $htmlOptions);
 		$unCheck = self::popOption('uncheckValue', $htmlOptions, '');
 
-		$hiddenOptions=isset($htmlOptions['id']) ? array('id'=>self::ID_PREFIX.$htmlOptions['id']) : array('id'=>false);
-		$hidden=$unCheck!==null ? self::hiddenField($name,$unCheck,$hiddenOptions) : '';
+		$hiddenOptions = isset($htmlOptions['id']) ? array('id' => self::ID_PREFIX . $htmlOptions['id']) : array('id' => false);
+		$hidden = $unCheck !== null ? self::hiddenField($name, $unCheck, $hiddenOptions) : '';
 
-		return $hidden . self::inlineRadioButtonList($name,$selection,$data,$htmlOptions);
+		return $hidden . self::inlineRadioButtonList($name, $selection, $data, $htmlOptions);
 	}
+
 	/**
 	 * Generates an input HTML tag for a model attribute.
 	 * This method generates an input HTML tag based on the given data model and attribute.
@@ -1257,8 +1256,8 @@ EOD;
 	 * Extracts the help section of htmlOptions if any. The help option is setup as:
 	 * <code>
 	 *      // ...
-	 * 		'help'=>array('text'=>'This is help text','type'=>'inline')
-	 * 		// ...
+	 *         'help'=>array('text'=>'This is help text','type'=>'inline')
+	 *         // ...
 	 * </code>
 	 * @param $htmlOptions
 	 * @return mixed|string
@@ -1266,11 +1265,11 @@ EOD;
 	public static function getHelp(&$htmlOptions)
 	{
 		$help = self::popOption('help', $htmlOptions);
-		if(null !== $help && is_array($help))
+		if (null !== $help && is_array($help))
 		{
 			$text = self::popOption('text', $help, 'help');
-			$type = self::popOption('type', $help,  self::HELP_TYPE_BLOCK);
-			$help = self::tag('span', array('class'=>'help-'.$type, $text));
+			$type = self::popOption('type', $help, self::HELP_BLOCK);
+			$help = self::tag('span', array('class' => 'help-' . $type, $text));
 		}
 		return $help;
 	}
@@ -1391,7 +1390,7 @@ EOD;
 	 * @param array $htmlOptions additional HTML attributes.
 	 * @return string the generated button.
 	 */
-	public static function button($label, $htmlOptions = array())
+	public static function button($label = 'button', $htmlOptions = array())
 	{
 		return self::btn('button', $label, $htmlOptions);
 	}
@@ -1402,7 +1401,7 @@ EOD;
 	 * @param array $htmlOptions the HTML attributes for the button.
 	 * @return string the generated button.
 	 */
-	public static function linkButton($label, $htmlOptions = array())
+	public static function linkButton($label = 'submit', $htmlOptions = array())
 	{
 		return self::btn('a', $label, $htmlOptions);
 	}
@@ -1582,9 +1581,9 @@ EOD;
 	 * Generates a button group. Example:
 	 *
 	 * <pre>
-	 * 	echo TbHtml::buttonGroup(array(
-	 * 		array('label'=>'testA'),
-	 * 		array('label'=>'testB')
+	 *     echo TbHtml::buttonGroup(array(
+	 *         array('label'=>'testA'),
+	 *         array('label'=>'testB')
 	 * ));
 	 * </pre>
 	 *
@@ -1592,11 +1591,11 @@ EOD;
 	 * @param array $htmlOptions additional HTML options. The following special options are recognized:
 	 * <ul>
 	 * <li>
-	 * 		items: array, the list of buttons to be inserted into the group (see {@link button} function to see available
-	 *  	config options for buttons.
+	 *         items: array, the list of buttons to be inserted into the group (see {@link button} function to see available
+	 *      config options for buttons.
 	 * </li>
 	 * <li>
-	 * 		vertical: string, whether to render the group vertically instead of horizontally.
+	 *         vertical: string, whether to render the group vertically instead of horizontally.
 	 * </li>
 	 * </ul>
 	 *
@@ -1634,17 +1633,17 @@ EOD;
 	/**
 	 * Generates a button toolbar. Example:
 	 *
-	 * echo TbHtml::multipleButtonGroup(array(
-	 * 	array(
-	 * 		'items' => array(
-	 * 			array('label'=>'testA'),
-	 * 			array('label'=>'testB')
-	 * 		)
-	 * 	),
-	 * 	array(
-	 * 		'items' => array(
-	 * 			array('label'=>'testC')
-	 * 		)
+	 * echo TbHtml::buttonToolbar(array(
+	 *     array(
+	 *         'items' => array(
+	 *             array('label'=>'testA'),
+	 *             array('label'=>'testB')
+	 *         )
+	 *     ),
+	 *     array(
+	 *         'items' => array(
+	 *             array('label'=>'testC')
+	 *         )
 	 * )));
 	 *
 	 * @param array $groups the button group configurations.
@@ -1918,8 +1917,7 @@ EOD;
 				echo parent::link($label, parent::normalizeUrl($url));
 				echo parent::tag('span', array('class' => 'divider'), $divider);
 				echo '</li>' . PHP_EOL;
-			}
-			else
+			} else
 				echo parent::tag('li', array('class' => 'active'), $url);
 		}
 		echo '</ul>' . PHP_EOL;
