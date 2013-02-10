@@ -558,7 +558,8 @@ $this->pageTitle = Yii::app()->name;
 	<?php
 	echo TbHtml::inlineRadioButtonList('testB', 0, array('papa' => 'Superman', '4' => 'test'));
 	?>
-	<br/>
+    <br/>
+
     <p><strong>inlineCheckBoxList</strong></p>
 	<?php
 	echo TbHtml::inlineCheckBoxList('testC', 0, array('papa' => 'Superman', '4' => 'test'), array('checkAll' => 'All'));
@@ -582,7 +583,7 @@ $this->pageTitle = Yii::app()->name;
 
 	<?php echo $form->row(TbHtml::INPUT_RADIOBUTTON, $model, 'radioButton');?>
 
-	<?php echo $form->row(TbHtml::INPUT_RADIOBUTTONLIST, $model, 'radioButton',array(), array('papa' => 'Superman', '4' => 'test'));?>
+	<?php echo $form->row(TbHtml::INPUT_RADIOBUTTONLIST, $model, 'radioButton', array(), array('papa' => 'Superman', '4' => 'test'));?>
 
 	<?php echo $form->row(TbHtml::INPUT_CHECKBOXLIST, $model, 'radioButton', array('checkAll' => 'All'), array('papa' => 'Superman', '4' => 'test'));?>
 
@@ -590,29 +591,48 @@ $this->pageTitle = Yii::app()->name;
 </div>
 
 <div class="media-objects">
-	<h5>Media Objects</h5>
+    <h5>Media Objects</h5>
 	<?php
-	echo TbHtml::mediaObject("http://placehold.it/64x64",
-		"Media heading",
-		"Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin commodo. Cras purus
-		odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla.
-		Donec lacinia congue felis in faucibus.", array(
-			'items' => array(
-				array(
-					'image' => "http://placehold.it/64x64",
-					'heading' => "Media heading",
-					'content' => "Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin commodo. Cras purus
-						odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla.
-						Donec lacinia congue felis in faucibus."
-				),
-				array(
-					'image' => "http://placehold.it/64x64",
-					'heading' => "Media heading",
-					'content' => "Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin commodo. Cras purus
-						odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla.
-						Donec lacinia congue felis in faucibus."
+	// media object arrays should be always extracted from DB
+	echo TbHtml::mediaObjects(
+		array(
+			array(
+				'image' => "http://placehold.it/64x64",
+				'heading' => "Media heading",
+				'content' => "Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin commodo. Cras purus
+					odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla.
+					Donec lacinia congue felis in faucibus.",
+				'htmlOptions' => array(
+					'items' => array(
+						array(
+							'image' => "http://placehold.it/64x64",
+							'heading' => "Media heading",
+							'content' => "Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin commodo. Cras purus
+									odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla.
+									Donec lacinia congue felis in faucibus.",
+							'htmlOptions' => array(
+								'items' => array(
+									array(
+										'image' => "http://placehold.it/64x64",
+										'heading' => "Media heading",
+										'content' => "Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin commodo. Cras purus
+												odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla.
+												Donec lacinia congue felis in faucibus."
+									)
+								)
+							)
+						)
+					)
 				)
+			),
+			array(
+				'image' => "http://placehold.it/64x64",
+				'heading' => "Media heading",
+				'content' => "Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin commodo. Cras purus
+					odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla.
+					Donec lacinia congue felis in faucibus."
 			)
-		));
+		)
+	);
 	?>
 </div>

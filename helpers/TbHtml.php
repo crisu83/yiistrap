@@ -2255,6 +2255,35 @@ EOD;
 	// --------------------------------------------------
 
 	/**
+	 * @param array $mediaObjects, media objects with the following configuration options:
+	 * <ul>
+	 *  <li> image: string, url of the image. </li>
+	 *  <li> heading: string, the heading of the content. </li>
+	 *  <li> content: string, content of the image. </li>
+	 *  <li> htmlOptions: array, additional HTML attributes. Factorial attributes see {@link mediaObject}.
+	 * </ul>
+	 *
+	 * @return string
+	 */
+	public static function mediaObjects($mediaObjects)
+	{
+		if($mediaObjects !== null && is_array($mediaObjects))
+		{
+			ob_start();
+			foreach ($mediaObjects as $mediaObjectOptions)
+			{
+				$itemImageUrl = self::getOption('image', $mediaObjectOptions, '#');
+				$itemHeading = self::getOption('heading', $mediaObjectOptions, '');
+				$itemContent = self::getOption('content', $mediaObjectOptions, '');
+				$itemOptions = self::getOption('htmlOptions', $mediaObjectOptions, array());
+				echo self::mediaObject($itemImageUrl, $itemHeading, $itemContent, $itemOptions);
+			}
+			return ob_get_clean();
+		}
+		return '';
+	}
+
+	/**
 	 * Renders a media object. Factorial.
 	 * @param $image string the header of the media object
 	 * @param $title
@@ -2280,7 +2309,7 @@ EOD;
 	 *         <li> image: string, url of the image. </li>
 	 *         <li> heading: string, the heading of the content. </li>
 	 *         <li> content: string, content of the image. </li>
-	 *         <li> htmlOptions: arrary, additional HTML attributes. Factorial attributes see above.
+	 *         <li> htmlOptions: array, additional HTML attributes. Factorial attributes see above.
 	 *      </ul>
 	 * </li>
 	 * </ul>
@@ -2300,35 +2329,29 @@ EOD;
 		$contentOptions = self::addClassName('media-body', $contentOptions);
 		$headingOptions = self::addClassName('media-heading', $headingOptions);
 
-		// items
-		$items = self::popOption('items', $htmlOptions);
+		// do we have any children?
+		$children= self::popOption('items', $htmlOptions);
 
 		ob_start();
 
-		echo parent::openTag('div', self::addClassName('media', $htmlOptions));
+		echo parent::openTag('div', self::addClassName('media', $htmlOptions)); // media
 
 		echo parent::link(
 			parent::image($imageUrl, self::popOption('alt', $imageOptions, ''), $imageOptions),
 			self::popOption('href', $urlOptions, '#'),
 			$urlOptions);
 
-		echo parent::openTag('div', $contentOptions);
+		echo parent::openTag('div', $contentOptions); // media-body
 
+		// render heading
 		echo parent::tag('h4', $headingOptions, $heading);
 
+		// render content
 		echo $content;
 
-		if ($items !== null && is_array($items))
-		{
-			foreach ($items as $itemOptions)
-			{
-				$itemImageUrl = self::getOption('image', $itemOptions, '#');
-				$itemHeading = self::getOption('heading', $itemOptions, '');
-				$itemContent = self::getOption('content', $itemOptions, '');
-				$itemOptions = self::getOption('htmlOptions', $itemOptions, array());
-				echo self::mediaObject($itemImageUrl, $itemHeading, $itemContent, $itemOptions);
-			}
-		}
+		// render children
+		echo self::mediaObjects($children);
+
 		echo '</div>'; // media-body
 		echo '</div>'; // media
 
