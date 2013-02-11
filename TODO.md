@@ -10,10 +10,10 @@ TODO
 ### Low prio
 
  - tabs (@tonydspaniard) / to be reviewed
- - grid view (@Crisu83)
+ - grid view (@tonydspaniard) / work in progress
  - detail view (@Crisu83)
  - modal (@tonydspaniard) / to be reviewed
- - typeahead (@tonydspaniard) / work in progress
+ - typeahead (@tonydspaniard) / to be reviewed
 
 ## Helpers
 
