@@ -9,11 +9,11 @@ TODO
 
 ### Low prio
 
- - tabs (@tonydspaniard) - work in progress
+ - tabs (@tonydspaniard) / to be reviewed
  - grid view (@Crisu83)
  - detail view (@Crisu83)
  - modal (@tonydspaniard) / to be reviewed
- - typeahead (?)
+ - typeahead (@tonydspaniard) / work in progress
 
 ## Helpers
 
