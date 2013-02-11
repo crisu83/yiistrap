@@ -9,7 +9,7 @@ TODO
 
 ### Low prio
 
- - tabs (@Crisu83)
+ - tabs (@tonydspaniard) - work in progress
  - grid view (@Crisu83)
  - detail view (@Crisu83)
  - modal (@tonydspaniard) / to be reviewed
