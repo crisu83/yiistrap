@@ -12,11 +12,11 @@ TODO
  - tabs (@Crisu83)
  - grid view (@Crisu83)
  - detail view (@Crisu83)
- - modal (@tonydspaniard) - work in progress
+ - modal (@tonydspaniard) / to be reviewed
  - typeahead (?)
 
 ## Helpers
 
 ## Other
 
- -
+ - implement bootstrap version of jquery.yiiactiveform.js
