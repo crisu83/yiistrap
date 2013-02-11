@@ -1758,6 +1758,28 @@ EOD;
 	// --------------------------------------------------
 
 	/**
+	 * Generates a tab navigation.
+	 * @param array $items the menu items.
+	 * @param array $htmlOptions additional HTML attributes.
+	 * @return string the generated menu.
+	 */
+	public static function tabs($items, $htmlOptions = array())
+	{
+		return self::nav(self::NAV_TABS, $items, $htmlOptions);
+	}
+
+	/**
+	 * Generates a pills navigation.
+	 * @param array $items the menu items.
+	 * @param array $htmlOptions additional HTML attributes.
+	 * @return string the generated menu.
+	 */
+	public static function pills($items, $htmlOptions = array())
+	{
+		return self::nav(self::NAV_PILLS, $items, $htmlOptions);
+	}
+
+	/**
 	 * Generates a navigation menu.
 	 * @param string $style the menu style.
 	 * @param array $items the menu items.
