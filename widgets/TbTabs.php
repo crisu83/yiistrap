@@ -251,6 +251,7 @@ class TbTabs extends CWidget
 	{
 		/** @var TbApi $api */
 		$api = Yii::app()->getComponent('bootstrap');
+
 		/** @var CClientScript $cs */
 		$cs = Yii::app()->getClientScript();
 

@@ -7,7 +7,7 @@ $this->pageTitle = Yii::app()->name;
 <h1>Yiistrap
     <small>Twitter Bootstrap for Yii</small>
 </h1>
-
+<div class="clearfix"></div>
 <div class="buttons">
     <h3>Buttons</h3>
 
@@ -60,7 +60,7 @@ $this->pageTitle = Yii::app()->name;
 		<?php echo TbHtml::linkButton('Link', array('disabled' => true, 'size' => 'large')); ?>
     </div>
 </div>
-
+<div class="clearfix"></div>
 <div class="button-groups">
     <h3>Button groups</h3>
 
@@ -107,7 +107,7 @@ $this->pageTitle = Yii::app()->name;
     </div>
 
 </div>
-
+<div class="clearfix"></div>
 <div class="button-dropdowns">
     <h3>Button dropdowns</h3>
 
@@ -143,7 +143,7 @@ $this->pageTitle = Yii::app()->name;
 		<?php echo TbHtml::buttonDropdown('Action', $dropdownConfig, array('style' => 'inverse', 'split' => true)); ?>
     </div>
 </div>
-
+<div class="clearfix"></div>
 <div class="images">
     <h3>Images</h3>
 
@@ -162,7 +162,7 @@ $this->pageTitle = Yii::app()->name;
         </div>
     </div>
 </div>
-
+<div class="clearfix"></div>
 <div class="navs">
 	<?php $navItems = array(
 	array('icon' => 'home', 'url' => array('/site/index')),
@@ -302,7 +302,7 @@ $this->pageTitle = Yii::app()->name;
 )); ?>
 
 </div>
-
+<div class="clearfix"></div>
 <div class="labels-badges">
     <h3>Labels and badges</h3>
 
@@ -328,7 +328,7 @@ $this->pageTitle = Yii::app()->name;
 		<?php echo TbHtml::badge('10', array('style' => 'inverse')); ?>
     </div>
 </div>
-
+<div class="clearfix"></div>
 <div class="typography">
     <h3>Typography</h3>
 
@@ -380,7 +380,7 @@ $this->pageTitle = Yii::app()->name;
 
     <h3>Media objects</h3>
 </div>
-
+<div class="clearfix"></div>
 <div class="alerts">
     <h3>Alerts</h3>
 
@@ -404,7 +404,7 @@ $this->pageTitle = Yii::app()->name;
 )); ?>
 
 </div>
-
+<div class="clearfix"></div>
 <div class="progressbars">
     <h3>Progress bars</h3>
 
@@ -443,7 +443,7 @@ $this->pageTitle = Yii::app()->name;
 	<?php echo TbHtml::stripedProgressBar(80, array('style' => 'danger')); ?>
 
 </div>
-
+<div class="clearfix"></div>
 <div class="tooltips">
     <h3>Tooltips</h3>
 
@@ -471,7 +471,7 @@ $this->pageTitle = Yii::app()->name;
 	<?php echo TbHtml::popover('Popover on left', 'Popover on left', 'Vivamus sagittis lacus vel augue laoreet rutrum faucibus.', array('class' => 'btn', 'placement' => 'left', 'onclick' => 'return false;')); ?>
 
 </div>
-
+<div class="clearfix"></div>
 <div class="carousels">
     <h3>Carousel</h3>
 
@@ -493,7 +493,7 @@ $this->pageTitle = Yii::app()->name;
 	),
 ), array('style' => 'width: 660px;')); ?>
 </div>
-
+<div class="clearfix"></div>
 <div class="search-forms">
     <h3>Forms</h3>
 
@@ -589,7 +589,7 @@ $this->pageTitle = Yii::app()->name;
 
 	<?php $this->endWidget();?>
 </div>
-
+<div class="clearfix"></div>
 <div class="media-objects">
     <h5>Media Objects</h5>
 	<?php
@@ -636,7 +636,7 @@ $this->pageTitle = Yii::app()->name;
 	);
 	?>
 </div>
-
+<div class="clearfix"></div>
 <div class="modals">
     <h5>Modals</h5>
 	<strong>Display with button to load modal automatically</strong>
@@ -691,6 +691,7 @@ $this->widget('bootstrap.widgets.TbModal', array(
 		</pre>
 	</div>
 </div>
+<div class="clearfix"></div>
 <div id="tabs">
 	<h5>Tabs Left <small>Change configuration for testing</small></h5>
 	<?php
@@ -707,5 +708,23 @@ $this->widget('bootstrap.widgets.TbModal', array(
 		),
 		'onShown' => 'js:function(e){console.log(e.target, e.relatedTarget);}'
 	));
+	?>
+</div>
+<div class="clearfix"></div>
+<div id="typeahead">
+	<h5>Typeahead plugin <small>accepts bootstrap options</small></h5>
+	<?php
+		$this->widget('bootstrap.widgets.TbTypeAhead', array(
+			'name' => 'typeahead-test',
+			'htmlOptions' => array('prepend'=>TbHtml::icon(TbIcon::ICON_GLOBE), 'placeholder'=>'Write an USA country'),
+			'source' => array(
+				"Alabama","Alaska","Arizona","Arkansas","California","Colorado","Connecticut","Delaware","Florida",
+				"Georgia","Hawaii","Idaho","Illinois","Indiana","Iowa","Kansas","Kentucky","Louisiana","Maine",
+				"Maryland","Massachusetts","Michigan","Minnesota","Mississippi","Missouri","Montana","Nebraska",
+				"Nevada","New Hampshire","New Jersey","New Mexico","New York","North Dakota","North Carolina","Ohio",
+				"Oklahoma","Oregon","Pennsylvania","Rhode Island","South Carolina","South Dakota","Tennessee","Texas",
+				"Utah","Vermont","Virginia","Washington","West Virginia","Wisconsin","Wyoming"),
+
+		));
 	?>
 </div>
