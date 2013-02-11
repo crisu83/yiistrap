@@ -120,7 +120,6 @@ class TbModal extends CWidget
 
 		$this->initOptions();
 		$this->initEvents();
-
 	}
 
 	/**

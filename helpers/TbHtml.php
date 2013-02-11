@@ -46,11 +46,18 @@ class TbHtml extends CHtml
 	const PROGRESS_STRIPED = 'striped';
 	const PROGRESS_ACTIVE = 'active';
 
-	// Tooltip placements.
+	// Tooltip placements
 	const PLACEMENT_TOP = 'top';
 	const PLACEMENT_BOTTOM = 'bottom';
 	const PLACEMENT_LEFT = 'left';
 	const PLACEMENT_RIGHT = 'right';
+
+	// Tabs placements
+	const TABS_TOP = 'top';
+	const TABS_BELLOW = 'bellow';
+	const TABS_LEFT = 'left';
+	const TABS_RIGHT = 'right';
+
 
 	// Tooltip triggers.
 	const TRIGGER_CLICK = 'click';
@@ -114,6 +121,7 @@ class TbHtml extends CHtml
 	static $alertStyles = array(self::STYLE_SUCCESS, self::STYLE_INFO, self::STYLE_WARNING, self::STYLE_ERROR);
 	static $progressStyles = array(self::STYLE_INFO, self::STYLE_SUCCESS, self::STYLE_WARNING, self::STYLE_DANGER);
 	static $placements = array(self::PLACEMENT_TOP, self::PLACEMENT_BOTTOM, self::PLACEMENT_LEFT, self::PLACEMENT_RIGHT);
+	static $tabPlacements = array(self::TABS_TOP, self::TABS_BELLOW, self::TABS_LEFT, self::TABS_RIGHT);
 	static $triggers = array(self::TRIGGER_CLICK, self::TRIGGER_HOVER, self::TRIGGER_FOCUS, self::TRIGGER_MANUAL);
 	static $addons = array(self::ADDON_PREPEND, self::ADDON_APPEND);
 
