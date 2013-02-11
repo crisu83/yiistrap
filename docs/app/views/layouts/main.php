@@ -6,7 +6,9 @@
 	<meta name="language" content="en" />
 	<title><?php echo CHtml::encode($this->pageTitle); ?></title>
     <?php Yii::app()->bootstrap->register(); ?>
-	<?php Yii::app()->less->register(); ?>
+
+	<?php /* todo: something is wrong with the extension, is continuously making calls and re-registering files over and over */ ?>
+	<?php //Yii::app()->less->register(); ?>
 </head>
 
 <body>

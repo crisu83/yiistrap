@@ -636,3 +636,58 @@ $this->pageTitle = Yii::app()->name;
 	);
 	?>
 </div>
+
+<div class="modals">
+    <h5>Modals</h5>
+	<strong>Display with button to load modal automatically</strong>
+	<div>
+	<?php
+		$this->widget('bootstrap.widgets.TbModal', array(
+			'id' => 'sample-modal-1',
+			'buttonOptions' => array('label'=>'show modal', 'class' => 'btn-primary btn-large'),
+			'header' => '<h3>Bootstrap Modal</h3>',
+			'content' => '<p>This is the modal content</p>',
+			'footer' => TbHtml::button('Close', array('data-dismiss'=>'modal')),
+			'onShow' => 'js:function(){console.log("show event!");}',
+			'onShown' => 'js:function(){console.log("shown event!");}',
+			'onHide' => 'js:function(){console.log("hide event!");}',
+			'onHidden' => 'js:function(){console.log("hidden event!");}',
+		));
+	?>
+    </div>
+    <strong>Remote Content</strong>
+	<p><span class="label label-important">Not working on my computer with <strong>showScriptName=>true</strong></span>,
+	please, review the issues with the app structure.</p>
+    <div>
+		<?php
+		$this->widget('bootstrap.widgets.TbModal', array(
+			'id' => 'sample-modal-2',
+			'remote' => array('/site/testRemote'),
+			'buttonOptions' => array('label'=>'show modal with remote content', 'class' => 'btn-primary btn-large'),
+			'header' => '<h3>Bootstrap Modal</h3>',
+			'footer' => TbHtml::button('Close', array('data-dismiss'=>'modal')),
+			'onShow' => 'js:function(){console.log("show event!");}',
+			'onShown' => 'js:function(){console.log("shown event!");}',
+			'onHide' => 'js:function(){console.log("hide event!");}',
+			'onHidden' => 'js:function(){console.log("hidden event!");}',
+		));
+		?>
+    </div>
+
+	<strong>Displaying the markup only (for its use with other plugins)</strong>
+	<div>
+		<pre>
+<?php
+ob_start();
+$this->widget('bootstrap.widgets.TbModal', array(
+	'show' => false,
+	'id' => 'sample-modal-3',
+	'header' => '<h3>Bootstrap Modal</h3>',
+	'content' => '<p>This is the modal content</p>',
+	'footer' => TbHtml::button('Close', array('data-dismiss'=>'modal')),
+));
+			echo CHtml::encode(ob_get_clean());
+			?>
+		</pre>
+	</div>
+</div>

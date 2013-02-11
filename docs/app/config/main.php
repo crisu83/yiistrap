@@ -59,6 +59,7 @@ return array(
 		'urlManager' => array(
 			'urlFormat' => 'path',
 			'showScriptName' => false,
+			'caseSensitive'=>false,
 			'rules' => $params['urlManager.rules'],
 		),
 		'user' => array(

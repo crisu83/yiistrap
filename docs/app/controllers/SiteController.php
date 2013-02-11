@@ -122,4 +122,9 @@ class SiteController extends Controller
             Yii::app()->user->setState('__locale', $locale);
         $this->redirect(array('index', 'language'=>$locale));
     }
+
+	public function actionTestRemote()
+	{
+		echo '<p>AJAX content!</p>';
+	}
 }
