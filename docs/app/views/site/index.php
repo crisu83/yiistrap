@@ -752,10 +752,29 @@ $this->widget('bootstrap.widgets.TbModal', array(
 	);
 
 	$this->widget('bootstrap.widgets.TbGridView', array(
-		'type' => array(TbHtml::GRID_BORDERED, TbHtml::GRID_STRIPED),
+		'type' => array(TbHtml::GRID_CONDENSED, TbHtml::GRID_STRIPED),
 		'dataProvider'=>$gridDataProvider,
 		'template'=>"{items}{pager}",
 		'columns'=>$gridColumns,
+	));
+	?>
+</div>
+<div id="detailView">
+    <h5>EditView</h5>
+	<?php
+	$person = new Person();
+	$person->firstName = 'Antonio';
+	$person->lastName = 'Ramirez';
+	$person->hours = 40;
+
+	$this->widget('bootstrap.widgets.TbDetailView', array(
+		'type' => array(TbHtml::GRID_BORDERED, TbHtml::GRID_STRIPED),
+		'data'=> $person,
+		'attributes'=> array(
+			'firstName',
+			'lastName',
+			'hours'
+		)
 	));
 	?>
 </div>

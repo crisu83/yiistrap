@@ -32,7 +32,7 @@ class TbGridView extends CGridView
 	 * @var array the configuration for the pager.
 	 * Defaults to <code>array('class'=>'ext.bootstrap.widgets.TbPager')</code>.
 	 */
-	public $pager = array('class'=>'bootstrap.widgets.TbPager');
+	public $pager = array('class' => 'bootstrap.widgets.TbPager');
 
 	/**
 	 * @var string the URL of the CSS file used by this grid view.
@@ -49,29 +49,19 @@ class TbGridView extends CGridView
 
 		$classes = array('table');
 
-		if (isset($this->type))
+		if (isset($this->type) && !empty($this->type))
 		{
 			if (is_string($this->type))
 				$this->type = explode(' ', $this->type);
 
-			if (!empty($this->type))
+			foreach ($this->type as $type)
 			{
-				foreach ($this->type as $type)
-				{
-					if (in_array($type, TbHtml::$grids))
-						$classes[] = 'table-'.$type;
-				}
+				if (in_array($type, TbHtml::$grids))
+					$classes[] = 'table-' . $type;
 			}
 		}
 
-		if (!empty($classes))
-		{
-			$classes = implode(' ', $classes);
-			if (isset($this->itemsCssClass))
-				$this->itemsCssClass .= ' '.$classes;
-			else
-				$this->itemsCssClass = $classes;
-		}
+		$this->htmlOptions = TbHtml::addClassName(implode(' ', $classes), $this->htmlOptions);
 	}
 
 	/**
