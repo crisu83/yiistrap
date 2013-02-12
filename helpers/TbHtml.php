@@ -98,6 +98,12 @@ class TbHtml extends CHtml
 	const INPUT_CHECKBOXLIST = 'inlineCheckBoxList';
 	const INPUT_RADIOBUTTONLIST = 'inlineRadioButtonList';
 
+	// grid types
+	const GRID_STRIPED = 'striped';
+	const GRID_BORDERED = 'bordered';
+	const GRID_CONDENSED = 'condensed';
+	const GRID_HOVER = 'hover';
+
 	// Scope constants.
 	static $inputs = array(self::INPUT_CHECKBOX, self::INPUT_CHECKBOXLIST, self::INPUT_DATE,
 		self::INPUT_DROPDOWN, self::INPUT_EMAIL, self::INPUT_FILE, self::INPUT_LISTBOX,
@@ -124,6 +130,7 @@ class TbHtml extends CHtml
 	static $tabPlacements = array(self::TABS_TOP, self::TABS_BELLOW, self::TABS_LEFT, self::TABS_RIGHT);
 	static $triggers = array(self::TRIGGER_CLICK, self::TRIGGER_HOVER, self::TRIGGER_FOCUS, self::TRIGGER_MANUAL);
 	static $addons = array(self::ADDON_PREPEND, self::ADDON_APPEND);
+	static $grids = array(self::GRID_BORDERED, self::GRID_CONDENSED, self::GRID_HOVER, self::GRID_STRIPED);
 
 	private static $_counter = 0;
 

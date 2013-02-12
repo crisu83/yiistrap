@@ -728,3 +728,34 @@ $this->widget('bootstrap.widgets.TbModal', array(
 		));
 	?>
 </div>
+
+<div class="clearfix"></div>
+<div id="grid">
+    <h5>GridView</h5>
+	<?php
+	$gridDataProvider = Person::getGridDataProvider();
+
+// $gridColumns
+	$gridColumns = array(
+		array('name'=>'id', 'header'=>'#', 'htmlOptions'=>array('style'=>'width: 60px')),
+		array('name'=>'firstName', 'header'=>'First name'),
+		array('name'=>'lastName', 'header'=>'Last name'),
+		array('name'=>'language', 'header'=>'Language'),
+		array('name'=>'hours', 'header'=>'Hours worked'),
+		array(
+			'htmlOptions' => array('nowrap'=>'nowrap'),
+			'class'=>'bootstrap.widgets.TbButtonColumn',
+			'viewButtonUrl'=>null,
+			'updateButtonUrl'=>null,
+			'deleteButtonUrl'=>null,
+		)
+	);
+
+	$this->widget('bootstrap.widgets.TbGridView', array(
+		'type' => array(TbHtml::GRID_BORDERED, TbHtml::GRID_STRIPED),
+		'dataProvider'=>$gridDataProvider,
+		'template'=>"{items}{pager}",
+		'columns'=>$gridColumns,
+	));
+	?>
+</div>
