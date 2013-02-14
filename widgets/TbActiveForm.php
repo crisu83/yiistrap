@@ -7,6 +7,8 @@
  * @package bootstrap.widgets
  */
 
+Yii::import('bootstrap.helpers.TbHtml');
+
 /**
  * Class TbActiveForm
  */

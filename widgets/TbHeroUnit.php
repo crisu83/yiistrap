@@ -7,6 +7,8 @@
  * @package bootstrap.widgets
  */
 
+Yii::import('bootstrap.helpers.TbHtml');
+
 /**
  * Bootstrap hero unit widget.
  * @see http://twitter.github.com/bootstrap/javascript.html#affix

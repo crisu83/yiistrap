@@ -8,6 +8,7 @@
  * @package bootstrap.widgets
  */
 
+Yii::import('bootstrap.helpers.TbHtml');
 Yii::import('zii.widgets.grid.CButtonColumn');
 
 /**

@@ -7,6 +7,7 @@
  * @package bootstrap.widgets
  */
 
+Yii::import('bootstrap.helpers.TbHtml');
 Yii::import('bootstrap.components.TbApi');
 
 /**

@@ -7,6 +7,8 @@
  * @license http://www.opensource.org/licenses/bsd-license.php New BSD License
  * @package bootstrap.widgets
  */
+
+Yii::import('bootstrap.helpers.TbHtml');
 Yii::import('zii.widgets.grid.CDataColumn');
 
 /**
