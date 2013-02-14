@@ -7,14 +7,28 @@
  * @package bootstrap.widgets
  */
 
+/**
+ * Class TbActiveForm
+ */
 class TbActiveForm extends CActiveForm
 {
+	/**
+	 * @var string the form type.
+	 * Valid values are TbHtml::FORM_HORIZONTAL, TbHtml::FORM_INLINE and TbHtml::FORM_VERTICAL.
+	 */
 	public $type;
-
+	/**
+	 * @var string the help type. Valid values are TbHtml::HELP_INLINE and TbHtml::HELP_BLOCK.
+	 */
 	public $helpType;
-
+	/**
+	 * @var string the CSS class name for error messages.
+	 */
 	public $errorMessageCssClass = TbHtml::STYLE_ERROR;
 
+	/**
+	 * Initializes the widget.
+	 */
 	public function init()
 	{
 		if (!in_array($this->type, array(TbHtml::FORM_HORIZONTAL, TbHtml::FORM_INLINE, TbHtml::FORM_VERTICAL)))

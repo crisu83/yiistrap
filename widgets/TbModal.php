@@ -6,7 +6,13 @@
  * @license http://www.opensource.org/licenses/bsd-license.php New BSD License
  * @package bootstrap.widgets
  */
-class TbModal extends CWidget
+
+Yii::import('bootstrap.widgets.TbWidget');
+
+/**
+ * Class TbModal
+ */
+class TbModal extends TbWidget
 {
 
 	/**
@@ -241,19 +247,14 @@ class TbModal extends CWidget
 	 */
 	public function registerClientScript()
 	{
-		/** @var TbApi $api */
-		$api = Yii::app()->getComponent('bootstrap');
-
 		$selector = '#' . $this->htmlOptions['id'];
 
 		// do we render a button? If so, bootstrap will handle its behavior through its
 		// mark-up, otherwise, register the plugin.
 		if(empty($this->buttonOptions))
-		{
-			$api->registerPlugin($api::PLUGIN_MODAL, $selector, $this->options);
-		}
+			$this->registerPlugin(TbApi::PLUGIN_MODAL, $selector, $this->options);
 
-		$api->registerEvents($selector, $this->events);
+		$this->registerEvents($selector, $this->events);
 	}
 
 }

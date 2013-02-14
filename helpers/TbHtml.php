@@ -2287,114 +2287,6 @@ EOD;
 		return ob_get_clean();
 	}
 
-	// Media Object
-	// http://twitter.github.com/bootstrap/components.html#media
-	// --------------------------------------------------
-
-	/**
-	 * @param array $mediaObjects, media objects with the following configuration options:
-	 * <ul>
-	 *  <li> image: string, url of the image. </li>
-	 *  <li> heading: string, the heading of the content. </li>
-	 *  <li> content: string, content of the image. </li>
-	 *  <li> htmlOptions: array, additional HTML attributes. Factorial attributes see {@link mediaObject}.
-	 * </ul>
-	 *
-	 * @return string
-	 */
-	public static function mediaObjects($mediaObjects)
-	{
-		if($mediaObjects !== null && is_array($mediaObjects))
-		{
-			ob_start();
-			foreach ($mediaObjects as $mediaObjectOptions)
-			{
-				$itemImageUrl = self::getOption('image', $mediaObjectOptions, '#');
-				$itemHeading = self::getOption('heading', $mediaObjectOptions, '');
-				$itemContent = self::getOption('content', $mediaObjectOptions, '');
-				$itemOptions = self::getOption('htmlOptions', $mediaObjectOptions, array());
-				echo self::mediaObject($itemImageUrl, $itemHeading, $itemContent, $itemOptions);
-			}
-			return ob_get_clean();
-		}
-		return '';
-	}
-
-	/**
-	 * Renders a media object. Factorial.
-	 * @param $image string the header of the media object
-	 * @param $title
-	 * @param $content
-	 * @param array $htmlOptions additional HTML attributes. The following special attributes are supported:
-	 * <ul>
-	 * 	<li> urlOptions: array(), additional HTML attributes for the url of the media-object header image. The following
-	 *       special attributes are supported:
-	 *      <ul>
-	 * 			<li> href: the url of the link </li>
-	 * 		</ul>
-	 *  </li>
-	 *  <li> imageOptions: array(), additional HTML attributes for the image of the media-object header. The following
-	 *  	 special attributes are supported:
-	 *       <ul>
-	 * 			<li> alt: the alt of the image </li>
-	 * 		 </ul>
-	 *  </li>
-	 *  <li> contentOptions: array(), additional HTML attributes for the media-body content. </li>
-	 *  <li> headingOptions: array(), additional HTML attributes for the heading content. </li>
-	 *  <li> items: array(), nested media object (childrens) with the following configuration options:
-	 *       <ul>
-	 *         <li> image: string, url of the image. </li>
-	 *         <li> heading: string, the heading of the content. </li>
-	 *         <li> content: string, content of the image. </li>
-	 *         <li> htmlOptions: array, additional HTML attributes. Factorial attributes see above.
-	 *      </ul>
-	 * </li>
-	 * </ul>
-	 * @return string
-	 */
-	public static function mediaObject($imageUrl, $heading, $content, $htmlOptions = array())
-	{
-		// extract supported options - brainstorm for better approach --
-		$urlOptions = self::popOption('urlOptions', $htmlOptions, array());
-		$imageOptions = self::popOption('imageOptions', $htmlOptions, array());
-		$contentOptions = self::popOption('contentOptions', $htmlOptions, array());
-		$headingOptions = self::popOption('headingOptions', $htmlOptions, array());
-
-		// add required classes
-		$urlOptions = self::defaultOption('class', 'pull-left', $urlOptions);
-		$imageOptions = self::addClassName('media-object', $imageOptions);
-		$contentOptions = self::addClassName('media-body', $contentOptions);
-		$headingOptions = self::addClassName('media-heading', $headingOptions);
-
-		// do we have any children?
-		$children= self::popOption('items', $htmlOptions);
-
-		ob_start();
-
-		echo parent::openTag('div', self::addClassName('media', $htmlOptions)); // media
-
-		echo parent::link(
-			parent::image($imageUrl, self::popOption('alt', $imageOptions, ''), $imageOptions),
-			self::popOption('href', $urlOptions, '#'),
-			$urlOptions);
-
-		echo parent::openTag('div', $contentOptions); // media-body
-
-		// render heading
-		echo parent::tag('h4', $headingOptions, $heading);
-
-		// render content
-		echo $content;
-
-		// render children
-		echo self::mediaObjects($children);
-
-		echo '</div>'; // media-body
-		echo '</div>'; // media
-
-		return ob_get_clean();
-	}
-
 	// Alerts
 	// http://twitter.github.com/bootstrap/components.html#alerts
 	// --------------------------------------------------
@@ -2538,7 +2430,109 @@ EOD;
 	// http://twitter.github.com/bootstrap/components.html#media
 	// --------------------------------------------------
 
-	// todo: create media object methods here.
+	/**
+	 * Generates a list of media objects.
+	 * @param array $mediaObjects, media objects with the following configuration options:
+	 * <ul>
+	 *  <li> image: string, url of the image. </li>
+	 *  <li> heading: string, the heading of the content. </li>
+	 *  <li> content: string, content of the image. </li>
+	 *  <li> htmlOptions: array, additional HTML attributes. Factorial attributes see {@link mediaObject}.
+	 * </ul>
+	 * @return string generated list.
+	 */
+	public static function mediaObjects($mediaObjects)
+	{
+		if($mediaObjects !== null && is_array($mediaObjects))
+		{
+			ob_start();
+			foreach ($mediaObjects as $mediaObjectOptions)
+			{
+				$itemImageUrl = self::getOption('image', $mediaObjectOptions, '#');
+				$itemHeading = self::getOption('heading', $mediaObjectOptions, '');
+				$itemContent = self::getOption('content', $mediaObjectOptions, '');
+				$itemOptions = self::getOption('htmlOptions', $mediaObjectOptions, array());
+				echo self::mediaObject($itemImageUrl, $itemHeading, $itemContent, $itemOptions);
+			}
+			return ob_get_clean();
+		}
+		return '';
+	}
+
+	/**
+	 * Generates a single media object. Factorial.
+	 * @param $image string the header of the media object
+	 * @param $title
+	 * @param $content
+	 * @param array $htmlOptions additional HTML attributes. The following special attributes are supported:
+	 * <ul>
+	 * 	<li> urlOptions: array(), additional HTML attributes for the url of the media-object header image. The following
+	 *       special attributes are supported:
+	 *      <ul>
+	 * 			<li> href: the url of the link </li>
+	 * 		</ul>
+	 *  </li>
+	 *  <li> imageOptions: array(), additional HTML attributes for the image of the media-object header. The following
+	 *  	 special attributes are supported:
+	 *       <ul>
+	 * 			<li> alt: the alt of the image </li>
+	 * 		 </ul>
+	 *  </li>
+	 *  <li> contentOptions: array(), additional HTML attributes for the media-body content. </li>
+	 *  <li> headingOptions: array(), additional HTML attributes for the heading content. </li>
+	 *  <li> items: array(), nested media object (childrens) with the following configuration options:
+	 *       <ul>
+	 *         <li> image: string, url of the image. </li>
+	 *         <li> heading: string, the heading of the content. </li>
+	 *         <li> content: string, content of the image. </li>
+	 *         <li> htmlOptions: array, additional HTML attributes. Factorial attributes see above.
+	 *      </ul>
+	 * </li>
+	 * </ul>
+	 * @return string
+	 */
+	public static function mediaObject($imageUrl, $heading, $content, $htmlOptions = array())
+	{
+		// extract supported options - brainstorm for better approach --
+		$urlOptions = self::popOption('urlOptions', $htmlOptions, array());
+		$imageOptions = self::popOption('imageOptions', $htmlOptions, array());
+		$contentOptions = self::popOption('contentOptions', $htmlOptions, array());
+		$headingOptions = self::popOption('headingOptions', $htmlOptions, array());
+
+		// add required classes
+		$urlOptions = self::defaultOption('class', 'pull-left', $urlOptions);
+		$imageOptions = self::addClassName('media-object', $imageOptions);
+		$contentOptions = self::addClassName('media-body', $contentOptions);
+		$headingOptions = self::addClassName('media-heading', $headingOptions);
+
+		// do we have any children?
+		$children= self::popOption('items', $htmlOptions);
+
+		ob_start();
+
+		echo parent::openTag('div', self::addClassName('media', $htmlOptions)); // media
+
+		echo parent::link(
+			parent::image($imageUrl, self::popOption('alt', $imageOptions, ''), $imageOptions),
+			self::popOption('href', $urlOptions, '#'),
+			$urlOptions);
+
+		echo parent::openTag('div', $contentOptions); // media-body
+
+		// render heading
+		echo parent::tag('h4', $headingOptions, $heading);
+
+		// render content
+		echo $content;
+
+		// render children
+		echo self::mediaObjects($children);
+
+		echo '</div>'; // media-body
+		echo '</div>'; // media
+
+		return ob_get_clean();
+	}
 
 	// Misc
 	// http://twitter.github.com/bootstrap/components.html#misc

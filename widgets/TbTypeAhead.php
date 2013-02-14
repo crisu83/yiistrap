@@ -6,6 +6,10 @@
  * @license http://www.opensource.org/licenses/bsd-license.php New BSD License
  * @package bootstrap.widgets
  */
+
+/**
+ * Class TbTypeAhead
+ */
 class TbTypeAhead extends CInputWidget
 {
 	/**
@@ -123,9 +127,7 @@ class TbTypeAhead extends CInputWidget
 	{
 		/** @var TbApi $api */
 		$api = Yii::app()->getComponent('bootstrap');
-
 		$selector = '#'.TbHtml::getOption('id', $this->htmlOptions, $this->getId());
-
 		$api->registerPlugin(TbApi::PLUGIN_TYPEAHEAD, $selector, $this->pluginOptions);
 	}
 }

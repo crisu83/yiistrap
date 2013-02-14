@@ -6,12 +6,16 @@
  * @license http://www.opensource.org/licenses/bsd-license.php New BSD License
  * @package bootstrap.widgets
  */
-class TbTabs extends CWidget
+
+Yii::import('bootstrap.widgets.TbWidget');
+
+/**
+ * Class TbTabs
+ */
+class TbTabs extends TbWidget
 {
 	/**
-	 * Additional data submitted to the views
-	 *
-	 * @var array
+	 * @var array Additional data submitted to the views
 	 */
 	public $viewData;
 
@@ -123,7 +127,7 @@ class TbTabs extends CWidget
 	/**
 	 * Renders the
 	 * @param string $navigation the menu tabs
-	 * @param $content the tabs contents
+	 * @param string $content the tabs contents
 	 */
 	public function renderTabs($navigation, $content)
 	{
@@ -249,16 +253,8 @@ class TbTabs extends CWidget
 	 */
 	public function registerClientScript()
 	{
-		/** @var TbApi $api */
-		$api = Yii::app()->getComponent('bootstrap');
-
-		/** @var CClientScript $cs */
-		$cs = Yii::app()->getClientScript();
-
 		$selector = '#' . $this->htmlOptions['id'];
-
-		$cs->registerScript(__CLASS__.$selector, "jQuery('{$selector}').tab('show');");
-
-		$api->registerEvents($selector, $this->events);
+		Yii::app()->clientScript->registerScript(__CLASS__.$selector, "jQuery('{$selector}').tab('show');");
+		$this->registerEvents($selector, $this->events);
 	}
 }
