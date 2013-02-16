@@ -679,10 +679,12 @@ class TbActiveForm extends CActiveForm
 			? array($model, $attribute, $data, $htmlOptions)
 			: array($model, $attribute, $htmlOptions);
 
-		echo $this->wrapControl(call_user_func_array('TbHtml::active' . ucfirst($type), $params)); /* since PHP 5.3 */
+		$errorSpan = $this->error($model, $attribute, $errorOptions);
 
-		if ($this->type != TbHtml::FORM_INLINE && TbHtml::popOption('error', $htmlOptions, true))
-			echo $this->error($model, $attribute, $errorOptions);
+		echo $this->wrapControl(call_user_func_array('TbHtml::active' . ucfirst($type), $params), $errorSpan); /* since PHP 5.3 */
+
+		if ($this->type === TbHtml::FORM_VERTICAL && TbHtml::popOption('error', $htmlOptions, true))
+			echo $errorSpan;
 
 		if ($this->type == TbHtml::FORM_HORIZONTAL)
 			echo '</div>';
@@ -694,15 +696,16 @@ class TbActiveForm extends CActiveForm
 	/**
 	 * Makes sure whether the form control requires wrapping (normally set by the type of form)
 	 * @param $control
+	 * @param $errorSpan
 	 * @return string
 	 */
-	protected function wrapControl($control)
+	protected function wrapControl($control, $errorSpan = '')
 	{
 		if ($this->type == TbHtml::FORM_HORIZONTAL)
 		{
 			ob_start();
 			echo '<div class="controls">';
-			echo $control;
+			echo $control . ' ' . $errorSpan;
 			echo '</div>';
 			$control = ob_get_clean();
 		}
