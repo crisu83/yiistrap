@@ -155,6 +155,9 @@ class TbApi extends CApplicationComponent
 	 */
 	public function registerEvents($selector, $events, $position = CClientScript::POS_END)
 	{
+		if(empty($events))
+			return;
+
 		$script = '';
 		foreach ($events as $name => $handler)
 		{
