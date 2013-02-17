@@ -1488,7 +1488,7 @@ EOD;
 			$htmlOptions = self::addClassName('disabled', $htmlOptions);
 		$icon = self::popOption('icon', $htmlOptions);
 		if (isset($icon))
-			$label = self::icon($icon) . $label;
+			$label = self::icon($icon) . '&nbsp;' . $label;
 		return self::tag($tag, $htmlOptions, $label);
 	}
 
