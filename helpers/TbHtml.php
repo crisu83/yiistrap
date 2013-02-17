@@ -1945,6 +1945,7 @@ EOD;
 			$htmlOptions = self::addClassName('navbar-' . $style, $htmlOptions);
 		$innerOptions = self::popOption('innerOptions', $htmlOptions, array());
 		$innerOptions = self::addClassName('navbar-inner', $innerOptions);
+		ob_start();
 		echo parent::openTag('div', $htmlOptions) . PHP_EOL;
 		echo parent::tag('div', $innerOptions, $content) . PHP_EOL;
 		echo '</div>' . PHP_EOL;
