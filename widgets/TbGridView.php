@@ -62,7 +62,7 @@ class TbGridView extends CGridView
 			}
 		}
 
-		$this->htmlOptions = TbHtml::addClassName(implode(' ', $classes), $this->htmlOptions);
+		$this->itemsCssClass = implode(' ', $classes);
 	}
 
 	/**
