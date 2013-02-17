@@ -9,6 +9,7 @@
  */
 
 Yii::import('bootstrap.helpers.TbHtml');
+Yii::import('bootstrap.helpers.TbIcon');
 
 /**
  * Bootstrap API component.
