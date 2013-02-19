@@ -895,7 +895,7 @@ EOD;
 		$help = self::getHelp($htmlOptions);
 
 		ob_start();
-		self::tag('textarea', $htmlOptions, isset($htmlOptions['encode']) && !$htmlOptions['encode'] ? $text : self::encode($text));
+		echo self::tag('textarea', $htmlOptions, isset($htmlOptions['encode']) && !$htmlOptions['encode'] ? $text : self::encode($text));
 		echo $help;
 		return ob_get_clean();
 	}
