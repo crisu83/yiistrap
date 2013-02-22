@@ -189,18 +189,44 @@ class TbHtml extends CHtml
 
 	/**
 	 * Generates an emphasized text block.
-	 * @param string$text the text to emphasize.
+	 * @param string $text the text to emphasize.
 	 * @param array $htmlOptions additional HTML attributes.
+	 * @param string $tag the HTML tag.
 	 * @return string the generated text block.
 	 */
-	public static function em($text, $htmlOptions = array())
+	public static function em($text, $htmlOptions = array(), $tag = 'p')
 	{
 		$style = self::popOption('style', $htmlOptions);
 		if (self::popOption('muted', $htmlOptions, false))
 			$htmlOptions = self::addClassName('muted', $htmlOptions);
 		else if ($style && in_array($style, self::$textStyles))
 			$htmlOptions = self::addClassName('text-' . $style, $htmlOptions);
-		return parent::tag('p', $htmlOptions, $text);
+		return parent::tag($tag, $htmlOptions, $text);
+	}
+
+	/**
+	 * Generates a muted text block.
+	 * @param string $text the text.
+	 * @param array $htmlOptions additional HTML attributes.
+	 * @param string $tag the HTML tag.
+	 * @return string the generated text block.
+	 */
+	public static function muted($text, $htmlOptions = array(), $tag = 'p')
+	{
+		$htmlOptions = self::defaultOption('muted', true, $htmlOptions);
+		return self::em($text, $htmlOptions, $tag);
+	}
+
+	/**
+	 * Generates a muted span.
+	 * @param string $text the text.
+	 * @param array $htmlOptions additional HTML attributes.
+	 * @param string $tag the HTML tag.
+	 * @return string the generated span.
+	 */
+	public static function mutedSpan($text, $htmlOptions = array())
+	{
+		return self::muted($text, $htmlOptions, 'span');
 	}
 
 	/**
@@ -238,6 +264,18 @@ class TbHtml extends CHtml
 	public static function quote($text, $htmlOptions = array())
 	{
 		return parent::tag('blockquote', $htmlOptions, $text);
+	}
+
+	/**
+	 * Generates a help paragraph.
+	 * @param string $text the help text.
+	 * @param array $htmlOptions additional HTML attributes.
+	 * @return string the generated paragraph.
+	 */
+	public static function help($text, $htmlOptions = array())
+	{
+		$htmlOptions = self::addClassName('help-block', $htmlOptions);
+		return parent::tag('p', $htmlOptions, $text);
 	}
 
 	// Code
@@ -1461,7 +1499,9 @@ EOD;
 	 */
 	public static function linkButton($label = 'submit', $htmlOptions = array())
 	{
-		return self::btn('a', $label, $htmlOptions);
+		$htmlOptions['href'] = self::popOption('url', $htmlOptions, '#');
+		$htmlOptions['href'] = parent::normalizeUrl($htmlOptions['href']);
+ 		return self::btn('a', $label, $htmlOptions);
 	}
 
 	// todo: add support for ajax buttons and links.
@@ -1682,7 +1722,13 @@ EOD;
 					$buttonOptions = self::mergeOptions($options, $buttonOptions);
 				$buttonLabel = self::popOption('label', $buttonOptions, '');
 				$buttonOptions = self::copyOptions(array('style', 'size', 'disabled'), $parentOptions, $buttonOptions);
-				echo self::button($buttonLabel, $buttonOptions);
+				if (isset($buttonOptions['items']))
+				{
+					$items = self::popOption('items', $buttonOptions);
+					echo self::buttonDropdown($buttonLabel, $items, $buttonOptions);
+				}
+				else
+					echo self::linkButton($buttonLabel, $buttonOptions);
 			}
 			echo '</div>' . PHP_EOL;
 			return ob_get_clean();
@@ -2589,6 +2635,19 @@ EOD;
 		$htmlOptions = self::addClassName('close', $htmlOptions);
 		$htmlOptions = self::defaultOption('data-dismiss', 'alert', $htmlOptions);
 		return parent::tag($tag, $htmlOptions, $label) . PHP_EOL;
+	}
+
+	/**
+	 * Generates a collapse link.
+	 * @param string $label the link label.
+	 * @param string $target the CSS selector.
+	 * @param array $htmlOptions additional HTML attributes.
+	 * @return string the generated link.
+	 */
+	public static function collapseLink($label, $target, $htmlOptions = array())
+	{
+		$htmlOptions['data-toggle'] = 'collapse';
+		return parent::link($label, $target, $htmlOptions);
 	}
 
 	/**
