@@ -9,6 +9,7 @@
  */
 
 Yii::import('bootstrap.helpers.TbHtml');
+Yii::import('bootstrap.helpers.TbIcon');
 Yii::import('zii.widgets.grid.CButtonColumn');
 
 /**
