@@ -132,6 +132,8 @@ class TbHtml extends CHtml
 	static $addons = array(self::ADDON_PREPEND, self::ADDON_APPEND);
 	static $grids = array(self::GRID_BORDERED, self::GRID_CONDENSED, self::GRID_HOVER, self::GRID_STRIPED);
 
+	static $errorMessageCss = 'error';
+
 	private static $_counter = 0;
 
 	//
@@ -331,10 +333,10 @@ class TbHtml extends CHtml
 	 */
 	public static function label($label, $for, $htmlOptions = array())
 	{
+		$htmlOptions['for'] = $for;
 		$formType = self::popOption('formType', $htmlOptions);
 		if ($formType == TbHtml::FORM_HORIZONTAL)
 			$htmlOptions = self::addClassName('control-label', $htmlOptions);
-
 		return self::tag('label', $htmlOptions, $label);
 	}
 
@@ -748,6 +750,7 @@ EOD;
 
 		if ($model->hasErrors($attribute))
 			self::addErrorCss($htmlOptions);
+
 		return self::label($label, $for, $htmlOptions);
 	}
 
