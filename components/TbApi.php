@@ -8,8 +8,6 @@
  * @version 1.0.0
  */
 
-Yii::import('bootstrap.helpers.TbHtml');
-
 /**
  * Bootstrap API component.
  */
@@ -59,8 +57,8 @@ class TbApi extends CApplicationComponent
 	{
 		if ($url === null)
 		{
-			$filename = YII_DEBUG ? 'bootstrap-responsive.css' : 'bootstrap-responsive.min.css';
-			$url = $this->getAssetsUrl() . '/css/' . $filename;
+			$fileName = YII_DEBUG ? 'bootstrap-responsive.css' : 'bootstrap-responsive.min.css';
+			$url = $this->getAssetsUrl() . '/css/' . $fileName;
 		}
 		/** @var CClientScript $cs */
 		$cs = Yii::app()->getClientScript();
