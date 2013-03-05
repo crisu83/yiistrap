@@ -39,23 +39,33 @@ class TbApi extends CApplicationComponent
 
 	/**
 	 * Registers the Bootstrap CSS.
+	 * @param string $url the URL to the CSS file to register.
 	 */
-	public function registerCoreCss()
+	public function registerCoreCss($url = null)
 	{
-		$filename = YII_DEBUG ? 'bootstrap.css' : 'bootstrap.min.css';
-		Yii::app()->clientScript->registerCssFile($this->getAssetsUrl() . '/css/' . $filename);
+		if ($url === null)
+		{
+			$fileName = YII_DEBUG ? 'bootstrap.css' : 'bootstrap.min.css';
+			$url = $this->getAssetsUrl() . '/css/' . $fileName;
+		}
+		Yii::app()->clientScript->registerCssFile($url);
 	}
 
 	/**
 	 * Registers the responsive Bootstrap CSS.
+	 * @param string $url the URL to the CSS file to register.
 	 */
-	public function registerResponsiveCss()
+	public function registerResponsiveCss($url = null)
 	{
+		if ($url === null)
+		{
+			$filename = YII_DEBUG ? 'bootstrap-responsive.css' : 'bootstrap-responsive.min.css';
+			$url = $this->getAssetsUrl() . '/css/' . $filename;
+		}
 		/** @var CClientScript $cs */
 		$cs = Yii::app()->getClientScript();
 		$cs->registerMetaTag('width=device-width, initial-scale=1.0', 'viewport');
-		$filename = YII_DEBUG ? 'bootstrap-responsive.css' : 'bootstrap-responsive.min.css';
-		$cs->registerCssFile($this->getAssetsUrl() . '/css/' . $filename);
+		$cs->registerCssFile($url);
 	}
 
 	/**
@@ -69,15 +79,19 @@ class TbApi extends CApplicationComponent
 
 	/**
 	 * Registers jQuery and Bootstrap JavaScript.
+	 * @param string $url the URL to the JavaScript file to register.
 	 * @param int $position the position of the JavaScript code.
 	 */
-	public function registerCoreScripts($position = CClientScript::POS_END)
+	public function registerCoreScripts($url = null, $position = CClientScript::POS_END)
 	{
+		if ($url === null) {
+			$fileName = YII_DEBUG ? 'bootstrap.js' : 'bootstrap.min.js';
+			$url = $this->getAssetsUrl() . '/js/' . $fileName;
+		}
 		/** @var CClientScript $cs */
 		$cs = Yii::app()->getClientScript();
 		$cs->registerCoreScript('jquery');
-		$filename = YII_DEBUG ? 'bootstrap.js' : 'bootstrap.min.js';
-		$cs->registerScriptFile($this->getAssetsUrl() . '/js/' . $filename, $position);
+		$cs->registerScriptFile($url, $position);
 	}
 
 	/**
