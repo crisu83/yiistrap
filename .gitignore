@@ -20,9 +20,9 @@ nbproject
 # mac deployment helpers
 switch
 
-# Composer stuff
+# Composer files
 composer*
-vendor*
+vendor/*
 
 # docs app
 docs/app/runtime

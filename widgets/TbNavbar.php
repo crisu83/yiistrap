@@ -113,12 +113,13 @@ class TbNavbar extends CWidget
 			$this->collapseOptions = TbHtml::addClassName('nav-collapse', $this->collapseOptions);
 			echo TbHtml::collapseIcon('#' . $collapseId) . PHP_EOL;
 			echo $brand . PHP_EOL;
-			$this->controller->widget('bootstrap.widgets.TbCollapse', array(
+			$this->controller->beginWidget('bootstrap.widgets.TbCollapse', array(
 				'id' => $collapseId,
-				'content' => $items,
 				'toggle' => false, // navbars are collapsed by default
 				'htmlOptions' => $this->collapseOptions,
 			));
+			echo $items;
+			$this->controller->endWidget();
 		}
 		else
 		{
