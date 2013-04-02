@@ -1,11 +1,11 @@
 <?php /* @var $this Controller */ ?>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="<?php echo Yii::app()->getLanguage(); ?>">
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-	<meta name="language" content="en" />
+	<meta name="language" content="<?php echo Yii::app()->getLanguage(); ?>" />
 	<title><?php echo CHtml::encode($this->pageTitle); ?></title>
-    <?php Yii::app()->bootstrap->register(); ?>
+	<?php Yii::app()->bootstrap->register(); ?>
 
 	<?php /* todo: something is wrong with the extension, is continuously making calls and re-registering files over and over */ ?>
 	<?php //Yii::app()->less->register(); ?>
@@ -14,7 +14,7 @@
 <body>
 	<?php $this->widget('bootstrap.widgets.TbNavbar',array(
         'style'=>'inverse',
-		'collapse'=>true,
+        'collapse'=>true,
         'items'=>array(
 			array(
 				'class'=>'bootstrap.widgets.TbNav',
@@ -43,7 +43,7 @@
 				        array('label'=>'Action','url'=>'#'),
 				        array('label'=>'Another action','url'=>'#'),
 				        array('label'=>'Something else here','url'=>'#'),
-						TbHtml::menuDivider(),
+				        TbHtml::menuDivider(),
 				        array('label'=>'Separate link','url'=>'#'),
 			        )),
 		        ),
