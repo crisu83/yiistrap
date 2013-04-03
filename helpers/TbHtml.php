@@ -1985,10 +1985,10 @@ EOD;
 		$htmlOptions = self::addClassName('navbar', $htmlOptions);
 		$position = self::popOption('position', $htmlOptions);
 		$static = self::popOption('static', $htmlOptions, false);
-		if (isset($position) && in_array($position, self::$positions))
+		if ($static) // navbar cannot be both fixed and static
+			$htmlOptions = self::addClassName('navbar-static-top', $htmlOptions);		
+		else if (isset($position) && in_array($position, self::$positions)) 
 			$htmlOptions = self::addClassName('navbar-fixed-' . $position, $htmlOptions);
-		else if ($static) // navbar cannot be both fixed and static
-			$htmlOptions = self::addClassName('navbar-static-top', $htmlOptions);
 		$style = self::popOption('style', $htmlOptions);
 		if (isset($style) && in_array($style, self::$navbarStyles))
 			$htmlOptions = self::addClassName('navbar-' . $style, $htmlOptions);
