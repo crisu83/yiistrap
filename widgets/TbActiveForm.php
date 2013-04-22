@@ -680,8 +680,8 @@ class TbActiveForm extends CActiveForm
 			: array($model, $attribute, $htmlOptions);
 
 		$errorSpan = $this->error($model, $attribute, $errorOptions);
-
-		echo $this->wrapControl(call_user_func_array('TbHtml::active' . ucfirst($type), $params), $errorSpan); /* since PHP 5.3 */
+		/* compatible with PHP 5.1 */
+		echo $this->wrapControl(call_user_func_array(array('TbHtml','active'. ucfirst($type)), $params), $errorSpan);
 
 		if ($this->type === TbHtml::FORM_VERTICAL && TbHtml::popOption('error', $htmlOptions, true))
 			echo $errorSpan;
