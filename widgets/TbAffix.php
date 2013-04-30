@@ -37,12 +37,12 @@ class TbAffix extends TbWidget
 		if (isset($this->offset))
 		{
 			if (is_string($this->offset))
-				$this->offset = array(TbHtml::POSITION_TOP, $this->offset);
+				$this->offset = array('top', $this->offset);
 
 			if (is_array($this->offset) && count($this->offset) === 2)
 			{
 				list($position, $offset) = $this->offset;
-				if (in_array($position, TbHtml::$positions))
+				if (in_array($position, TbHtml::$navbarPositions))
 					$this->options = TbHtml::defaultOption('data-offset-' . $position, $offset, $this->options);
 			}
 		}

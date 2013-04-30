@@ -14,6 +14,7 @@
 class TbHtml extends CHtml
 {
 	// Element styles.
+	const STYLE_DEFAULT = '';
 	const STYLE_PRIMARY = 'primary';
 	const STYLE_INFO = 'info';
 	const STYLE_SUCCESS = 'success';
@@ -27,6 +28,7 @@ class TbHtml extends CHtml
 	// Element sizes.
 	const SIZE_MINI = 'mini';
 	const SIZE_SMALL = 'small';
+	const SIZE_DEFAULT = '';
 	const SIZE_LARGE = 'large';
 
 	// Navigation menu types.
@@ -34,9 +36,9 @@ class TbHtml extends CHtml
 	const NAV_PILLS = 'pills';
 	const NAV_LIST = 'list';
 
-	// Position types.
-	const POSITION_TOP = 'top';
-	const POSITION_BOTTOM = 'bottom';
+	// Navbar position types.
+	const NAVBAR_TOP = 'top';
+	const NAVBAR_BOTTOM = 'bottom';
 
 	// Alignments.
 	const ALIGN_CENTER = 'centered';
@@ -47,17 +49,16 @@ class TbHtml extends CHtml
 	const PROGRESS_ACTIVE = 'active';
 
 	// Tooltip placements
-	const PLACEMENT_TOP = 'top';
-	const PLACEMENT_BOTTOM = 'bottom';
-	const PLACEMENT_LEFT = 'left';
-	const PLACEMENT_RIGHT = 'right';
+	const TOOLTIP_TOP = 'top';
+	const TOOLTIP_BOTTOM = 'bottom';
+	const TOOLTIP_LEFT = 'left';
+	const TOOLTIP_RIGHT = 'right';
 
-	// Tabs placements
-	const TABS_TOP = 'top';
-	const TABS_BELLOW = 'bellow';
+	// Tab placements
+	const TABS_ABOVE = '';
+	const TABS_BELOW = 'below';
 	const TABS_LEFT = 'left';
 	const TABS_RIGHT = 'right';
-
 
 	// Tooltip triggers.
 	const TRIGGER_CLICK = 'click';
@@ -113,21 +114,17 @@ class TbHtml extends CHtml
 		self::INPUT_RADIOBUTTONLIST); // Which one requires data
 	static $sizes = array(self::SIZE_LARGE, self::SIZE_SMALL, self::SIZE_MINI);
 	static $textStyles = array(self::STYLE_ERROR, self::STYLE_INFO, self::STYLE_SUCCESS, self::STYLE_WARNING);
-	static $buttonStyles = array(
-		self::STYLE_PRIMARY, self::STYLE_INFO, self::STYLE_SUCCESS, self::STYLE_WARNING,
-		self::STYLE_DANGER, self::STYLE_INVERSE, self::STYLE_LINK,
-	);
-	static $labelBadgeStyles = array(self::STYLE_SUCCESS, self::STYLE_WARNING, self::STYLE_IMPORTANT,
-		self::STYLE_INFO, self::STYLE_INVERSE,
-	);
+	static $buttonStyles = array(self::STYLE_PRIMARY, self::STYLE_INFO, self::STYLE_SUCCESS, self::STYLE_WARNING,
+		self::STYLE_DANGER, self::STYLE_INVERSE, self::STYLE_LINK);
+	static $labelBadgeStyles = array(self::STYLE_SUCCESS, self::STYLE_WARNING, self::STYLE_IMPORTANT, self::STYLE_INFO, self::STYLE_INVERSE);
 	static $navStyles = array(self::NAV_TABS, self::NAV_PILLS, self::NAV_LIST);
 	static $navbarStyles = array(self::STYLE_INVERSE);
-	static $positions = array(self::POSITION_TOP, self::POSITION_BOTTOM);
+	static $navbarPositions = array(self::NAVBAR_TOP, self::NAVBAR_BOTTOM);
 	static $alignments = array(self::ALIGN_CENTER, self::ALIGN_RIGHT);
 	static $alertStyles = array(self::STYLE_SUCCESS, self::STYLE_INFO, self::STYLE_WARNING, self::STYLE_ERROR);
 	static $progressStyles = array(self::STYLE_INFO, self::STYLE_SUCCESS, self::STYLE_WARNING, self::STYLE_DANGER);
-	static $placements = array(self::PLACEMENT_TOP, self::PLACEMENT_BOTTOM, self::PLACEMENT_LEFT, self::PLACEMENT_RIGHT);
-	static $tabPlacements = array(self::TABS_TOP, self::TABS_BELLOW, self::TABS_LEFT, self::TABS_RIGHT);
+	static $tooltipPlacements = array(self::TOOLTIP_TOP, self::TOOLTIP_BOTTOM, self::TOOLTIP_LEFT, self::TOOLTIP_RIGHT);
+	static $tabPlacements = array(self::TABS_ABOVE, self::TABS_BELOW, self::TABS_LEFT, self::TABS_RIGHT);
 	static $triggers = array(self::TRIGGER_CLICK, self::TRIGGER_HOVER, self::TRIGGER_FOCUS, self::TRIGGER_MANUAL);
 	static $addons = array(self::ADDON_PREPEND, self::ADDON_APPEND);
 	static $grids = array(self::GRID_BORDERED, self::GRID_CONDENSED, self::GRID_HOVER, self::GRID_STRIPED);
@@ -1350,25 +1347,31 @@ EOD;
 		$inputOptions = self::popOption('inputOptions', $htmlOptions, array());
 		$inputOptions = self::mergeOptions(array('type' => 'text', 'placeholder' => 'Search'), $inputOptions);
 		$inputOptions = self::addClassName('search-query', $inputOptions);
-
 		$buttonOptions = self::popOption('buttonOptions', $htmlOptions, array());
 		$buttonLabel = self::popOption('label', $buttonOptions, self::icon('search'));
-
-		ob_start();
-		echo self::beginForm($action, $method, $htmlOptions);
-
+		$name = self::popOption('name', $inputOptions, 'search');
+		$value = self::popOption('value', $inputOptions, '');
 		$addon = self::popOption('addon', $htmlOptions);
 		if (isset($addon) && in_array($addon, self::$addons))
 			$inputOptions[$addon] = self::button($buttonLabel, $buttonOptions);
-
-		echo self::textField(
-			self::popOption('name', $inputOptions, 'search'),
-			self::popOption('value', $inputOptions, ''),
-			$inputOptions
-		);
-
+		ob_start();
+		echo self::beginForm($action, $method, $htmlOptions);
+		echo self::textField($name, $value, $inputOptions);
 		echo parent::endForm();
 		return ob_get_clean();
+	}
+
+	/**
+	 * Generates a navbar form.
+	 * @param mixed $action the form action URL.
+	 * @param string $method form method (e.g. post, get).
+	 * @param array $htmlOptions additional HTML attributes
+	 * @return string the generated form.
+	 */
+	public static function navbarForm($action, $method = 'post', $htmlOptions = array())
+	{
+		$htmlOptions = self::addClassName('navbar-form', $htmlOptions);
+		return self::form($action, $method, $htmlOptions);
 	}
 
 	/**
@@ -1618,8 +1621,9 @@ EOD;
 		// todo: think about how to apply this, now it applies to all depths while it should only apply for the first.
 		//$htmlOptions = self::setDefaultValue('role', 'menu', $htmlOptions);
 		$htmlOptions = self::addClassName('dropdown-menu', $htmlOptions);
-		if (self::popOption('dropup', $htmlOptions, false))
-			$htmlOptions = self::addClassName('dropup', $htmlOptions);
+		$align = self::popOption('align', $htmlOptions);
+		if (isset($align) && $align === self::ALIGN_RIGHT)
+			$htmlOptions = self::addClassName('pull-right', $htmlOptions);
 		ob_start();
 		echo self::menu($items, $htmlOptions);
 		return ob_get_clean();
@@ -1804,6 +1808,8 @@ EOD;
 		$menuOptions = self::popOption('menuOptions', $htmlOptions, array());
 		$groupOptions = self::popOption('groupOptions', $htmlOptions, array());
 		$groupOptions = self::addClassName('btn-group', $groupOptions);
+		if (self::popOption('dropup', $htmlOptions, false))
+			$groupOptions = self::addClassName('dropup', $groupOptions);
 		ob_start();
 		echo parent::openTag('div', $groupOptions) . PHP_EOL;
 		if (self::popOption('split', $htmlOptions, false))
@@ -1833,6 +1839,18 @@ EOD;
 	}
 
 	/**
+	 * Generates a stacked tab navigation.
+	 * @param array $items the menu items.
+	 * @param array $htmlOptions additional HTML attributes.
+	 * @return string the generated menu.
+	 */
+	public static function stackedTabs($items, $htmlOptions = array())
+	{
+		$htmlOptions['stacked'] = true;
+		return self::tabs($items, $htmlOptions);
+	}
+
+	/**
 	 * Generates a pills navigation.
 	 * @param array $items the menu items.
 	 * @param array $htmlOptions additional HTML attributes.
@@ -1841,6 +1859,18 @@ EOD;
 	public static function pills($items, $htmlOptions = array())
 	{
 		return self::nav(self::NAV_PILLS, $items, $htmlOptions);
+	}
+
+	/**
+	 * Generates a stacked pills navigation.
+	 * @param array $items the menu items.
+	 * @param array $htmlOptions additional HTML attributes.
+	 * @return string the generated menu.
+	 */
+	public static function stackedPills($items, $htmlOptions = array())
+	{
+		$htmlOptions['stacked'] = true;
+		return self::tabs($items, $htmlOptions);
 	}
 
 	/**
@@ -1885,6 +1915,8 @@ EOD;
 				$label = self::popOption('label', $itemOptions, '');
 				if (self::popOption('active', $itemOptions, false))
 					$itemOptions = self::addClassName('active', $itemOptions);
+				if (self::popOption('disabled', $itemOptions, false))
+					$itemOptions = self::addClassName('disabled', $itemOptions);
 				if (self::popOption('header', $itemOptions, false))
 					echo self::menuHeader($label, $itemOptions);
 				else
@@ -1985,7 +2017,7 @@ EOD;
 		$htmlOptions = self::addClassName('navbar', $htmlOptions);
 		$position = self::popOption('position', $htmlOptions);
 		$static = self::popOption('static', $htmlOptions, false);
-		if (isset($position) && in_array($position, self::$positions))
+		if (isset($position) && in_array($position, self::$navbarPositions))
 			$htmlOptions = self::addClassName('navbar-fixed-' . $position, $htmlOptions);
 		else if ($static) // navbar cannot be both fixed and static
 			$htmlOptions = self::addClassName('navbar-static-top', $htmlOptions);
@@ -2012,6 +2044,19 @@ EOD;
 	{
 		$htmlOptions = self::addClassName('brand', $htmlOptions);
 		return parent::link($label, $url, $htmlOptions);
+	}
+
+	/**
+	 * Generates a text for the navbar.
+	 * @param string $text the text.
+	 * @param array $htmlOptions additional HTML attributes.
+	 * @param string $tag the HTML tag.
+	 * @return string the generated text block.
+	 */
+	public static function navbarText($text, $htmlOptions = array(), $tag = 'p')
+	{
+		$htmlOptions = self::addClassName('navbar-text', $htmlOptions);
+		return CHtml::tag($tag, $htmlOptions, $text);
 	}
 
 	/**
@@ -2247,7 +2292,7 @@ EOD;
 	 */
 	public static function pageHeader($heading, $subtext, $htmlOptions = array())
 	{
-		/* todo: we may have to set an empty array() as default value */
+		// todo: we may have to set an empty array() as default value
 		$htmlOptions = self::addClassName('page-header', $htmlOptions);
 		$headerOptions = self::popOption('headerOptions', $htmlOptions, array());
 		$subtextOptions = self::popOption('subtextOptions', $htmlOptions, array());
@@ -2276,6 +2321,7 @@ EOD;
 		{
 			/* todo: we may have to set an empty array() as default value */
 			$htmlOptions = self::addClassName('thumbnails', $htmlOptions);
+			$defaultSpan = self::popOption('span', $htmlOptions, 3);
 			ob_start();
 			echo parent::openTag('ul', $htmlOptions) . PHP_EOL;
 			foreach ($thumbnails as $thumbnailOptions)
@@ -2283,8 +2329,24 @@ EOD;
 				$options = self::popOption('htmlOptions', $thumbnailOptions, array());
 				if (!empty($options))
 					$thumbnailOptions = self::mergeOptions($options, $thumbnailOptions);
-				$span = self::popOption('span', $thumbnailOptions, 3);
-				$content = self::popOption('content', $thumbnailOptions, '');
+				$span = self::popOption('span', $thumbnailOptions, $defaultSpan);
+				$caption = self::popOption('caption', $thumbnailOptions, '');
+				$captionOptions = self::popOption('captionOptions', $thumbnailOptions, array());
+				$captionOptions = self::addClassName('caption', $captionOptions);
+				if (isset($thumbnailOptions['label']))
+				{
+					$label = self::popOption('label', $thumbnailOptions);
+					$labelOptions = self::popOption('labelOptions', $thumbnailOptions, array());
+					$caption = CHtml::tag('h3', $labelOptions, $label) . $caption;
+				}
+				$content = !empty($caption) ? CHtml::tag('div', $captionOptions, $caption) : '';
+				if (isset($thumbnailOptions['image']))
+				{
+					$image = self::popOption('image', $thumbnailOptions);
+					$imageOptions = self::popOption('imageOptions', $thumbnailOptions, array());
+					$alt = self::popOption('alt', $imageOptions, '');
+					$content = CHtml::image($image, $alt, $imageOptions) . $content;
+				}
 				$url = self::popOption('url', $thumbnailOptions, false);
 				echo $url !== false
 					? self::thumbnailLink($span, $content, $url, $thumbnailOptions)
@@ -2493,16 +2555,17 @@ EOD;
 	 */
 	public static function mediaObjects($mediaObjects)
 	{
-		if($mediaObjects !== null && is_array($mediaObjects))
+		if ($mediaObjects !== null && is_array($mediaObjects))
 		{
 			ob_start();
 			foreach ($mediaObjects as $mediaObjectOptions)
 			{
-				$itemImageUrl = self::getOption('image', $mediaObjectOptions, '#');
-				$itemHeading = self::getOption('heading', $mediaObjectOptions, '');
-				$itemContent = self::getOption('content', $mediaObjectOptions, '');
+				$imageUrl = self::getOption('image', $mediaObjectOptions, '#');
+				$heading = self::getOption('heading', $mediaObjectOptions, '');
+				$content = self::getOption('content', $mediaObjectOptions, '');
 				$itemOptions = self::getOption('htmlOptions', $mediaObjectOptions, array());
-				echo self::mediaObject($itemImageUrl, $itemHeading, $itemContent, $itemOptions);
+				$itemOptions['items'] = self::popOption('items', $mediaObjectOptions, array());
+				echo self::mediaObject($imageUrl, $heading, $content, $itemOptions);
 			}
 			return ob_get_clean();
 		}
@@ -2727,7 +2790,7 @@ EOD;
 		if (self::popOption('html', $htmlOptions))
 			$htmlOptions = self::defaultOption('data-html', true, $htmlOptions);
 		$placement = self::popOption('placement', $htmlOptions);
-		if (isset($placement) && in_array($placement, self::$placements))
+		if (isset($placement) && in_array($placement, self::$tooltipPlacements))
 			$htmlOptions = self::defaultOption('data-placement', $placement, $htmlOptions);
 		if (self::popOption('selector', $htmlOptions))
 			$htmlOptions = self::defaultOption('data-selector', true, $htmlOptions);

@@ -53,6 +53,7 @@ class TbBreadcrumb extends CWidget
 	 */
 	public function run()
 	{
+		// todo: consider adding control property for displaying breadcrumbs even when empty.
 		if (!empty($this->links))
 		{
 			$links = array();

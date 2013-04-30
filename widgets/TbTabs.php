@@ -28,11 +28,10 @@ class TbTabs extends TbWidget
 
 	/**
 	 * @var string the placement of the tabs.
-	 * Valid values are TbHtml::TABS_TOP, TbHtml::TABS_RIGHT, TbHtml::TABS_LEFT, TbHtml::TABS_BELLOW. Default value is
-	 * TbHtml::TABS_TOP but it has no effect to the tabs.
-	 * @see TbHtml::$placements
+	 * Valid values are TbHtml::TABS_TOP, TbHtml::TABS_RIGHT, TbHtml::TABS_LEFT, TbHtml::TABS_BELOW.
+	 * @see TbHtml::tabPlacements
 	 */
-	public $placement = TbHtml::TABS_TOP;
+	public $placement;
 
 	/**
 	 * @var array the tab configuration.
@@ -132,7 +131,7 @@ class TbTabs extends TbWidget
 	public function renderTabs($navigation, $content)
 	{
 		echo CHtml::openTag('div', $this->htmlOptions);
-		echo $this->placement === TbHtml::TABS_BELLOW
+		echo $this->placement === TbHtml::TABS_BELOW
 			? $content.$navigation
 			: $navigation.$content;
 		echo '</div>';

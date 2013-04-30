@@ -34,7 +34,7 @@ class TbNavbar extends CWidget
 	/**
 	 * @var string fix location of the navbar is applicable.
 	 */
-	public $position = TbHtml::POSITION_TOP;
+	public $position;
 	/**
 	 * @var boolean whether the navbar should be static on the top of the page.
 	 */
@@ -73,6 +73,7 @@ class TbNavbar extends CWidget
 			if (!isset($this->brandUrl))
 				$this->brandUrl = Yii::app()->homeUrl;
 		}
+		// todo: somehow the style attribute in htmlOptions is ignored completely, fix.
 		if (isset($this->style))
 			$this->htmlOptions = TbHtml::defaultOption('style', $this->style, $this->htmlOptions);
 		if ($this->position !== false)

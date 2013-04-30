@@ -19,10 +19,10 @@ class TbGridView extends CGridView
 {
 
 	/**
-	 * @var string|array the table type.
+	 * @var string|array the table style.
 	 * Valid values are TbHtml::GRID_STRIPED, TbHtml::GRID_BORDERED, TbHtml::GRID_CONDENSED and/or TbHtml::GRID_HOVER
 	 */
-	public $type;
+	public $style;
 
 	/**
 	 * @var string the CSS class name for the pager container. Defaults to 'pagination'.
@@ -54,12 +54,12 @@ class TbGridView extends CGridView
 
 		$classes = array('table');
 
-		if (isset($this->type) && !empty($this->type))
+		if (isset($this->style) && !empty($this->style))
 		{
-			if (is_string($this->type))
-				$this->type = explode(' ', $this->type);
+			if (is_string($this->style))
+				$this->style = explode(' ', $this->style);
 
-			foreach ($this->type as $type)
+			foreach ($this->style as $type)
 			{
 				if (in_array($type, TbHtml::$grids))
 					$classes[] = 'table-' . $type;
