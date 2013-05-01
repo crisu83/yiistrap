@@ -94,7 +94,7 @@ class TbActiveForm extends CActiveForm
 		if (!$enableAjaxValidation && !$enableClientValidation)
 			return $this->renderError($model, $attribute, $htmlOptions);
 
-		$id = TbHtml::activeId($model, $attribute);
+		$id = CHtml::activeId($model, $attribute);
 		$inputID = TbHtml::getOption('inputID', $htmlOptions, $id);
 		unset($htmlOptions['inputID']);
 
@@ -106,7 +106,7 @@ class TbActiveForm extends CActiveForm
 			'inputID' => $inputID,
 			'errorID' => $htmlOptions['id'],
 			'model' => get_class($model),
-			'name' => TbHtml::resolveName($model, $attribute),
+			'name' => CHtml::resolveName($model, $attribute),
 			'enableAjaxValidation' => $enableAjaxValidation,
 			'inputContainer' => 'div.control-group', // Bootstrap requires this ;)
 		);
@@ -157,7 +157,7 @@ class TbActiveForm extends CActiveForm
 		if ($html === '')
 		{
 			$htmlOptions = TbHtml::addStyles('display:none', $htmlOptions);
-			$html = TbHtml::tag('span', $htmlOptions, '');
+			$html = CHtml::tag('span', $htmlOptions, '');
 		}
 
 		$this->attributes[$inputID] = $option;
@@ -690,7 +690,6 @@ class TbActiveForm extends CActiveForm
 			echo '</div>';
 
 		return ob_get_clean();
-
 	}
 
 	/**

@@ -11,7 +11,7 @@
 /**
  * Bootstrap HTML helper.
  */
-class TbHtml extends CHtml
+class TbHtml extends CHtml // required in order to access protected methods
 {
 	// Element styles.
 	const STYLE_DEFAULT = '';
@@ -41,6 +41,7 @@ class TbHtml extends CHtml
 	const NAVBAR_BOTTOM = 'bottom';
 
 	// Alignments.
+	const ALIGN_LEFT = 'left';
 	const ALIGN_CENTER = 'centered';
 	const ALIGN_RIGHT = 'right';
 
@@ -150,7 +151,7 @@ class TbHtml extends CHtml
 	public static function lead($text, $htmlOptions = array())
 	{
 		$htmlOptions = self::addClassName('lead', $htmlOptions);
-		return parent::tag('p', $htmlOptions, $text);
+		return CHtml::tag('p', $htmlOptions, $text);
 	}
 
 	/**
@@ -161,7 +162,7 @@ class TbHtml extends CHtml
 	 */
 	public static function small($text, $htmlOptions = array())
 	{
-		return parent::tag('small', $htmlOptions, $text);
+		return CHtml::tag('small', $htmlOptions, $text);
 	}
 
 	/**
@@ -172,7 +173,7 @@ class TbHtml extends CHtml
 	 */
 	public static function b($text, $htmlOptions = array())
 	{
-		return parent::tag('strong', $htmlOptions, $text);
+		return CHtml::tag('strong', $htmlOptions, $text);
 	}
 
 	/**
@@ -183,7 +184,7 @@ class TbHtml extends CHtml
 	 */
 	public static function i($text, $htmlOptions = array())
 	{
-		return parent::tag('em', $htmlOptions, $text);
+		return CHtml::tag('em', $htmlOptions, $text);
 	}
 
 	/**
@@ -200,7 +201,7 @@ class TbHtml extends CHtml
 			$htmlOptions = self::addClassName('muted', $htmlOptions);
 		else if ($style && in_array($style, self::$textStyles))
 			$htmlOptions = self::addClassName('text-' . $style, $htmlOptions);
-		return parent::tag($tag, $htmlOptions, $text);
+		return CHtml::tag($tag, $htmlOptions, $text);
 	}
 
 	/**
@@ -240,7 +241,7 @@ class TbHtml extends CHtml
 		if (self::popOption('smaller', $htmlOptions, false))
 			$htmlOptions = self::addClassName('initialism', $htmlOptions);
 		$htmlOptions = self::defaultOption('title', $word, $htmlOptions);
-		return parent::tag('abbr', $htmlOptions, $text);
+		return CHtml::tag('abbr', $htmlOptions, $text);
 	}
 
 	/**
@@ -251,7 +252,7 @@ class TbHtml extends CHtml
 	 */
 	public static function address($text, $htmlOptions = array())
 	{
-		return parent::tag('address', $htmlOptions, $text);
+		return CHtml::tag('address', $htmlOptions, $text);
 	}
 
 	/**
@@ -262,7 +263,7 @@ class TbHtml extends CHtml
 	 */
 	public static function quote($text, $htmlOptions = array())
 	{
-		return parent::tag('blockquote', $htmlOptions, $text);
+		return CHtml::tag('blockquote', $htmlOptions, $text);
 	}
 
 	/**
@@ -274,7 +275,7 @@ class TbHtml extends CHtml
 	public static function help($text, $htmlOptions = array())
 	{
 		$htmlOptions = self::addClassName('help-block', $htmlOptions);
-		return parent::tag('p', $htmlOptions, $text);
+		return CHtml::tag('p', $htmlOptions, $text);
 	}
 
 	// Code
@@ -289,7 +290,7 @@ class TbHtml extends CHtml
 	 */
 	public static function snippet($code, $htmlOptions = array())
 	{
-		return parent::tag('code', $htmlOptions, $code);
+		return CHtml::tag('code', $htmlOptions, $code);
 	}
 
 	/**
@@ -300,7 +301,7 @@ class TbHtml extends CHtml
 	 */
 	public static function code($code, $htmlOptions = array())
 	{
-		return parent::tag('pre', $htmlOptions, $code);
+		return CHtml::tag('pre', $htmlOptions, $code);
 	}
 
 	// Tables
@@ -334,7 +335,7 @@ class TbHtml extends CHtml
 		$formType = self::popOption('formType', $htmlOptions);
 		if ($formType == TbHtml::FORM_HORIZONTAL)
 			$htmlOptions = self::addClassName('control-label', $htmlOptions);
-		return self::tag('label', $htmlOptions, $label);
+		return CHtml::tag('label', $htmlOptions, $label);
 	}
 
 	/**
@@ -349,7 +350,7 @@ class TbHtml extends CHtml
 	 */
 	public static function textField($name, $value = '', $htmlOptions = array())
 	{
-		parent::clientChange('change', $htmlOptions);
+		CHtml::clientChange('change', $htmlOptions);
 		return self::inputField('text', $name, $value, $htmlOptions);
 	}
 
@@ -365,7 +366,7 @@ class TbHtml extends CHtml
 	 */
 	public static function passwordField($name, $value = '', $htmlOptions = array())
 	{
-		parent::clientChange('change', $htmlOptions);
+		CHtml::clientChange('change', $htmlOptions);
 		return self::inputField('password', $name, $value, $htmlOptions);
 	}
 
@@ -384,7 +385,7 @@ class TbHtml extends CHtml
 		$help = self::getHelp($htmlOptions);
 
 		ob_start();
-		echo parent::textArea($name, $value, $htmlOptions);
+		echo CHtml::textArea($name, $value, $htmlOptions);
 		echo $help;
 		return ob_get_clean();
 	}
@@ -412,14 +413,14 @@ class TbHtml extends CHtml
 	{
 		$label = self::getOption('label', $htmlOptions);
 		$labelOptions = self::popOption('labelOptions', $htmlOptions, array());
-		$radioButton = parent::radioButton($name, $checked, $htmlOptions);
+		$radioButton = CHtml::radioButton($name, $checked, $htmlOptions);
 
 		if ($label)
 		{
 			$labelOptions = self::addClassName('radio', $labelOptions);
 
 			ob_start();
-			echo '<label ' . parent::renderAttributes($labelOptions) . '>';
+			echo '<label ' . CHtml::renderAttributes($labelOptions) . '>';
 			echo $radioButton;
 			echo $label;
 			echo '</label>';
@@ -447,14 +448,14 @@ class TbHtml extends CHtml
 	{
 		$label = self::popOption('label', $htmlOptions, '');
 		$labelOptions = self::popOption('labelOptions', $htmlOptions, array());
-		$checkBox = parent::checkBox($name, $checked, $htmlOptions);
+		$checkBox = CHtml::checkBox($name, $checked, $htmlOptions);
 
 		if ($label)
 		{
 			$labelOptions = self::addClassName('checkbox', $labelOptions);
 
 			ob_start();
-			echo '<label ' . parent::renderAttributes($labelOptions) . '>';
+			echo '<label ' . CHtml::renderAttributes($labelOptions) . '>';
 			echo $checkBox;
 			echo $label;
 			echo '</label>';
@@ -501,7 +502,7 @@ class TbHtml extends CHtml
 	{
 		$help = self::getHelp($htmlOptions);
 		ob_start();
-		echo parent::dropDownList($name, $select, $data, $htmlOptions);
+		echo CHtml::dropDownList($name, $select, $data, $htmlOptions);
 		echo $help;
 		return ob_get_clean();
 	}
@@ -543,7 +544,7 @@ class TbHtml extends CHtml
 	{
 		$help = self::getHelp($htmlOptions);
 		ob_start();
-		echo parent::listBox($name, $select, $data, $htmlOptions);
+		echo CHtml::listBox($name, $select, $data, $htmlOptions);
 		echo $help;
 		return ob_get_clean();
 	}
@@ -573,7 +574,7 @@ class TbHtml extends CHtml
 		$container = self::popOption('container', $htmlOptions);
 
 		$items = array();
-		$baseID = self::getIdByName($name);
+		$baseID = CHtml::getIdByName($name);
 		$id = 0;
 		foreach ($data as $value => $label)
 		{
@@ -587,7 +588,7 @@ class TbHtml extends CHtml
 
 		return empty($container)
 			? implode($separator, $items)
-			: self::tag($container, array('id' => $baseID), implode($separator, $items));
+			: CHtml::tag($container, array('id' => $baseID), implode($separator, $items));
 	}
 
 	/**
@@ -631,7 +632,7 @@ class TbHtml extends CHtml
 		$labelOptions = self::popOption('labelOptions', $htmlOptions, array());
 
 		$items = array();
-		$baseID = self::getIdByName($name);
+		$baseID = CHtml::getIdByName($name);
 		$id = 0;
 		$checkAll = true;
 
@@ -678,7 +679,7 @@ EOD;
 
 		return empty($container)
 			? implode($separator, $items)
-			: self::tag($container, array('id' => $baseID), implode($separator, $items));
+			: CHtml::tag($container, array('id' => $baseID), implode($separator, $items));
 
 	}
 
@@ -708,7 +709,7 @@ EOD;
 			echo '<div class="' . $addOnClasses . '">';
 
 		echo self::getPrepend($htmlOptions);
-		echo parent::inputField($type, $name, $value, $inputOptions);
+		echo CHtml::inputField($type, $name, $value, $inputOptions);
 		echo self::getAppend($htmlOptions);
 
 		if (!empty($addOnClasses))
@@ -742,11 +743,13 @@ EOD;
 	 */
 	public static function activeLabel($model, $attribute, $htmlOptions = array())
 	{
-		$for = self::popOption('for', $htmlOptions, parent::getIdByName(parent::resolveName($model, $attribute)));
+		$name = CHtml::resolveName($model, $attribute);
+		$id = CHtml::getIdByName($name);
+		$for = self::popOption('for', $htmlOptions, $id);
 		$label = self::popOption('label', $htmlOptions, $model->getAttributeLabel($attribute));
 
 		if ($model->hasErrors($attribute))
-			self::addErrorCss($htmlOptions);
+			CHtml::addErrorCss($htmlOptions);
 
 		return self::label($label, $for, $htmlOptions);
 	}
@@ -768,7 +771,7 @@ EOD;
 	public static function activeLabelEx($model, $attribute, $htmlOptions = array())
 	{
 		$realAttribute = $attribute;
-		self::resolveName($model, $attribute); // strip off square brackets if any
+		CHtml::resolveName($model, $attribute); // strip off square brackets if any
 		$htmlOptions['required'] = $model->isAttributeRequired($attribute);
 		return self::activeLabel($model, $realAttribute, $htmlOptions);
 	}
@@ -787,8 +790,8 @@ EOD;
 	 */
 	public static function activeTextField($model, $attribute, $htmlOptions = array())
 	{
-		parent::resolveNameID($model, $attribute, $htmlOptions);
-		parent::clientChange('change', $htmlOptions);
+		CHtml::resolveNameID($model, $attribute, $htmlOptions);
+		CHtml::clientChange('change', $htmlOptions);
 		return self::activeInputField('text', $model, $attribute, $htmlOptions);
 	}
 
@@ -807,8 +810,8 @@ EOD;
 	 */
 	public static function activeUrlField($model, $attribute, $htmlOptions = array())
 	{
-		parent::resolveNameID($model, $attribute, $htmlOptions);
-		parent::clientChange('change', $htmlOptions);
+		CHtml::resolveNameID($model, $attribute, $htmlOptions);
+		CHtml::clientChange('change', $htmlOptions);
 		return self::activeInputField('url', $model, $attribute, $htmlOptions);
 	}
 
@@ -827,8 +830,8 @@ EOD;
 	 */
 	public static function activeEmailField($model, $attribute, $htmlOptions = array())
 	{
-		parent::resolveNameID($model, $attribute, $htmlOptions);
-		parent::clientChange('change', $htmlOptions);
+		CHtml::resolveNameID($model, $attribute, $htmlOptions);
+		CHtml::clientChange('change', $htmlOptions);
 		return self::activeInputField('email', $model, $attribute, $htmlOptions);
 	}
 
@@ -847,8 +850,8 @@ EOD;
 	 */
 	public static function activeNumberField($model, $attribute, $htmlOptions = array())
 	{
-		parent::resolveNameID($model, $attribute, $htmlOptions);
-		parent::clientChange('change', $htmlOptions);
+		CHtml::resolveNameID($model, $attribute, $htmlOptions);
+		CHtml::clientChange('change', $htmlOptions);
 		return self::activeInputField('number', $model, $attribute, $htmlOptions);
 	}
 
@@ -867,8 +870,8 @@ EOD;
 	 */
 	public static function activeRangeField($model, $attribute, $htmlOptions = array())
 	{
-		parent::resolveNameID($model, $attribute, $htmlOptions);
-		parent::clientChange('change', $htmlOptions);
+		CHtml::resolveNameID($model, $attribute, $htmlOptions);
+		CHtml::clientChange('change', $htmlOptions);
 		return self::activeInputField('range', $model, $attribute, $htmlOptions);
 	}
 
@@ -887,8 +890,8 @@ EOD;
 	 */
 	public static function activeDateField($model, $attribute, $htmlOptions = array())
 	{
-		parent::resolveNameID($model, $attribute, $htmlOptions);
-		parent::clientChange('change', $htmlOptions);
+		CHtml::resolveNameID($model, $attribute, $htmlOptions);
+		CHtml::clientChange('change', $htmlOptions);
 		return self::activeInputField('date', $model, $attribute, $htmlOptions);
 	}
 
@@ -906,8 +909,8 @@ EOD;
 	 */
 	public static function activePasswordField($model, $attribute, $htmlOptions = array())
 	{
-		parent::resolveNameID($model, $attribute, $htmlOptions);
-		parent::clientChange('change', $htmlOptions);
+		CHtml::resolveNameID($model, $attribute, $htmlOptions);
+		CHtml::clientChange('change', $htmlOptions);
 		return self::activeInputField('password', $model, $attribute, $htmlOptions);
 	}
 
@@ -924,16 +927,16 @@ EOD;
 	 */
 	public static function activeTextArea($model, $attribute, $htmlOptions = array())
 	{
-		parent::resolveNameID($model, $attribute, $htmlOptions);
-		parent::clientChange('change', $htmlOptions);
+		CHtml::resolveNameID($model, $attribute, $htmlOptions);
+		CHtml::clientChange('change', $htmlOptions);
 		if ($model->hasErrors($attribute))
-			self::addErrorCss($htmlOptions);
+			CHtml::addErrorCss($htmlOptions);
 
-		$text = self::popOption('value', $htmlOptions, self::resolveValue($model, $attribute));
+		$text = self::popOption('value', $htmlOptions, CHtml::resolveValue($model, $attribute));
 		$help = self::getHelp($htmlOptions);
 
 		ob_start();
-		echo self::tag('textarea', $htmlOptions, isset($htmlOptions['encode']) && !$htmlOptions['encode'] ? $text : self::encode($text));
+		echo CHtml::tag('textarea', $htmlOptions, isset($htmlOptions['encode']) && !$htmlOptions['encode'] ? $text : CHtml::encode($text));
 		echo $help;
 		return ob_get_clean();
 	}
@@ -959,20 +962,20 @@ EOD;
 	public static function activeCheckBox($model, $attribute, $htmlOptions = array())
 	{
 		/* todo: is there another way to extract parents hidden input? */
-		self::resolveNameID($model, $attribute, $htmlOptions);
+		CHtml::resolveNameID($model, $attribute, $htmlOptions);
 
 		$htmlOptions = self::defaultOption('value', 1, $htmlOptions);
 
-		if (!isset($htmlOptions['checked']) && self::resolveValue($model, $attribute) == $htmlOptions['value'])
+		if (!isset($htmlOptions['checked']) && CHtml::resolveValue($model, $attribute) == $htmlOptions['value'])
 			$htmlOptions['checked'] = 'checked';
-		self::clientChange('click', $htmlOptions);
+		CHtml::clientChange('click', $htmlOptions);
 
 		$unCheck = self::popOption('unCheckValue', $htmlOptions, '0');
 
-		$hiddenOptions = isset($htmlOptions['id']) ? array('id' => self::ID_PREFIX . $htmlOptions['id']) : array('id' => false);
-		$hidden = $unCheck !== null ? self::hiddenField($htmlOptions['name'], $unCheck, $hiddenOptions) : '';
+		$hiddenOptions = isset($htmlOptions['id']) ? array('id' => CHtml::ID_PREFIX . $htmlOptions['id']) : array('id' => false);
+		$hidden = $unCheck !== null ? CHtml::hiddenField($htmlOptions['name'], $unCheck, $hiddenOptions) : '';
 
-		$name = parent::resolveName($model, $attribute);
+		$name = CHtml::resolveName($model, $attribute);
 		$htmlOptions = self::defaultOption('label', $model->getAttributeLabel($attribute), $htmlOptions);
 
 		/* todo: checkbox and radio have different label layout. Test whether this solution works */
@@ -998,21 +1001,21 @@ EOD;
 	 */
 	public static function activeRadioButton($model, $attribute, $htmlOptions = array())
 	{
-		self::resolveNameID($model, $attribute, $htmlOptions);
+		CHtml::resolveNameID($model, $attribute, $htmlOptions);
 
 		$htmlOptions = self::defaultOption('value', 1, $htmlOptions);
 
-		if (!isset($htmlOptions['checked']) && self::resolveValue($model, $attribute) == $htmlOptions['value'])
+		if (!isset($htmlOptions['checked']) && CHtml::resolveValue($model, $attribute) == $htmlOptions['value'])
 			$htmlOptions['checked'] = 'checked';
 
-		self::clientChange('click', $htmlOptions);
+		CHtml::clientChange('click', $htmlOptions);
 
 		$unCheck = self::popOption('uncheckValue', $htmlOptions, '0');
 
-		$hiddenOptions = isset($htmlOptions['id']) ? array('id' => self::ID_PREFIX . $htmlOptions['id']) : array('id' => false);
-		$hidden = $unCheck !== null ? self::hiddenField($htmlOptions['name'], $unCheck, $hiddenOptions) : '';
+		$hiddenOptions = isset($htmlOptions['id']) ? array('id' => CHtml::ID_PREFIX . $htmlOptions['id']) : array('id' => false);
+		$hidden = $unCheck !== null ? CHtml::hiddenField($htmlOptions['name'], $unCheck, $hiddenOptions) : '';
 
-		$name = parent::resolveName($model, $attribute);
+		$name = CHtml::resolveName($model, $attribute);
 		$htmlOptions = self::defaultOption('label', $model->getAttributeLabel($attribute), $htmlOptions);
 
 		/* todo: checkbox and radio have different label layout. Test whether this solution works */
@@ -1056,12 +1059,12 @@ EOD;
 	 */
 	public static function activeDropDownList($model, $attribute, $data, $htmlOptions = array())
 	{
-		self::resolveNameID($model, $attribute, $htmlOptions);
-		$selection = self::resolveValue($model, $attribute);
-		$options = "\n" . self::listOptions($selection, $data, $htmlOptions);
-		self::clientChange('change', $htmlOptions);
+		CHtml::resolveNameID($model, $attribute, $htmlOptions);
+		$selection = CHtml::resolveValue($model, $attribute);
+		$options = "\n" . CHtml::listOptions($selection, $data, $htmlOptions);
+		CHtml::clientChange('change', $htmlOptions);
 		if ($model->hasErrors($attribute))
-			self::addErrorCss($htmlOptions);
+			CHtml::addErrorCss($htmlOptions);
 		if (isset($htmlOptions['multiple']))
 		{
 			if (substr($htmlOptions['name'], -2) !== '[]')
@@ -1069,7 +1072,7 @@ EOD;
 		}
 		$help = self::getHelp($htmlOptions);
 		ob_start();
-		echo self::tag('select', $htmlOptions, $options);
+		echo CHtml::tag('select', $htmlOptions, $options);
 		echo $help;
 		return ob_get_clean();
 	}
@@ -1128,11 +1131,11 @@ EOD;
 	 */
 	public static function activeFileField($model, $attribute, $htmlOptions = array())
 	{
-		self::resolveNameID($model, $attribute, $htmlOptions);
+		CHtml::resolveNameID($model, $attribute, $htmlOptions);
 		// add a hidden field so that if a model only has a file field, we can
 		// still use isset($_POST[$modelClass]) to detect if the input is submitted
-		$hiddenOptions = isset($htmlOptions['id']) ? array('id' => self::ID_PREFIX . $htmlOptions['id']) : array('id' => false);
-		return self::hiddenField($htmlOptions['name'], '', $hiddenOptions)
+		$hiddenOptions = isset($htmlOptions['id']) ? array('id' => CHtml::ID_PREFIX . $htmlOptions['id']) : array('id' => false);
+		return CHtml::hiddenField($htmlOptions['name'], '', $hiddenOptions)
 			. self::activeInputField('file', $model, $attribute, $htmlOptions);
 	}
 
@@ -1173,16 +1176,16 @@ EOD;
 	 */
 	public static function activeInlineCheckBoxList($model, $attribute, $data, $htmlOptions = array())
 	{
-		self::resolveNameID($model, $attribute, $htmlOptions);
-		$selection = self::resolveValue($model, $attribute);
+		CHtml::resolveNameID($model, $attribute, $htmlOptions);
+		$selection = CHtml::resolveValue($model, $attribute);
 		if ($model->hasErrors($attribute))
-			self::addErrorCss($htmlOptions);
+			CHtml::addErrorCss($htmlOptions);
 		$name = self::popOption('name', $htmlOptions);
 
 		$unCheck = self::popOption('uncheckValue', $htmlOptions, '');
 
-		$hiddenOptions = isset($htmlOptions['id']) ? array('id' => self::ID_PREFIX . $htmlOptions['id']) : array('id' => false);
-		$hidden = $unCheck !== null ? self::hiddenField($name, $unCheck, $hiddenOptions) : '';
+		$hiddenOptions = isset($htmlOptions['id']) ? array('id' => CHtml::ID_PREFIX . $htmlOptions['id']) : array('id' => false);
+		$hidden = $unCheck !== null ? CHtml::hiddenField($name, $unCheck, $hiddenOptions) : '';
 
 		return $hidden . self::inlineCheckBoxList($name, $selection, $data, $htmlOptions);
 	}
@@ -1214,15 +1217,15 @@ EOD;
 	 */
 	public static function activeInlineRadioButtonList($model, $attribute, $data, $htmlOptions = array())
 	{
-		self::resolveNameID($model, $attribute, $htmlOptions);
-		$selection = self::resolveValue($model, $attribute);
+		CHtml::resolveNameID($model, $attribute, $htmlOptions);
+		$selection = CHtml::resolveValue($model, $attribute);
 		if ($model->hasErrors($attribute))
-			self::addErrorCss($htmlOptions);
+			CHtml::addErrorCss($htmlOptions);
 		$name = self::popOption('name', $htmlOptions);
 		$unCheck = self::popOption('uncheckValue', $htmlOptions, '');
 
-		$hiddenOptions = isset($htmlOptions['id']) ? array('id' => self::ID_PREFIX . $htmlOptions['id']) : array('id' => false);
-		$hidden = $unCheck !== null ? self::hiddenField($name, $unCheck, $hiddenOptions) : '';
+		$hiddenOptions = isset($htmlOptions['id']) ? array('id' => CHtml::ID_PREFIX . $htmlOptions['id']) : array('id' => false);
+		$hidden = $unCheck !== null ? CHtml::hiddenField($name, $unCheck, $hiddenOptions) : '';
 
 		return $hidden . self::inlineRadioButtonList($name, $selection, $data, $htmlOptions);
 	}
@@ -1250,7 +1253,7 @@ EOD;
 			echo '<div class="' . $addOnClasses . '">';
 
 		echo self::getPrepend($htmlOptions);
-		echo parent::activeInputField($type, $model, $attribute, $inputOptions);
+		echo CHtml::activeInputField($type, $model, $attribute, $inputOptions);
 		echo self::getAppend($htmlOptions);
 
 		if (!empty($addOnClasses))
@@ -1273,10 +1276,10 @@ EOD;
 	 */
 	public static function error($model, $attribute, $htmlOptions = array())
 	{
-		self::resolveName($model, $attribute); // turn [a][b]attr into attr
+		CHtml::resolveName($model, $attribute); // turn [a][b]attr into attr
 		$error = $model->getError($attribute);
 		return $error != ''
-			? self::tag('span', self::defaultOption('class', self::$errorMessageCss, $htmlOptions), $error)
+			? CHtml::tag('span', self::defaultOption('class', self::$errorMessageCss, $htmlOptions), $error)
 			: '';
 	}
 
@@ -1298,16 +1301,15 @@ EOD;
 	public static function errorSummary($model, $header = null, $footer = null, $htmlOptions = array())
 	{
 		$htmlOptions = TbHtml::addClassName('alert alert-block alert-error', $htmlOptions);
-
-		return parent::errorSummary($model, $header, $footer, $htmlOptions);
+		return CHtml::errorSummary($model, $header, $footer, $htmlOptions);
 	}
 
 	/**
 	 * Extracts the help section of htmlOptions if any. The help option is setup as:
 	 * <code>
 	 *      // ...
-	 *         'help'=>array('text'=>'This is help text','type'=>'inline')
-	 *         // ...
+	 *      'help'=>array('text'=>'This is help text','type'=>'inline')
+	 *      // ...
 	 * </code>
 	 * @param $htmlOptions
 	 * @return mixed|string
@@ -1355,9 +1357,9 @@ EOD;
 		if (isset($addon) && in_array($addon, self::$addons))
 			$inputOptions[$addon] = self::button($buttonLabel, $buttonOptions);
 		ob_start();
-		echo self::beginForm($action, $method, $htmlOptions);
+		echo CHtml::beginForm($action, $method, $htmlOptions);
 		echo self::textField($name, $value, $inputOptions);
-		echo parent::endForm();
+		echo CHtml::endForm();
 		return ob_get_clean();
 	}
 
@@ -1371,7 +1373,7 @@ EOD;
 	public static function navbarForm($action, $method = 'post', $htmlOptions = array())
 	{
 		$htmlOptions = self::addClassName('navbar-form', $htmlOptions);
-		return self::form($action, $method, $htmlOptions);
+		return CHtml::form($action, $method, $htmlOptions);
 	}
 
 	/**
@@ -1450,7 +1452,7 @@ EOD;
 	{
 		if (!isset($htmlOptions['name']))
 			$htmlOptions['name'] = CHtml::ID_PREFIX . CHtml::$count++;
-		self::clientChange('click', $htmlOptions);
+		CHtml::clientChange('click', $htmlOptions);
 		return self::btn('button', $label, $htmlOptions);
 	}
 
@@ -1506,8 +1508,8 @@ EOD;
 	public static function linkButton($label = 'submit', $htmlOptions = array())
 	{
 		$htmlOptions['href'] = self::popOption('url', $htmlOptions, '#');
-		$htmlOptions['href'] = parent::normalizeUrl($htmlOptions['href']);
- 		return self::btn('a', $label, $htmlOptions);
+		$htmlOptions['href'] = CHtml::normalizeUrl($htmlOptions['href']);
+		return self::btn('a', $label, $htmlOptions);
 	}
 
 	// todo: add support for ajax buttons and links.
@@ -1535,7 +1537,7 @@ EOD;
 		$icon = self::popOption('icon', $htmlOptions);
 		if (isset($icon))
 			$label = self::icon($icon) . '&nbsp;' . $label;
-		return self::tag($tag, $htmlOptions, $label);
+		return CHtml::tag($tag, $htmlOptions, $label);
 	}
 
 	// Images
@@ -1551,7 +1553,8 @@ EOD;
 	 */
 	public static function imageRounded($src, $alt = '', $htmlOptions = array())
 	{
-		return parent::image($src, $alt, self::addClassName('img-rounded', $htmlOptions));
+		$htmlOptions = self::addClassName('img-rounded', $htmlOptions);
+		return CHtml::image($src, $alt, $htmlOptions);
 	}
 
 	/**
@@ -1564,7 +1567,8 @@ EOD;
 	 */
 	public static function imageCircle($src, $alt = '', $htmlOptions = array())
 	{
-		return parent::image($src, $alt, self::addClassName('img-circle', $htmlOptions));
+		$htmlOptions = self::addClassName('img-circle', $htmlOptions);
+		return CHtml::image($src, $alt, $htmlOptions);
 	}
 
 	/**
@@ -1576,7 +1580,8 @@ EOD;
 	 */
 	public static function imagePolaroid($src, $alt = '', $htmlOptions = array())
 	{
-		return parent::image($src, $alt, self::addClassName('img-polaroid', $htmlOptions));
+		$htmlOptions = self::addClassName('img-polaroid', $htmlOptions);
+		return CHtml::image($src, $alt, $htmlOptions);
 	}
 
 	// Icons by Glyphicons
@@ -1597,7 +1602,7 @@ EOD;
 			if (strpos($icon, 'icon') === false)
 				$icon = 'icon-' . implode(' icon-', explode(' ', $icon));
 			$htmlOptions = self::addClassName($icon, $htmlOptions);
-			return parent::openTag($tagName, $htmlOptions) . parent::closeTag($tagName); // tag won't work in this case
+			return CHtml::openTag($tagName, $htmlOptions) . CHtml::closeTag($tagName); // tag won't work in this case
 		}
 		return '';
 	}
@@ -1663,7 +1668,7 @@ EOD;
 		$htmlOptions = self::addClassName('dropdown-toggle', $htmlOptions);
 		$htmlOptions = self::defaultOption('data-toggle', 'dropdown', $htmlOptions);
 		$label .= ' <b class="caret"></b>';
-		return self::btn($tag, $label, $htmlOptions) . PHP_EOL;
+		return self::btn($tag, $label, $htmlOptions);
 	}
 
 	/**
@@ -1677,7 +1682,7 @@ EOD;
 		$htmlOptions = self::addClassName('dropdown-toggle', $htmlOptions);
 		$htmlOptions = self::defaultOption('data-toggle', 'dropdown', $htmlOptions);
 		$label .= ' <b class="caret"></b>';
-		return parent::link($label, '#', $htmlOptions) . PHP_EOL;
+		return CHtml::link($label, '#', $htmlOptions);
 	}
 
 	// Button groups
@@ -1721,7 +1726,7 @@ EOD;
 				'disabled' => self::popOption('disabled', $htmlOptions)
 			);
 			ob_start();
-			echo parent::openTag('div', $htmlOptions) . PHP_EOL;
+			echo CHtml::openTag('div', $htmlOptions);
 			foreach ($buttons as $buttonOptions)
 			{
 				$options = self::popOption('htmlOptions', $buttonOptions, array());
@@ -1737,7 +1742,7 @@ EOD;
 				else
 					echo self::linkButton($buttonLabel, $buttonOptions);
 			}
-			echo '</div>' . PHP_EOL;
+			echo '</div>';
 			return ob_get_clean();
 		}
 		return '';
@@ -1774,7 +1779,7 @@ EOD;
 				'disabled' => self::popOption('disabled', $htmlOptions)
 			);
 			ob_start();
-			echo parent::openTag('div', $htmlOptions) . PHP_EOL;
+			echo CHtml::openTag('div', $htmlOptions);
 			foreach ($groups as $groupOptions)
 			{
 				$items = self::popOption('items', $groupOptions, array());
@@ -1786,7 +1791,7 @@ EOD;
 				$groupOptions = self::copyOptions(array('style', 'size', 'disabled'), $parentOptions, $groupOptions);
 				echo self::buttonGroup($items, $groupOptions);
 			}
-			echo '</div>' . PHP_EOL;
+			echo '</div>';
 			return ob_get_clean();
 		}
 		return '';
@@ -1811,7 +1816,7 @@ EOD;
 		if (self::popOption('dropup', $htmlOptions, false))
 			$groupOptions = self::addClassName('dropup', $groupOptions);
 		ob_start();
-		echo parent::openTag('div', $groupOptions) . PHP_EOL;
+		echo CHtml::openTag('div', $groupOptions);
 		if (self::popOption('split', $htmlOptions, false))
 		{
 			echo self::linkButton($label, $htmlOptions);
@@ -1819,7 +1824,7 @@ EOD;
 		} else
 			echo self::dropdownToggleLink($label, $htmlOptions);
 		echo self::dropdown($items, $menuOptions);
-		echo '</div>' . PHP_EOL;
+		echo '</div>';
 		return ob_get_clean();
 	}
 
@@ -1901,7 +1906,7 @@ EOD;
 	public static function menu($items, $htmlOptions = array())
 	{
 		ob_start();
-		echo parent::openTag('ul', $htmlOptions);
+		echo CHtml::openTag('ul', $htmlOptions);
 		foreach ($items as $itemOptions)
 		{
 			if (is_string($itemOptions))
@@ -1935,7 +1940,7 @@ EOD;
 				}
 			}
 		}
-		echo '</ul>' . PHP_EOL;
+		echo '</ul>';
 		return ob_get_clean();
 	}
 
@@ -1950,9 +1955,9 @@ EOD;
 	{
 		$linkOptions = self::popOption('linkOptions', $htmlOptions, array());
 		ob_start();
-		echo parent::openTag('li', $htmlOptions) . PHP_EOL;
-		echo parent::link($label, $url, $linkOptions) . PHP_EOL;
-		echo '</li>' . PHP_EOL;
+		echo CHtml::openTag('li', $htmlOptions);
+		echo CHtml::link($label, $url, $linkOptions);
+		echo '</li>';
 		return ob_get_clean();
 	}
 
@@ -1972,10 +1977,10 @@ EOD;
 		if (self::popOption('active', $htmlOptions, false))
 			$htmlOptions = self::addClassName('active', $htmlOptions);
 		ob_start();
-		echo parent::openTag('li', $htmlOptions) . PHP_EOL;
+		echo CHtml::openTag('li', $htmlOptions);
 		echo self::dropdownToggleMenuLink($label, $linkOptions);
 		echo self::menu($items, $menuOptions);
-		echo '</li>' . PHP_EOL;
+		echo '</li>';
 		return ob_get_clean();
 	}
 
@@ -1988,7 +1993,7 @@ EOD;
 	public static function menuHeader($label, $htmlOptions = array())
 	{
 		$htmlOptions = self::addClassName('nav-header', $htmlOptions);
-		return parent::tag('li', $htmlOptions, $label) . PHP_EOL;
+		return CHtml::tag('li', $htmlOptions, $label);
 	}
 
 	/**
@@ -1999,7 +2004,7 @@ EOD;
 	public static function menuDivider($htmlOptions = array())
 	{
 		$htmlOptions = self::addClassName('divider', $htmlOptions);
-		return parent::tag('li', $htmlOptions) . PHP_EOL;
+		return CHtml::tag('li', $htmlOptions);
 	}
 
 	// Navbar
@@ -2017,6 +2022,7 @@ EOD;
 		$htmlOptions = self::addClassName('navbar', $htmlOptions);
 		$position = self::popOption('position', $htmlOptions);
 		$static = self::popOption('static', $htmlOptions, false);
+		// todo: fix navbar static positioning.
 		if (isset($position) && in_array($position, self::$navbarPositions))
 			$htmlOptions = self::addClassName('navbar-fixed-' . $position, $htmlOptions);
 		else if ($static) // navbar cannot be both fixed and static
@@ -2027,9 +2033,9 @@ EOD;
 		$innerOptions = self::popOption('innerOptions', $htmlOptions, array());
 		$innerOptions = self::addClassName('navbar-inner', $innerOptions);
 		ob_start();
-		echo parent::openTag('div', $htmlOptions) . PHP_EOL;
-		echo parent::tag('div', $innerOptions, $content) . PHP_EOL;
-		echo '</div>' . PHP_EOL;
+		echo CHtml::openTag('div', $htmlOptions);
+		echo CHtml::tag('div', $innerOptions, $content);
+		echo '</div>';
 		return ob_get_clean();
 	}
 
@@ -2043,7 +2049,7 @@ EOD;
 	public static function navbarBrandLink($label, $url, $htmlOptions = array())
 	{
 		$htmlOptions = self::addClassName('brand', $htmlOptions);
-		return parent::link($label, $url, $htmlOptions);
+		return CHtml::link($label, $url, $htmlOptions);
 	}
 
 	/**
@@ -2067,7 +2073,7 @@ EOD;
 	public static function navbarMenuDivider($htmlOptions = array())
 	{
 		$htmlOptions = self::addClassName('divider-vertical', $htmlOptions);
-		return parent::tag('li', $htmlOptions) . PHP_EOL;
+		return CHtml::tag('li', $htmlOptions);
 	}
 
 	// Breadcrumbs
@@ -2085,19 +2091,20 @@ EOD;
 		$divider = self::popOption('divider', $htmlOptions, '/');
 		$htmlOptions = self::addClassName('breadcrumb', $htmlOptions);
 		ob_start();
-		echo parent::openTag('ul', $htmlOptions) . PHP_EOL;
+		echo CHtml::openTag('ul', $htmlOptions);
 		foreach ($links as $label => $url)
 		{
 			if (is_string($label))
 			{
-				echo parent::openTag('li');
-				echo parent::link($label, parent::normalizeUrl($url));
-				echo parent::tag('span', array('class' => 'divider'), $divider);
-				echo '</li>' . PHP_EOL;
-			} else
-				echo parent::tag('li', array('class' => 'active'), $url);
+				echo CHtml::openTag('li');
+				echo CHtml::link($label, CHtml::normalizeUrl($url));
+				echo CHtml::tag('span', array('class' => 'divider'), $divider);
+				echo '</li>';
+			}
+			else
+				echo CHtml::tag('li', array('class' => 'active'), $url);
 		}
-		echo '</ul>' . PHP_EOL;
+		echo '</ul>';
 		return ob_get_clean();
 	}
 
@@ -2124,8 +2131,8 @@ EOD;
 				$htmlOptions = self::addClassName('pagination-' . $align, $htmlOptions);
 			$listOptions = self::popOption('listOptions', $htmlOptions, array());
 			ob_start();
-			echo parent::openTag('div', $htmlOptions) . PHP_EOL;
-			echo parent::openTag('ul', $listOptions) . PHP_EOL;
+			echo CHtml::openTag('div', $htmlOptions);
+			echo CHtml::openTag('ul', $listOptions);
 			foreach ($links as $itemOptions)
 			{
 				$options = self::popOption('htmlOptions', $itemOptions, array());
@@ -2135,7 +2142,7 @@ EOD;
 				$url = self::popOption('url', $itemOptions, false);
 				echo self::paginationLink($label, $url, $itemOptions);
 			}
-			echo '</ul>' . PHP_EOL . '</div>' . PHP_EOL;
+			echo '</ul>' . '</div>';
 			return ob_get_clean();
 		}
 		return '';
@@ -2158,9 +2165,9 @@ EOD;
 			$htmlOptions = self::addClassName('disabled', $htmlOptions);
 		$linkOptions = self::popOption('linkOptions', $itemOptions, array());
 		ob_start();
-		echo parent::openTag('li', $htmlOptions) . PHP_EOL;
-		echo parent::link($label, $url, $linkOptions) . PHP_EOL;
-		echo '</li>' . PHP_EOL;
+		echo CHtml::openTag('li', $htmlOptions);
+		echo CHtml::link($label, $url, $linkOptions);
+		echo '</li>';
 		return ob_get_clean();
 	}
 
@@ -2176,7 +2183,7 @@ EOD;
 		{
 			$htmlOptions = self::addClassName('pager', $htmlOptions);
 			ob_start();
-			echo parent::openTag('ul', $htmlOptions) . PHP_EOL;
+			echo CHtml::openTag('ul', $htmlOptions);
 			foreach ($links as $itemOptions)
 			{
 				$options = self::popOption('htmlOptions', $itemOptions, array());
@@ -2186,7 +2193,7 @@ EOD;
 				$url = self::popOption('url', $itemOptions, false);
 				echo self::pagerLink($label, $url, $itemOptions);
 			}
-			echo '</ul>' . PHP_EOL;
+			echo '</ul>';
 			return ob_get_clean();
 		}
 		return '';
@@ -2211,9 +2218,9 @@ EOD;
 			$htmlOptions = self::addClassName('disabled', $htmlOptions);
 		$linkOptions = self::popOption('linkOptions', $itemOptions, array());
 		ob_start();
-		echo parent::openTag('li', $htmlOptions) . PHP_EOL;
-		echo parent::link($label, $url, $linkOptions) . PHP_EOL;
-		echo '</li>' . PHP_EOL;
+		echo CHtml::openTag('li', $htmlOptions);
+		echo CHtml::link($label, $url, $linkOptions);
+		echo '</li>';
 		return ob_get_clean();
 	}
 
@@ -2257,7 +2264,7 @@ EOD;
 		$style = self::popOption('style', $htmlOptions);
 		if (isset($style) && in_array($style, self::$labelBadgeStyles))
 			$htmlOptions = self::addClassName($type . '-' . $style, $htmlOptions);
-		return self::tag('span', $htmlOptions, $label);
+		return CHtml::tag('span', $htmlOptions, $label);
 	}
 
 	// Typography
@@ -2276,10 +2283,10 @@ EOD;
 		$htmlOptions = self::addClassName('hero-unit', $htmlOptions);
 		$headingOptions = self::popOption('headingOptions', $htmlOptions, array());
 		ob_start();
-		echo parent::tag('div', $htmlOptions) . PHP_EOL;
-		echo parent::tag('h1', $headingOptions, $heading) . PHP_EOL;
+		echo CHtml::tag('div', $htmlOptions);
+		echo CHtml::tag('h1', $headingOptions, $heading);
 		echo $content;
-		echo '</div>' . PHP_EOL;
+		echo '</div>';
 		return ob_get_clean();
 	}
 
@@ -2297,11 +2304,11 @@ EOD;
 		$headerOptions = self::popOption('headerOptions', $htmlOptions, array());
 		$subtextOptions = self::popOption('subtextOptions', $htmlOptions, array());
 		ob_start();
-		echo parent::openTag('div', $htmlOptions) . PHP_EOL;
-		echo parent::openTag('h1', $headerOptions);
-		echo parent::encode($heading) . ' ' . parent::tag('small', $subtextOptions, $subtext);
-		echo '</h1>' . PHP_EOL;
-		echo '</div>' . PHP_EOL;
+		echo CHtml::openTag('div', $htmlOptions);
+		echo CHtml::openTag('h1', $headerOptions);
+		echo CHtml::encode($heading) . ' ' . CHtml::tag('small', $subtextOptions, $subtext);
+		echo '</h1>';
+		echo '</div>';
 		return ob_get_clean();
 	}
 
@@ -2323,7 +2330,7 @@ EOD;
 			$htmlOptions = self::addClassName('thumbnails', $htmlOptions);
 			$defaultSpan = self::popOption('span', $htmlOptions, 3);
 			ob_start();
-			echo parent::openTag('ul', $htmlOptions) . PHP_EOL;
+			echo CHtml::openTag('ul', $htmlOptions);
 			foreach ($thumbnails as $thumbnailOptions)
 			{
 				$options = self::popOption('htmlOptions', $thumbnailOptions, array());
@@ -2352,7 +2359,7 @@ EOD;
 					? self::thumbnailLink($span, $content, $url, $thumbnailOptions)
 					: self::thumbnail($span, $content, $thumbnailOptions);
 			}
-			echo '</ul>' . PHP_EOL;
+			echo '</ul>';
 			return ob_get_clean();
 		}
 		return '';
@@ -2371,11 +2378,11 @@ EOD;
 		$itemOptions = self::addClassName('span' . $span, $itemOptions);
 		$htmlOptions = self::addClassName('thumbnail', $htmlOptions);
 		ob_start();
-		echo parent::openTag('li', $itemOptions) . PHP_EOL;
-		echo parent::openTag('div', $htmlOptions) . PHP_EOL;
-		echo $content . PHP_EOL;
-		echo '</div>' . PHP_EOL;
-		echo '</li>' . PHP_EOL;
+		echo CHtml::openTag('li', $itemOptions);
+		echo CHtml::openTag('div', $htmlOptions);
+		echo $content;
+		echo '</div>';
+		echo '</li>';
 		return ob_get_clean();
 	}
 
@@ -2393,9 +2400,9 @@ EOD;
 		$itemOptions = self::addClassName('span' . $span, $itemOptions);
 		$htmlOptions = self::addClassName('thumbnail', $htmlOptions);
 		ob_start();
-		echo parent::openTag('li', $itemOptions) . PHP_EOL;
-		echo parent::link($content, $url, $htmlOptions) . PHP_EOL;
-		echo '</li>' . PHP_EOL;
+		echo CHtml::openTag('li', $itemOptions);
+		echo CHtml::link($content, $url, $htmlOptions);
+		echo '</li>';
 		return ob_get_clean();
 	}
 
@@ -2428,7 +2435,7 @@ EOD;
 		$closeText = self::popOption('closeText', $htmlOptions, self::CLOSE_TEXT);
 		$closeOptions = self::popOption('closeOptions', $htmlOptions, array());
 		ob_start();
-		echo parent::openTag('div', $htmlOptions);
+		echo CHtml::openTag('div', $htmlOptions);
 		echo $closeText !== false ? self::closeLink($closeText, $closeOptions) : '';
 		echo $message;
 		echo '</div>';
@@ -2460,9 +2467,9 @@ EOD;
 		$barOptions = self::getOption('barOptions', $htmlOptions, array());
 		$barOptions = self::defaultOption('content', self::getOption('content', $htmlOptions, ''), $barOptions);
 		ob_start();
-		echo parent::openTag('div', $htmlOptions) . PHP_EOL;
+		echo CHtml::openTag('div', $htmlOptions);
 		echo self::bar($width, $barOptions);
-		echo '</div>' . PHP_EOL;
+		echo '</div>';
 		return ob_get_clean();
 	}
 
@@ -2474,7 +2481,7 @@ EOD;
 	 */
 	public static function stripedProgressBar($width = 0, $htmlOptions = array())
 	{
-		$htmlOptions = self::defaultOption('striped', true, $htmlOptions);
+		$htmlOptions['striped'] = true;
 		return self::progressBar($width, $htmlOptions);
 	}
 
@@ -2486,7 +2493,7 @@ EOD;
 	 */
 	public static function animatedProgressBar($width = 0, $htmlOptions = array())
 	{
-		$htmlOptions = self::defaultOption('animated', true, $htmlOptions);
+		$htmlOptions['animated'] = true;
 		return self::stripedProgressBar($width, $htmlOptions);
 	}
 
@@ -2502,7 +2509,7 @@ EOD;
 		{
 			$htmlOptions = self::addClassName('progress', $htmlOptions);
 			ob_start();
-			echo parent::openTag('div', $htmlOptions) . PHP_EOL;
+			echo CHtml::openTag('div', $htmlOptions);
 			foreach ($bars as $barOptions)
 			{
 				$options = self::popOption('htmlOptions', $barOptions, array());
@@ -2511,7 +2518,7 @@ EOD;
 				$width = self::popOption('width', $barOptions, 0);
 				echo self::bar($width, $barOptions);
 			}
-			echo '</div>' . PHP_EOL;
+			echo '</div>';
 			return ob_get_clean();
 		}
 		return '';
@@ -2535,7 +2542,7 @@ EOD;
 			$width = 100;
 		$htmlOptions = self::addStyles("width: {$width}%;", $htmlOptions);
 		$content = self::popOption('content', $htmlOptions, '');
-		return parent::tag('div', $htmlOptions, $content) . PHP_EOL;
+		return CHtml::tag('div', $htmlOptions, $content);
 	}
 
 	// Media objects
@@ -2560,12 +2567,12 @@ EOD;
 			ob_start();
 			foreach ($mediaObjects as $mediaObjectOptions)
 			{
-				$imageUrl = self::getOption('image', $mediaObjectOptions, '#');
+				$image = self::getOption('image', $mediaObjectOptions, '#');
 				$heading = self::getOption('heading', $mediaObjectOptions, '');
 				$content = self::getOption('content', $mediaObjectOptions, '');
 				$itemOptions = self::getOption('htmlOptions', $mediaObjectOptions, array());
 				$itemOptions['items'] = self::popOption('items', $mediaObjectOptions, array());
-				echo self::mediaObject($imageUrl, $heading, $content, $itemOptions);
+				echo self::mediaObject($image, $heading, $content, $itemOptions);
 			}
 			return ob_get_clean();
 		}
@@ -2623,17 +2630,17 @@ EOD;
 
 		ob_start();
 
-		echo parent::openTag('div', self::addClassName('media', $htmlOptions)); // media
+		echo CHtml::openTag('div', self::addClassName('media', $htmlOptions)); // media
 
-		echo parent::link(
-			parent::image($imageUrl, self::popOption('alt', $imageOptions, ''), $imageOptions),
+		echo CHtml::link(
+			CHtml::image($imageUrl, self::popOption('alt', $imageOptions, ''), $imageOptions),
 			self::popOption('href', $urlOptions, '#'),
 			$urlOptions);
 
-		echo parent::openTag('div', $contentOptions); // media-body
+		echo CHtml::openTag('div', $contentOptions); // media-body
 
 		// render heading
-		echo parent::tag('h4', $headingOptions, $heading);
+		echo CHtml::tag('h4', $headingOptions, $heading);
 
 		// render content
 		echo $content;
@@ -2663,7 +2670,7 @@ EOD;
 		if (isset($size) && in_array($size, self::$sizes))
 			$htmlOptions = self::addClassName('well-' . $size, $htmlOptions);
 		ob_start();
-		echo parent::tag('div', $htmlOptions, $content) . PHP_EOL;
+		echo CHtml::tag('div', $htmlOptions, $content);
 		return ob_get_clean();
 	}
 
@@ -2700,7 +2707,7 @@ EOD;
 	{
 		$htmlOptions = self::addClassName('close', $htmlOptions);
 		$htmlOptions = self::defaultOption('data-dismiss', 'alert', $htmlOptions);
-		return parent::tag($tag, $htmlOptions, $label) . PHP_EOL;
+		return CHtml::tag($tag, $htmlOptions, $label);
 	}
 
 	/**
@@ -2713,7 +2720,7 @@ EOD;
 	public static function collapseLink($label, $target, $htmlOptions = array())
 	{
 		$htmlOptions['data-toggle'] = 'collapse';
-		return parent::link($label, $target, $htmlOptions);
+		return CHtml::link($label, $target, $htmlOptions);
 	}
 
 	/**
@@ -2730,7 +2737,7 @@ EOD;
 			'data-target' => $target,
 		));
 		ob_start();
-		echo parent::openTag('a', $htmlOptions);
+		echo CHtml::openTag('a', $htmlOptions);
 		echo '<span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span>';
 		echo '</a>';
 		return ob_get_clean();
@@ -2770,7 +2777,7 @@ EOD;
 	public static function popover($label, $title, $content, $htmlOptions = array())
 	{
 		$htmlOptions['rel'] = 'popover';
-		$htmlOptions = self::defaultOption('data-content', $content, $htmlOptions);
+		$htmlOptions['data-content'] = $content;
 		return self::tooltipPopover($label, '#', $title, $htmlOptions);
 	}
 
@@ -2799,7 +2806,7 @@ EOD;
 			$htmlOptions = self::defaultOption('data-trigger', $trigger, $htmlOptions);
 		if (($delay = self::popOption('delay', $htmlOptions)) !== null)
 			$htmlOptions = self::defaultOption('data-delay', $delay, $htmlOptions);
-		return parent::link($label, $url, $htmlOptions);
+		return CHtml::link($label, $url, $htmlOptions);
 	}
 
 	// Carousel
@@ -2835,8 +2842,8 @@ EOD;
 			$nextOptions = self::popOption('nextOptions', $htmlOptions, array());
 			$nextLabel = self::popOption('label', $nextOptions, '&rsaquo;');
 			ob_start();
-			echo parent::openTag('div', $htmlOptions) . PHP_EOL;
-			echo parent::openTag('div', $innerOptions) . PHP_EOL;
+			echo CHtml::openTag('div', $htmlOptions);
+			echo CHtml::openTag('div', $innerOptions);
 			foreach ($items as $i => $itemOptions)
 			{
 				$itemOptions = self::addClassName('item', $itemOptions);
@@ -2847,10 +2854,10 @@ EOD;
 				$caption = self::popOption('caption', $itemOptions);
 				echo self::carouselItem($content, $label, $caption, $itemOptions);
 			}
-			echo '</div>' . PHP_EOL;
-			echo self::carouselPrevLink($prevLabel, $selector, $prevOptions) . PHP_EOL;
-			echo self::carouselNextLink($nextLabel, $selector, $nextOptions) . PHP_EOL;
-			echo '</div>' . PHP_EOL;
+			echo '</div>';
+			echo self::carouselPrevLink($prevLabel, $selector, $prevOptions);
+			echo self::carouselNextLink($nextLabel, $selector, $nextOptions);
+			echo '</div>';
 			return ob_get_clean();
 		}
 		return '';
@@ -2871,18 +2878,18 @@ EOD;
 		$labelOptions = self::popOption('labelOptions', $htmlOptions, array());
 		$captionOptions = self::popOption('captionOptions', $htmlOptions, array());
 		ob_start();
-		echo parent::openTag('div', $htmlOptions) . PHP_EOL;
-		echo $content . PHP_EOL;
+		echo CHtml::openTag('div', $htmlOptions);
+		echo $content;
 		if (isset($label) || isset($caption))
 		{
-			echo parent::openTag('div', $overlayOptions) . PHP_EOL;
+			echo CHtml::openTag('div', $overlayOptions);
 			if ($label)
-				echo parent::tag('h4', $labelOptions, $label);
+				echo CHtml::tag('h4', $labelOptions, $label);
 			if ($caption)
-				echo parent::tag('p', $captionOptions, $caption);
-			echo '</div>' . PHP_EOL;
+				echo CHtml::tag('p', $captionOptions, $caption);
+			echo '</div>';
 		}
-		echo '</div>' . PHP_EOL;
+		echo '</div>';
 		return ob_get_clean();
 	}
 
@@ -2895,9 +2902,9 @@ EOD;
 	 */
 	public static function carouselPrevLink($label, $url, $htmlOptions = array())
 	{
+		$htmlOptions['data-slide'] = 'prev';
 		$htmlOptions = self::addClassName('carousel-control left', $htmlOptions);
-		$htmlOptions = self::defaultOption('data-slide', 'prev', $htmlOptions);
-		return parent::link($label, $url, $htmlOptions);
+		return CHtml::link($label, $url, $htmlOptions);
 	}
 
 	/**
@@ -2909,9 +2916,9 @@ EOD;
 	 */
 	public static function carouselNextLink($label, $url, $htmlOptions = array())
 	{
+		$htmlOptions['data-slide'] = 'next';
 		$htmlOptions = self::addClassName('carousel-control right', $htmlOptions);
-		$htmlOptions = self::defaultOption('data-slide', 'next', $htmlOptions);
-		return parent::link($label, $url, $htmlOptions);
+		return CHtml::link($label, $url, $htmlOptions);
 	}
 
 	// UTILITIES
