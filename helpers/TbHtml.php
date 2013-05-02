@@ -31,31 +31,43 @@ class TbHtml extends CHtml // required in order to access protected methods
 	const SIZE_DEFAULT = '';
 	const SIZE_LARGE = 'large';
 
-	// Navigation menu types.
+	// Menu types.
 	const NAV_TABS = 'tabs';
 	const NAV_PILLS = 'pills';
 	const NAV_LIST = 'list';
 
-	// Navbar position types.
+	// Navbar positions.
 	const NAVBAR_TOP = 'top';
 	const NAVBAR_BOTTOM = 'bottom';
 
-	// Alignments.
+	// Floats.
+	const PULL_LEFT = 'left';
+	const PULL_RIGHT = 'right';
+	
+	// Text alignments.
 	const ALIGN_LEFT = 'left';
-	const ALIGN_CENTER = 'centered';
+	const ALIGN_CENTER = 'center';
 	const ALIGN_RIGHT = 'right';
 
+	// Image types.
+	const IMAGE_ROUNDED = 'rounded';
+	const IMAGE_CIRCLE = 'circle';
+	const IMAGE_POLAROID = 'polaroid';
+
 	// Progress bar types.
+	const PROGRESS_LEFT = 'left';
+	const PROGRESS_CENTER = 'centered';
+	const PROGRESS_RIGHT = 'right';
 	const PROGRESS_STRIPED = 'striped';
 	const PROGRESS_ACTIVE = 'active';
 
-	// Tooltip placements
+	// Tooltip placements.
 	const TOOLTIP_TOP = 'top';
 	const TOOLTIP_BOTTOM = 'bottom';
 	const TOOLTIP_LEFT = 'left';
 	const TOOLTIP_RIGHT = 'right';
 
-	// Tab placements
+	// Tab placements.
 	const TABS_ABOVE = '';
 	const TABS_BELOW = 'below';
 	const TABS_LEFT = 'left';
@@ -71,19 +83,16 @@ class TbHtml extends CHtml // required in order to access protected methods
 	const ADDON_PREPEND = 'prepend';
 	const ADDON_APPEND = 'append';
 
-	// Default close text.
-	const CLOSE_TEXT = '&times;';
-
 	// Help types.
 	const HELP_INLINE = 'inline';
 	const HELP_BLOCK = 'block';
 
-	// form types
+	// Form types.
 	const FORM_INLINE = 'inline';
 	const FORM_HORIZONTAL = 'horizontal';
 	const FORM_VERTICAL = 'vertical';
 
-	// field types
+	// Input types.
 	const INPUT_URL = 'urlField';
 	const INPUT_EMAIL = 'emailField';
 	const INPUT_NUMBER = 'numberField';
@@ -100,11 +109,14 @@ class TbHtml extends CHtml // required in order to access protected methods
 	const INPUT_CHECKBOXLIST = 'inlineCheckBoxList';
 	const INPUT_RADIOBUTTONLIST = 'inlineRadioButtonList';
 
-	// grid types
+	// grid types.
 	const GRID_STRIPED = 'striped';
 	const GRID_BORDERED = 'bordered';
 	const GRID_CONDENSED = 'condensed';
 	const GRID_HOVER = 'hover';
+
+	// Default close text.
+	const CLOSE_TEXT = '&times;';
 
 	// Scope constants.
 	static $inputs = array(self::INPUT_CHECKBOX, self::INPUT_CHECKBOXLIST, self::INPUT_DATE,
@@ -114,18 +126,21 @@ class TbHtml extends CHtml // required in order to access protected methods
 	static $dataInputs = array(self::INPUT_CHECKBOXLIST, self::INPUT_DROPDOWN, self::INPUT_LISTBOX,
 		self::INPUT_RADIOBUTTONLIST); // Which one requires data
 	static $sizes = array(self::SIZE_LARGE, self::SIZE_SMALL, self::SIZE_MINI);
+	static $pulls = array(self::PULL_LEFT, self::PULL_RIGHT);
 	static $textStyles = array(self::STYLE_ERROR, self::STYLE_INFO, self::STYLE_SUCCESS, self::STYLE_WARNING);
+	static $textAlignments = array(self::ALIGN_LEFT, self::ALIGN_CENTER, self::ALIGN_RIGHT);
+	static $imageTypes = array(self::IMAGE_ROUNDED, self::IMAGE_CIRCLE, self::IMAGE_POLAROID);
 	static $buttonStyles = array(self::STYLE_PRIMARY, self::STYLE_INFO, self::STYLE_SUCCESS, self::STYLE_WARNING,
 		self::STYLE_DANGER, self::STYLE_INVERSE, self::STYLE_LINK);
-	static $labelBadgeStyles = array(self::STYLE_SUCCESS, self::STYLE_WARNING, self::STYLE_IMPORTANT, self::STYLE_INFO, self::STYLE_INVERSE);
-	static $navStyles = array(self::NAV_TABS, self::NAV_PILLS, self::NAV_LIST);
+	static $navTypes = array(self::NAV_TABS, self::NAV_PILLS, self::NAV_LIST);
+	static $tabPlacements = array(self::TABS_ABOVE, self::TABS_BELOW, self::TABS_LEFT, self::TABS_RIGHT);
 	static $navbarStyles = array(self::STYLE_INVERSE);
 	static $navbarPositions = array(self::NAVBAR_TOP, self::NAVBAR_BOTTOM);
-	static $alignments = array(self::ALIGN_CENTER, self::ALIGN_RIGHT);
+	static $labelBadgeStyles = array(self::STYLE_SUCCESS, self::STYLE_WARNING, self::STYLE_IMPORTANT, self::STYLE_INFO, self::STYLE_INVERSE);
 	static $alertStyles = array(self::STYLE_SUCCESS, self::STYLE_INFO, self::STYLE_WARNING, self::STYLE_ERROR);
 	static $progressStyles = array(self::STYLE_INFO, self::STYLE_SUCCESS, self::STYLE_WARNING, self::STYLE_DANGER);
+	static $progressAlignments = array(self::PROGRESS_LEFT, self::PROGRESS_CENTER, self::PROGRESS_RIGHT);
 	static $tooltipPlacements = array(self::TOOLTIP_TOP, self::TOOLTIP_BOTTOM, self::TOOLTIP_LEFT, self::TOOLTIP_RIGHT);
-	static $tabPlacements = array(self::TABS_ABOVE, self::TABS_BELOW, self::TABS_LEFT, self::TABS_RIGHT);
 	static $triggers = array(self::TRIGGER_CLICK, self::TRIGGER_HOVER, self::TRIGGER_FOCUS, self::TRIGGER_MANUAL);
 	static $addons = array(self::ADDON_PREPEND, self::ADDON_APPEND);
 	static $grids = array(self::GRID_BORDERED, self::GRID_CONDENSED, self::GRID_HOVER, self::GRID_STRIPED);
@@ -151,7 +166,7 @@ class TbHtml extends CHtml // required in order to access protected methods
 	public static function lead($text, $htmlOptions = array())
 	{
 		$htmlOptions = self::addClassName('lead', $htmlOptions);
-		return CHtml::tag('p', $htmlOptions, $text);
+		return self::tag('p', $htmlOptions, $text);
 	}
 
 	/**
@@ -162,7 +177,7 @@ class TbHtml extends CHtml // required in order to access protected methods
 	 */
 	public static function small($text, $htmlOptions = array())
 	{
-		return CHtml::tag('small', $htmlOptions, $text);
+		return self::tag('small', $htmlOptions, $text);
 	}
 
 	/**
@@ -173,7 +188,7 @@ class TbHtml extends CHtml // required in order to access protected methods
 	 */
 	public static function b($text, $htmlOptions = array())
 	{
-		return CHtml::tag('strong', $htmlOptions, $text);
+		return self::tag('strong', $htmlOptions, $text);
 	}
 
 	/**
@@ -184,24 +199,22 @@ class TbHtml extends CHtml // required in order to access protected methods
 	 */
 	public static function i($text, $htmlOptions = array())
 	{
-		return CHtml::tag('em', $htmlOptions, $text);
+		return self::tag('em', $htmlOptions, $text);
 	}
 
 	/**
-	 * Generates an emphasized text block.
+	 * Generates an emphasized text.
+	 * @param string $style the text style.
 	 * @param string $text the text to emphasize.
 	 * @param array $htmlOptions additional HTML attributes.
 	 * @param string $tag the HTML tag.
-	 * @return string the generated text block.
+	 * @return string the generated text.
 	 */
-	public static function em($text, $htmlOptions = array(), $tag = 'p')
+	public static function em($style, $text, $htmlOptions = array(), $tag = 'p')
 	{
-		$style = self::popOption('style', $htmlOptions);
-		if (self::popOption('muted', $htmlOptions, false))
-			$htmlOptions = self::addClassName('muted', $htmlOptions);
-		else if ($style && in_array($style, self::$textStyles))
+		if ($style && in_array($style, self::$textStyles))
 			$htmlOptions = self::addClassName('text-' . $style, $htmlOptions);
-		return CHtml::tag($tag, $htmlOptions, $text);
+		return self::tag($tag, $htmlOptions, $text);
 	}
 
 	/**
@@ -213,8 +226,9 @@ class TbHtml extends CHtml // required in order to access protected methods
 	 */
 	public static function muted($text, $htmlOptions = array(), $tag = 'p')
 	{
-		$htmlOptions = self::defaultOption('muted', true, $htmlOptions);
-		return self::em($text, $htmlOptions, $tag);
+		if (self::popOption('muted', $htmlOptions, false))
+			$htmlOptions = self::addClassName('muted', $htmlOptions);
+		return self::tag($tag, $htmlOptions, $text);
 	}
 
 	/**
@@ -238,10 +252,23 @@ class TbHtml extends CHtml // required in order to access protected methods
 	 */
 	public static function abbr($text, $word, $htmlOptions = array())
 	{
-		if (self::popOption('smaller', $htmlOptions, false))
+		if (self::popOption('small', $htmlOptions, false))
 			$htmlOptions = self::addClassName('initialism', $htmlOptions);
-		$htmlOptions = self::defaultOption('title', $word, $htmlOptions);
-		return CHtml::tag('abbr', $htmlOptions, $text);
+		$htmlOptions['title'] = $word;
+		return self::tag('abbr', $htmlOptions, $text);
+	}
+
+	/**
+	 * Generates a small abbreviation with a help text.
+	 * @param string $text the abbreviation.
+	 * @param string $word the word the abbreviation is for.
+	 * @param array $htmlOptions additional HTML attributes.
+	 * @return string the generated abbreviation.
+	 */
+	public static function smallAbbr($text, $word, $htmlOptions = array())
+	{
+		$htmlOptions['small'] = true;
+		return self::abbr($text, $word, $htmlOptions);
 	}
 
 	/**
@@ -252,7 +279,7 @@ class TbHtml extends CHtml // required in order to access protected methods
 	 */
 	public static function address($text, $htmlOptions = array())
 	{
-		return CHtml::tag('address', $htmlOptions, $text);
+		return self::tag('address', $htmlOptions, $text);
 	}
 
 	/**
@@ -263,7 +290,15 @@ class TbHtml extends CHtml // required in order to access protected methods
 	 */
 	public static function quote($text, $htmlOptions = array())
 	{
-		return CHtml::tag('blockquote', $htmlOptions, $text);
+		$paragraphOptions = self::popOption('paragraphOptions', $htmlOptions, array());
+		$source = self::popOption('source', $htmlOptions);
+		$sourceOptions = self::popOption('sourceOptions', $htmlOptions, array());
+		$cite = self::popOption('cite', $htmlOptions);
+		$citeOptions = self::popOption('citeOptions', $htmlOptions, array());
+		$cite = isset($cite) ? self::tag('cite', $citeOptions, $cite) : '';
+		$source = isset($source) ? self::tag('small', $sourceOptions, $source . ' ' . $cite) : '';
+		$text = self::tag('p', $paragraphOptions, $text) . $source;
+		return self::tag('blockquote', $htmlOptions, $text);
 	}
 
 	/**
@@ -275,7 +310,7 @@ class TbHtml extends CHtml // required in order to access protected methods
 	public static function help($text, $htmlOptions = array())
 	{
 		$htmlOptions = self::addClassName('help-block', $htmlOptions);
-		return CHtml::tag('p', $htmlOptions, $text);
+		return self::tag('p', $htmlOptions, $text);
 	}
 
 	// Code
@@ -283,14 +318,14 @@ class TbHtml extends CHtml // required in order to access protected methods
 	// --------------------------------------------------
 
 	/**
-	 * Generates a code snippet.
+	 * Generates inline code.
 	 * @param string $code the code.
 	 * @param array $htmlOptions additional HTML attributes.
-	 * @return string the generated snippet.
+	 * @return string the generated code.
 	 */
-	public static function snippet($code, $htmlOptions = array())
+	public static function code($code, $htmlOptions = array())
 	{
-		return CHtml::tag('code', $htmlOptions, $code);
+		return self::tag('code', $htmlOptions, $code);
 	}
 
 	/**
@@ -299,9 +334,28 @@ class TbHtml extends CHtml // required in order to access protected methods
 	 * @param array $htmlOptions additional HTML attributes.
 	 * @return string the generated block.
 	 */
-	public static function code($code, $htmlOptions = array())
+	public static function codeBlock($code, $htmlOptions = array())
 	{
-		return CHtml::tag('pre', $htmlOptions, $code);
+		return self::tag('pre', $htmlOptions, $code);
+	}
+
+	/**
+	 * Generates an HTML element.
+	 * @param string $tag the tag name.
+	 * @param array $htmlOptions the element attributes.
+	 * @param mixed $content the content to be enclosed between open and close element tags.
+	 * @param boolean $closeTag whether to generate the close tag.
+	 * @return string the generated HTML element tag.
+	 */
+	public static function tag($tag, $htmlOptions = array(), $content = false, $closeTag = true)
+	{
+		$align = self::popOption('align', $htmlOptions);
+		if (isset($align) && in_array($align, self::$textAlignments))
+			$htmlOptions = self::addClassName('text-' . $align, $htmlOptions);
+		$pull = self::popOption('pull', $htmlOptions);
+		if (isset($pull) && in_array($pull, self::$pulls))
+			$htmlOptions = self::addClassName('pull-' . $pull, $htmlOptions);
+		return parent::tag($tag, $htmlOptions, $content, $closeTag);
 	}
 
 	// Tables
@@ -335,7 +389,7 @@ class TbHtml extends CHtml // required in order to access protected methods
 		$formType = self::popOption('formType', $htmlOptions);
 		if ($formType == TbHtml::FORM_HORIZONTAL)
 			$htmlOptions = self::addClassName('control-label', $htmlOptions);
-		return CHtml::tag('label', $htmlOptions, $label);
+		return self::tag('label', $htmlOptions, $label);
 	}
 
 	/**
@@ -588,7 +642,7 @@ class TbHtml extends CHtml // required in order to access protected methods
 
 		return empty($container)
 			? implode($separator, $items)
-			: CHtml::tag($container, array('id' => $baseID), implode($separator, $items));
+			: self::tag($container, array('id' => $baseID), implode($separator, $items));
 	}
 
 	/**
@@ -679,7 +733,7 @@ EOD;
 
 		return empty($container)
 			? implode($separator, $items)
-			: CHtml::tag($container, array('id' => $baseID), implode($separator, $items));
+			: self::tag($container, array('id' => $baseID), implode($separator, $items));
 
 	}
 
@@ -936,7 +990,7 @@ EOD;
 		$help = self::getHelp($htmlOptions);
 
 		ob_start();
-		echo CHtml::tag('textarea', $htmlOptions, isset($htmlOptions['encode']) && !$htmlOptions['encode'] ? $text : CHtml::encode($text));
+		echo self::tag('textarea', $htmlOptions, isset($htmlOptions['encode']) && !$htmlOptions['encode'] ? $text : CHtml::encode($text));
 		echo $help;
 		return ob_get_clean();
 	}
@@ -1072,7 +1126,7 @@ EOD;
 		}
 		$help = self::getHelp($htmlOptions);
 		ob_start();
-		echo CHtml::tag('select', $htmlOptions, $options);
+		echo self::tag('select', $htmlOptions, $options);
 		echo $help;
 		return ob_get_clean();
 	}
@@ -1279,7 +1333,7 @@ EOD;
 		CHtml::resolveName($model, $attribute); // turn [a][b]attr into attr
 		$error = $model->getError($attribute);
 		return $error != ''
-			? CHtml::tag('span', self::defaultOption('class', self::$errorMessageCss, $htmlOptions), $error)
+			? self::tag('span', self::defaultOption('class', self::$errorMessageCss, $htmlOptions), $error)
 			: '';
 	}
 
@@ -1433,7 +1487,7 @@ EOD;
 		{
 			$addOn = strpos($htmlOptions[$type], 'button')
 				? $htmlOptions[$type]
-				: CHtml::tag('span', array('class' => 'add-on'), $htmlOptions[$type]);
+				: self::tag('span', array('class' => 'add-on'), $htmlOptions[$type]);
 		}
 		return $addOn;
 	}
@@ -1537,7 +1591,7 @@ EOD;
 		$icon = self::popOption('icon', $htmlOptions);
 		if (isset($icon))
 			$label = self::icon($icon) . '&nbsp;' . $label;
-		return CHtml::tag($tag, $htmlOptions, $label);
+		return self::tag($tag, $htmlOptions, $label);
 	}
 
 	// Images
@@ -1553,8 +1607,8 @@ EOD;
 	 */
 	public static function imageRounded($src, $alt = '', $htmlOptions = array())
 	{
-		$htmlOptions = self::addClassName('img-rounded', $htmlOptions);
-		return CHtml::image($src, $alt, $htmlOptions);
+		$htmlOptions['type'] = self::IMAGE_ROUNDED;
+		return self::image($src, $alt, $htmlOptions);
 	}
 
 	/**
@@ -1567,8 +1621,8 @@ EOD;
 	 */
 	public static function imageCircle($src, $alt = '', $htmlOptions = array())
 	{
-		$htmlOptions = self::addClassName('img-circle', $htmlOptions);
-		return CHtml::image($src, $alt, $htmlOptions);
+		$htmlOptions['type'] = self::IMAGE_CIRCLE;
+		return self::image($src, $alt, $htmlOptions);
 	}
 
 	/**
@@ -1580,7 +1634,22 @@ EOD;
 	 */
 	public static function imagePolaroid($src, $alt = '', $htmlOptions = array())
 	{
-		$htmlOptions = self::addClassName('img-polaroid', $htmlOptions);
+		$htmlOptions['type'] = self::IMAGE_POLAROID;
+		return self::image($src, $alt, $htmlOptions);
+	}
+
+	/**
+	 * Generates an image tag.
+	 * @param string $src the image URL.
+	 * @param string $alt the alternative text display.
+	 * @param array $htmlOptions additional HTML attributes.
+	 * @return string the generated image tag.
+	 */
+	public static function image($src, $alt = '', $htmlOptions = array())
+	{
+		$type = self::popOption('type', $htmlOptions);
+		if (isset($type) && in_array($type, self::$imageTypes))
+			$htmlOptions = self::addClassName('img-' . $type, $htmlOptions);
 		return CHtml::image($src, $alt, $htmlOptions);
 	}
 
@@ -1879,6 +1948,17 @@ EOD;
 	}
 
 	/**
+	 * Generates a list navigation.
+	 * @param array $items the menu items.
+	 * @param array $htmlOptions additional HTML attributes.
+	 * @return string the generated menu.
+	 */
+	public static function navList($items, $htmlOptions = array())
+	{
+		return self::nav(self::NAV_LIST, $items, $htmlOptions);
+	}
+
+	/**
 	 * Generates a navigation menu.
 	 * @param string $style the menu style.
 	 * @param array $items the menu items.
@@ -1888,9 +1968,9 @@ EOD;
 	public static function nav($style, $items, $htmlOptions = array())
 	{
 		$htmlOptions = self::addClassName('nav', $htmlOptions);
-		if (in_array($style, self::$navStyles))
+		if (in_array($style, self::$navTypes))
 			$htmlOptions = self::addClassName('nav-' . $style, $htmlOptions);
-		if (self::popOption('stacked', $htmlOptions, false))
+		if ($style !== self::NAV_LIST && self::popOption('stacked', $htmlOptions, false))
 			$htmlOptions = self::addClassName('nav-stacked', $htmlOptions);
 		ob_start();
 		echo self::menu($items, $htmlOptions);
@@ -1993,7 +2073,7 @@ EOD;
 	public static function menuHeader($label, $htmlOptions = array())
 	{
 		$htmlOptions = self::addClassName('nav-header', $htmlOptions);
-		return CHtml::tag('li', $htmlOptions, $label);
+		return self::tag('li', $htmlOptions, $label);
 	}
 
 	/**
@@ -2004,7 +2084,7 @@ EOD;
 	public static function menuDivider($htmlOptions = array())
 	{
 		$htmlOptions = self::addClassName('divider', $htmlOptions);
-		return CHtml::tag('li', $htmlOptions);
+		return self::tag('li', $htmlOptions);
 	}
 
 	// Navbar
@@ -2034,7 +2114,7 @@ EOD;
 		$innerOptions = self::addClassName('navbar-inner', $innerOptions);
 		ob_start();
 		echo CHtml::openTag('div', $htmlOptions);
-		echo CHtml::tag('div', $innerOptions, $content);
+		echo self::tag('div', $innerOptions, $content);
 		echo '</div>';
 		return ob_get_clean();
 	}
@@ -2062,7 +2142,7 @@ EOD;
 	public static function navbarText($text, $htmlOptions = array(), $tag = 'p')
 	{
 		$htmlOptions = self::addClassName('navbar-text', $htmlOptions);
-		return CHtml::tag($tag, $htmlOptions, $text);
+		return self::tag($tag, $htmlOptions, $text);
 	}
 
 	/**
@@ -2073,7 +2153,7 @@ EOD;
 	public static function navbarMenuDivider($htmlOptions = array())
 	{
 		$htmlOptions = self::addClassName('divider-vertical', $htmlOptions);
-		return CHtml::tag('li', $htmlOptions);
+		return self::tag('li', $htmlOptions);
 	}
 
 	// Breadcrumbs
@@ -2098,11 +2178,11 @@ EOD;
 			{
 				echo CHtml::openTag('li');
 				echo CHtml::link($label, CHtml::normalizeUrl($url));
-				echo CHtml::tag('span', array('class' => 'divider'), $divider);
+				echo self::tag('span', array('class' => 'divider'), $divider);
 				echo '</li>';
 			}
 			else
-				echo CHtml::tag('li', array('class' => 'active'), $url);
+				echo self::tag('li', array('class' => 'active'), $url);
 		}
 		echo '</ul>';
 		return ob_get_clean();
@@ -2127,7 +2207,7 @@ EOD;
 			if (isset($size) && in_array($size, self::$sizes))
 				$htmlOptions = self::addClassName('pagination-' . $size, $htmlOptions);
 			$align = self::popOption('align', $htmlOptions);
-			if (isset($align) && in_array($align, self::$alignments))
+			if (isset($align) && in_array($align, self::$progressAlignments))
 				$htmlOptions = self::addClassName('pagination-' . $align, $htmlOptions);
 			$listOptions = self::popOption('listOptions', $htmlOptions, array());
 			ob_start();
@@ -2264,7 +2344,7 @@ EOD;
 		$style = self::popOption('style', $htmlOptions);
 		if (isset($style) && in_array($style, self::$labelBadgeStyles))
 			$htmlOptions = self::addClassName($type . '-' . $style, $htmlOptions);
-		return CHtml::tag('span', $htmlOptions, $label);
+		return self::tag('span', $htmlOptions, $label);
 	}
 
 	// Typography
@@ -2283,8 +2363,8 @@ EOD;
 		$htmlOptions = self::addClassName('hero-unit', $htmlOptions);
 		$headingOptions = self::popOption('headingOptions', $htmlOptions, array());
 		ob_start();
-		echo CHtml::tag('div', $htmlOptions);
-		echo CHtml::tag('h1', $headingOptions, $heading);
+		echo self::tag('div', $htmlOptions);
+		echo self::tag('h1', $headingOptions, $heading);
 		echo $content;
 		echo '</div>';
 		return ob_get_clean();
@@ -2306,7 +2386,7 @@ EOD;
 		ob_start();
 		echo CHtml::openTag('div', $htmlOptions);
 		echo CHtml::openTag('h1', $headerOptions);
-		echo CHtml::encode($heading) . ' ' . CHtml::tag('small', $subtextOptions, $subtext);
+		echo CHtml::encode($heading) . ' ' . self::tag('small', $subtextOptions, $subtext);
 		echo '</h1>';
 		echo '</div>';
 		return ob_get_clean();
@@ -2344,9 +2424,9 @@ EOD;
 				{
 					$label = self::popOption('label', $thumbnailOptions);
 					$labelOptions = self::popOption('labelOptions', $thumbnailOptions, array());
-					$caption = CHtml::tag('h3', $labelOptions, $label) . $caption;
+					$caption = self::tag('h3', $labelOptions, $label) . $caption;
 				}
-				$content = !empty($caption) ? CHtml::tag('div', $captionOptions, $caption) : '';
+				$content = !empty($caption) ? self::tag('div', $captionOptions, $caption) : '';
 				if (isset($thumbnailOptions['image']))
 				{
 					$image = self::popOption('image', $thumbnailOptions);
@@ -2440,6 +2520,19 @@ EOD;
 		echo $message;
 		echo '</div>';
 		return ob_get_clean();
+	}
+
+	/**
+	 * Generates an alert block.
+	 * @param string $style the style of the alert.
+	 * @param string $message the message to display.
+	 * @param array $htmlOptions additional HTML options.
+	 * @return string the generated alert.
+	 */
+	public static function blockAlert($style, $message, $htmlOptions = array())
+	{
+		$htmlOptions['block'] = true;
+		return self::alert($style, $message, $htmlOptions);
 	}
 
 	// Progress bars
@@ -2543,7 +2636,7 @@ EOD;
 			$width = 100;
 		$htmlOptions = self::addStyles("width: {$width}%;", $htmlOptions);
 		$content = self::popOption('content', $htmlOptions, '');
-		return CHtml::tag('div', $htmlOptions, $content);
+		return self::tag('div', $htmlOptions, $content);
 	}
 
 	// Media objects
@@ -2641,7 +2734,7 @@ EOD;
 		echo CHtml::openTag('div', $contentOptions); // media-body
 
 		// render heading
-		echo CHtml::tag('h4', $headingOptions, $heading);
+		echo self::tag('h4', $headingOptions, $heading);
 
 		// render content
 		echo $content;
@@ -2667,11 +2760,12 @@ EOD;
 	 */
 	public static function well($content, $htmlOptions = array())
 	{
+		$htmlOptions = self::addClassName('well', $htmlOptions);
 		$size = self::popOption('size', $htmlOptions);
 		if (isset($size) && in_array($size, self::$sizes))
 			$htmlOptions = self::addClassName('well-' . $size, $htmlOptions);
 		ob_start();
-		echo CHtml::tag('div', $htmlOptions, $content);
+		echo self::tag('div', $htmlOptions, $content);
 		return ob_get_clean();
 	}
 
@@ -2708,7 +2802,7 @@ EOD;
 	{
 		$htmlOptions = self::addClassName('close', $htmlOptions);
 		$htmlOptions = self::defaultOption('data-dismiss', 'alert', $htmlOptions);
-		return CHtml::tag($tag, $htmlOptions, $label);
+		return self::tag($tag, $htmlOptions, $label);
 	}
 
 	/**
@@ -2885,9 +2979,9 @@ EOD;
 		{
 			echo CHtml::openTag('div', $overlayOptions);
 			if ($label)
-				echo CHtml::tag('h4', $labelOptions, $label);
+				echo self::tag('h4', $labelOptions, $label);
 			if ($caption)
-				echo CHtml::tag('p', $captionOptions, $caption);
+				echo self::tag('p', $captionOptions, $caption);
 			echo '</div>';
 		}
 		echo '</div>';
