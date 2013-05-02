@@ -43,7 +43,7 @@ class TbHtml extends CHtml // required in order to access protected methods
 	// Floats.
 	const PULL_LEFT = 'left';
 	const PULL_RIGHT = 'right';
-	
+
 	// Text alignments.
 	const ALIGN_LEFT = 'left';
 	const ALIGN_CENTER = 'center';
@@ -2873,6 +2873,7 @@ EOD;
 	{
 		$htmlOptions['rel'] = 'popover';
 		$htmlOptions['data-content'] = $content;
+		$htmlOptions['data-toggle'] = 'popover';
 		return self::tooltipPopover($label, '#', $title, $htmlOptions);
 	}
 
@@ -2930,6 +2931,7 @@ EOD;
 			$pause = self::popOption('data-interval', $htmlOptions);
 			if ($pause) // todo: add attribute validation if seen necessary.
 				$htmlOptions = self::defaultOption('data-pause', $pause, $htmlOptions);
+			$indicatorOptions = self::popOption('indicatorOptions', $htmlOptions, array());
 			$innerOptions = self::popOption('innerOptions', $htmlOptions, array());
 			$innerOptions = self::addClassName('carousel-inner', $innerOptions);
 			$prevOptions = self::popOption('prevOptions', $htmlOptions, array());
@@ -2938,16 +2940,17 @@ EOD;
 			$nextLabel = self::popOption('label', $nextOptions, '&rsaquo;');
 			ob_start();
 			echo CHtml::openTag('div', $htmlOptions);
+			echo self::carouselIndicators($selector, count($items), $indicatorOptions);
 			echo CHtml::openTag('div', $innerOptions);
 			foreach ($items as $i => $itemOptions)
 			{
 				$itemOptions = self::addClassName('item', $itemOptions);
 				if ($i === 0) // first item should be active
 					$itemOptions = self::addClassName('active', $itemOptions);
-				$content = self::popOption('content', $itemOptions, '');
+				$image = self::popOption('image', $itemOptions, '');
 				$label = self::popOption('label', $itemOptions);
 				$caption = self::popOption('caption', $itemOptions);
-				echo self::carouselItem($content, $label, $caption, $itemOptions);
+				echo self::carouselItem($image, $label, $caption, $itemOptions);
 			}
 			echo '</div>';
 			echo self::carouselPrevLink($prevLabel, $selector, $prevOptions);
@@ -2960,21 +2963,23 @@ EOD;
 
 	/**
 	 * Generates a carousel item.
-	 * @param string $content the content.
+	 * @param string $image the image url.
 	 * @param string $label the item label text.
 	 * @param string $caption the item caption text.
 	 * @param array $htmlOptions additional HTML attributes.
 	 * @return string the generated item.
 	 */
-	public static function carouselItem($content, $label, $caption, $htmlOptions = array())
+	public static function carouselItem($image, $label, $caption, $htmlOptions = array())
 	{
+		$alt = self::popOption('alt', $htmlOptions, '');
+		$imageOptions = self::popOption('imageOptions', $htmlOptions, array());
 		$overlayOptions = self::popOption('overlayOptions', $htmlOptions, array());
 		$overlayOptions = self::addClassName('carousel-caption', $overlayOptions);
 		$labelOptions = self::popOption('labelOptions', $htmlOptions, array());
 		$captionOptions = self::popOption('captionOptions', $htmlOptions, array());
 		ob_start();
 		echo CHtml::openTag('div', $htmlOptions);
-		echo $content;
+		echo CHtml::image($image, $alt, $imageOptions);
 		if (isset($label) || isset($caption))
 		{
 			echo CHtml::openTag('div', $overlayOptions);
@@ -3014,6 +3019,29 @@ EOD;
 		$htmlOptions['data-slide'] = 'next';
 		$htmlOptions = self::addClassName('carousel-control right', $htmlOptions);
 		return CHtml::link($label, $url, $htmlOptions);
+	}
+
+	/**
+	 * Generates an indicator for the carousel.
+	 * @param string $target the CSS selector for the target element.
+	 * @param integer $numSlides the number of slides.
+	 * @param array $htmlOptions additional HTML attributes.
+	 * @return string the generated indicators.
+	 */
+	public static function carouselIndicators($target, $numSlides, $htmlOptions = array())
+	{
+		$htmlOptions = self::addClassName('carousel-indicators', $htmlOptions);
+		ob_start();
+		echo CHtml::openTag('ol', $htmlOptions);
+		for ($i = 0; $i < $numSlides; $i++)
+		{
+			$itemOptions = array('data-target' => $target, 'data-slide-to' => $i);
+			if ($i === 0)
+				$itemOptions['class'] = 'active';
+			echo CHtml::tag('li', $itemOptions);
+		}
+		echo '</ol>';
+		return ob_get_clean();
 	}
 
 	// UTILITIES
