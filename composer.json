@@ -1,7 +1,7 @@
 {
-    "name": "yii-twbs/yiistrap",
+    "name": "crisu83/yiistrap",
     "description": "Twitter Bootstrap for the Yii PHP framework.",
-    "keywords": ["bootstrap"],
+    "keywords": ["bootstrap", "yii"],
     "type": "yii-extension",
     "license": "BSD-3-Clause",
     "authors": [
