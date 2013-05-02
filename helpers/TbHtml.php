@@ -2464,8 +2464,9 @@ EOD;
 			if (self::popOption('animated', $htmlOptions, false))
 				$htmlOptions = self::addClassName('active', $htmlOptions);
 		}
-		$barOptions = self::getOption('barOptions', $htmlOptions, array());
-		$barOptions = self::defaultOption('content', self::getOption('content', $htmlOptions, ''), $barOptions);
+		$barOptions = self::popOption('barOptions', $htmlOptions, array());
+		$content = self::popOption('content', $htmlOptions, '');
+		$barOptions = self::defaultOption('content', $content, $barOptions);
 		ob_start();
 		echo CHtml::openTag('div', $htmlOptions);
 		echo self::bar($width, $barOptions);
