@@ -186,6 +186,7 @@ class TbHtml extends CHtml // required in order to access protected methods
 	const ICON_MOVE = 'icon-move';
 	const ICON_STEP_BACKWARD = 'icon-step-backward';
 	const ICON_FAST_BACKWARD = 'icon-fast-backward';
+	const ICON_BACKWARD = 'icon-backward';
 	const ICON_PLAY = 'icon-play';
 	const ICON_PAUSE = 'icon-pause';
 	const ICON_STOP = 'icon-pause';
