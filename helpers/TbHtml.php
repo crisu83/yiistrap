@@ -3373,11 +3373,11 @@ EOD;
     {
         switch ($type)
         {
-            case self::INPUT_URL: return null; // todo: implement
-            case self::INPUT_EMAIL: return null; // todo: implement
-            case self::INPUT_NUMBER: return null; // todo: implement
-            case self::INPUT_RANGE: return null; // todo: implement
-            case self::INPUT_DATE: return null; // todo: implement
+            case self::INPUT_URL: return self::urlField($name, $value, $htmlOptions);
+            case self::INPUT_EMAIL: return self::emailField($name, $value, $htmlOptions);
+            case self::INPUT_NUMBER: return self::numberField($name, $value, $htmlOptions);
+            case self::INPUT_RANGE: return self::rangeField($name, $value, $htmlOptions);
+            case self::INPUT_DATE: return self::dateField($name, $value, $htmlOptions);
             case self::INPUT_TEXT: return self::textField($name, $value, $htmlOptions);
             case self::INPUT_PASSWORD: return self::passwordField($name, $value, $htmlOptions);
             case self::INPUT_TEXTAREA: return self::textArea($name, $value, $htmlOptions);
