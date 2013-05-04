@@ -606,17 +606,18 @@ class TbHtml extends CHtml // required in order to access protected methods
      */
     public static function horizontalRow($type, $name, $value, $htmlOptions = array(), $data = array())
     {
-        ob_start();
-        echo self::createInput($type, $name, $value, $htmlOptions, $data);
-        $controls = ob_get_clean();
-
         $groupOptions = self::popOption('groupOptions', $htmlOptions, array());
         $groupOptions = self::addClassName('control-group', $groupOptions);
         $state = self::popOption('state', $htmlOptions);
         if (isset($state) && in_array($state, self::$inputStates))
             $groupOptions = self::addClassName($state, $groupOptions);
 
+        $controlOptions = self::popOption('controlOptions', $htmlOptions, array());
         $skipLabel = in_array($type, array(self::INPUT_CHECKBOX, self::INPUT_RADIOBUTTON));
+
+        ob_start();
+        echo self::createInput($type, $name, $value, $htmlOptions, $data);
+        $controls = ob_get_clean();
 
         if (!$skipLabel)
         {
@@ -624,8 +625,6 @@ class TbHtml extends CHtml // required in order to access protected methods
             $labelOptions = self::popOption('labelOptions', $htmlOptions, array());
             $labelOptions = self::addClassName('control-label', $labelOptions);
         }
-
-        $controlOptions = self::popOption('controlOptions', $htmlOptions, array());
 
         ob_start();
         echo self::openTag('div', $groupOptions);
@@ -3564,7 +3563,8 @@ EOD;
             $value = self::getOption($name, $options, $defaultValue);
             unset($options[$name]);
             return $value;
-        } else
+        }
+        else
             return $defaultValue;
     }
 
