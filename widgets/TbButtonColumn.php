@@ -9,7 +9,7 @@
  */
 
 Yii::import('bootstrap.helpers.TbHtml');
-Yii::import('bootstrap.helpers.TbIcon');
+Yii::import('bootstrap.helpers.TbHtml');
 Yii::import('zii.widgets.grid.CButtonColumn');
 
 /**
@@ -19,17 +19,17 @@ Yii::import('zii.widgets.grid.CButtonColumn');
 class TbButtonColumn extends CButtonColumn
 {
 	/**
-	 * @var string the view button icon (defaults to TbIcon::ICON_EYE_OPEN).
+	 * @var string the view button icon (defaults to TbHtml::ICON_EYE_OPEN).
 	 */
-	public $viewButtonIcon = TbIcon::ICON_EYE_OPEN;
+	public $viewButtonIcon = TbHtml::ICON_EYE_OPEN;
 	/**
-	 * @var string the update button icon (defaults to TbIcon::ICON_PENCIL).
+	 * @var string the update button icon (defaults to TbHtml::ICON_PENCIL).
 	 */
-	public $updateButtonIcon = TbIcon::ICON_PENCIL;
+	public $updateButtonIcon = TbHtml::ICON_PENCIL;
 	/**
-	 * @var string the delete button icon (defaults to TbIcon::ICON_TRASH).
+	 * @var string the delete button icon (defaults to TbHtml::ICON_TRASH).
 	 */
-	public $deleteButtonIcon = TbIcon::ICON_TRASH;
+	public $deleteButtonIcon = TbHtml::ICON_TRASH;
 
 	/**
 	 * Initializes the default buttons (view, update and delete).
