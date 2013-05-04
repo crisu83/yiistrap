@@ -578,6 +578,19 @@ class TbHtml extends CHtml // required in order to access protected methods
     }
 
     /**
+     * Generates a stateful form tag.
+     * @param mixed $action the form action URL.
+     * @param string $method form method (e.g. post, get).
+     * @param array $htmlOptions additional HTML attributes.
+     * @return string the generated form tag.
+     */
+    public static function statefulFormTb($layout = self::FORM_VERTICAL, $action = '', $method = 'post', $htmlOptions = array())
+    {
+        return self::formTb($layout, $action, $method, $htmlOptions)
+            . CHtml::tag('div', array('style' => 'display:none'), CHtml::pageStateField(''));
+    }
+
+    /**
      * Generates a text field input.
      * @param string $name the input name.
      * @param string $value the input value.
