@@ -647,13 +647,13 @@ class TbHtml extends CHtml // required in order to access protected methods
         $htmlOptions = self::addClassName('controls', $htmlOptions);
         if (isset($htmlOptions['row']) && $htmlOptions['row'] === true)
             $htmlOptions = self::addClassName('controls-row', $htmlOptions);
-        $beforeControl = self::popOption('beforeControl', $htmlOptions, '');
-        $afterControl = self::popOption('afterControl', $htmlOptions, '');
+        $before = self::popOption('before', $htmlOptions, '');
+        $after = self::popOption('after', $htmlOptions, '');
         if (is_array($controls))
             $controls = implode(' ', $controls);
         ob_start();
         echo self::openTag('div', $htmlOptions);
-        echo $beforeControl . $controls . $afterControl;
+        echo $before . $controls . $after;
         echo '</div>';
         return ob_get_clean();
     }
