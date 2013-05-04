@@ -274,6 +274,7 @@ class TbHtml extends CHtml // required in order to access protected methods
         self::INPUT_NUMBER, self::INPUT_PASSWORD, self::INPUT_RADIOBUTTON, self::INPUT_RANGE,
         self::INPUT_TEXT, self::INPUT_TEXTAREA, self::INPUT_URL, self::INPUT_RADIOBUTTONLIST,
         self::INPUT_UNEDITABLE, self::INPUT_SEARCH);
+    static $labelInputs = array(self::INPUT_CHECKBOX, self::INPUT_RADIOBUTTON);
     static $dataInputs = array(self::INPUT_CHECKBOXLIST, self::INPUT_DROPDOWN, self::INPUT_LISTBOX,
         self::INPUT_RADIOBUTTONLIST); // Which one requires data
     static $inputSizes = array(self::SIZE_MINI, self::SIZE_SMALL, self::SIZE_MEDIUM, self::SIZE_LARGE, self::SIZE_XLARGE, self::SIZE_XXLARGE);
@@ -295,7 +296,7 @@ class TbHtml extends CHtml // required in order to access protected methods
     static $progressAlignments = array(self::PROGRESS_LEFT, self::PROGRESS_CENTER, self::PROGRESS_RIGHT);
     static $tooltipPlacements = array(self::TOOLTIP_TOP, self::TOOLTIP_BOTTOM, self::TOOLTIP_LEFT, self::TOOLTIP_RIGHT);
     static $triggers = array(self::TRIGGER_CLICK, self::TRIGGER_HOVER, self::TRIGGER_FOCUS, self::TRIGGER_MANUAL);
-    static $addons = array(self::ADDON_PREPEND, self::ADDON_APPEND);
+    static $addOnTypes = array(self::ADDON_PREPEND, self::ADDON_APPEND);
     static $grids = array(self::GRID_BORDERED, self::GRID_CONDENSED, self::GRID_HOVER, self::GRID_STRIPED);
 
     static $errorMessageCss = 'error';
@@ -574,7 +575,7 @@ class TbHtml extends CHtml // required in order to access protected methods
     }
 
     /**
-     * Generates a vertical form row.
+     * Generates a form row.
      * @param string $type the input type.
      * @param string $name the input name.
      * @param string $value the input value.
@@ -582,21 +583,50 @@ class TbHtml extends CHtml // required in order to access protected methods
      * @param array $data data for multiple select inputs.
      * @return string the generated row.
      */
-    public static function verticalRow($type, $name, $value, $htmlOptions = array(), $data = array())
+    public static function row($type, $name, $value, $htmlOptions = array(), $data = array())
     {
-        $label = self::popOption('label', $htmlOptions);
+        $wrap = self::popOption('wrap', $htmlOptions, false);
+        $label = self::popOption('label', $htmlOptions, false);
+        $state = self::popOption('state', $htmlOptions);
+        $groupOptions = self::popOption('groupOptions', $htmlOptions, array());
         $labelOptions = self::popOption('labelOptions', $htmlOptions, array());
-        ob_start();
-        if (isset($label))
-            echo self::label($label, $name, $labelOptions);
-        echo self::createInput($type, $name, $value, $htmlOptions, $data);
-        if (isset($help))
-            echo self::helpBlock($help, $helpOptions);
-        return ob_get_clean();
+        $controlOptions = self::popOption('controlOptions', $htmlOptions, array());
+
+        if (in_array($type, self::$labelInputs))
+        {
+            $htmlOptions['label'] = $label;
+            $htmlOptions['labelOptions'] = $labelOptions;
+            $label = false;
+        }
+
+        $input = self::createInput($type, $name, $value, $htmlOptions, $data);
+
+        if ($wrap)
+        {
+            $groupOptions = self::addClassName('control-group', $groupOptions);
+            if (isset($state) && in_array($state, self::$inputStates))
+                $groupOptions = self::addClassName($state, $groupOptions);
+            $labelOptions = self::addClassName('control-label', $labelOptions);
+            ob_start();
+            echo self::openTag('div', $groupOptions);
+            if ($label !== false)
+                echo self::label($label, $name, $labelOptions);
+            echo self::formControls($input, $controlOptions);
+            echo '</div>';
+            return ob_get_clean();
+        }
+        else
+        {
+            ob_start();
+            if ($label !== false)
+                echo self::label($label, $name, $labelOptions);
+            echo $input;
+            return ob_get_clean();
+        }
     }
 
     /**
-     * Generates a horizontal form row.
+     * Generates a wrapped form row.
      * @param string $type the input type.
      * @param string $name the input name.
      * @param string $value the input value.
@@ -604,35 +634,10 @@ class TbHtml extends CHtml // required in order to access protected methods
      * @param array $data data for multiple select inputs.
      * @return string the generated row.
      */
-    public static function horizontalRow($type, $name, $value, $htmlOptions = array(), $data = array())
+    public static function wrappedRow($type, $name, $value, $htmlOptions = array(), $data = array())
     {
-        $groupOptions = self::popOption('groupOptions', $htmlOptions, array());
-        $groupOptions = self::addClassName('control-group', $groupOptions);
-        $state = self::popOption('state', $htmlOptions);
-        if (isset($state) && in_array($state, self::$inputStates))
-            $groupOptions = self::addClassName($state, $groupOptions);
-
-        $controlOptions = self::popOption('controlOptions', $htmlOptions, array());
-        $skipLabel = in_array($type, array(self::INPUT_CHECKBOX, self::INPUT_RADIOBUTTON));
-
-        ob_start();
-        echo self::createInput($type, $name, $value, $htmlOptions, $data);
-        $controls = ob_get_clean();
-
-        if (!$skipLabel)
-        {
-            $label = self::popOption('label', $htmlOptions);
-            $labelOptions = self::popOption('labelOptions', $htmlOptions, array());
-            $labelOptions = self::addClassName('control-label', $labelOptions);
-        }
-
-        ob_start();
-        echo self::openTag('div', $groupOptions);
-        if (isset($label, $labelOptions) && !$skipLabel)
-            echo self::label($label, $name, $labelOptions);
-        echo self::controls($controls, $controlOptions);
-        echo '</div>';
-        return ob_get_clean();
+        $htmlOptions['wrap'] = true;
+        return self::row($type, $name, $value, $htmlOptions, $data);
     }
 
     /**
@@ -641,7 +646,7 @@ class TbHtml extends CHtml // required in order to access protected methods
      * @param array $htmlOptions additional HTML attributes.
      * @return string the generated controls.
      */
-    public static function controls($controls, $htmlOptions = array())
+    public static function formControls($controls, $htmlOptions = array())
     {
         $htmlOptions = self::addClassName('controls', $htmlOptions);
         if (isset($htmlOptions['row']) && $htmlOptions['row'] === true)
@@ -663,12 +668,18 @@ class TbHtml extends CHtml // required in order to access protected methods
      * @param array $htmlOptions additional HTML attributes.
      * @return string the generated controls.
      */
-    public static function controlsRow($controls, $htmlOptions = array())
+    public static function formControlsRow($controls, $htmlOptions = array())
     {
         $htmlOptions['row'] = true;
-        return self::controls($controls, $htmlOptions);
+        return self::formControls($controls, $htmlOptions);
     }
 
+    /**
+     * Generates form actions.
+     * @param mixed $actions the actions.
+     * @param array $htmlOptions additional HTML attributes.
+     * @return string the generated actions.
+     */
     public static function formActions($actions, $htmlOptions = array())
     {
         $htmlOptions = self::addClassName('form-actions', $htmlOptions);
@@ -712,6 +723,165 @@ class TbHtml extends CHtml // required in order to access protected methods
     {
         $htmlOptions = self::addClassName('search-query', $htmlOptions);
         return self::textField($name, $value, $htmlOptions);
+    }
+
+    /**
+     * Generates a text field input.
+     * @param string $name the input name
+     * @param string $value the input value
+     * @param array $htmlOptions additional HTML attributes.
+     * @return string the generated input field.
+     * @see TbHtml::inputField
+     */
+    public static function textField($name, $value = '', $htmlOptions = array())
+    {
+        CHtml::clientChange('change', $htmlOptions);
+        return self::inputField('text', $name, $value, $htmlOptions);
+    }
+
+    /**
+     * Generates a password field input.
+     * @param string $name the input name
+     * @param string $value the input value
+     * @param array $htmlOptions additional HTML attributes.
+     * @return string the generated input field.
+     * @see TbHtml::inputField
+     */
+    public static function passwordField($name, $value = '', $htmlOptions = array())
+    {
+        CHtml::clientChange('change', $htmlOptions);
+        return self::inputField('password', $name, $value, $htmlOptions);
+    }
+
+    /**
+     * Generates an url field input.
+     * @param string $name the input name
+     * @param string $value the input value
+     * @param array $htmlOptions additional HTML attributes.
+     * @return string the generated input field.
+     * @see TbHtml::inputField
+     */
+    public static function urlField($name, $value = '', $htmlOptions = array())
+    {
+        CHtml::clientChange('change', $htmlOptions);
+        return self::inputField('url', $name, $value, $htmlOptions);
+    }
+
+    /**
+     * Generates an email field input.
+     * @param string $name the input name
+     * @param string $value the input value
+     * @param array $htmlOptions additional HTML attributes.
+     * @return string the generated input field.
+     * @see TbHtml::inputField
+     */
+    public static function emailField($name, $value = '', $htmlOptions = array())
+    {
+        CHtml::clientChange('change', $htmlOptions);
+        return self::inputField('email', $name, $value, $htmlOptions);
+    }
+
+    /**
+     * Generates a number field input.
+     * @param string $name the input name
+     * @param string $value the input value
+     * @param array $htmlOptions additional HTML attributes.
+     * @return string the generated input field.
+     * @see TbHtml::inputField
+     */
+    public static function numberField($name, $value = '', $htmlOptions = array())
+    {
+        CHtml::clientChange('change', $htmlOptions);
+        return self::inputField('number', $name, $value, $htmlOptions);
+    }
+
+    /**
+     * Generates a range field input.
+     * @param string $name the input name
+     * @param string $value the input value
+     * @param array $htmlOptions additional HTML attributes.
+     * @return string the generated input field.
+     * @see TbHtml::inputField
+     */
+    public static function rangeField($name, $value = '', $htmlOptions = array())
+    {
+        CHtml::clientChange('change', $htmlOptions);
+        return self::inputField('range', $name, $value, $htmlOptions);
+    }
+
+    /**
+     * Generates a date field input.
+     * @param string $name the input name
+     * @param string $value the input value
+     * @param array $htmlOptions additional HTML attributes.
+     * @return string the generated input field.
+     * @see TbHtml::inputField
+     */
+    public static function dateField($name, $value = '', $htmlOptions = array())
+    {
+        CHtml::clientChange('change', $htmlOptions);
+        return self::inputField('date', $name, $value, $htmlOptions);
+    }
+
+    /**
+     * Generates a radio button.
+     * @param string $name the input name.
+     * @param boolean $checked whether the radio button is checked.
+     * @param array $htmlOptions additional HTML attributes.
+     * @return string the generated radio button.
+     * @see TbHtml::inputField
+     */
+    public static function radioButton($name, $checked = false, $htmlOptions = array())
+    {
+        $label = self::popOption('label', $htmlOptions, false);
+        $labelOptions = self::popOption('labelOptions', $htmlOptions, array());
+        $radioButton = CHtml::radioButton($name, $checked, $htmlOptions);
+        if ($label !== false)
+        {
+            $labelOptions = self::addClassName('radio', $labelOptions);
+            ob_start();
+            echo self::tag('label', $labelOptions, $radioButton . $label);
+            return ob_get_clean();
+        }
+        else
+            return $radioButton;
+    }
+
+    /**
+     * Generates a check box.
+     * @param string $name the input name.
+     * @param boolean $checked whether the check box is checked.
+     * @param array $htmlOptions additional HTML attributes.
+     * @return string the generated check box.
+     * @see TbHtml::inputField
+     */
+    public static function checkBox($name, $checked = false, $htmlOptions = array())
+    {
+        $label = self::popOption('label', $htmlOptions, false);
+        $labelOptions = self::popOption('labelOptions', $htmlOptions, array());
+        $checkBox = CHtml::checkBox($name, $checked, $htmlOptions);
+        if ($label !== false)
+        {
+            $labelOptions = self::addClassName('checkbox', $labelOptions);
+            ob_start();
+            echo self::tag('label', $labelOptions, $checkBox . $label);
+            return ob_get_clean();
+        }
+        else
+            return $checkBox;
+    }
+
+    /**
+     * Generates a drop down list.
+     * @param string $name the input name.
+     * @param string $select the selected value.
+     * @param array $data data for generating the list options (value=>display).
+     * @return string the generated drop down list.
+     */
+    public static function dropDownList($name, $select, $data, $htmlOptions = array())
+    {
+        $htmlOptions = self::normalizeInputOptions($htmlOptions);
+        return CHtml::dropDownList($name, $select, $data, $htmlOptions);
     }
 
     /**
@@ -870,289 +1040,129 @@ EOD;
     }
 
     /**
-     * Generates a label tag.
-     * @param string $label label text. Note, you should HTML-encode the text if needed.
-     * @param string $for the ID of the HTML element that this label is associated with.
-     * If this is false, the 'for' attribute for the label tag will not be rendered.
-     * @param array $htmlOptions additional HTML attributes.
-     * The following HTML option is recognized:
-     * <ul>
-     * <li>required: if this is set and is true, the label will be styled
-     * with CSS class 'required' (customizable with CHtml::$requiredCss),
-     * and be decorated with {@link CHtml::beforeRequiredLabel} and
-     * {@link CHtml::afterRequiredLabel}.</li>
-     * </ul>
-     * @return string the generated label tag
-     */
-    public static function label($label, $for = '', $htmlOptions = array())
-    {
-        if (!empty($for))
-            $htmlOptions['for'] = $for;
-        $formType = self::popOption('formType', $htmlOptions);
-        if ($formType == TbHtml::FORM_HORIZONTAL)
-            $htmlOptions = self::addClassName('control-label', $htmlOptions);
-        return self::tag('label', $htmlOptions, $label);
-    }
-
-    /**
-     * Generates a text field input.
-     * @param string $name the input name
-     * @param string $value the input value
-     * @param array $htmlOptions additional HTML attributes. Besides normal HTML attributes, a few special
-     * attributes are also recognized (see {@link getAddOnClasses} {@link getAppend} {@link getPrepend} {@link clientChange} and {@link tag} for more details.)
-     * @return string the generated input field
-     * @see clientChange
-     * @see inputField
-     */
-    public static function textField($name, $value = '', $htmlOptions = array())
-    {
-        CHtml::clientChange('change', $htmlOptions);
-        return self::inputField('text', $name, $value, $htmlOptions);
-    }
-
-    /**
-     * Generates a password field input.
-     * @param string $name the input name
-     * @param string $value the input value
-     * @param array $htmlOptions additional HTML attributes. Besides normal HTML attributes, a few special
-     * attributes are also recognized (see {@link clientChange} and {@link tag} for more details.)
-     * @return string the generated input field
-     * @see clientChange
-     * @see inputField
-     */
-    public static function passwordField($name, $value = '', $htmlOptions = array())
-    {
-        CHtml::clientChange('change', $htmlOptions);
-        return self::inputField('password', $name, $value, $htmlOptions);
-    }
-
-    /**
-     * Generates a text area input.
-     * @param string $name the input name
-     * @param string $value the input value
-     * @param array $htmlOptions additional HTML attributes. Besides normal HTML attributes, a few special
-     * attributes are also recognized (see {@link clientChange} and {@link tag} for more details.)
-     * @return string the generated text area
-     * @see clientChange
-     * @see inputField
-     */
-    public static function textArea($name, $value = '', $htmlOptions = array())
-    {
-        $help = self::getHelp($htmlOptions);
-
-        ob_start();
-        echo CHtml::textArea($name, $value, $htmlOptions);
-        echo $help;
-        return ob_get_clean();
-    }
-
-    /**
-     * Generates a radio button.
-     * @param string $name the input name
-     * @param boolean $checked whether the radio button is checked
-     * @param array $htmlOptions additional HTML attributes. Besides normal HTML attributes, a few special
-     * attributes are also recognized (see {@link clientChange} {@link getOption} and {@link tag} for more details.)
-     * Since version 1.1.2, a special option named 'uncheckValue' is available that can be used to specify
-     * the value returned when the radio button is not checked. When set, a hidden field is rendered so that
-     * when the radio button is not checked, we can still obtain the posted uncheck value.
-     * If 'uncheckValue' is not set or set to NULL, the hidden field will not be rendered.
-     * The following special options are recognized:
-     * <ul>
-     * <li>labelOptions: array, specifies the additional HTML attributes to be rendered
-     * for every label tag in the list.</li>
-     * </ul>
-     * @return string the generated radio button
-     * @see clientChange
-     * @see inputField
-     */
-    public static function radioButton($name, $checked = false, $htmlOptions = array())
-    {
-        $label = self::getOption('label', $htmlOptions);
-        $labelOptions = self::popOption('labelOptions', $htmlOptions, array());
-        $radioButton = CHtml::radioButton($name, $checked, $htmlOptions);
-
-        if ($label)
-        {
-            $labelOptions = self::addClassName('radio', $labelOptions);
-
-            ob_start();
-            echo '<label ' . CHtml::renderAttributes($labelOptions) . '>';
-            echo $radioButton;
-            echo $label;
-            echo '</label>';
-            return ob_get_clean();
-        }
-
-        return $radioButton;
-    }
-
-    /**
-     * Generates a check box.
-     * @param string $name the input name
-     * @param boolean $checked whether the check box is checked
-     * @param array $htmlOptions additional HTML attributes. Besides normal HTML attributes, a few special
-     * attributes are also recognized (see {@link clientChange} and {@link tag} for more details.)
-     * Since version 1.1.2, a special option named 'uncheckValue' is available that can be used to specify
-     * the value returned when the checkbox is not checked. When set, a hidden field is rendered so that
-     * when the checkbox is not checked, we can still obtain the posted uncheck value.
-     * If 'uncheckValue' is not set or set to NULL, the hidden field will not be rendered.
-     * @return string the generated check box
-     * @see clientChange
-     * @see inputField
-     */
-    public static function checkBox($name, $checked = false, $htmlOptions = array())
-    {
-        $label = self::popOption('label', $htmlOptions, '');
-        $labelOptions = self::popOption('labelOptions', $htmlOptions, array());
-        $checkBox = CHtml::checkBox($name, $checked, $htmlOptions);
-
-        if ($label)
-        {
-            $labelOptions = self::addClassName('checkbox', $labelOptions);
-
-            ob_start();
-            echo '<label ' . CHtml::renderAttributes($labelOptions) . '>';
-            echo $checkBox;
-            echo $label;
-            echo '</label>';
-            return ob_get_clean();
-        }
-
-        return $checkBox;
-    }
-
-    /**
-     * Generates a drop down list.
-     * @param string $name the input name
-     * @param string $select the selected value
-     * @param array $data data for generating the list options (value=>display).
-     * You may use {@link listData} to generate this data.
-     * Please refer to {@link listOptions} on how this data is used to generate the list options.
-     * Note, the values and labels will be automatically HTML-encoded by this method.
-     * @param array $htmlOptions additional HTML attributes. Besides normal HTML attributes, a few special
-     * attributes are recognized. See {@link clientChange} and {@link tag} for more details.
-     * In addition, the following options are also supported specifically for dropdown list:
-     * <ul>
-     * <li>encode: boolean, specifies whether to encode the values. Defaults to true.</li>
-     * <li>prompt: string, specifies the prompt text shown as the first list option. Its value is empty. Note, the prompt text will NOT be HTML-encoded.</li>
-     * <li>empty: string, specifies the text corresponding to empty selection. Its value is empty.
-     * The 'empty' option can also be an array of value-label pairs.
-     * Each pair will be used to render a list option at the beginning. Note, the text label will NOT be HTML-encoded.</li>
-     * <li>options: array, specifies additional attributes for each OPTION tag.
-     *     The array keys must be the option values, and the array values are the extra
-     *     OPTION tag attributes in the name-value pairs. For example,
-     * <pre>
-     *     array(
-     *         'value1'=>array('disabled'=>true, 'label'=>'value 1'),
-     *         'value2'=>array('label'=>'value 2'),
-     *     );
-     * </pre>
-     * </li>
-     * </ul>
-     * @return string the generated drop down list
-     * @see clientChange
-     * @see inputField
-     * @see listData
-     */
-    public static function dropDownList($name, $select, $data, $htmlOptions = array())
-    {
-        $size = self::popOption('size', $htmlOptions);
-        if (!self::addSpanClass($htmlOptions))
-        {
-            if (isset($size) && in_array($size, self::$inputSizes))
-                $htmlOptions = self::addClassName('input-' . $size, $htmlOptions);
-            else if (isset($htmlOptions['block']))
-                $htmlOptions = self::addClassName('input-block-level', $htmlOptions);
-        }
-        $help = self::getHelp($htmlOptions);
-        ob_start();
-        echo CHtml::dropDownList($name, $select, $data, $htmlOptions);
-        echo $help;
-        return ob_get_clean();
-    }
-
-    /**
-     * Generates a list box.
-     * @param string $name the input name
-     * @param mixed $select the selected value(s). This can be either a string for single selection or an array for multiple selections.
-     * @param array $data data for generating the list options (value=>display)
-     * You may use {@link listData} to generate this data.
-     * Please refer to {@link listOptions} on how this data is used to generate the list options.
-     * Note, the values and labels will be automatically HTML-encoded by this method.
-     * @param array $htmlOptions additional HTML attributes. Besides normal HTML attributes, a few special
-     * attributes are also recognized. See {@link clientChange} and {@link tag} for more details.
-     * In addition, the following options are also supported specifically for list box:
-     * <ul>
-     * <li>encode: boolean, specifies whether to encode the values. Defaults to true.</li>
-     * <li>prompt: string, specifies the prompt text shown as the first list option. Its value is empty. Note, the prompt text will NOT be HTML-encoded.</li>
-     * <li>empty: string, specifies the text corresponding to empty selection. Its value is empty.
-     * The 'empty' option can also be an array of value-label pairs.
-     * Each pair will be used to render a list option at the beginning. Note, the text label will NOT be HTML-encoded.</li>
-     * <li>options: array, specifies additional attributes for each OPTION tag.
-     *     The array keys must be the option values, and the array values are the extra
-     *     OPTION tag attributes in the name-value pairs. For example,
-     * <pre>
-     *     array(
-     *         'value1'=>array('disabled'=>true, 'label'=>'value 1'),
-     *         'value2'=>array('label'=>'value 2'),
-     *     );
-     * </pre>
-     * </li>
-     * </ul>
-     * @return string the generated list box
-     * @see clientChange
-     * @see inputField
-     * @see listData
-     */
-    public static function listBox($name, $select, $data, $htmlOptions = array())
-    {
-        $help = self::getHelp($htmlOptions);
-        ob_start();
-        echo CHtml::listBox($name, $select, $data, $htmlOptions);
-        echo $help;
-        return ob_get_clean();
-    }
-
-    /**
      * Generates an input HTML tag.
      * This method generates an input HTML tag based on the given input name and value.
-     * @param string $type the input type (e.g. 'text', 'radio')
-     * @param string $name the input name
-     * @param string $value the input value
-     * @param array $htmlOptions additional HTML attributes for the HTML tag (see {@link tag}). The following special
-     * attributes are supported:
-     * <ul>
-     *    <li>append: string, append addon to the input types: text, password, date</li>
-     *    <li>prepend: string, prepend addon to the input types: text, password, date</li>
-     *    <li>help: array, see {@link getHelp}
-     * </ul>
-     * @return string the generated input tag
+     * @param string $type the input type.
+     * @param string $name the input name.
+     * @param string $value the input value.
+     * @param array $htmlOptions additional HTML attributes.
+     * @return string the generated input tag.
      */
     protected static function inputField($type, $name, $value, $htmlOptions)
     {
-        $size = self::popOption('size', $htmlOptions);
-        if (!self::addSpanClass($htmlOptions))
-        {
-            if (isset($size) && in_array($size, self::$inputSizes))
-                $htmlOptions = self::addClassName('input-' . $size, $htmlOptions);
-            else if (isset($htmlOptions['block']))
-                $htmlOptions = self::addClassName('input-block-level', $htmlOptions);
-        }
-        $inputOptions = self::removeOptions($htmlOptions, array('append', 'prepend', 'help'));
+        $htmlOptions = self::normalizeInputOptions($htmlOptions);
+
         $addOnClasses = self::getAddOnClasses($htmlOptions);
         $addOnOptions = self::popOption('addOnOptions', $htmlOptions, array());
         $addOnOptions = self::addClassName($addOnClasses, $addOnOptions);
 
+        $prepend = self::popOption('prepend', $htmlOptions, '');
+        $prependOptions = self::popOption('prependOptions', $htmlOptions, array());
+        if (!empty($prepend))
+            $prepend = self::inputPrepend($prepend, $prependOptions);
+
+        $append = self::popOption('append', $htmlOptions, '');
+        $appendOptions = self::popOption('appendOptions', $htmlOptions, array());
+        if (!empty($append))
+            $append = self::inputAppend($append, $appendOptions);
+
+        $help = self::popOption('help', $htmlOptions, '');
+        $helpOptions = self::popOption('helpOptions', $htmlOptions, array());
+        if (!empty($help))
+            $help = self::inputHelp($help, $helpOptions);
+
         ob_start();
         if (!empty($addOnClasses))
-            echo CHtml::openTag('div', $addOnOptions);
-        echo self::getPrepend($htmlOptions);
-        echo CHtml::inputField($type, $name, $value, $inputOptions);
-        echo self::getAppend($htmlOptions);
+            echo self::openTag('div', $addOnOptions);
+        echo $prepend . CHtml::inputField($type, $name, $value, $htmlOptions) . $append;
         if (!empty($addOnClasses))
             echo '</div>';
-        echo self::getHelp($htmlOptions);
+        echo $help;
         return ob_get_clean();
+    }
+
+    /**
+     * Returns the add-on classes based on the given options.
+     * @param array $htmlOptions the options.
+     * @return string the classes.
+     */
+    protected static function getAddOnClasses($htmlOptions)
+    {
+        $classes = array();
+        if (self::getOption('append', $htmlOptions))
+            $classes[] = 'input-append';
+        if (self::getOption('prepend', $htmlOptions))
+            $classes[] = 'input-prepend';
+        return !empty($classes) ? implode(' ', $classes) : $classes;
+    }
+
+    /**
+     * Generates an add-on for an input field.
+     * @param string $type the add-on type.
+     * @param array $htmlOptions additional HTML attributes.
+     * @return string the generated add-on.
+     */
+    protected static function inputAddOn($type, $addOn, $htmlOptions)
+    {
+        $addOnOptions = self::popOption('addOnOptions', $htmlOptions, array());
+        $addOnOptions = self::addClassName('add-on', $addOnOptions);
+        return strpos($addOn, 'btn') === false // buttons should not be wrapped in a span
+            ? self::tag('span', $addOnOptions, $addOn)
+            : $addOn;
+    }
+
+    /**
+     * Generates an prepended add-on for an input field.
+     * @param string $addOn the add-on.
+     * @param array $htmlOptions additional HTML attributes.
+     * @return string the generated add-on.
+     */
+    public static function inputPrepend($addOn, $htmlOptions)
+    {
+        return self::inputAddOn(self::ADDON_PREPEND, $addOn, $htmlOptions);
+    }
+
+    /**
+     * Generates an appended add-on for an input field.
+     * @param string $addOn the add-on.
+     * @param array $htmlOptions additional HTML attributes.
+     * @return string the generated add-on.
+     */
+    public static function inputAppend($addOn, $htmlOptions)
+    {
+        return self::inputAddOn(self::ADDON_APPEND, $addOn, $htmlOptions);
+    }
+
+    /**
+     * Generates a help text for an input field.
+     * @param string $help the help text.
+     * @param array $htmlOptions additional HTML attributes.
+     * @return string the generated help text.
+     */
+    public static function inputHelp($help, $htmlOptions)
+    {
+        $type = self::popOption('type', $htmlOptions, self::HELP_INLINE);
+        if (in_array($type, self::$helpTypes))
+            $htmlOptions = self::addClassName('help-' . $type, $htmlOptions);
+        return self::tag('span', $htmlOptions, $help);
+    }
+
+    /**
+     * Normalizes input options.
+     * @param array $options the options.
+     * @return array the normalized options.
+     */
+    protected function normalizeInputOptions($options)
+    {
+        $size = self::popOption('size', $options);
+        if (!self::addSpanClass($options))
+        {
+            if (isset($size) && in_array($size, self::$inputSizes))
+                $options = self::addClassName('input-' . $size, $options);
+            else if (isset($options['block']))
+                $options = self::addClassName('input-block-level', $options);
+        }
+        return $options;
     }
 
     // Active Fields
@@ -1368,11 +1378,9 @@ EOD;
             CHtml::addErrorCss($htmlOptions);
 
         $text = self::popOption('value', $htmlOptions, CHtml::resolveValue($model, $attribute));
-        $help = self::getHelp($htmlOptions);
 
         ob_start();
         echo self::tag('textarea', $htmlOptions, isset($htmlOptions['encode']) && !$htmlOptions['encode'] ? $text : CHtml::encode($text));
-        echo $help;
         return ob_get_clean();
     }
 
@@ -1505,7 +1513,7 @@ EOD;
             if (substr($htmlOptions['name'], -2) !== '[]')
                 $htmlOptions['name'] .= '[]';
         }
-        $help = self::getHelp($htmlOptions);
+        //$help = self::inputHelp($htmlOptions);
         ob_start();
         echo self::tag('select', $htmlOptions, $options);
         echo $help;
@@ -1681,21 +1689,19 @@ EOD;
     {
         $inputOptions = self::removeOptions($htmlOptions, array('append', 'prepend'));
         $addOnClasses = self::getAddOnClasses($htmlOptions);
-        $help = self::getHelp($htmlOptions);
+
+        // todo: implement
+        $prepend = '';
+        $append = '';
+        $help = '';
 
         ob_start();
         if (!empty($addOnClasses))
             echo '<div class="' . $addOnClasses . '">';
-
-        echo self::getPrepend($htmlOptions);
-        echo CHtml::activeInputField($type, $model, $attribute, $inputOptions);
-        echo self::getAppend($htmlOptions);
-
+        echo $prepend . CHtml::activeInputField($type, $model, $attribute, $inputOptions) . $append;
         if (!empty($addOnClasses))
             echo '</div>';
-
         echo $help;
-
         return ob_get_clean();
     }
 
@@ -1740,31 +1746,6 @@ EOD;
     }
 
     /**
-     * Extracts the help section of htmlOptions if any. The help option is setup as:
-     * <code>
-     *      // ...
-     *      'help'=>array('text'=>'This is help text','type'=>'inline')
-     *      // ...
-     * </code>
-     * @param $htmlOptions
-     * @return mixed|string
-     */
-    public static function getHelp(&$htmlOptions)
-    {
-        if (isset($htmlOptions['help']))
-        {
-            $helpOptions = $htmlOptions['help'];
-            $text = self::popOption('text', $helpOptions, 'help');
-            $type = self::popOption('type', $helpOptions, self::HELP_INLINE);
-            if (in_array($type, self::$helpTypes))
-                $helpOptions = self::addClassName('help-' . $type, $helpOptions);
-            return self::tag('span', $helpOptions, $text);
-        }
-        else
-            return '';
-    }
-
-    /**
      * Generates a search form.
      * @param mixed $action the form action URL.
      * @param string $method form method (e.g. post, get).
@@ -1792,7 +1773,7 @@ EOD;
         $name = self::popOption('name', $inputOptions, 'search');
         $value = self::popOption('value', $inputOptions, '');
         $addon = self::popOption('addon', $htmlOptions);
-        if (isset($addon) && in_array($addon, self::$addons))
+        if (isset($addon) && in_array($addon, self::$addOnTypes))
             $inputOptions[$addon] = self::button($buttonLabel, $buttonOptions);
         ob_start();
         echo CHtml::beginForm($action, $method, $htmlOptions);
@@ -1825,55 +1806,6 @@ EOD;
     {
         $htmlOptions = self::addClassName('navbar-search', $htmlOptions);
         return self::searchForm($action, $method, $htmlOptions);
-    }
-
-    /**
-     * Returns the add-on classes if any from `$htmlOptions`.
-     * @param array $htmlOptions the HTML tag options
-     * @return array|string the resulting classes
-     */
-    public static function getAddOnClasses($htmlOptions)
-    {
-        $classes = array();
-        if (self::getOption('append', $htmlOptions))
-            $classes[] = 'input-append';
-        if (self::getOption('prepend', $htmlOptions))
-            $classes[] = 'input-prepend';
-        return !empty($classes) ? implode(' ', $classes) : $classes;
-    }
-
-    /**
-     * Extracts append add-on from `$htmlOptions` if any.
-     * @param array $htmlOptions
-     */
-    public static function getAppend($htmlOptions)
-    {
-        return self::getAddOn('append', $htmlOptions);
-    }
-
-    /**
-     * Extracts prepend add-on from `$htmlOptions` if any.
-     * @param array $htmlOptions
-     */
-    public static function getPrepend($htmlOptions)
-    {
-        return self::getAddOn('prepend', $htmlOptions);
-    }
-
-    /**
-     * Extracs append add-ons from `$htmlOptions` if any.
-     * @param array $htmlOptions
-     */
-    public static function getAddOn($type, $htmlOptions)
-    {
-        if (isset($htmlOptions[$type]))
-        {
-            return strpos($htmlOptions[$type], 'btn')
-                ? $htmlOptions[$type]
-                : self::tag('span', array('class' => 'add-on'), $htmlOptions[$type]);
-        }
-        else
-            return '';
     }
 
     // Buttons
@@ -3650,7 +3582,7 @@ EOD;
             case self::INPUT_RADIOBUTTONLIST: return self::radioButtonList($name, $value, $htmlOptions, $data);
             case self::INPUT_UNEDITABLE: return self::uneditableField($value, $htmlOptions);
             case self::INPUT_SEARCH: return self::searchQuery($name, $value, $htmlOptions);
-            default: throw new CException('Invalid input type.');
+            default: throw new CException('Invalid input type "' . $type . '".');
         }
     }
 
@@ -3685,7 +3617,7 @@ EOD;
             case self::INPUT_RADIOBUTTONLIST: return self::activeRadioButtonList($model, $attribute, $htmlOptions, $data);
             case self::INPUT_UNEDITABLE: return null; // todo: implement
             case self::INPUT_SEARCH: return null; // todo: implement
-            default: throw new CException('Invalid input type.');
+            default: throw new CException('Invalid input type "' . $type . '".');
         }
     }
 }
