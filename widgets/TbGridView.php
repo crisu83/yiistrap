@@ -17,12 +17,11 @@ Yii::import('bootstrap.widgets.TbDataColumn');
  */
 class TbGridView extends CGridView
 {
-
 	/**
 	 * @var string|array the table style.
-	 * Valid values are TbHtml::GRID_STRIPED, TbHtml::GRID_BORDERED, TbHtml::GRID_CONDENSED and/or TbHtml::GRID_HOVER
+	 * Valid values are TbHtml::GRID_STRIPED, TbHtml::GRID_BORDERED, TbHtml::GRID_CONDENSED and/or TbHtml::GRID_HOVER.
 	 */
-	public $style;
+	public $type;
 
 	/**
 	 * @var string the CSS class name for the pager container. Defaults to 'pagination'.
@@ -51,21 +50,15 @@ class TbGridView extends CGridView
 	public function init()
 	{
 		parent::init();
-
 		$classes = array('table');
-
-		if (isset($this->style) && !empty($this->style))
+		if (isset($this->type) && !empty($this->type))
 		{
-			if (is_string($this->style))
-				$this->style = explode(' ', $this->style);
+			if (is_string($this->type))
+				$this->type = explode(' ', $this->type);
 
-			foreach ($this->style as $type)
-			{
-				if (in_array($type, TbHtml::$grids))
-					$classes[] = 'table-' . $type;
-			}
+			foreach ($this->type as $type)
+                $classes[] = 'table-' . $type;
 		}
-
 		$this->itemsCssClass = implode(' ', $classes);
 	}
 
@@ -79,7 +72,6 @@ class TbGridView extends CGridView
 			if (is_array($column) && !isset($column['class']))
 				$this->columns[$i]['class'] = 'bootstrap.widgets.TbDataColumn';
 		}
-
 		parent::initColumns();
 	}
 
@@ -93,16 +85,12 @@ class TbGridView extends CGridView
 	{
 		if (!preg_match('/^([\w\.]+)(:(\w*))?(:(.*))?$/', $text, $matches))
 			throw new CException(Yii::t('zii', 'The column must be specified in the format of "Name:Type:Label", where "Type" and "Label" are optional.'));
-
 		$column = new TbDataColumn($this);
 		$column->name = $matches[1];
-
 		if (isset($matches[3]) && $matches[3] !== '')
 			$column->type = $matches[3];
-
 		if (isset($matches[5]))
 			$column->header = $matches[5];
-
 		return $column;
 	}
 }

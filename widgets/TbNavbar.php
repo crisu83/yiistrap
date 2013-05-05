@@ -16,9 +16,9 @@ Yii::import('bootstrap.helpers.TbHtml');
 class TbNavbar extends CWidget
 {
     /**
-     * @var string the navbar style.
+     * @var string the navbar color.
      */
-    public $style;
+    public $color;
     /**
      * @var string the brand label text.
      */
@@ -69,10 +69,9 @@ class TbNavbar extends CWidget
             if (!isset($this->brandUrl))
                 $this->brandUrl = Yii::app()->homeUrl;
         }
-        // todo: somehow the style attribute in htmlOptions is ignored completely, fix.
-        if (isset($this->style))
-            $this->htmlOptions = TbHtml::defaultOption('style', $this->style, $this->htmlOptions);
-        if ($this->display !== false)
+        if (isset($this->color))
+            $this->htmlOptions = TbHtml::defaultOption('color', $this->color, $this->htmlOptions);
+        if (isset($this->display) && $this->display !== TbHtml::NAVBAR_INLINE)
             $this->htmlOptions = TbHtml::defaultOption('display', $this->display, $this->htmlOptions);
     }
 

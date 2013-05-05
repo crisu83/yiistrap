@@ -76,13 +76,13 @@ class TbTabs extends TbWidget
 	 */
 	public function init()
 	{
-		$this->htmlOptions = TbHtml::defaultOption('id', $this->getId(), $this->htmlOptions);
-
-		if(in_array($this->placement, TbHtml::$tabPlacements))
+        if (!isset($this->htmlOptions['id']))
+            $this->htmlOptions['id'] = $this->id;
+        else
+            $this->id = $this->htmlOptions['id'];
+		if(isset($this->placement))
 			$this->htmlOptions = TbHtml::addClassName('tabs-'.$this->placement, $this->htmlOptions);
-
 		$this->menuItems = $this->normalizeTabs($this->tabs, $this->tabsContent);
-
 		$this->initEvents();
 	}
 
@@ -96,7 +96,6 @@ class TbTabs extends TbWidget
 			if($this->$event!==null)
 			{
 				$modalEvent = strtolower(substr($event, 2));
-
 				if($this->$event instanceof CJavaScriptExpression)
 					$this->events[$modalEvent]=$this->$event;
 				else
@@ -167,7 +166,6 @@ class TbTabs extends TbWidget
 	 */
 	protected function normalizeTabs($tabs, &$panes, &$i = 0)
 	{
-
 		$id = TbHtml::getOption('id', $this->htmlOptions, $this->getId());
 		$items = array();
 

@@ -30,14 +30,17 @@ class TbActiveForm extends CActiveForm
     /**
      * @var string the CSS class name for error messages.
      */
-    public $errorMessageCssClass = TbHtml::STYLE_ERROR;
+    public $errorMessageCssClass = TbHtml::COLOR_ERROR;
 
     /**
      * Initializes the widget.
      */
     public function init()
     {
-        $this->htmlOptions = TbHtml::defaultOption('id', $this->getId(), $this->htmlOptions);
+        if (!isset($this->htmlOptions['id']))
+            $this->htmlOptions['id'] = $this->id;
+        else
+            $this->id = $this->htmlOptions['id'];
 
         if ($this->stateful)
             echo TbHtml::statefulFormTb($this->layout, $this->action, $this->method, $this->htmlOptions);

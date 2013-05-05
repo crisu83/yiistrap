@@ -45,11 +45,14 @@ class TbAlert extends TbWidget
 	 */
 	public function init()
 	{
-		$this->htmlOptions = TbHtml::defaultOption('id', $this->getId(), $this->htmlOptions);
+        if (!isset($this->htmlOptions['id']))
+            $this->htmlOptions['id'] = $this->id;
+        else
+            $this->id = $this->htmlOptions['id'];
 		if (is_string($this->alerts))
 			$styles = explode(' ', $this->alerts);
 		else if (!isset($this->alerts))
-			$styles = TbHtml::$alertStyles; // render all styles by default
+			$styles = array(TbHtml::COLOR_SUCCESS, TbHtml::COLOR_WARNING, TbHtml::COLOR_INFO, TbHtml::COLOR_ERROR); // render all styles by default
 		if (isset($styles))
 		{
 			$this->alerts = array();

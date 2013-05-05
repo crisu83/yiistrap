@@ -22,17 +22,17 @@ class TbHtml extends CHtml // required in order to access protected methods
     const ALIGN_CENTER = 'center';
     const ALIGN_RIGHT = 'right';
 
-    // Element styles.
-    const STYLE_DEFAULT = '';
-    const STYLE_PRIMARY = 'primary';
-    const STYLE_INFO = 'info';
-    const STYLE_SUCCESS = 'success';
-    const STYLE_WARNING = 'warning';
-    const STYLE_ERROR = 'error';
-    const STYLE_DANGER = 'danger';
-    const STYLE_IMPORTANT = 'important';
-    const STYLE_INVERSE = 'inverse';
-    const STYLE_LINK = 'link';
+    // Element colors.
+    const COLOR_DEFAULT = '';
+    const COLOR_PRIMARY = 'primary';
+    const COLOR_INFO = 'info';
+    const COLOR_SUCCESS = 'success';
+    const COLOR_WARNING = 'warning';
+    const COLOR_ERROR = 'error';
+    const COLOR_DANGER = 'danger';
+    const COLOR_IMPORTANT = 'important';
+    const COLOR_INVERSE = 'inverse';
+    const COLOR_LINK = 'link';
 
     // Element sizes.
     const SIZE_MINI = 'mini';
@@ -60,6 +60,7 @@ class TbHtml extends CHtml // required in order to access protected methods
     const NAV_LIST = 'list';
 
     // Navbar positions.
+    const NAVBAR_INLINE = '';
     const NAVBAR_FIXED_TOP = 'fixed-top';
     const NAVBAR_FIXED_BOTTOM = 'fixed-bottom';
     const NAVBAR_STATIC_TOP = 'static-top';
@@ -284,45 +285,6 @@ class TbHtml extends CHtml // required in order to access protected methods
     // Default close text.
     const CLOSE_TEXT = '&times;';
 
-    // Scope constants.
-    static $formLayouts = array(self::FORM_VERTICAL, self::FORM_HORIZONTAL, self::FORM_INLINE, self::FORM_SEARCH);
-    static $inputStates = array(self::STYLE_WARNING, self::STYLE_ERROR, self::STYLE_INFO, self::STYLE_SUCCESS);
-    static $inputs = array(self::INPUT_CHECKBOX, self::INPUT_CHECKBOXLIST, self::INPUT_INLINECHECKBOXLIST,
-        self::INPUT_DATE, self::INPUT_DROPDOWN, self::INPUT_EMAIL, self::INPUT_FILE, self::INPUT_LISTBOX,
-        self::INPUT_NUMBER, self::INPUT_PASSWORD, self::INPUT_RADIOBUTTON, self::INPUT_RANGE,
-        self::INPUT_TEXT, self::INPUT_TEXTAREA, self::INPUT_URL, self::INPUT_RADIOBUTTONLIST,
-        self::INPUT_INLINERADIOBUTTONLIST, self::INPUT_UNEDITABLE, self::INPUT_SEARCH);
-    static $labelInputs = array(self::INPUT_CHECKBOX, self::INPUT_RADIOBUTTON);
-    static $dataInputs = array(self::INPUT_CHECKBOXLIST, self::INPUT_INLINECHECKBOXLIST,self::INPUT_DROPDOWN,
-        self::INPUT_LISTBOX, self::INPUT_RADIOBUTTONLIST, self::INPUT_INLINERADIOBUTTONLIST); // Which one requires data
-    static $inputSizes = array(self::SIZE_MINI, self::SIZE_SMALL, self::SIZE_MEDIUM, self::SIZE_LARGE,
-        self::SIZE_XLARGE, self::SIZE_XXLARGE);
-    static $helpTypes = array(self::HELP_INLINE, self::HELP_BLOCK);
-    static $elementSizes = array(self::SIZE_MINI, self::SIZE_SMALL, self::SIZE_LARGE);
-    static $pulls = array(self::PULL_LEFT, self::PULL_RIGHT);
-    static $textStyles = array(self::STYLE_ERROR, self::STYLE_INFO, self::STYLE_SUCCESS, self::STYLE_WARNING);
-    static $textAlignments = array(self::ALIGN_LEFT, self::ALIGN_CENTER, self::ALIGN_RIGHT);
-    static $imageTypes = array(self::IMAGE_ROUNDED, self::IMAGE_CIRCLE, self::IMAGE_POLAROID);
-    static $buttonStyles = array(self::STYLE_PRIMARY, self::STYLE_INFO, self::STYLE_SUCCESS, self::STYLE_WARNING,
-        self::STYLE_DANGER, self::STYLE_INVERSE, self::STYLE_LINK);
-    static $navTypes = array(self::NAV_TABS, self::NAV_PILLS, self::NAV_LIST);
-    static $tabPlacements = array(self::TABS_ABOVE, self::TABS_BELOW, self::TABS_LEFT, self::TABS_RIGHT);
-    static $navbarStyles = array(self::STYLE_INVERSE);
-    static $navbarDisplays = array(self::NAVBAR_FIXED_TOP, self::NAVBAR_FIXED_BOTTOM, self::NAVBAR_STATIC_TOP);
-    static $affixOffsetTypes = array(self::AFFIX_TOP, self::AFFIX_BOTTOM);
-    static $labelBadgeStyles = array(self::STYLE_SUCCESS, self::STYLE_WARNING, self::STYLE_IMPORTANT, self::STYLE_INFO, self::STYLE_INVERSE);
-    static $alertStyles = array(self::STYLE_SUCCESS, self::STYLE_INFO, self::STYLE_WARNING, self::STYLE_ERROR);
-    static $progressStyles = array(self::STYLE_INFO, self::STYLE_SUCCESS, self::STYLE_WARNING, self::STYLE_DANGER);
-    static $progressAlignments = array(self::PROGRESS_LEFT, self::PROGRESS_CENTER, self::PROGRESS_RIGHT);
-    static $tooltipPlacements = array(self::TOOLTIP_TOP, self::TOOLTIP_BOTTOM, self::TOOLTIP_LEFT, self::TOOLTIP_RIGHT);
-    static $triggers = array(self::TRIGGER_CLICK, self::TRIGGER_HOVER, self::TRIGGER_FOCUS, self::TRIGGER_MANUAL);
-    static $addOnTypes = array(self::ADDON_PREPEND, self::ADDON_APPEND);
-    static $grids = array(self::GRID_BORDERED, self::GRID_CONDENSED, self::GRID_HOVER, self::GRID_STRIPED);
-
-    static $errorMessageCss = 'error';
-
-    private static $_counter = 0;
-
     //
     // BASE CSS
     // --------------------------------------------------
@@ -386,8 +348,7 @@ class TbHtml extends CHtml // required in order to access protected methods
      */
     public static function em($style, $text, $htmlOptions = array(), $tag = 'p')
     {
-        if ($style && in_array($style, self::$textStyles))
-            $htmlOptions = self::addClassName('text-' . $style, $htmlOptions);
+        $htmlOptions = self::addClassName('text-' . $style, $htmlOptions);
         return self::tag($tag, $htmlOptions, $text);
     }
 
@@ -537,10 +498,10 @@ class TbHtml extends CHtml // required in order to access protected methods
     {
         self::addSpanClass($htmlOptions);
         $align = self::popOption('align', $htmlOptions);
-        if (isset($align) && in_array($align, self::$textAlignments))
+        if (isset($align))
             $htmlOptions = self::addClassName('text-' . $align, $htmlOptions);
         $pull = self::popOption('pull', $htmlOptions);
-        if (isset($pull) && in_array($pull, self::$pulls))
+        if (isset($pull))
             $htmlOptions = self::addClassName('pull-' . $pull, $htmlOptions);
         return CHtml::tag($tag, $htmlOptions, $content, $closeTag);
     }
@@ -589,8 +550,7 @@ class TbHtml extends CHtml // required in order to access protected methods
      */
     public static function beginFormTb($layout = self::FORM_VERTICAL, $action = '', $method = 'post', $htmlOptions = array())
     {
-        if (in_array($layout, self::$formLayouts))
-            $htmlOptions = self::addClassName('form-' . $layout, $htmlOptions);
+        $htmlOptions = self::addClassName('form-' . $layout, $htmlOptions);
         return CHtml::beginForm($action, $method, $htmlOptions);
     }
 
@@ -955,7 +915,7 @@ EOD;
         $size = self::popOption('size', $htmlOptions);
         if (!self::addSpanClass($htmlOptions))
         {
-            if (isset($size) && in_array($size, self::$inputSizes))
+            if (isset($size))
                 $htmlOptions = self::addClassName('input-' . $size, $htmlOptions);
             else if (isset($htmlOptions['block']))
                 $htmlOptions = self::addClassName('input-block-level', $htmlOptions);
@@ -1242,12 +1202,12 @@ EOD;
     {
         $wrap = self::popOption('wrap', $htmlOptions, false);
         $label = self::popOption('label', $htmlOptions, false);
-        $state = self::popOption('state', $htmlOptions);
+        $color = self::popOption('color', $htmlOptions);
         $groupOptions = self::popOption('groupOptions', $htmlOptions, array());
         $labelOptions = self::popOption('labelOptions', $htmlOptions, array());
         $controlOptions = self::popOption('controlOptions', $htmlOptions, array());
 
-        if (in_array($type, self::$labelInputs))
+        if (in_array($type, array(self::INPUT_CHECKBOX, self::INPUT_RADIOBUTTON)))
         {
             $htmlOptions['label'] = $label;
             $htmlOptions['labelOptions'] = $labelOptions;
@@ -1259,8 +1219,8 @@ EOD;
         if ($wrap)
         {
             $groupOptions = self::addClassName('control-group', $groupOptions);
-            if (isset($state) && in_array($state, self::$inputStates))
-                $groupOptions = self::addClassName($state, $groupOptions);
+            if (isset($color))
+                $groupOptions = self::addClassName($color, $groupOptions);
             $labelOptions = self::addClassName('control-label', $labelOptions);
             ob_start();
             echo self::openTag('div', $groupOptions);
@@ -1924,12 +1884,12 @@ EOD;
     {
         $wrap = self::popOption('wrap', $htmlOptions, false);
         $label = self::popOption('label', $htmlOptions, false);
-        $state = self::popOption('state', $htmlOptions);
+        $color = self::popOption('color', $htmlOptions);
         $groupOptions = self::popOption('groupOptions', $htmlOptions, array());
         $labelOptions = self::popOption('labelOptions', $htmlOptions, array());
         $controlOptions = self::popOption('controlOptions', $htmlOptions, array());
 
-        if (in_array($type, self::$labelInputs))
+        if (in_array($type, array(self::INPUT_CHECKBOX, self::INPUT_RADIOBUTTON)))
         {
             $htmlOptions['label'] = $label;
             $htmlOptions['labelOptions'] = $labelOptions;
@@ -1941,8 +1901,8 @@ EOD;
         if ($wrap)
         {
             $groupOptions = self::addClassName('control-group', $groupOptions);
-            if (isset($state) && in_array($state, self::$inputStates))
-                $groupOptions = self::addClassName($state, $groupOptions);
+            if (isset($color))
+                $groupOptions = self::addClassName($color, $groupOptions);
             $labelOptions = self::addClassName('control-label', $labelOptions);
             ob_start();
             echo self::openTag('div', $groupOptions);
@@ -2130,7 +2090,7 @@ EOD;
         $size = self::popOption('size', $options);
         if (!self::addSpanClass($options))
         {
-            if (isset($size) && in_array($size, self::$inputSizes))
+            if (isset($size))
                 $options = self::addClassName('input-' . $size, $options);
             else if (isset($options['block']))
                 $options = self::addClassName('input-block-level', $options);
@@ -2147,8 +2107,7 @@ EOD;
     protected static function inputHelp($help, $htmlOptions)
     {
         $type = self::popOption('type', $htmlOptions, self::HELP_INLINE);
-        if (in_array($type, self::$helpTypes))
-            $htmlOptions = self::addClassName('help-' . $type, $htmlOptions);
+        $htmlOptions = self::addClassName('help-' . $type, $htmlOptions);
         return self::tag('span', $htmlOptions, $help);
     }
 
@@ -2216,17 +2175,16 @@ EOD;
         $htmlOptions = self::addClassName('form-search', $htmlOptions);
         $inputOptions = self::popOption('inputOptions', $htmlOptions, array());
         $inputOptions = self::mergeOptions(array('type' => 'text', 'placeholder' => 'Search'), $inputOptions);
-        $inputOptions = self::addClassName('search-query', $inputOptions);
         $buttonOptions = self::popOption('buttonOptions', $htmlOptions, array());
         $buttonLabel = self::popOption('label', $buttonOptions, self::icon('search'));
         $name = self::popOption('name', $inputOptions, 'search');
         $value = self::popOption('value', $inputOptions, '');
         $addon = self::popOption('addon', $htmlOptions);
-        if (isset($addon) && in_array($addon, self::$addOnTypes))
-            $inputOptions[$addon] = self::button($buttonLabel, $buttonOptions);
+        if (isset($addon))
+            $inputOptions[$addon] = self::htmlButton($buttonLabel, $buttonOptions);
         ob_start();
         echo CHtml::beginForm($action, $method, $htmlOptions);
-        echo self::textField($name, $value, $inputOptions);
+        echo self::searchQuery($name, $value, $inputOptions);
         echo CHtml::endForm();
         return ob_get_clean();
     }
@@ -2384,11 +2342,11 @@ EOD;
     {
         self::addSpanClass($htmlOptions);
         $htmlOptions = self::addClassName('btn', $htmlOptions);
-        $style = self::popOption('style', $htmlOptions);
-        if (isset($style) && in_array($style, self::$buttonStyles))
-            $htmlOptions = self::addClassName('btn-' . $style, $htmlOptions);
+        $color = self::popOption('color', $htmlOptions);
+        if (isset($color))
+            $htmlOptions = self::addClassName('btn-' . $color, $htmlOptions);
         $size = self::popOption('size', $htmlOptions);
-        if (isset($size) && in_array($size, self::$elementSizes))
+        if (isset($size))
             $htmlOptions = self::addClassName('btn-' . $size, $htmlOptions);
         if (self::popOption('block', $htmlOptions, false))
             $htmlOptions = self::addClassName('btn-block', $htmlOptions);
@@ -2437,6 +2395,13 @@ EOD;
         return ob_get_clean();
     }
 
+    /**
+     * Creates a button the of given type.
+     * @param string $type the button type.
+     * @param string $label the button label.
+     * @param array $htmlOptions additional HTML attributes.
+     * @return string the button.
+     */
     protected static function createButton($type, $label, $htmlOptions)
     {
         $url = self::popOption('url', $htmlOptions, '#');
@@ -2501,7 +2466,6 @@ EOD;
 
     /**
      * Generates an image tag with circle.
-     * ***Important*** `.img-rounded` and `.img-circle` do not work in IE7-8 due to lack of border-radius support.
      * @param string $src the image URL.
      * @param string $alt the alternative text display.
      * @param array $htmlOptions additional HTML attributes.
@@ -2536,7 +2500,7 @@ EOD;
     public static function image($src, $alt = '', $htmlOptions = array())
     {
         $type = self::popOption('type', $htmlOptions);
-        if (isset($type) && in_array($type, self::$imageTypes))
+        if (isset($type))
             $htmlOptions = self::addClassName('img-' . $type, $htmlOptions);
         return CHtml::image($src, $alt, $htmlOptions);
     }
@@ -2833,17 +2797,16 @@ EOD;
 
     /**
      * Generates a navigation menu.
-     * @param string $style the menu style.
+     * @param string $type the menu type.
      * @param array $items the menu items.
      * @param array $htmlOptions additional HTML attributes.
      * @return string the generated menu.
      */
-    public static function nav($style, $items, $htmlOptions = array())
+    public static function nav($type, $items, $htmlOptions = array())
     {
         $htmlOptions = self::addClassName('nav', $htmlOptions);
-        if (in_array($style, self::$navTypes))
-            $htmlOptions = self::addClassName('nav-' . $style, $htmlOptions);
-        if ($style !== self::NAV_LIST && self::popOption('stacked', $htmlOptions, false))
+        $htmlOptions = self::addClassName('nav-' . $type, $htmlOptions);
+        if ($type !== self::NAV_LIST && self::popOption('stacked', $htmlOptions, false))
             $htmlOptions = self::addClassName('nav-stacked', $htmlOptions);
         ob_start();
         echo self::menu($items, $htmlOptions);
@@ -2974,11 +2937,11 @@ EOD;
     {
         $htmlOptions = self::addClassName('navbar', $htmlOptions);
         $display = self::popOption('display', $htmlOptions);
-        if (isset($display) && in_array($display, self::$navbarDisplays))
+        if (isset($display) )
             $htmlOptions = self::addClassName('navbar-' . $display, $htmlOptions);
-        $style = self::popOption('style', $htmlOptions);
-        if (isset($style) && in_array($style, self::$navbarStyles))
-            $htmlOptions = self::addClassName('navbar-' . $style, $htmlOptions);
+        $color = self::popOption('color', $htmlOptions);
+        if (isset($color))
+            $htmlOptions = self::addClassName('navbar-' . $color, $htmlOptions);
         $innerOptions = self::popOption('innerOptions', $htmlOptions, array());
         $innerOptions = self::addClassName('navbar-inner', $innerOptions);
         ob_start();
@@ -3073,10 +3036,10 @@ EOD;
         {
             $htmlOptions = self::addClassName('pagination', $htmlOptions);
             $size = self::popOption('size', $htmlOptions);
-            if (isset($size) && in_array($size, self::$elementSizes))
+            if (isset($size))
                 $htmlOptions = self::addClassName('pagination-' . $size, $htmlOptions);
             $align = self::popOption('align', $htmlOptions);
-            if (isset($align) && in_array($align, self::$progressAlignments))
+            if (isset($align))
                 $htmlOptions = self::addClassName('pagination-' . $align, $htmlOptions);
             $listOptions = self::popOption('listOptions', $htmlOptions, array());
             ob_start();
@@ -3210,9 +3173,9 @@ EOD;
     public static function labelBadge($type, $label, $htmlOptions = array())
     {
         $htmlOptions = self::addClassName($type, $htmlOptions);
-        $style = self::popOption('style', $htmlOptions);
-        if (isset($style) && in_array($style, self::$labelBadgeStyles))
-            $htmlOptions = self::addClassName($type . '-' . $style, $htmlOptions);
+        $color = self::popOption('color', $htmlOptions);
+        if (isset($color))
+            $htmlOptions = self::addClassName($type . '-' . $color, $htmlOptions);
         return self::tag('span', $htmlOptions, $label);
     }
 
@@ -3360,21 +3323,17 @@ EOD;
     // --------------------------------------------------
 
     /**
-     * @param string $style the style of the alert.
-     * @param string $message the message to display  within the alert box
-     * @param array $htmlOptions additional HTML options. The following special options are recognized:
-     * <ul>
-     * <li>block: boolean, specifies whether to increase the padding on top and bottom of the alert wrapper.</li>
-     * <li>fade: boolean, specifies whether to have fade in/out effect when showing/hiding the alert.
-     * Defaults to `true`.</li>
-     * <li>closeText: string, the text to use as closing button. If none specified, no close button will be shown.</li>
-     * </ul>
+     * Generates an alert.
+     * @param string $color the style of the alert.
+     * @param string $message the message to display.
+     * @param array $htmlOptions additional HTML options.
+     * @param string the generated alert.
      */
-    public static function alert($style, $message, $htmlOptions = array())
+    public static function alert($color, $message, $htmlOptions = array())
     {
         $htmlOptions = self::addClassName('alert', $htmlOptions);
-        if (isset($style) && in_array($style, self::$alertStyles))
-            $htmlOptions = self::addClassName('alert-' . $style, $htmlOptions);
+        if (isset($color))
+            $htmlOptions = self::addClassName('alert-' . $color, $htmlOptions);
         if (self::popOption('in', $htmlOptions, true))
             $htmlOptions = self::addClassName('in', $htmlOptions);
         if (self::popOption('block', $htmlOptions, false))
@@ -3417,9 +3376,9 @@ EOD;
     public static function progressBar($width = 0, $htmlOptions = array())
     {
         $htmlOptions = self::addClassName('progress', $htmlOptions);
-        $style = self::popOption('style', $htmlOptions);
-        if (isset($style) && in_array($style, self::$progressStyles))
-            $htmlOptions = self::addClassName('progress-' . $style, $htmlOptions);
+        $color = self::popOption('color', $htmlOptions);
+        if (isset($color))
+            $htmlOptions = self::addClassName('progress-' . $color, $htmlOptions);
         if (self::popOption('striped', $htmlOptions, false))
         {
             $htmlOptions = self::addClassName('progress-striped', $htmlOptions);
@@ -3496,9 +3455,9 @@ EOD;
     public static function bar($width = 0, $htmlOptions = array())
     {
         $htmlOptions = self::addClassName('bar', $htmlOptions);
-        $style = self::popOption('style', $htmlOptions);
-        if (isset($style) && in_array($style, self::$progressStyles))
-            $htmlOptions = self::addClassName('bar-' . $style, $htmlOptions);
+        $color = self::popOption('color', $htmlOptions);
+        if (isset($color))
+            $htmlOptions = self::addClassName('bar-' . $color, $htmlOptions);
         if ($width < 0)
             $width = 0;
         if ($width > 100)
@@ -3631,7 +3590,7 @@ EOD;
     {
         $htmlOptions = self::addClassName('well', $htmlOptions);
         $size = self::popOption('size', $htmlOptions);
-        if (isset($size) && in_array($size, self::$elementSizes))
+        if (isset($size))
             $htmlOptions = self::addClassName('well-' . $size, $htmlOptions);
         ob_start();
         echo self::tag('div', $htmlOptions, $content);
@@ -3762,12 +3721,12 @@ EOD;
         if (self::popOption('html', $htmlOptions))
             $htmlOptions = self::defaultOption('data-html', true, $htmlOptions);
         $placement = self::popOption('placement', $htmlOptions);
-        if (isset($placement) && in_array($placement, self::$tooltipPlacements))
+        if (isset($placement))
             $htmlOptions = self::defaultOption('data-placement', $placement, $htmlOptions);
         if (self::popOption('selector', $htmlOptions))
             $htmlOptions = self::defaultOption('data-selector', true, $htmlOptions);
         $trigger = self::popOption('trigger', $htmlOptions);
-        if (isset($trigger) && in_array($trigger, self::$triggers))
+        if (isset($trigger))
             $htmlOptions = self::defaultOption('data-trigger', $trigger, $htmlOptions);
         if (($delay = self::popOption('delay', $htmlOptions)) !== null)
             $htmlOptions = self::defaultOption('data-delay', $delay, $htmlOptions);
@@ -3788,7 +3747,7 @@ EOD;
     {
         if (is_array($items) && !empty($items))
         {
-            $id = self::getOption('id', $htmlOptions, self::getNextId());
+            $id = self::getOption('id', $htmlOptions, CHtml::ID_PREFIX . CHtml::$count++);
             $htmlOptions = self::defaultOption('id', $id, $htmlOptions);
             $selector = '#' . $id;
             $htmlOptions = self::addClassName('carousel', $htmlOptions);
@@ -4063,15 +4022,6 @@ EOD;
     public static function removeOptions($options, $names)
     {
         return array_diff_key($options, array_flip($names));
-    }
-
-    /**
-     * Returns the next free id.
-     * @return string the id string.
-     */
-    public static function getNextId()
-    {
-        return 'tb' . self::$_counter++;
     }
 
     /**
