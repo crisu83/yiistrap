@@ -2114,7 +2114,7 @@ EOD;
      * @param array $options the options.
      * @return array the normalized options.
      */
-    protected function normalizeInputOptions($options)
+    protected static function normalizeInputOptions($options)
     {
         $size = self::popOption('size', $options);
         if (!self::addSpanClass($options))
