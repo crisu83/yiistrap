@@ -60,7 +60,7 @@ class TbCollapse extends TbWidget
 		$controller = $this->getController();
 		if (isset($controller) && $controller->getViewFile($this->content) !== false)
 			$this->content = $this->controller->renderPartial($this->content, $this->viewData, true);
-		echo CHtml::tag($this->tagName, $this->htmlOptions, $this->content);
+		echo TbHtml::openTag($this->tagName, $this->htmlOptions, $this->content);
 	}
 
 	/**
@@ -68,6 +68,7 @@ class TbCollapse extends TbWidget
 	 */
 	public function run()
 	{
+        echo CHtml::closeTag($this->tagName);
 		$selector = '#' . $this->htmlOptions['id'];
 		$this->registerEvents($selector, $this->events);
 	}
