@@ -13,6 +13,15 @@
  */
 class TbHtml extends CHtml // required in order to access protected methods
 {
+    // Floats.
+    const PULL_LEFT = 'left';
+    const PULL_RIGHT = 'right';
+
+    // Text alignments.
+    const ALIGN_LEFT = 'left';
+    const ALIGN_CENTER = 'center';
+    const ALIGN_RIGHT = 'right';
+
     // Element styles.
     const STYLE_DEFAULT = '';
     const STYLE_PRIMARY = 'primary';
@@ -34,6 +43,17 @@ class TbHtml extends CHtml // required in order to access protected methods
     const SIZE_XLARGE = 'xlarge';
     const SIZE_XXLARGE = 'xxlarge';
 
+    const BUTTON_LINK = 'link';
+    const BUTTON_HTML = 'htmlButton';
+    const BUTTON_SUBMIT = 'submitButton';
+    const BUTTON_RESET = 'resetButton';
+    const BUTTON_IMAGE = 'imageButton';
+    const BUTTON_LINKBUTTON = 'linkButton';
+    const BUTTON_AJAXLINK = 'ajaxLink';
+    const BUTTON_AJAXBUTTON = 'ajaxButton';
+    const BUTTON_INPUTBUTTON = 'inputButton';
+    const BUTTON_INPUTSUBMIT = 'inputSubmit';
+
     // Menu types.
     const NAV_TABS = 'tabs';
     const NAV_PILLS = 'pills';
@@ -43,15 +63,6 @@ class TbHtml extends CHtml // required in order to access protected methods
     const NAVBAR_FIXED_TOP = 'fixed-top';
     const NAVBAR_FIXED_BOTTOM = 'fixed-bottom';
     const NAVBAR_STATIC_TOP = 'static-top';
-
-    // Floats.
-    const PULL_LEFT = 'left';
-    const PULL_RIGHT = 'right';
-
-    // Text alignments.
-    const ALIGN_LEFT = 'left';
-    const ALIGN_CENTER = 'center';
-    const ALIGN_RIGHT = 'right';
 
     // Image types.
     const IMAGE_ROUNDED = 'rounded';
@@ -2251,86 +2262,127 @@ EOD;
     // --------------------------------------------------
 
     /**
-     * Generates a button.
+     * Generates an input button.
      * @param string $label the button label text.
      * @param array $htmlOptions additional HTML attributes.
      * @return string the generated button.
      */
     public static function button($label = 'button', $htmlOptions = array())
     {
-        if (!isset($htmlOptions['name']))
-            $htmlOptions['name'] = CHtml::ID_PREFIX . CHtml::$count++;
-        CHtml::clientChange('click', $htmlOptions);
-        return self::btn('button', $label, $htmlOptions);
-    }
-
-    /**
-     * Generates a submit button.
-     * @param string $label the button label
-     * @param array $htmlOptions additional HTML attributes. Besides normal HTML attributes, a few special
-     * attributes are also recognized (see {@link clientChange} and {@link tag} for more details.)
-     * @return string the generated button tag
-     * @see clientChange
-     */
-    public static function submitButton($label = 'submit', $htmlOptions = array())
-    {
-        $htmlOptions['type'] = 'submit';
-        return self::button($label, $htmlOptions);
-    }
-
-    /**
-     * Generates a reset button.
-     * @param string $label the button label
-     * @param array $htmlOptions additional HTML attributes. Besides normal HTML attributes, a few special
-     * attributes are also recognized (see {@link clientChange} and {@link tag} for more details.)
-     * @return string the generated button tag
-     * @see clientChange
-     */
-    public static function resetButton($label = 'reset', $htmlOptions = array())
-    {
-        $htmlOptions['type'] = 'reset';
-        return self::button($label, $htmlOptions);
+        return self::btn(self::BUTTON_INPUTBUTTON, $label, $htmlOptions);
     }
 
     /**
      * Generates an image submit button.
      * @param string $src the image URL
-     * @param array $htmlOptions additional HTML attributes. Besides normal HTML attributes, a few special
-     * attributes are also recognized (see {@link clientChange} and {@link tag} for more details.)
-     * @return string the generated button tag
-     * @see clientChange
+     * @param array $htmlOptions additional HTML attributes.
+     * @return string the generated button.
+     */
+    public static function htmlButton($label = 'Button', $htmlOptions = array())
+    {
+        return self::btn(self::BUTTON_HTML, $label, $htmlOptions);
+    }
+
+    /**
+     * Generates a submit button.
+     * @param string $label the button label
+     * @param array $htmlOptions additional HTML attributes.
+     * @return string the generated button.
+     */
+    public static function submitButton($label = 'Submit', $htmlOptions = array())
+    {
+        return self::btn(self::BUTTON_SUBMIT, $label, $htmlOptions);
+    }
+
+    /**
+     * Generates a reset button.
+     * @param string $label the button label
+     * @param array $htmlOptions additional HTML attributes.
+     * @return string the generated button.
+     */
+    public static function resetButton($label = 'Reset', $htmlOptions = array())
+    {
+        return self::btn(self::BUTTON_RESET, $label, $htmlOptions);
+    }
+
+    /**
+     * Generates an image submit button.
+     * @param string $src the image URL
+     * @param array $htmlOptions additional HTML attributes.
+     * @return string the generated button.
      */
     public static function imageButton($src, $htmlOptions = array())
     {
         $htmlOptions['src'] = $src;
-        $htmlOptions['type'] = 'image';
-        return self::button('submit', $htmlOptions);
+        return self::btn(self::BUTTON_IMAGE, 'Submit', $htmlOptions);
     }
 
     /**
-     * Generates a link button.
-     * @param string $label the button label text.
-     * @param array $htmlOptions the HTML attributes for the button.
-     * @return string the generated button.
+     * Generates a link submit button.
+     * @param string $label the button label.
+     * @param array $htmlOptions additional HTML attributes.
+     * @return string the generated button tag.
      */
-    public static function linkButton($label = 'submit', $htmlOptions = array())
+    public static function linkButton($label = 'Submit', $htmlOptions = array())
     {
-        $htmlOptions['href'] = self::popOption('url', $htmlOptions, '#');
-        $htmlOptions['href'] = CHtml::normalizeUrl($htmlOptions['href']);
-        return self::btn('a', $label, $htmlOptions);
+        return self::btn(self::BUTTON_LINKBUTTON, $label, $htmlOptions);
     }
 
-    // todo: add support for ajax buttons and links.
+    /**
+     * Generates a link that can initiate AJAX requests.
+     * @param string $text the link body (it will NOT be HTML-encoded.)
+     * @param mixed $url the URL for the AJAX request.
+     * @param array $ajaxOptions AJAX options.
+     * @param array $htmlOptions additional HTML attributes.
+     * @return string the generated link.
+     */
+    public static function ajaxLink($text, $url, $ajaxOptions = array(), $htmlOptions = array())
+    {
+        $htmlOptions['url'] = $url;
+        $htmlOptions['ajaxOptions'] = $ajaxOptions;
+        return self::btn(self::BUTTON_AJAXLINK, $text, $htmlOptions);
+    }
+
+    /**
+     * Generates a push button that can initiate AJAX requests.
+     * @param string $label the button label.
+     * @param mixed $url the URL for the AJAX request.
+     * @param array $ajaxOptions AJAX options.
+     * @param array $htmlOptions additional HTML attributes.
+     * @return string the generated button.
+     */
+    public static function ajaxButton($label, $url, $ajaxOptions = array(), $htmlOptions = array())
+    {
+        $ajaxOptions['url']  = $url;
+        $htmlOptions['ajax'] = $ajaxOptions;
+        return self::btn(self::BUTTON_AJAXBUTTON, $label, $htmlOptions);
+    }
+
+    /**
+     * Generates a push button that can submit the current form in POST method.
+     * @param string $label the button label
+     * @param mixed $url the URL for the AJAX request.
+     * @param array $ajaxOptions AJAX options.
+     * @param array $htmlOptions additional HTML attributes.
+     * @return string the generated button.
+     */
+    public static function ajaxSubmitButton($label, $url, $ajaxOptions = array(), $htmlOptions = array())
+    {
+        $ajaxOptions['type'] = 'POST';
+        $htmlOptions['type'] = 'submit';
+        return self::ajaxButton($label, $url, $ajaxOptions, $htmlOptions);
+    }
 
     /**
      * Generates a button.
-     * @param string $tag the HTML tag.
+     * @param string $type the button type.
      * @param string $label the button label text.
      * @param array $htmlOptions additional HTML attributes.
      * @return string the generated button.
      */
-    public static function btn($tag, $label, $htmlOptions = array())
+    public static function btn($type, $label, $htmlOptions = array())
     {
+        self::addSpanClass($htmlOptions);
         $htmlOptions = self::addClassName('btn', $htmlOptions);
         $style = self::popOption('style', $htmlOptions);
         if (isset($style) && in_array($style, self::$buttonStyles))
@@ -2342,10 +2394,92 @@ EOD;
             $htmlOptions = self::addClassName('btn-block', $htmlOptions);
         if (self::popOption('disabled', $htmlOptions, false))
             $htmlOptions = self::addClassName('disabled', $htmlOptions);
-        $icon = self::popOption('icon', $htmlOptions);
-        if (isset($icon))
-            $label = self::icon($icon) . '&nbsp;' . $label;
-        return self::tag($tag, $htmlOptions, $label);
+        $items = strpos($type, 'input') === false ? self::popOption('items', $htmlOptions, array()) : array();
+        if (strpos($type, 'input') === false) // inputs cannot have icons
+        {
+            $icon = self::popOption('icon', $htmlOptions);
+            if (isset($icon))
+                $label = self::icon($icon) . '&nbsp;' . $label;
+        }
+        $dropdownOptions = $htmlOptions;
+        self::removeOptions($htmlOptions, array('groupOptions', 'menuOptions', 'dropup'));
+        return count($items) > 0
+            ? self::btnDropdown($type, $label, $items, $dropdownOptions)
+            : self::createButton($type, $label, $htmlOptions);
+    }
+
+    /**
+     * Generates a button dropdown.
+     * $type the button type.
+     * @param string $label the button label text.
+     * @param array $items the menu items.
+     * @param array $htmlOptions additional HTML attributes.
+     * @return string the generated button.
+     */
+    protected static function btnDropdown($type, $label, $items, $htmlOptions)
+    {
+        $menuOptions = self::popOption('menuOptions', $htmlOptions, array());
+        $groupOptions = self::popOption('groupOptions', $htmlOptions, array());
+        $groupOptions = self::addClassName('btn-group', $groupOptions);
+        if (self::popOption('dropup', $htmlOptions, false))
+            $groupOptions = self::addClassName('dropup', $groupOptions);
+        ob_start();
+        echo CHtml::openTag('div', $groupOptions);
+        if (self::popOption('split', $htmlOptions, false))
+        {
+            echo self::createButton($type, $label, $htmlOptions);
+            echo self::dropdownToggleButton('', $htmlOptions);
+        }
+        else
+            echo self::dropdownToggleLink($label, $htmlOptions);
+        echo self::dropdown($items, $menuOptions);
+        echo '</div>';
+        return ob_get_clean();
+    }
+
+    protected static function createButton($type, $label, $htmlOptions)
+    {
+        $url = self::popOption('url', $htmlOptions, '#');
+        $ajaxOptions = self::popOption('ajaxOptions', $htmlOptions, array());
+        switch ($type)
+        {
+            case self::BUTTON_HTML:
+                return CHtml::htmlButton($label, $htmlOptions);
+
+            case self::BUTTON_SUBMIT:
+                $htmlOptions['type'] = 'submit';
+                return CHtml::htmlButton($label, $htmlOptions);
+
+            case self::BUTTON_RESET:
+                $htmlOptions['type'] = 'reset';
+                return CHtml::htmlButton($label, $htmlOptions);
+
+            case self::BUTTON_IMAGE:
+                $htmlOptions['type'] = 'image';
+                return CHtml::htmlButton($label, $htmlOptions);
+
+            case self::BUTTON_LINKBUTTON:
+                return CHtml::linkButton($label, $htmlOptions);
+
+            case self::BUTTON_AJAXLINK:
+                return CHtml::ajaxLink($label, $url, $ajaxOptions, $htmlOptions);
+
+            case self::BUTTON_AJAXBUTTON:
+                $ajaxOptions['url'] = $url;
+                $htmlOptions['ajax'] = $ajaxOptions;
+                return CHtml::htmlButton($label, $htmlOptions);
+
+            case self::BUTTON_INPUTBUTTON:
+                return CHtml::button($label, $htmlOptions);
+
+            case self::BUTTON_INPUTSUBMIT:
+                $htmlOptions['type'] = 'submit';
+                return CHtml::button($label, $htmlOptions);
+
+            default:
+            case self::BUTTON_LINK:
+                return CHtml::link($label, $url, $htmlOptions);
+        }
     }
 
     // Images
@@ -2465,7 +2599,7 @@ EOD;
      */
     public static function dropdownToggleLink($label, $htmlOptions = array())
     {
-        return self::dropdownToggle('a', $label, $htmlOptions);
+        return self::dropdownToggle(self::BUTTON_LINK, $label, $htmlOptions);
     }
 
     /**
@@ -2476,7 +2610,7 @@ EOD;
      */
     public static function dropdownToggleButton($label = '', $htmlOptions = array())
     {
-        return self::dropdownToggle('button', $label, $htmlOptions);
+        return self::dropdownToggle(self::BUTTON_HTML, $label, $htmlOptions);
     }
 
     /**
@@ -2486,12 +2620,12 @@ EOD;
      * @param array $htmlOptions additional HTML attributes.
      * @return string the generated element.
      */
-    public static function dropdownToggle($tag, $label, $htmlOptions)
+    public static function dropdownToggle($type, $label, $htmlOptions)
     {
         $htmlOptions = self::addClassName('dropdown-toggle', $htmlOptions);
         $htmlOptions = self::defaultOption('data-toggle', 'dropdown', $htmlOptions);
         $label .= ' <b class="caret"></b>';
-        return self::btn($tag, $label, $htmlOptions);
+        return self::btn($type, $label, $htmlOptions);
     }
 
     /**
@@ -2513,27 +2647,9 @@ EOD;
     // --------------------------------------------------
 
     /**
-     * Generates a button group. Example:
-     *
-     * <pre>
-     *     echo TbHtml::buttonGroup(array(
-     *         array('label'=>'testA'),
-     *         array('label'=>'testB')
-     * ));
-     * </pre>
-     *
+     * Generates a button group.
      * @param array $buttons the button configurations.
-     * @param array $htmlOptions additional HTML options. The following special options are recognized:
-     * <ul>
-     * <li>
-     *         items: array, the list of buttons to be inserted into the group (see {@link button} function to see available
-     *      config options for buttons.
-     * </li>
-     * <li>
-     *         vertical: string, whether to render the group vertically instead of horizontally.
-     * </li>
-     * </ul>
-     *
+     * @param array $htmlOptions additional HTML options.
      * @return string the generated button group.
      */
     public static function buttonGroup($buttons, $htmlOptions = array())
@@ -2572,21 +2688,7 @@ EOD;
     }
 
     /**
-     * Generates a button toolbar. Example:
-     *
-     * echo TbHtml::buttonToolbar(array(
-     *     array(
-     *         'items' => array(
-     *             array('label'=>'testA'),
-     *             array('label'=>'testB')
-     *         )
-     *     ),
-     *     array(
-     *         'items' => array(
-     *             array('label'=>'testC')
-     *         )
-     * )));
-     *
+     * Generates a button toolbar.
      * @param array $groups the button group configurations.
      * @param array $htmlOptions additional HTML options.
      * @return string the generated button toolbar.
@@ -2633,6 +2735,9 @@ EOD;
      */
     public static function buttonDropdown($label, $items, $htmlOptions = array())
     {
+        $htmlOptions['items'] = $items;
+        return self::btn(self::BUTTON_LINKBUTTON, $label, $htmlOptions);
+
         $menuOptions = self::popOption('menuOptions', $htmlOptions, array());
         $groupOptions = self::popOption('groupOptions', $htmlOptions, array());
         $groupOptions = self::addClassName('btn-group', $groupOptions);
@@ -2644,7 +2749,8 @@ EOD;
         {
             echo self::linkButton($label, $htmlOptions);
             echo self::dropdownToggleButton('', $htmlOptions);
-        } else
+        }
+        else
             echo self::dropdownToggleLink($label, $htmlOptions);
         echo self::dropdown($items, $menuOptions);
         echo '</div>';
