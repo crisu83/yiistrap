@@ -16,60 +16,64 @@ Yii::import('bootstrap.widgets.TbWidget');
  */
 class TbCollapse extends TbWidget
 {
-	/**
-	 * @var string the HTML tag for the container.
-	 */
-	public $tagName = 'div';
-	/**
-	 * @var string the content text or path to a partial view with the content.
-	 */
-	public $content;
-	/**
-	 * @var string the CSS selector for the parent element.
-	 */
-	public $parent;
-	/**
-	 * @var boolean whether to be collapsed on invocation.
-	 */
-	public $toggle;
-	/**
-	 * @var string[] $events the JavaScript event configuration (name=>handler).
-	 */
-	public $events = array();
-	/**
-	 * @var array the HTML attributes for the container.
-	 */
-	public $htmlOptions = array();
-	/**
-	 * @var array additional data to be passed to the view.
-	 */
-	public $viewData = array();
+    /**
+     * @var string the HTML tag for the container.
+     */
+    public $tagName = 'div';
+    /**
+     * @var string the content text or path to a partial view with the content.
+     */
+    public $content;
+    /**
+     * @var string the CSS selector for the parent element.
+     */
+    public $parent;
+    /**
+     * @var boolean whether to be collapsed on invocation.
+     */
+    public $toggle;
+    /**
+     * @var string[] $events the JavaScript event configuration (name=>handler).
+     */
+    public $events = array();
+    /**
+     * @var array the HTML attributes for the container.
+     */
+    public $htmlOptions = array();
+    /**
+     * @var array additional data to be passed to the view.
+     */
+    public $viewData = array();
 
-	/**
-	 * Initializes the widget.
-	 */
-	public function init()
-	{
-		$this->htmlOptions = TbHtml::defaultOption('id', $this->getId(), $this->htmlOptions);
-		$this->htmlOptions = TbHtml::addClassName('collapse', $this->htmlOptions);
-		$this->htmlOptions['data-toggle'] = 'collapse';
-		if (isset($this->parent))
-			$this->htmlOptions = TbHtml::defaultOption('data-parent', $this->parent, $this->htmlOptions);
-		if (isset($this->toggle) && $this->toggle)
-			$this->htmlOptions = TbHtml::addClassName('in', $this->htmlOptions);
-		$controller = $this->getController();
-		if (isset($controller) && $controller->getViewFile($this->content) !== false)
-			$this->content = $this->controller->renderPartial($this->content, $this->viewData, true);
-		echo TbHtml::openTag($this->tagName, $this->htmlOptions, $this->content);
-	}
+    /**
+     * Initializes the widget.
+     */
+    public function init()
+    {
+        if (!isset($this->htmlOptions['id']))
+            $this->htmlOptions['id'] = $this->id;
+        else
+            $this->id = $this->htmlOptions['id'];
+        $this->htmlOptions = TbHtml::addClassName('collapse', $this->htmlOptions);
+        $this->htmlOptions['data-toggle'] = 'collapse';
+        if (isset($this->parent))
+            $this->htmlOptions = TbHtml::defaultOption('data-parent', $this->parent, $this->htmlOptions);
+        if (isset($this->toggle) && $this->toggle)
+            $this->htmlOptions = TbHtml::addClassName('in', $this->htmlOptions);
+        $controller = $this->getController();
+        if (isset($controller) && $controller->getViewFile($this->content) !== false)
+            $this->content = $this->controller->renderPartial($this->content, $this->viewData, true);
+        echo TbHtml::openTag($this->tagName, $this->htmlOptions);
+        echo $this->content;
+    }
 
-	/**
-	 * Runs the widget.
-	 */
-	public function run()
-	{
+    /**
+     * Runs the widget.
+     */
+    public function run()
+    {
         echo CHtml::closeTag($this->tagName);
-		$selector = '#' . $this->htmlOptions['id'];
-		$this->registerEvents($selector, $this->events);
-	}
+        $selector = '#' . $this->htmlOptions['id'];
+        $this->registerEvents($selector, $this->events);
+    }
 }

@@ -84,7 +84,6 @@ class TbNavbar extends CWidget
         $brand = $this->brandLabel !== false
             ? TbHtml::navbarBrandLink($this->brandLabel, $this->brandUrl, $this->brandOptions)
             : '';
-
         ob_start();
         foreach ($this->items as $item)
         {
@@ -98,30 +97,31 @@ class TbNavbar extends CWidget
             }
         }
         $items = ob_get_clean();
-
         ob_start();
-        echo CHtml::openTag('div', array('class' => $this->fluid ? 'container-fluid' : 'container'));
-
         if ($this->collapse !== false)
         {
-            $collapseId = TbHtml::getNextId();
             $this->collapseOptions = TbHtml::addClassName('nav-collapse', $this->collapseOptions);
-            echo TbHtml::collapseIcon('#' . $collapseId) . PHP_EOL;
-            echo $brand . PHP_EOL;
-            $this->controller->beginWidget('bootstrap.widgets.TbCollapse', array(
-                    'id' => $collapseId,
+            // todo: fix collapse, currently it cannot be clicked when within a navbar
+            ob_start();
+            /* @var TbCollapse $collapseWidget */
+            $collapseWidget = $this->controller->widget('bootstrap.widgets.TbCollapse', array(
                     'toggle' => false, // navbars are collapsed by default
+                    'content' => $items,
                     'htmlOptions' => $this->collapseOptions,
                 ));
-            echo $items;
-            $this->controller->endWidget();
+            $collapseContent = ob_get_clean();
+            echo TbHtml::collapseIcon('#' . $collapseWidget->getId());
+            echo $brand . $collapseContent;
+
         }
         else
-        {
-            echo $brand . PHP_EOL;
-            echo $items . PHP_EOL;
-        }
-
+            echo $brand . $items;
+        $containerContent = ob_get_clean();
+        $containerOptions = TbHtml::popOption('containerOptions', $this->htmlOptions, array());
+        $containerOptions = TbHtml::addClassName($this->fluid ? 'container-fluid' : 'container', $containerOptions);
+        ob_start();
+        echo CHtml::openTag('div', $containerOptions);
+        echo $containerContent;
         echo '</div>';
         $content = ob_get_clean();
         echo TbHtml::navbar($content, $this->htmlOptions);

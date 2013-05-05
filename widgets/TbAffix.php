@@ -15,45 +15,49 @@ Yii::import('bootstrap.widgets.TbWidget');
  */
 class TbAffix extends TbWidget
 {
-	/**
-	 * @var string the HTML tag for the container.
-	 */
-	public $tagName = 'div';
-	/**
-	 * @var mixed pixels to offset from screen when calculating position of scroll.
-	 */
-	public $offset;
-	/**
-	 * @var array the HTML attributes for the container.
-	 */
-	public $htmlOptions = array();
+    /**
+     * @var string the HTML tag for the container.
+     */
+    public $tagName = 'div';
+    /**
+     * @var mixed pixels to offset from screen when calculating position of scroll.
+     */
+    public $offset;
+    /**
+     * @var array the HTML attributes for the container.
+     */
+    public $htmlOptions = array();
 
-	/**
-	 * Initializes the widget.
-	 */
-	public function init()
-	{
-		$this->htmlOptions['data-spy'] = 'affix';
-		if (isset($this->offset))
-		{
-			if (is_string($this->offset))
-				$this->offset = array('top', $this->offset);
+    /**
+     * Initializes the widget.
+     */
+    public function init()
+    {
+        if (!isset($this->htmlOptions['id']))
+            $this->htmlOptions['id'] = $this->id;
+        else
+            $this->id = $this->htmlOptions['id'];
+        $this->htmlOptions['data-spy'] = 'affix';
+        if (isset($this->offset))
+        {
+            if (is_string($this->offset))
+                $this->offset = array('top', $this->offset);
 
-			if (is_array($this->offset) && count($this->offset) === 2)
-			{
-				list($position, $offset) = $this->offset;
-				if (in_array($position, TbHtml::$navbarPositions))
-					$this->options = TbHtml::defaultOption('data-offset-' . $position, $offset, $this->options);
-			}
-		}
-		echo CHtml::openTag($this->tagName, $this->htmlOptions);
-	}
+            if (is_array($this->offset) && count($this->offset) === 2)
+            {
+                list($position, $offset) = $this->offset;
+                if (in_array($position, TbHtml::$affixOffsetTypes))
+                    $this->options = TbHtml::defaultOption('data-offset-' . $position, $offset, $this->options);
+            }
+        }
+        echo CHtml::openTag($this->tagName, $this->htmlOptions);
+    }
 
-	/**
-	 * Runs the widget.
-	 */
-	public function run()
-	{
-		echo CHtml::closeTag($this->tagName);
-	}
+    /**
+     * Runs the widget.
+     */
+    public function run()
+    {
+        echo CHtml::closeTag($this->tagName);
+    }
 }
