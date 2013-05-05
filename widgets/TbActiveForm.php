@@ -33,10 +33,7 @@ class TbActiveForm extends CActiveForm
      */
     public function init()
     {
-        if (!isset($this->htmlOptions['id']))
-            $this->htmlOptions['id'] = $this->id;
-        else
-            $this->id = $this->htmlOptions['id'];
+        $this->htmlOptions = TbHtml::defaultOption('id', $this->getId(), $this->htmlOptions);
 
         if ($this->stateful)
             echo TbHtml::statefulFormTb($this->layout, $this->action, $this->method, $this->htmlOptions);

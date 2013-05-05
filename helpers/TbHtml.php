@@ -40,8 +40,9 @@ class TbHtml extends CHtml // required in order to access protected methods
     const NAV_LIST = 'list';
 
     // Navbar positions.
-    const NAVBAR_TOP = 'top';
-    const NAVBAR_BOTTOM = 'bottom';
+    const NAVBAR_FIXED_TOP = 'fixed-top';
+    const NAVBAR_FIXED_BOTTOM = 'fixed-bottom';
+    const NAVBAR_STATIC_TOP = 'static-top';
 
     // Floats.
     const PULL_LEFT = 'left';
@@ -75,6 +76,10 @@ class TbHtml extends CHtml // required in order to access protected methods
     const TABS_BELOW = 'below';
     const TABS_LEFT = 'left';
     const TABS_RIGHT = 'right';
+
+    // Affix offset types.
+    const AFFIX_TOP = 'top';
+    const AFFIX_BOTTOM = 'bottom';
 
     // Tooltip triggers.
     const TRIGGER_CLICK = 'click';
@@ -292,7 +297,8 @@ class TbHtml extends CHtml // required in order to access protected methods
     static $navTypes = array(self::NAV_TABS, self::NAV_PILLS, self::NAV_LIST);
     static $tabPlacements = array(self::TABS_ABOVE, self::TABS_BELOW, self::TABS_LEFT, self::TABS_RIGHT);
     static $navbarStyles = array(self::STYLE_INVERSE);
-    static $navbarPositions = array(self::NAVBAR_TOP, self::NAVBAR_BOTTOM);
+    static $navbarDisplays = array(self::NAVBAR_FIXED_TOP, self::NAVBAR_FIXED_BOTTOM, self::NAVBAR_STATIC_TOP);
+    static $affixOffsetTypes = array(self::AFFIX_TOP, self::AFFIX_BOTTOM);
     static $labelBadgeStyles = array(self::STYLE_SUCCESS, self::STYLE_WARNING, self::STYLE_IMPORTANT, self::STYLE_INFO, self::STYLE_INVERSE);
     static $alertStyles = array(self::STYLE_SUCCESS, self::STYLE_INFO, self::STYLE_WARNING, self::STYLE_ERROR);
     static $progressStyles = array(self::STYLE_INFO, self::STYLE_SUCCESS, self::STYLE_WARNING, self::STYLE_DANGER);
@@ -2861,13 +2867,9 @@ EOD;
     public static function navbar($content, $htmlOptions = array())
     {
         $htmlOptions = self::addClassName('navbar', $htmlOptions);
-        $position = self::popOption('position', $htmlOptions);
-        $static = self::popOption('static', $htmlOptions, false);
-        // todo: fix navbar static positioning.
-        if (isset($position) && in_array($position, self::$navbarPositions))
-            $htmlOptions = self::addClassName('navbar-fixed-' . $position, $htmlOptions);
-        else if ($static) // navbar cannot be both fixed and static
-            $htmlOptions = self::addClassName('navbar-static-top', $htmlOptions);
+        $display = self::popOption('display', $htmlOptions);
+        if (isset($display) && in_array($display, self::$navbarDisplays))
+            $htmlOptions = self::addClassName('navbar-' . $display, $htmlOptions);
         $style = self::popOption('style', $htmlOptions);
         if (isset($style) && in_array($style, self::$navbarStyles))
             $htmlOptions = self::addClassName('navbar-' . $style, $htmlOptions);

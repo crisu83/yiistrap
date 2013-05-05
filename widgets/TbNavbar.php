@@ -32,13 +32,9 @@ class TbNavbar extends CWidget
      */
     public $brandOptions = array();
     /**
-     * @var string fix location of the navbar is applicable.
+     * @var string nanvbar display type.
      */
-    public $position;
-    /**
-     * @var boolean whether the navbar should be static on the top of the page.
-     */
-    public $static = false;
+    public $display = TbHtml::NAVBAR_FIXED_TOP;
     /**
      * @var boolean whether the navbar spans over the whole page.
      */
@@ -76,10 +72,8 @@ class TbNavbar extends CWidget
         // todo: somehow the style attribute in htmlOptions is ignored completely, fix.
         if (isset($this->style))
             $this->htmlOptions = TbHtml::defaultOption('style', $this->style, $this->htmlOptions);
-        if ($this->position !== false)
-            $this->htmlOptions = TbHtml::defaultOption('position', $this->position, $this->htmlOptions);
-        if ($this->static)
-            $this->htmlOptions = TbHtml::defaultOption('static', $this->static, $this->htmlOptions);
+        if ($this->display !== false)
+            $this->htmlOptions = TbHtml::defaultOption('display', $this->display, $this->htmlOptions);
     }
 
     /**
@@ -114,12 +108,13 @@ class TbNavbar extends CWidget
             $this->collapseOptions = TbHtml::addClassName('nav-collapse', $this->collapseOptions);
             echo TbHtml::collapseIcon('#' . $collapseId) . PHP_EOL;
             echo $brand . PHP_EOL;
-            $this->controller->widget('bootstrap.widgets.TbCollapse', array(
+            $this->controller->beginWidget('bootstrap.widgets.TbCollapse', array(
                     'id' => $collapseId,
                     'toggle' => false, // navbars are collapsed by default
-                    'content' => $items,
                     'htmlOptions' => $this->collapseOptions,
                 ));
+            echo $items;
+            $this->controller->endWidget();
         }
         else
         {
