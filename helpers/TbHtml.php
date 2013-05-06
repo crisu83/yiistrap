@@ -445,7 +445,7 @@ class TbHtml extends CHtml // required in order to access protected methods
     public static function help($text, $htmlOptions = array())
     {
         $htmlOptions = self::addClassName('help-inline', $htmlOptions);
-        return self::tag('p', $htmlOptions, $text);
+        return self::tag('span', $htmlOptions, $text);
     }
 
     /**
@@ -1907,7 +1907,6 @@ EOD;
         if (!empty($help))
             $help = self::inputHelp($help, $helpOptions);
 
-        $label =
         $error = self::popOption('error', $htmlOptions, '');
         $input = self::createActiveInput($type, $model, $attribute, $htmlOptions, $data);
 
