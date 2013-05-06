@@ -1212,6 +1212,10 @@ EOD;
             $label = false;
         }
 
+        $help = self::popOption('help', $htmlOptions, '');
+        $helpOptions = self::popOption('helpOptions', $htmlOptions, array());
+        if (!empty($help))
+            $help = self::inputHelp($help, $helpOptions);
         $input = self::createInput($type, $name, $value, $htmlOptions, $data);
 
         if ($wrap)
@@ -1224,7 +1228,7 @@ EOD;
             echo self::openTag('div', $groupOptions);
             if ($label !== false)
                 echo CHtml::label($label, $name, $labelOptions);
-            echo self::formControls($input, $controlOptions);
+            echo self::formControls($input . $help, $controlOptions);
             echo '</div>';
             return ob_get_clean();
         }
@@ -1233,7 +1237,7 @@ EOD;
             ob_start();
             if ($label !== false)
                 echo CHtml::label($label, $name, $labelOptions);
-            echo $input;
+            echo $input . $help;
             return ob_get_clean();
         }
     }
@@ -1319,18 +1323,12 @@ EOD;
         if (!empty($append))
             $append = self::inputAddOn($append, $appendOptions);
 
-        $help = self::popOption('help', $htmlOptions, '');
-        $helpOptions = self::popOption('helpOptions', $htmlOptions, array());
-        if (!empty($help))
-            $help = self::inputHelp($help, $helpOptions);
-
         ob_start();
         if (!empty($addOnClasses))
             echo self::openTag('div', $addOnOptions);
         echo $prepend . CHtml::inputField($type, $name, $value, $htmlOptions) . $append;
         if (!empty($addOnClasses))
             echo '</div>';
-        echo $help;
         return ob_get_clean();
     }
 
@@ -1906,7 +1904,6 @@ EOD;
         $helpOptions = self::popOption('helpOptions', $htmlOptions, array());
         if (!empty($help))
             $help = self::inputHelp($help, $helpOptions);
-
         $error = self::popOption('error', $htmlOptions, '');
         $input = self::createActiveInput($type, $model, $attribute, $htmlOptions, $data);
 
