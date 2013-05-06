@@ -26,7 +26,7 @@ class TbActiveForm extends CActiveForm
     /**
      * @var string the help type. Valid values are TbHtml::HELP_INLINE and TbHtml::HELP_BLOCK.
      */
-    public $helpType;
+    public $helpType = TbHtml::HELP_BLOCK;
     /**
      * @var string the CSS class name for error messages.
      */
@@ -46,9 +46,6 @@ class TbActiveForm extends CActiveForm
             echo TbHtml::statefulFormTb($this->layout, $this->action, $this->method, $this->htmlOptions);
         else
             echo TbHtml::beginFormTb($this->layout, $this->action, $this->method, $this->htmlOptions);
-
-        if (!isset($this->helpType))
-            $this->helpType = $this->layout === TbHtml::FORM_HORIZONTAL ? TbHtml::HELP_INLINE : TbHtml::HELP_BLOCK;
     }
 
     /**
@@ -66,8 +63,6 @@ class TbActiveForm extends CActiveForm
             $enableAjaxValidation = false;
         if (!$this->enableClientValidation)
             $enableClientValidation = false;
-        if (!isset($htmlOptions['class']))
-            $htmlOptions['class'] = $this->errorMessageCssClass;
         if (!$enableAjaxValidation && !$enableClientValidation)
             return TbHtml::error($model, $attribute, $htmlOptions);
         $id = CHtml::activeId($model, $attribute);
@@ -420,7 +415,7 @@ class TbActiveForm extends CActiveForm
      */
     public function textFieldRow($model, $attribute, $htmlOptions = array())
     {
-        $htmlOptions['wrap'] = $this->wrapInputs;
+        $htmlOptions = $this->processRowOptions($model, $attribute, $htmlOptions);
         return TbHtml::activeTextFieldRow($model, $attribute, $htmlOptions);
     }
 
@@ -434,7 +429,7 @@ class TbActiveForm extends CActiveForm
      */
     public function passwordFieldRow($model, $attribute, $htmlOptions = array())
     {
-        $htmlOptions['wrap'] = $this->wrapInputs;
+        $htmlOptions = $this->processRowOptions($model, $attribute, $htmlOptions);
         return TbHtml::activePasswordFieldRow($model, $attribute, $htmlOptions);
     }
 
@@ -448,7 +443,7 @@ class TbActiveForm extends CActiveForm
      */
     public function urlFieldRow($model, $attribute, $htmlOptions = array())
     {
-        $htmlOptions['wrap'] = $this->wrapInputs;
+        $htmlOptions = $this->processRowOptions($model, $attribute, $htmlOptions);
         return TbHtml::activeUrlFieldRow($model, $attribute, $htmlOptions);
     }
 
@@ -462,7 +457,7 @@ class TbActiveForm extends CActiveForm
      */
     public function emailFieldRow($model, $attribute, $htmlOptions = array())
     {
-        $htmlOptions['wrap'] = $this->wrapInputs;
+        $htmlOptions = $this->processRowOptions($model, $attribute, $htmlOptions);
         return TbHtml::activeEmailFieldRow($model, $attribute, null/* no data */, $htmlOptions);
     }
 
@@ -476,7 +471,7 @@ class TbActiveForm extends CActiveForm
      */
     public function numberFieldRow($model, $attribute, $htmlOptions = array())
     {
-        $htmlOptions['wrap'] = $this->wrapInputs;
+        $htmlOptions = $this->processRowOptions($model, $attribute, $htmlOptions);
         return TbHtml::activeNumberFieldRow($model, $attribute, $htmlOptions);
     }
 
@@ -490,7 +485,7 @@ class TbActiveForm extends CActiveForm
      */
     public function rangeFieldRow($model, $attribute, $htmlOptions = array())
     {
-        $htmlOptions['wrap'] = $this->wrapInputs;
+        $htmlOptions = $this->processRowOptions($model, $attribute, $htmlOptions);
         return TbHtml::activeRangeFieldRow($model, $attribute, $htmlOptions);
     }
 
@@ -504,7 +499,7 @@ class TbActiveForm extends CActiveForm
      */
     public function dateFieldRow($model, $attribute, $htmlOptions = array())
     {
-        $htmlOptions['wrap'] = $this->wrapInputs;
+        $htmlOptions = $this->processRowOptions($model, $attribute, $htmlOptions);
         return TbHtml::activeDateFieldRow($model, $attribute, $htmlOptions);
     }
 
@@ -518,7 +513,7 @@ class TbActiveForm extends CActiveForm
      */
     public function textAreaRow($model, $attribute, $htmlOptions = array())
     {
-        $htmlOptions['wrap'] = $this->wrapInputs;
+        $htmlOptions = $this->processRowOptions($model, $attribute, $htmlOptions);
         return TbHtml::activeTextAreaRow($model, $attribute, $htmlOptions);
     }
 
@@ -532,7 +527,7 @@ class TbActiveForm extends CActiveForm
      */
     public function checkBoxRow($model, $attribute, $htmlOptions = array())
     {
-        $htmlOptions['wrap'] = $this->wrapInputs;
+        $htmlOptions = $this->processRowOptions($model, $attribute, $htmlOptions);
         return TbHtml::activeCheckBoxRow($model, $attribute, $htmlOptions);
     }
 
@@ -546,7 +541,7 @@ class TbActiveForm extends CActiveForm
      */
     public function radioButtonRow($model, $attribute, $htmlOptions = array())
     {
-        $htmlOptions['wrap'] = $this->wrapInputs;
+        $htmlOptions = $this->processRowOptions($model, $attribute, $htmlOptions);
         return TbHtml::activeRadioButtonRow($model, $attribute, $htmlOptions);
     }
 
@@ -560,7 +555,7 @@ class TbActiveForm extends CActiveForm
      */
     public function dropDownListRow($model, $attribute, $data, $htmlOptions = array())
     {
-        $htmlOptions['wrap'] = $this->wrapInputs;
+        $htmlOptions = $this->processRowOptions($model, $attribute, $htmlOptions);
         return TbHtml::activeDropDownListRow($model, $attribute, $data, $htmlOptions);
     }
 
@@ -574,7 +569,7 @@ class TbActiveForm extends CActiveForm
      */
     public function listBoxRow($model, $attribute, $data, $htmlOptions = array())
     {
-        $htmlOptions['wrap'] = $this->wrapInputs;
+        $htmlOptions = $this->processRowOptions($model, $attribute, $htmlOptions);
         return TbHtml::activeListBoxRow($model, $attribute, $data, $htmlOptions);
     }
 
@@ -588,7 +583,7 @@ class TbActiveForm extends CActiveForm
      */
     public function fileFieldRow($model, $attribute, $htmlOptions = array())
     {
-        $htmlOptions['wrap'] = $this->wrapInputs;
+        $htmlOptions = $this->processRowOptions($model, $attribute, $htmlOptions);
         return TbHtml::activeFileFieldRow($model, $attribute, $htmlOptions);
     }
 
@@ -603,7 +598,7 @@ class TbActiveForm extends CActiveForm
      */
     public function radioButtonListRow($model, $attribute, $data, $htmlOptions = array())
     {
-        $htmlOptions['wrap'] = $this->wrapInputs;
+        $htmlOptions = $this->processRowOptions($model, $attribute, $htmlOptions);
         return TbHtml::activeRadioButtonListRow($model, $attribute, $data, $htmlOptions);
     }
 
@@ -618,8 +613,8 @@ class TbActiveForm extends CActiveForm
      */
     public function inlineRadioButtonListRow($model, $attribute, $data, $htmlOptions = array())
     {
-        $htmlOptions['wrap'] = $this->wrapInputs;
-        return TbHtml::activeInlineCheckBoxListRow($model, $attribute, $data, $htmlOptions);
+        $htmlOptions = $this->processRowOptions($model, $attribute, $htmlOptions);
+        return TbHtml::activeInlineRadioButtonListRow($model, $attribute, $data, $htmlOptions);
     }
 
     /**
@@ -633,7 +628,7 @@ class TbActiveForm extends CActiveForm
      */
     public function checkBoxListRow($model, $attribute, $data, $htmlOptions = array())
     {
-        $htmlOptions['wrap'] = $this->wrapInputs;
+        $htmlOptions = $this->processRowOptions($model, $attribute, $htmlOptions);
         return TbHtml::activeCheckBoxListRow($model, $attribute, $data, $htmlOptions);
     }
 
@@ -648,7 +643,7 @@ class TbActiveForm extends CActiveForm
      */
     public function inlineCheckBoxListRow($model, $attribute, $data, $htmlOptions = array())
     {
-        $htmlOptions['wrap'] = $this->wrapInputs;
+        $htmlOptions = $this->processRowOptions($model, $attribute, $htmlOptions);
         return TbHtml::activeInlineCheckBoxListRow($model, $attribute, $data, $htmlOptions);
     }
 
@@ -662,7 +657,7 @@ class TbActiveForm extends CActiveForm
      */
     public function uneditableFieldRow($model, $attribute, $htmlOptions = array())
     {
-        $htmlOptions['wrap'] = $this->wrapInputs;
+        $htmlOptions = $this->processRowOptions($model, $attribute, $htmlOptions);
         return TbHtml::activeUnediableFieldRow($model, $attribute, $htmlOptions);
     }
 
@@ -676,7 +671,30 @@ class TbActiveForm extends CActiveForm
      */
     public function searchQueryRow($model, $attribute, $htmlOptions = array())
     {
-        $htmlOptions['wrap'] = $this->wrapInputs;
+        $htmlOptions = $this->processRowOptions($model, $attribute, $htmlOptions);
         return TbHtml::activeSearchQueryRow($model, $attribute, $htmlOptions);
+    }
+
+    /**
+     * Processes the options for a input row.
+     * @param CModel $model the data model.
+     * @param string $attribute the attribute name.
+     * @param array $htmlOptions the options.
+     * @return array the processed options.
+     */
+    protected function processRowOptions($model, $attribute, $options)
+    {
+        $errorOptions = TbHtml::popOption('errorOptions', $options, array());
+        $error = $this->error($model, $attribute, $errorOptions);
+        if (!empty($error))
+        {
+            $options['error'] = $error;
+            $options['color'] = TbHtml::COLOR_ERROR;
+        }
+        $helpOptions = TbHtml::popOption('helpOptions', $options, array());
+        $helpOptions['type'] = $this->helpType;
+        $options['helpOptions'] = $helpOptions;
+        $options['wrap'] = $this->wrapInputs;
+        return $options;
     }
 }

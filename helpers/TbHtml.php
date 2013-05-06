@@ -766,7 +766,6 @@ class TbHtml extends CHtml // required in order to access protected methods
         $containerOptions = self::popOption('containerOptions', $htmlOptions, array());
 
         $labelOptions = self::popOption('labelOptions', $htmlOptions, array());
-        $labelOptions = self::addClassName('radio', $labelOptions);
         if ($inline)
             $labelOptions = self::addClassName('inline', $labelOptions);
 
@@ -788,7 +787,7 @@ class TbHtml extends CHtml // required in order to access protected methods
             else
             {
                 $option = self::radioButton($name, $checked, $htmlOptions);
-                $items[] = self::label($option . ' ' . $label, '', $labelOptions);
+                $items[] = self::label($option . ' ' . $label, false, $labelOptions);
             }
         }
 
@@ -832,7 +831,6 @@ class TbHtml extends CHtml // required in order to access protected methods
         $checkAllLast = self::popOption('checkAllLast', $htmlOptions);
 
         $labelOptions = self::popOption('labelOptions', $htmlOptions, array());
-        $labelOptions = self::addClassName('checkbox', $labelOptions);
         if ($inline)
             $labelOptions = self::addClassName('inline', $labelOptions);
 
@@ -856,7 +854,7 @@ class TbHtml extends CHtml // required in order to access protected methods
             else
             {
                 $option = self::checkBox($name, $checked, $htmlOptions);
-                $items[] = self::label($option . ' ' . $label, '', $labelOptions);
+                $items[] = self::label($option . ' ' . $label, false, $labelOptions);
             }
         }
 
@@ -1280,12 +1278,12 @@ EOD;
             case self::INPUT_FILE: return self::fileField($name, $value, $htmlOptions);
             case self::INPUT_RADIOBUTTON: return self::radioButton($name, $value, $htmlOptions);
             case self::INPUT_CHECKBOX: return self::checkBox($name, $value, $htmlOptions);
-            case self::INPUT_DROPDOWN: return self::dropDownList($name, $value, $htmlOptions, $data);
-            case self::INPUT_LISTBOX: return self::listBox($name, $value, $htmlOptions, $data);
-            case self::INPUT_CHECKBOXLIST: return self::checkBoxList($name, $value, $htmlOptions, $data);
-            case self::INPUT_INLINECHECKBOXLIST: return self::inlineCheckBoxList($name, $value, $htmlOptions, $data);
-            case self::INPUT_RADIOBUTTONLIST: return self::radioButtonList($name, $value, $htmlOptions, $data);
-            case self::INPUT_INLINERADIOBUTTONLIST: return self::inlineRadioButtonList($name, $value, $htmlOptions, $data);
+            case self::INPUT_DROPDOWN: return self::dropDownList($name, $value, $data, $htmlOptions);
+            case self::INPUT_LISTBOX: return self::listBox($name, $value, $data, $htmlOptions);
+            case self::INPUT_CHECKBOXLIST: return self::checkBoxList($name, $value, $data, $htmlOptions);
+            case self::INPUT_INLINECHECKBOXLIST: return self::inlineCheckBoxList($name, $value, $data, $htmlOptions);
+            case self::INPUT_RADIOBUTTONLIST: return self::radioButtonList($name, $value, $data, $htmlOptions);
+            case self::INPUT_INLINERADIOBUTTONLIST: return self::inlineRadioButtonList($name, $value, $data, $htmlOptions);
             case self::INPUT_UNEDITABLE: return self::uneditableField($value, $htmlOptions);
             case self::INPUT_SEARCH: return self::searchQuery($name, $value, $htmlOptions);
             default: throw new CException('Invalid input type "' . $type . '".');
@@ -1334,6 +1332,22 @@ EOD;
             echo '</div>';
         echo $help;
         return ob_get_clean();
+    }
+
+    /**
+     * Generates a label tag for a model attribute.
+     * @param CModel $model the data model.
+     * @param string $attribute the attribute.
+     * @param array $htmlOptions additional HTML attributes.
+     * @return string the generated label tag.
+     */
+    public static function activeLabel($model, $attribute, $htmlOptions = array())
+    {
+        $for = self::popOption('for', $htmlOptions, CHtml::getIdByName(self::resolveName($model, $attribute)));
+        $label = self::popOption('label', $htmlOptions, $model->getAttributeLabel($attribute));
+        if ($label === false)
+            return '';
+        return CHtml::label($label, $for, $htmlOptions);
     }
 
     /**
@@ -1472,12 +1486,12 @@ EOD;
      */
     public static function activeCheckBox($model, $attribute, $htmlOptions = array())
     {
-        $label = self::popOption('label', $htmlOptions, false);
+        $label = self::popOption('label', $htmlOptions);
         $labelOptions = self::popOption('labelOptions', $htmlOptions, array());
         $radioButton = CHtml::activeCheckBox($model, $attribute, $htmlOptions);
         if ($label !== false)
         {
-            $labelOptions = self::addClassName('radio', $labelOptions);
+            $labelOptions = self::addClassName('checkbox', $labelOptions);
             ob_start();
             echo self::tag('label', $labelOptions, $radioButton . $label);
             return ob_get_clean();
@@ -1524,7 +1538,6 @@ EOD;
     public static function activeRadioButtonList($model, $attribute, $data, $htmlOptions = array())
     {
         CHtml::resolveNameID($model, $attribute, $htmlOptions);
-        $inline = self::popOption('inline', $htmlOptions, false);
         $selection = CHtml::resolveValue($model, $attribute);
         if ($model->hasErrors($attribute))
             CHtml::addErrorCss($htmlOptions);
@@ -1532,10 +1545,7 @@ EOD;
         $unCheck = self::popOption('uncheckValue', $htmlOptions, '');
         $hiddenOptions = isset($htmlOptions['id']) ? array('id' => CHtml::ID_PREFIX . $htmlOptions['id']) : array('id' => false);
         $hidden = $unCheck !== null ? CHtml::hiddenField($name, $unCheck, $hiddenOptions) : '';
-        if ($inline)
-            return $hidden . self::inlineRadioButtonList($name, $selection, $data, $htmlOptions);
-        else
-            return $hidden . self::radioButtonList($name, $selection, $data, $htmlOptions);
+        return $hidden . self::radioButtonList($name, $selection, $data, $htmlOptions);
     }
 
     /**
@@ -1563,7 +1573,6 @@ EOD;
     public static function activeCheckBoxList($model,$attribute,$data,$htmlOptions=array())
     {
         CHtml::resolveNameID($model, $attribute, $htmlOptions);
-        $inline = self::popOption('inline', $htmlOptions, false);
         $selection = CHtml::resolveValue($model, $attribute);
         if ($model->hasErrors($attribute))
             CHtml::addErrorCss($htmlOptions);
@@ -1571,10 +1580,7 @@ EOD;
         $unCheck = self::popOption('uncheckValue', $htmlOptions, '');
         $hiddenOptions = isset($htmlOptions['id']) ? array('id' => CHtml::ID_PREFIX . $htmlOptions['id']) : array('id' => false);
         $hidden = $unCheck !== null ? CHtml::hiddenField($name, $unCheck, $hiddenOptions) : '';
-        if ($inline)
-            return $hidden . self::inlineCheckBoxList($name, $selection, $data, $htmlOptions);
-        else
-            return $hidden . self::checkBoxList($name, $selection, $data, $htmlOptions);
+        return $hidden . self::checkBoxList($name, $selection, $data, $htmlOptions);
     }
 
     /**
@@ -1732,7 +1738,7 @@ EOD;
      */
     public static function activeFileFieldRow($model, $attribute, $htmlOptions = array())
     {
-        return self::row(self::INPUT_FILE, $model, $attribute, $htmlOptions);
+        return self::activeRow(self::INPUT_FILE, $model, $attribute, $htmlOptions);
     }
 
     /**
@@ -1772,7 +1778,7 @@ EOD;
      */
     public static function activeDropDownListRow($model, $attribute, $data = array(), $htmlOptions = array())
     {
-        return self::row(self::INPUT_DROPDOWN, $model, $attribute, $htmlOptions, $data);
+        return self::activeRow(self::INPUT_DROPDOWN, $model, $attribute, $htmlOptions, $data);
     }
 
     /**
@@ -1828,7 +1834,7 @@ EOD;
      */
     public static function activeCheckBoxListRow($model, $attribute, $data = array(), $htmlOptions = array())
     {
-        return self::row(self::INPUT_CHECKBOXLIST, $model, $attribute, $htmlOptions, $data);
+        return self::activeRow(self::INPUT_CHECKBOXLIST, $model, $attribute, $htmlOptions, $data);
     }
 
     /**
@@ -1883,7 +1889,7 @@ EOD;
     public static function activeRow($type, $model, $attribute, $htmlOptions = array(), $data = array())
     {
         $wrap = self::popOption('wrap', $htmlOptions, false);
-        $label = self::popOption('label', $htmlOptions, false);
+        $label = self::popOption('label', $htmlOptions);
         $color = self::popOption('color', $htmlOptions);
         $groupOptions = self::popOption('groupOptions', $htmlOptions, array());
         $labelOptions = self::popOption('labelOptions', $htmlOptions, array());
@@ -1891,11 +1897,18 @@ EOD;
 
         if (in_array($type, array(self::INPUT_CHECKBOX, self::INPUT_RADIOBUTTON)))
         {
-            $htmlOptions['label'] = $label;
+            $htmlOptions = self::defaultOption('label', $model->getAttributeLabel($attribute), $htmlOptions);
             $htmlOptions['labelOptions'] = $labelOptions;
             $label = false;
         }
 
+        $help = self::popOption('help', $htmlOptions, '');
+        $helpOptions = self::popOption('helpOptions', $htmlOptions, array());
+        if (!empty($help))
+            $help = self::inputHelp($help, $helpOptions);
+
+        $label =
+        $error = self::popOption('error', $htmlOptions, '');
         $input = self::createActiveInput($type, $model, $attribute, $htmlOptions, $data);
 
         if ($wrap)
@@ -1907,8 +1920,8 @@ EOD;
             ob_start();
             echo self::openTag('div', $groupOptions);
             if ($label !== false)
-                echo CHtml::activeLabel($model, $attribute, $labelOptions);
-            echo self::formControls($input, $controlOptions);
+                echo self::activeLabel($model, $attribute, $labelOptions);
+            echo self::formControls($input . $error . $help, $controlOptions);
             echo '</div>';
             return ob_get_clean();
         }
@@ -1916,8 +1929,8 @@ EOD;
         {
             ob_start();
             if ($label !== false)
-                echo CHtml::activeLabel($model, $attribute, $labelOptions);
-            echo $input;
+                echo self::activeLabel($model, $attribute, $labelOptions);
+            echo $input . $error . $help;
             return ob_get_clean();
         }
     }
@@ -1962,12 +1975,12 @@ EOD;
             case self::INPUT_FILE: return self::activeFileField($model, $attribute, $htmlOptions);
             case self::INPUT_RADIOBUTTON: return self::activeRadioButton($model, $attribute, $htmlOptions);
             case self::INPUT_CHECKBOX: return self::activeCheckBox($model, $attribute, $htmlOptions);
-            case self::INPUT_DROPDOWN: return self::activeDropDownList($model, $attribute, $htmlOptions, $data);
-            case self::INPUT_LISTBOX: return self::activeListBox($model, $attribute, $htmlOptions, $data);
-            case self::INPUT_CHECKBOXLIST: return self::activeCheckBoxList($model, $attribute, $htmlOptions, $data);
-            case self::INPUT_INLINECHECKBOXLIST: return self::activeInlineCheckBoxList($model, $attribute, $htmlOptions, $data);
-            case self::INPUT_RADIOBUTTONLIST: return self::activeInlineRadioButtonList($model, $attribute, $htmlOptions, $data);
-            case self::INPUT_INLINERADIOBUTTONLIST: return self::activeRadioButtonList($model, $attribute, $htmlOptions, $data);
+            case self::INPUT_DROPDOWN: return self::activeDropDownList($model, $attribute, $data, $htmlOptions);
+            case self::INPUT_LISTBOX: return self::activeListBox($model, $attribute, $data, $htmlOptions);
+            case self::INPUT_CHECKBOXLIST: return self::activeCheckBoxList($model, $attribute, $data, $htmlOptions);
+            case self::INPUT_INLINECHECKBOXLIST: return self::activeInlineCheckBoxList($model, $attribute, $data, $htmlOptions);
+            case self::INPUT_RADIOBUTTONLIST: return self::activeRadioButtonList($model, $attribute, $data, $htmlOptions);
+            case self::INPUT_INLINERADIOBUTTONLIST: return self::activeInlineRadioButtonList($model, $attribute, $data, $htmlOptions);
             case self::INPUT_UNEDITABLE: return self::activeUneditableField($model, $attribute, $htmlOptions);
             case self::INPUT_SEARCH: return self::activeSearchQuery($model, $attribute, $htmlOptions);
             default: throw new CException('Invalid input type "' . $type . '".');
@@ -1999,10 +2012,8 @@ EOD;
     public static function error($model, $attribute, $htmlOptions = array())
     {
         CHtml::resolveName($model, $attribute); // turn [a][b]attr into attr
-        $errorOptions = self::popOption('errorOptions', $htmlOptions, array());
-        $errorOptions = self::addClassName(self::$errorMessageCss, $errorOptions);
         $error = $model->getError($attribute);
-        return !empty($error) ? self::tag('span', $errorOptions, $error) : '';
+        return !empty($error) ? self::help($error, $htmlOptions) : '';
     }
 
     /**
@@ -2035,18 +2046,12 @@ EOD;
         if (!empty($append))
             $append = self::inputAddOn($append, $appendOptions);
 
-        $help = self::popOption('help', $htmlOptions, '');
-        $helpOptions = self::popOption('helpOptions', $htmlOptions, array());
-        if (!empty($help))
-            $help = self::inputHelp($help, $helpOptions);
-
         ob_start();
         if (!empty($addOnClasses))
             echo self::openTag('div', $addOnOptions);
         echo $prepend . CHtml::activeInputField($type, $model, $attribute, $htmlOptions) . $append;
         if (!empty($addOnClasses))
             echo '</div>';
-        echo $help;
         return ob_get_clean();
     }
 
@@ -2107,8 +2112,9 @@ EOD;
     protected static function inputHelp($help, $htmlOptions)
     {
         $type = self::popOption('type', $htmlOptions, self::HELP_INLINE);
-        $htmlOptions = self::addClassName('help-' . $type, $htmlOptions);
-        return self::tag('span', $htmlOptions, $help);
+        return $type === self::HELP_INLINE
+            ? self::help($help, $htmlOptions)
+            : self::helpBlock($help, $htmlOptions);
     }
 
     /**
