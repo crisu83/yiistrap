@@ -139,6 +139,11 @@ class TbHtml extends CHtml // required in order to access protected methods
     // PAGINATION
     // --------------------------------------------------
 
+    const PAGINATION_SIZE_MINI = 'mini';
+    const PAGINATION_SIZE_SMALL = 'small';
+    const PAGINATION_SIZE_DEFAULT = '';
+    const PAGINATION_SIZE_LARGE = 'large';
+
     const PAGINATION_ALIGN_LEFT = 'left';
     const PAGINATION_ALIGN_CENTER = 'centered';
     const PAGINATION_ALIGN_RIGHT = 'right';
@@ -3006,6 +3011,61 @@ EOD;
     {
         $htmlOptions = self::addClassName('divider', $htmlOptions);
         return self::tag('li', $htmlOptions);
+    }
+
+    /**
+     * Generates a tabbable menu.
+     * @param array $tabs the tab configurations.
+     * @param array $htmlOptions additional HTML attributes.
+     * @return string the generated menu.
+     */
+    public static function tabbable($tabs, $htmlOptions = array())
+    {
+        $htmlOptions = self::addClassName('tabbable', $htmlOptions);
+        $placement = self::popOption('placement', $htmlOptions);
+        if (!empty($placement))
+            $htmlOptions = self::addClassName('tabs-' . $placement, $htmlOptions);
+        $menuOptions = self::popOption('menuOptions', $htmlOptions, array());
+        $contentOptions = self::popOption('contentOptions', $htmlOptions, array());
+        $contentOptions = self::addClassName('tab-content', $contentOptions);
+        $menuItems = array();
+        foreach ($tabs as $i => &$tabOptions)
+        {
+            $icon = self::popOption('icon', $tabOptions);
+            $label = self::popOption('label', $tabOptions, '');
+            $id = $tabOptions['id'] = self::popOption('id', $tabOptions, 'tab_' . ($i + 1));
+            $active = self::getOption('active', $tabOptions, false);
+            $disabled = self::popOption('disabled', $tabOptions, false);
+            $linkOptions = self::popOption('linkOptions', $tabOptions, array());
+            $linkOptions['data-toggle'] = 'tab';
+            $itemOptions = self::popOption('itemOptions', $tabOptions, array());
+            $items = self::popOption('items', $tabOptions, array());
+            $menuItem = array(
+                'icon' => $icon,
+                'label' => $label,
+                'url' => '#' . $id,
+                'active' => $active,
+                'disabled' => $disabled,
+                'itemOptions' => $itemOptions,
+                'linkOptions' => $linkOptions,
+                'items' => $items,
+            );
+            $menuItems[] = $menuItem;
+        }
+        ob_start();
+        echo TbHtml::openTag('div', $htmlOptions);
+        echo TbHtml::tabs($menuItems, $menuOptions);
+        echo TbHtml::openTag('div', $contentOptions);
+        foreach ($tabs as &$tabOptions)
+        {
+            if (self::popOption('active', $tabOptions, false))
+                $tabOptions = self::addClassName('active', $tabOptions);
+            $tabContent = self::popOption('content', $tabOptions, '');
+            $tabOptions = self::addClassName('tab-pane', $tabOptions);
+            echo TbHtml::tag('div', $tabOptions, $tabContent);
+        }
+        echo '</div>';
+        return ob_get_clean();
     }
 
     // Navbar
