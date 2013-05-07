@@ -23,10 +23,10 @@ class TbWidget extends CBehavior
      */
     public function copyId()
     {
-        if (!isset($this->htmlOptions['id']))
-            $this->htmlOptions['id'] = $this->id;
+        if (!isset($this->owner->htmlOptions['id']))
+            $this->owner->htmlOptions['id'] = $this->owner->id;
         else
-            $this->id = $this->htmlOptions['id'];
+            $this->owner->id = $this->owner->htmlOptions['id'];
     }
 
 	/**
