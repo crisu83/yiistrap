@@ -133,18 +133,19 @@ class TbModal extends TbWidget
 	 */
 	public function initEvents()
 	{
-		foreach(array('onShow', 'onShown', 'onHide', 'onHidden') as $event)
-		{
-			if($this->$event!==null)
-			{
-				$modalEvent = strtolower(substr($event, 2));
-
-				if($this->$event instanceof CJavaScriptExpression)
-					$this->events[$modalEvent]=$this->$event;
-				else
-					$this->events[$modalEvent]=new CJavaScriptExpression($this->$event);
-			}
-		}
+        foreach (array('onShow', 'onShown', 'onHide', 'onHidden') as $event)
+        {
+            if ($this->$event !== null)
+            {
+                $modalEvent = strtolower(substr($event, 2));
+                if ($this->$event instanceof CJavaScriptExpression)
+                {
+                    $this->events[$modalEvent] = $this->$event;
+                } else {
+                    $this->events[$modalEvent] = new CJavaScriptExpression($this->$event);
+                }
+            }
+        }
 	}
 
 	/**
@@ -200,7 +201,7 @@ class TbModal extends TbWidget
  	 */
 	public function renderModal()
 	{
-		echo CHtml::openTag('div', $this->htmlOptions) . PHP_EOL;
+		echo TbHtml::openTag('div', $this->htmlOptions) . PHP_EOL;
 
 		$this->renderModalHeader();
 		$this->renderModalBody();

@@ -24,7 +24,7 @@ class TbTabs extends TbWidget
 	 * Please not that Javascript pills are not fully supported in Bootstrap yet!
 	 * @see TbHtml::$navStyles
 	 */
-	public $type = TbHtml::NAV_TABS;
+	public $type = TbHtml::NAV_TYPE_TABS;
 
 	/**
 	 * @var string the placement of the tabs.
@@ -91,15 +91,15 @@ class TbTabs extends TbWidget
 	 */
 	public function initEvents()
 	{
-		foreach(array('onShow', 'onShown') as $event)
+		foreach (array('onShow', 'onShown') as $event)
 		{
-			if($this->$event!==null)
+			if ($this->$event !== null)
 			{
 				$modalEvent = strtolower(substr($event, 2));
-				if($this->$event instanceof CJavaScriptExpression)
-					$this->events[$modalEvent]=$this->$event;
+				if ($this->$event instanceof CJavaScriptExpression)
+					$this->events[$modalEvent] = $this->$event;
 				else
-					$this->events[$modalEvent]=new CJavaScriptExpression($this->$event);
+					$this->events[$modalEvent] = new CJavaScriptExpression($this->$event);
 			}
 		}
 	}
@@ -129,10 +129,10 @@ class TbTabs extends TbWidget
 	 */
 	public function renderTabs($navigation, $content)
 	{
-		echo CHtml::openTag('div', $this->htmlOptions);
-		echo $this->placement === TbHtml::TABS_BELOW
-			? $content.$navigation
-			: $navigation.$content;
+		echo TbHtml::openTag('div', $this->htmlOptions);
+		echo $this->placement === TbHtml::TABS_PLACEMENT_BELOW
+			? $content . $navigation
+			: $navigation . $content;
 		echo '</div>';
 	}
 
@@ -152,7 +152,7 @@ class TbTabs extends TbWidget
 	{
 		$contentOptions = TbHtml::popOption('contentOptions', $this->htmlOptions, array());
 		$contentOptions = TbHtml::addClassName('tab-content', $contentOptions);
-		echo CHtml::openTag('div', $contentOptions );
+		echo TbHtml::openTag('div', $contentOptions );
 		echo implode(' ', $this->tabsContent);
 		echo '</div>';
 	}

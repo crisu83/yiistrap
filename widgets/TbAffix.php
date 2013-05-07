@@ -46,11 +46,11 @@ class TbAffix extends TbWidget
             if (is_array($this->offset) && count($this->offset) === 2)
             {
                 list($position, $offset) = $this->offset;
-                if (in_array($position, TbHtml::$affixOffsetTypes))
+                if (!empty($position))
                     $this->options = TbHtml::defaultOption('data-offset-' . $position, $offset, $this->options);
             }
         }
-        echo CHtml::openTag($this->tagName, $this->htmlOptions);
+        echo TbHtml::openTag($this->tagName, $this->htmlOptions);
     }
 
     /**

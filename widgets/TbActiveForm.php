@@ -26,11 +26,11 @@ class TbActiveForm extends CActiveForm
     /**
      * @var string the help type. Valid values are TbHtml::HELP_INLINE and TbHtml::HELP_BLOCK.
      */
-    public $helpType = TbHtml::HELP_BLOCK;
+    public $helpType = TbHtml::HELP_TYPE_BLOCK;
     /**
      * @var string the CSS class name for error messages.
      */
-    public $errorMessageCssClass = TbHtml::COLOR_ERROR;
+    public $errorMessageCssClass = 'error';
 
     /**
      * Initializes the widget.

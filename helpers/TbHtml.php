@@ -13,134 +13,230 @@
  */
 class TbHtml extends CHtml // required in order to access protected methods
 {
-    // Floats.
+    //
+    // TYPOGRAPHY
+    // --------------------------------------------------
+
+    const TEXT_ALIGN_LEFT = 'left';
+    const TEXT_ALIGN_CENTER = 'center';
+    const TEXT_ALIGN_RIGHT = 'right';
+
+    const TEXT_COLOR_DEFAULT = '';
+    const TEXT_COLOR_WARNING = 'warning';
+    const TEXT_COLOR_ERROR = 'error';
+    const TEXT_COLOR_INFO = 'info';
+    const TEXT_COLOR_SUCCESS = 'success';
+
+    const HELP_TYPE_INLINE = 'inline';
+    const HELP_TYPE_BLOCK = 'block';
+
+    //
+    // FORM
+    // --------------------------------------------------
+
+    const FORM_LAYOUT_VERTICAL = 'vertical';
+    const FORM_LAYOUT_HORIZONTAL = 'horizontal';
+    const FORM_LAYOUT_INLINE = 'inline';
+    const FORM_LAYOUT_SEARCH = 'search';
+
+    const INPUT_TYPE_TEXT = 'textField';
+    const INPUT_TYPE_PASSWORD = 'passwordField';
+    const INPUT_TYPE_URL = 'urlField';
+    const INPUT_TYPE_EMAIL = 'emailField';
+    const INPUT_TYPE_NUMBER = 'numberField';
+    const INPUT_TYPE_RANGE = 'rangeField';
+    const INPUT_TYPE_DATE = 'dateField';
+    const INPUT_TYPE_TEXTAREA = 'textArea';
+    const INPUT_TYPE_FILE = 'fileField';
+    const INPUT_TYPE_RADIOBUTTON = 'radioButton';
+    const INPUT_TYPE_CHECKBOX = 'checkBox';
+    const INPUT_TYPE_DROPDOWNLIST = 'dropDownList';
+    const INPUT_TYPE_LISTBOX = 'listBox';
+    const INPUT_TYPE_CHECKBOXLIST = 'checkBoxList';
+    const INPUT_TYPE_INLINECHECKBOXLIST = 'inlineCheckBoxList';
+    const INPUT_TYPE_RADIOBUTTONLIST = 'radioButtonList';
+    const INPUT_TYPE_INLINERADIOBUTTONLIST = 'inlineRadioButtonList';
+    const INPUT_TYPE_UNEDITABLE = 'uneditableField';
+    const INPUT_TYPE_SEARCH = 'searchQuery';
+
+    const INPUT_SIZE_MINI = 'mini';
+    const INPUT_SIZE_SMALL = 'small';
+    const INPUT_SIZE_DEFAULT = '';
+    const INPUT_SIZE_MEDIUM = 'medium';
+    const INPUT_SIZE_LARGE = 'large';
+    const INPUT_SIZE_XLARGE = 'xlarge';
+    const INPUT_SIZE_XXLARGE = 'xxlarge';
+
+    const INPUT_COLOR_DEFAULT = '';
+    const INPUT_COLOR_WARNING = 'warning';
+    const INPUT_COLOR_ERROR = 'error';
+    const INPUT_COLOR_INFO = 'info';
+    const INPUT_COLOR_SUCCESS = 'success';
+
+    //
+    // BUTTONS
+    // --------------------------------------------------
+
+    const BUTTON_TYPE_LINK = 'link';
+    const BUTTON_TYPE_HTML = 'htmlButton';
+    const BUTTON_TYPE_SUBMIT = 'submitButton';
+    const BUTTON_TYPE_RESET = 'resetButton';
+    const BUTTON_TYPE_IMAGE = 'imageButton';
+    const BUTTON_TYPE_LINKBUTTON = 'linkButton';
+    const BUTTON_TYPE_AJAXLINK = 'ajaxLink';
+    const BUTTON_TYPE_AJAXBUTTON = 'ajaxButton';
+    const BUTTON_TYPE_INPUTBUTTON = 'inputButton';
+    const BUTTON_TYPE_INPUTSUBMIT = 'inputSubmit';
+
+    const BUTTON_COLOR_DEFAULT = '';
+    const BUTTON_COLOR_PRIMARY = 'primary';
+    const BUTTON_COLOR_INFO = 'info';
+    const BUTTON_COLOR_SUCCESS = 'success';
+    const BUTTON_COLOR_WARNING = 'warning';
+    const BUTTON_COLOR_DANGER = 'danger';
+    const BUTTON_COLOR_INVERSE = 'inverse';
+    const BUTTON_COLOR_LINK = 'link';
+
+    const BUTTON_SIZE_MINI = 'mini';
+    const BUTTON_SIZE_SMALL = 'small';
+    const BUTTON_SIZE_DEFAULT = '';
+    const BUTTON_SIZE_LARGE = 'large';
+
+    //
+    // IMAGES
+    // --------------------------------------------------
+
+    const IMAGE_TYPE_ROUNDED = 'rounded';
+    const IMAGE_TYPE_CIRCLE = 'circle';
+    const IMAGE_TYPE_POLAROID = 'polaroid';
+
+    //
+    // NAV
+    // --------------------------------------------------
+
+    const NAV_TYPE_NONE = '';
+    const NAV_TYPE_TABS = 'tabs';
+    const NAV_TYPE_PILLS = 'pills';
+    const NAV_TYPE_LIST = 'list';
+
+    const TABS_PLACEMENT_ABOVE = '';
+    const TABS_PLACEMENT_BELOW = 'below';
+    const TABS_PLACEMENT_LEFT = 'left';
+    const TABS_PLACEMENT_RIGHT = 'right';
+
+    //
+    // NAVBAR
+    // --------------------------------------------------
+
+    const NAVBAR_DISPLAY_NONE = '';
+    const NAVBAR_DISPLAY_FIXEDTOP = 'fixed-top';
+    const NAVBAR_DISPLAY_FIXEDBOTTOM = 'fixed-bottom';
+    const NAVBAR_DISPLAY_STATICTOP = 'static-top';
+
+    const NAVBAR_COLOR_INVERSE = 'inverse';
+
+    //
+    // PAGINATION
+    // --------------------------------------------------
+
+    const PAGINATION_ALIGN_LEFT = 'left';
+    const PAGINATION_ALIGN_CENTER = 'centered';
+    const PAGINATION_ALIGN_RIGHT = 'right';
+
+    //
+    // LABELS AND BADGES
+    // --------------------------------------------------
+
+    const LABEL_COLOR_DEFAULT = '';
+    const LABEL_COLOR_SUCCESS = 'success';
+    const LABEL_COLOR_WARNING = 'warning';
+    const LABEL_COLOR_IMPORTANT = 'important';
+    const LABEL_COLOR_INFO = 'info';
+    const LABEL_COLOR_INVERSE = 'inverse';
+
+    const BADGE_COLOR_DEFAULT = '';
+    const BADGE_COLOR_SUCCESS = 'success';
+    const BADGE_COLOR_WARNING = 'warning';
+    const BADGE_COLOR_IMPORTANT = 'important';
+    const BADGE_COLOR_INFO = 'info';
+    const BADGE_COLOR_INVERSE = 'inverse';
+
+    //
+    // TOOLTIPS AND POPOVERS
+    // --------------------------------------------------
+
+    const TOOLTIP_PLACEMENT_TOP = 'top';
+    const TOOLTIP_PLACEMENT_BOTTOM = 'bottom';
+    const TOOLTIP_PLACEMENT_LEFT = 'left';
+    const TOOLTIP_PLACEMENT_RIGHT = 'right';
+
+    const TOOLTIP_TRIGGER_CLICK = 'click';
+    const TOOLTIP_TRIGGER_HOVER = 'hover';
+    const TOOLTIP_TRIGGER_FOCUS = 'focus';
+    const TOOLTIP_TRIGGER_MANUAL = 'manual';
+
+    const POPOVER_PLACEMENT_TOP = 'top';
+    const POPOVER_PLACEMENT_BOTTOM = 'bottom';
+    const POPOVER_PLACEMENT_LEFT = 'left';
+    const POPOVER_PLACEMENT_RIGHT = 'right';
+
+    const POPOVER_TRIGGER_CLICK = 'click';
+    const POPOVER_TRIGGER_HOVER = 'hover';
+    const POPOVER_TRIGGER_FOCUS = 'focus';
+    const POPOVER_TRIGGER_MANUAL = 'manual';
+
+    //
+    // ALERT
+    // --------------------------------------------------
+
+    const ALERT_COLOR_DEFAULT = '';
+    const ALERT_COLOR_INFO = 'info';
+    const ALERT_COLOR_SUCCESS = 'success';
+    const ALERT_COLOR_WARNING = 'warning';
+    const ALERT_COLOR_ERROR = 'error';
+    const ALERT_COLOR_DANGER = 'danger';
+
+    //
+    // PROGRESS BARS
+    // --------------------------------------------------
+
+    const PROGRESS_COLOR_DEFAULT = '';
+    const PROGRESS_COLOR_INFO = 'info';
+    const PROGRESS_COLOR_SUCCESS = 'success';
+    const PROGRESS_COLOR_WARNING = 'warning';
+    const PROGRESS_COLOR_DANGER = 'danger';
+
+    //
+    // MISC
+    // --------------------------------------------------
+
+    const WELL_SIZE_SMALL = 'small';
+    const WELL_SIZE_DEFAULT = '';
+    const WELL_SIZE_LARGE = 'large';
+
     const PULL_LEFT = 'left';
     const PULL_RIGHT = 'right';
 
-    // Text alignments.
-    const ALIGN_LEFT = 'left';
-    const ALIGN_CENTER = 'center';
-    const ALIGN_RIGHT = 'right';
+    //
+    // GRID VIEW
+    // --------------------------------------------------
 
-    // Element colors.
-    const COLOR_DEFAULT = '';
-    const COLOR_PRIMARY = 'primary';
-    const COLOR_INFO = 'info';
-    const COLOR_SUCCESS = 'success';
-    const COLOR_WARNING = 'warning';
-    const COLOR_ERROR = 'error';
-    const COLOR_DANGER = 'danger';
-    const COLOR_IMPORTANT = 'important';
-    const COLOR_INVERSE = 'inverse';
-    const COLOR_LINK = 'link';
+    const GRID_TYPE_STRIPED = 'striped';
+    const GRID_TYPE_BORDERED = 'bordered';
+    const GRID_TYPE_CONDENSED = 'condensed';
+    const GRID_TYPE_HOVER = 'hover';
 
-    // Element sizes.
-    const SIZE_MINI = 'mini';
-    const SIZE_SMALL = 'small';
-    const SIZE_DEFAULT = '';
-    const SIZE_MEDIUM = 'medium';
-    const SIZE_LARGE = 'large';
-    const SIZE_XLARGE = 'xlarge';
-    const SIZE_XXLARGE = 'xxlarge';
+    //
+    // AFFIX
+    // --------------------------------------------------
 
-    const BUTTON_LINK = 'link';
-    const BUTTON_HTML = 'htmlButton';
-    const BUTTON_SUBMIT = 'submitButton';
-    const BUTTON_RESET = 'resetButton';
-    const BUTTON_IMAGE = 'imageButton';
-    const BUTTON_LINKBUTTON = 'linkButton';
-    const BUTTON_AJAXLINK = 'ajaxLink';
-    const BUTTON_AJAXBUTTON = 'ajaxButton';
-    const BUTTON_INPUTBUTTON = 'inputButton';
-    const BUTTON_INPUTSUBMIT = 'inputSubmit';
+    const AFFIX_POSITION_TOP = 'top';
+    const AFFIX_POSITION_BOTTOM = 'bottom';
 
-    // Menu types.
-    const NAV_TABS = 'tabs';
-    const NAV_PILLS = 'pills';
-    const NAV_LIST = 'list';
+    //
+    // ICON
+    // --------------------------------------------------
 
-    // Navbar positions.
-    const NAVBAR_INLINE = '';
-    const NAVBAR_FIXED_TOP = 'fixed-top';
-    const NAVBAR_FIXED_BOTTOM = 'fixed-bottom';
-    const NAVBAR_STATIC_TOP = 'static-top';
-
-    // Image types.
-    const IMAGE_ROUNDED = 'rounded';
-    const IMAGE_CIRCLE = 'circle';
-    const IMAGE_POLAROID = 'polaroid';
-
-    // Progress bar types.
-    const PROGRESS_LEFT = 'left';
-    const PROGRESS_CENTER = 'centered';
-    const PROGRESS_RIGHT = 'right';
-    const PROGRESS_STRIPED = 'striped';
-    const PROGRESS_ACTIVE = 'active';
-
-    // Tooltip placements.
-    const TOOLTIP_TOP = 'top';
-    const TOOLTIP_BOTTOM = 'bottom';
-    const TOOLTIP_LEFT = 'left';
-    const TOOLTIP_RIGHT = 'right';
-
-    // Tab placements.
-    const TABS_ABOVE = '';
-    const TABS_BELOW = 'below';
-    const TABS_LEFT = 'left';
-    const TABS_RIGHT = 'right';
-
-    // Affix offset types.
-    const AFFIX_TOP = 'top';
-    const AFFIX_BOTTOM = 'bottom';
-
-    // Tooltip triggers.
-    const TRIGGER_CLICK = 'click';
-    const TRIGGER_HOVER = 'hover';
-    const TRIGGER_FOCUS = 'focus';
-    const TRIGGER_MANUAL = 'manual';
-
-    // Addon types.
-    const ADDON_PREPEND = 'prepend';
-    const ADDON_APPEND = 'append';
-
-    // Help types.
-    const HELP_INLINE = 'inline';
-    const HELP_BLOCK = 'block';
-
-    // Form layouts.
-    const FORM_VERTICAL = 'vertical';
-    const FORM_HORIZONTAL = 'horizontal';
-    const FORM_INLINE = 'inline';
-    const FORM_SEARCH = 'search';
-
-    // Input types.
-    const INPUT_URL = 'urlField';
-    const INPUT_EMAIL = 'emailField';
-    const INPUT_NUMBER = 'numberField';
-    const INPUT_RANGE = 'rangeField';
-    const INPUT_DATE = 'dateField';
-    const INPUT_TEXT = 'textField';
-    const INPUT_PASSWORD = 'passwordField';
-    const INPUT_TEXTAREA = 'textArea';
-    const INPUT_FILE = 'fileField';
-    const INPUT_RADIOBUTTON = 'radioButton';
-    const INPUT_CHECKBOX = 'checkBox';
-    const INPUT_DROPDOWN = 'dropDownList';
-    const INPUT_LISTBOX = 'listBox';
-    const INPUT_CHECKBOXLIST = 'checkBoxList';
-    const INPUT_INLINECHECKBOXLIST = 'inlineCheckBoxList';
-    const INPUT_RADIOBUTTONLIST = 'radioButtonList';
-    const INPUT_INLINERADIOBUTTONLIST = 'inlineRadioButtonList';
-    const INPUT_UNEDITABLE = 'uneditableField';
-    const INPUT_SEARCH = 'searchQuery';
-
-    // grid types.
-    const GRID_STRIPED = 'striped';
-    const GRID_BORDERED = 'bordered';
-    const GRID_CONDENSED = 'condensed';
-    const GRID_HOVER = 'hover';
-
-    // Icon types.
     const ICON_GLASS = 'icon-glass';
     const ICON_MUSIC = 'icon-music';
     const ICON_SEARCH = 'icon-search';
@@ -535,7 +631,7 @@ class TbHtml extends CHtml // required in order to access protected methods
      * @param array $htmlOptions additional HTML attributes.
      * @return string the generated tag.
      */
-    public static function formTb($layout = self::FORM_VERTICAL, $action = '', $method = 'post', $htmlOptions = array())
+    public static function formTb($layout = self::FORM_LAYOUT_VERTICAL, $action = '', $method = 'post', $htmlOptions = array())
     {
         return self::beginFormTb($layout, $action, $method, $htmlOptions);
     }
@@ -548,7 +644,7 @@ class TbHtml extends CHtml // required in order to access protected methods
      * @param array $htmlOptions additional HTML attributes.
      * @return string the generated tag.
      */
-    public static function beginFormTb($layout = self::FORM_VERTICAL, $action = '', $method = 'post', $htmlOptions = array())
+    public static function beginFormTb($layout = self::FORM_LAYOUT_VERTICAL, $action = '', $method = 'post', $htmlOptions = array())
     {
         $htmlOptions = self::addClassName('form-' . $layout, $htmlOptions);
         return CHtml::beginForm($action, $method, $htmlOptions);
@@ -561,10 +657,10 @@ class TbHtml extends CHtml // required in order to access protected methods
      * @param array $htmlOptions additional HTML attributes.
      * @return string the generated form tag.
      */
-    public static function statefulFormTb($layout = self::FORM_VERTICAL, $action = '', $method = 'post', $htmlOptions = array())
+    public static function statefulFormTb($layout = self::FORM_LAYOUT_VERTICAL, $action = '', $method = 'post', $htmlOptions = array())
     {
         return self::formTb($layout, $action, $method, $htmlOptions)
-            . CHtml::tag('div', array('style' => 'display:none'), CHtml::pageStateField(''));
+            . self::tag('div', array('style' => 'display:none'), CHtml::pageStateField(''));
     }
 
     /**
@@ -945,7 +1041,7 @@ EOD;
      */
     public static function textFieldRow($name, $value = '', $htmlOptions = array())
     {
-        return self::row(self::INPUT_TEXT, $name, $value, $htmlOptions);
+        return self::row(self::INPUT_TYPE_TEXT, $name, $value, $htmlOptions);
     }
 
     /**
@@ -958,7 +1054,7 @@ EOD;
      */
     public static function passwordFieldRow($name, $value = '', $htmlOptions = array())
     {
-        return self::row(self::INPUT_PASSWORD, $name, $value, $htmlOptions);
+        return self::row(self::INPUT_TYPE_PASSWORD, $name, $value, $htmlOptions);
     }
 
     /**
@@ -971,7 +1067,7 @@ EOD;
      */
     public static function urlFieldRow($name, $value = '', $htmlOptions = array())
     {
-        return self::row(self::INPUT_URL, $name, $value, $htmlOptions);
+        return self::row(self::INPUT_TYPE_URL, $name, $value, $htmlOptions);
     }
 
     /**
@@ -984,7 +1080,7 @@ EOD;
      */
     public static function emailFieldRow($name, $value = '', $htmlOptions = array())
     {
-        return self::row(self::INPUT_EMAIL, $name, $value, $htmlOptions);
+        return self::row(self::INPUT_TYPE_EMAIL, $name, $value, $htmlOptions);
     }
 
     /**
@@ -997,7 +1093,7 @@ EOD;
      */
     public static function numberFieldRow($name, $value = '', $htmlOptions = array())
     {
-        return self::row(self::INPUT_NUMBER, $name, $value, $htmlOptions);
+        return self::row(self::INPUT_TYPE_NUMBER, $name, $value, $htmlOptions);
     }
 
     /**
@@ -1010,7 +1106,7 @@ EOD;
      */
     public static function rangeFieldRow($name, $value = '', $htmlOptions = array())
     {
-        return self::row(self::INPUT_RANGE, $name, $value, $htmlOptions);
+        return self::row(self::INPUT_TYPE_RANGE, $name, $value, $htmlOptions);
     }
 
     /**
@@ -1023,7 +1119,7 @@ EOD;
      */
     public static function dateFieldRow($name, $value = '', $htmlOptions = array())
     {
-        return self::row(self::INPUT_DATE, $name, $value, $htmlOptions);
+        return self::row(self::INPUT_TYPE_DATE, $name, $value, $htmlOptions);
     }
 
     /**
@@ -1036,7 +1132,7 @@ EOD;
      */
     public static function textAreaRow($name, $value = '', $htmlOptions = array())
     {
-        return self::row(self::INPUT_TEXTAREA, $name, $value, $htmlOptions);
+        return self::row(self::INPUT_TYPE_TEXTAREA, $name, $value, $htmlOptions);
     }
 
     /**
@@ -1049,7 +1145,7 @@ EOD;
      */
     public static function fileFieldRow($name, $value = '', $htmlOptions = array())
     {
-        return self::row(self::INPUT_FILE, $name, $value, $htmlOptions);
+        return self::row(self::INPUT_TYPE_FILE, $name, $value, $htmlOptions);
     }
 
     /**
@@ -1062,7 +1158,7 @@ EOD;
      */
     public static function radioButtonRow($name, $checked = false, $htmlOptions = array())
     {
-        return self::row(self::INPUT_RADIOBUTTON, $name, $checked, $htmlOptions);
+        return self::row(self::INPUT_TYPE_RADIOBUTTON, $name, $checked, $htmlOptions);
     }
 
     /**
@@ -1075,7 +1171,7 @@ EOD;
      */
     public static function checkBoxRow($name, $checked = false, $htmlOptions = array())
     {
-        return self::row(self::INPUT_CHECKBOX, $name, $checked, $htmlOptions);
+        return self::row(self::INPUT_TYPE_CHECKBOX, $name, $checked, $htmlOptions);
     }
 
     /**
@@ -1089,7 +1185,7 @@ EOD;
      */
     public static function dropDownListRow($name, $select = '', $data = array(), $htmlOptions = array())
     {
-        return self::row(self::INPUT_DROPDOWN, $name, $select, $htmlOptions, $data);
+        return self::row(self::INPUT_TYPE_DROPDOWNLIST, $name, $select, $htmlOptions, $data);
     }
 
     /**
@@ -1103,7 +1199,7 @@ EOD;
      */
     public static function listBoxRow($name, $select = '', $data = array(), $htmlOptions = array())
     {
-        return self::row(self::INPUT_LISTBOX, $name, $select, $htmlOptions, $data);
+        return self::row(self::INPUT_TYPE_LISTBOX, $name, $select, $htmlOptions, $data);
     }
 
     /**
@@ -1117,7 +1213,7 @@ EOD;
      */
     public static function radioButtonListRow($name, $select = '', $data = array(), $htmlOptions = array())
     {
-        return self::row(self::INPUT_RADIOBUTTONLIST, $name, $select, $htmlOptions, $data);
+        return self::row(self::INPUT_TYPE_RADIOBUTTONLIST, $name, $select, $htmlOptions, $data);
     }
 
     /**
@@ -1131,7 +1227,7 @@ EOD;
      */
     public static function inlineRadioButtonListRow($name, $select = '', $data = array(), $htmlOptions = array())
     {
-        return self::row(self::INPUT_INLINERADIOBUTTONLIST, $name, $select, $htmlOptions, $data);
+        return self::row(self::INPUT_TYPE_INLINERADIOBUTTONLIST, $name, $select, $htmlOptions, $data);
     }
 
     /**
@@ -1145,7 +1241,7 @@ EOD;
      */
     public static function checkBoxListRow($name, $select = '', $data = array(), $htmlOptions = array())
     {
-        return self::row(self::INPUT_CHECKBOXLIST, $name, $select, $htmlOptions, $data);
+        return self::row(self::INPUT_TYPE_CHECKBOXLIST, $name, $select, $htmlOptions, $data);
     }
 
     /**
@@ -1159,7 +1255,7 @@ EOD;
      */
     public static function inlineCheckBoxListRow($name, $select = '', $data = array(), $htmlOptions = array())
     {
-        return self::row(self::INPUT_INLINECHECKBOXLIST, $name, $select, $htmlOptions, $data);
+        return self::row(self::INPUT_TYPE_INLINECHECKBOXLIST, $name, $select, $htmlOptions, $data);
     }
 
     /**
@@ -1171,7 +1267,7 @@ EOD;
      */
     public static function unediableFieldRow($value = '', $htmlOptions = array())
     {
-        return self::row(self::INPUT_UNEDITABLE, '', $value, $htmlOptions);
+        return self::row(self::INPUT_TYPE_UNEDITABLE, '', $value, $htmlOptions);
     }
 
     /**
@@ -1184,7 +1280,7 @@ EOD;
      */
     public static function searchQueryRow($name, $value = '', $htmlOptions = array())
     {
-        return self::row(self::INPUT_SEARCH, $name, $value, $htmlOptions);
+        return self::row(self::INPUT_TYPE_SEARCH, $name, $value, $htmlOptions);
     }
 
     /**
@@ -1205,7 +1301,7 @@ EOD;
         $labelOptions = self::popOption('labelOptions', $htmlOptions, array());
         $controlOptions = self::popOption('controlOptions', $htmlOptions, array());
 
-        if (in_array($type, array(self::INPUT_CHECKBOX, self::INPUT_RADIOBUTTON)))
+        if (in_array($type, array(self::INPUT_TYPE_CHECKBOX, self::INPUT_TYPE_RADIOBUTTON)))
         {
             $htmlOptions['label'] = $label;
             $htmlOptions['labelOptions'] = $labelOptions;
@@ -1271,25 +1367,25 @@ EOD;
     {
         switch ($type)
         {
-            case self::INPUT_URL: return self::urlField($name, $value, $htmlOptions);
-            case self::INPUT_EMAIL: return self::emailField($name, $value, $htmlOptions);
-            case self::INPUT_NUMBER: return self::numberField($name, $value, $htmlOptions);
-            case self::INPUT_RANGE: return self::rangeField($name, $value, $htmlOptions);
-            case self::INPUT_DATE: return self::dateField($name, $value, $htmlOptions);
-            case self::INPUT_TEXT: return self::textField($name, $value, $htmlOptions);
-            case self::INPUT_PASSWORD: return self::passwordField($name, $value, $htmlOptions);
-            case self::INPUT_TEXTAREA: return self::textArea($name, $value, $htmlOptions);
-            case self::INPUT_FILE: return self::fileField($name, $value, $htmlOptions);
-            case self::INPUT_RADIOBUTTON: return self::radioButton($name, $value, $htmlOptions);
-            case self::INPUT_CHECKBOX: return self::checkBox($name, $value, $htmlOptions);
-            case self::INPUT_DROPDOWN: return self::dropDownList($name, $value, $data, $htmlOptions);
-            case self::INPUT_LISTBOX: return self::listBox($name, $value, $data, $htmlOptions);
-            case self::INPUT_CHECKBOXLIST: return self::checkBoxList($name, $value, $data, $htmlOptions);
-            case self::INPUT_INLINECHECKBOXLIST: return self::inlineCheckBoxList($name, $value, $data, $htmlOptions);
-            case self::INPUT_RADIOBUTTONLIST: return self::radioButtonList($name, $value, $data, $htmlOptions);
-            case self::INPUT_INLINERADIOBUTTONLIST: return self::inlineRadioButtonList($name, $value, $data, $htmlOptions);
-            case self::INPUT_UNEDITABLE: return self::uneditableField($value, $htmlOptions);
-            case self::INPUT_SEARCH: return self::searchQuery($name, $value, $htmlOptions);
+            case self::INPUT_TYPE_URL: return self::urlField($name, $value, $htmlOptions);
+            case self::INPUT_TYPE_EMAIL: return self::emailField($name, $value, $htmlOptions);
+            case self::INPUT_TYPE_NUMBER: return self::numberField($name, $value, $htmlOptions);
+            case self::INPUT_TYPE_RANGE: return self::rangeField($name, $value, $htmlOptions);
+            case self::INPUT_TYPE_DATE: return self::dateField($name, $value, $htmlOptions);
+            case self::INPUT_TYPE_TEXT: return self::textField($name, $value, $htmlOptions);
+            case self::INPUT_TYPE_PASSWORD: return self::passwordField($name, $value, $htmlOptions);
+            case self::INPUT_TYPE_TEXTAREA: return self::textArea($name, $value, $htmlOptions);
+            case self::INPUT_TYPE_FILE: return self::fileField($name, $value, $htmlOptions);
+            case self::INPUT_TYPE_RADIOBUTTON: return self::radioButton($name, $value, $htmlOptions);
+            case self::INPUT_TYPE_CHECKBOX: return self::checkBox($name, $value, $htmlOptions);
+            case self::INPUT_TYPE_DROPDOWNLIST: return self::dropDownList($name, $value, $data, $htmlOptions);
+            case self::INPUT_TYPE_LISTBOX: return self::listBox($name, $value, $data, $htmlOptions);
+            case self::INPUT_TYPE_CHECKBOXLIST: return self::checkBoxList($name, $value, $data, $htmlOptions);
+            case self::INPUT_TYPE_INLINECHECKBOXLIST: return self::inlineCheckBoxList($name, $value, $data, $htmlOptions);
+            case self::INPUT_TYPE_RADIOBUTTONLIST: return self::radioButtonList($name, $value, $data, $htmlOptions);
+            case self::INPUT_TYPE_INLINERADIOBUTTONLIST: return self::inlineRadioButtonList($name, $value, $data, $htmlOptions);
+            case self::INPUT_TYPE_UNEDITABLE: return self::uneditableField($value, $htmlOptions);
+            case self::INPUT_TYPE_SEARCH: return self::searchQuery($name, $value, $htmlOptions);
             default: throw new CException('Invalid input type "' . $type . '".');
         }
     }
@@ -1330,22 +1426,6 @@ EOD;
         if (!empty($addOnClasses))
             echo '</div>';
         return ob_get_clean();
-    }
-
-    /**
-     * Generates a label tag for a model attribute.
-     * @param CModel $model the data model.
-     * @param string $attribute the attribute.
-     * @param array $htmlOptions additional HTML attributes.
-     * @return string the generated label tag.
-     */
-    public static function activeLabel($model, $attribute, $htmlOptions = array())
-    {
-        $for = self::popOption('for', $htmlOptions, CHtml::getIdByName(self::resolveName($model, $attribute)));
-        $label = self::popOption('label', $htmlOptions, $model->getAttributeLabel($attribute));
-        if ($label === false)
-            return '';
-        return CHtml::label($label, $for, $htmlOptions);
     }
 
     /**
@@ -1632,7 +1712,7 @@ EOD;
      */
     public static function activeTextFieldRow($model, $attribute, $htmlOptions = array())
     {
-        return self::activeRow(self::INPUT_TEXT, $model, $attribute, $htmlOptions);
+        return self::activeRow(self::INPUT_TYPE_TEXT, $model, $attribute, $htmlOptions);
     }
 
     /**
@@ -1645,7 +1725,7 @@ EOD;
      */
     public static function activePasswordFieldRow($model, $attribute, $htmlOptions = array())
     {
-        return self::activeRow(self::INPUT_PASSWORD, $model, $attribute, $htmlOptions);
+        return self::activeRow(self::INPUT_TYPE_PASSWORD, $model, $attribute, $htmlOptions);
     }
 
     /**
@@ -1658,7 +1738,7 @@ EOD;
      */
     public static function activeUrlFieldRow($model, $attribute, $htmlOptions = array())
     {
-        return self::activeRow(self::INPUT_URL, $model, $attribute, $htmlOptions);
+        return self::activeRow(self::INPUT_TYPE_URL, $model, $attribute, $htmlOptions);
     }
 
     /**
@@ -1671,7 +1751,7 @@ EOD;
      */
     public static function activeEmailFieldRow($name, $value = '', $htmlOptions = array())
     {
-        return self::activeRow(self::INPUT_EMAIL, $name, $value, $htmlOptions);
+        return self::activeRow(self::INPUT_TYPE_EMAIL, $name, $value, $htmlOptions);
     }
 
     /**
@@ -1684,7 +1764,7 @@ EOD;
      */
     public static function activeNumberFieldRow($model, $attribute, $htmlOptions = array())
     {
-        return self::activeRow(self::INPUT_NUMBER, $model, $attribute, $htmlOptions);
+        return self::activeRow(self::INPUT_TYPE_NUMBER, $model, $attribute, $htmlOptions);
     }
 
     /**
@@ -1697,7 +1777,7 @@ EOD;
      */
     public static function activeRangeFieldRow($name, $value = '', $htmlOptions = array())
     {
-        return self::row(self::INPUT_RANGE, $name, $value, $htmlOptions);
+        return self::row(self::INPUT_TYPE_RANGE, $name, $value, $htmlOptions);
     }
 
     /**
@@ -1710,7 +1790,7 @@ EOD;
      */
     public static function activeDateFieldRow($name, $value = '', $htmlOptions = array())
     {
-        return self::activeRow(self::INPUT_DATE, $name, $value, $htmlOptions);
+        return self::activeRow(self::INPUT_TYPE_DATE, $name, $value, $htmlOptions);
     }
 
     /**
@@ -1723,7 +1803,7 @@ EOD;
      */
     public static function activeTextAreaRow($model, $attribute, $htmlOptions = array())
     {
-        return self::activeRow(self::INPUT_TEXTAREA, $model, $attribute, $htmlOptions);
+        return self::activeRow(self::INPUT_TYPE_TEXTAREA, $model, $attribute, $htmlOptions);
     }
 
     /**
@@ -1736,7 +1816,7 @@ EOD;
      */
     public static function activeFileFieldRow($model, $attribute, $htmlOptions = array())
     {
-        return self::activeRow(self::INPUT_FILE, $model, $attribute, $htmlOptions);
+        return self::activeRow(self::INPUT_TYPE_FILE, $model, $attribute, $htmlOptions);
     }
 
     /**
@@ -1749,7 +1829,7 @@ EOD;
      */
     public static function activeRadioButtonRow($model, $attribute, $htmlOptions = array())
     {
-        return self::activeRow(self::INPUT_RADIOBUTTON, $model, $attribute, $htmlOptions);
+        return self::activeRow(self::INPUT_TYPE_RADIOBUTTON, $model, $attribute, $htmlOptions);
     }
 
     /**
@@ -1762,7 +1842,7 @@ EOD;
      */
     public static function activeCheckBoxRow($model, $attribute, $htmlOptions = array())
     {
-        return self::activeRow(self::INPUT_CHECKBOX, $model, $attribute, $htmlOptions);
+        return self::activeRow(self::INPUT_TYPE_CHECKBOX, $model, $attribute, $htmlOptions);
     }
 
     /**
@@ -1776,7 +1856,7 @@ EOD;
      */
     public static function activeDropDownListRow($model, $attribute, $data = array(), $htmlOptions = array())
     {
-        return self::activeRow(self::INPUT_DROPDOWN, $model, $attribute, $htmlOptions, $data);
+        return self::activeRow(self::INPUT_TYPE_DROPDOWNLIST, $model, $attribute, $htmlOptions, $data);
     }
 
     /**
@@ -1790,7 +1870,7 @@ EOD;
      */
     public static function activeListBoxRow($model, $attribute, $data = array(), $htmlOptions = array())
     {
-        return self::activeRow(self::INPUT_LISTBOX, $model, $attribute, $htmlOptions, $data);
+        return self::activeRow(self::INPUT_TYPE_LISTBOX, $model, $attribute, $htmlOptions, $data);
     }
 
     /**
@@ -1804,7 +1884,7 @@ EOD;
      */
     public static function activeRadioButtonListRow($model, $attribute, $data = array(), $htmlOptions = array())
     {
-        return self::activeRow(self::INPUT_RADIOBUTTONLIST, $model, $attribute, $htmlOptions, $data);
+        return self::activeRow(self::INPUT_TYPE_RADIOBUTTONLIST, $model, $attribute, $htmlOptions, $data);
     }
 
     /**
@@ -1818,7 +1898,7 @@ EOD;
      */
     public static function activeInlineRadioButtonListRow($model, $attribute, $data = array(), $htmlOptions = array())
     {
-        return self::activeRow(self::INPUT_INLINERADIOBUTTONLIST, $model, $attribute, $htmlOptions, $data);
+        return self::activeRow(self::INPUT_TYPE_INLINERADIOBUTTONLIST, $model, $attribute, $htmlOptions, $data);
     }
 
     /**
@@ -1832,7 +1912,7 @@ EOD;
      */
     public static function activeCheckBoxListRow($model, $attribute, $data = array(), $htmlOptions = array())
     {
-        return self::activeRow(self::INPUT_CHECKBOXLIST, $model, $attribute, $htmlOptions, $data);
+        return self::activeRow(self::INPUT_TYPE_CHECKBOXLIST, $model, $attribute, $htmlOptions, $data);
     }
 
     /**
@@ -1846,7 +1926,7 @@ EOD;
      */
     public static function activeInlineCheckBoxListRow($model, $attribute, $data = array(), $htmlOptions = array())
     {
-        return self::activeRow(self::INPUT_INLINECHECKBOXLIST, $model, $attribute, $htmlOptions, $data);
+        return self::activeRow(self::INPUT_TYPE_INLINECHECKBOXLIST, $model, $attribute, $htmlOptions, $data);
     }
 
     /**
@@ -1859,7 +1939,7 @@ EOD;
      */
     public static function activeUnediableFieldRow($model, $attribute, $htmlOptions = array())
     {
-        return self::activeRow(self::INPUT_UNEDITABLE, $model, $attribute, $htmlOptions);
+        return self::activeRow(self::INPUT_TYPE_UNEDITABLE, $model, $attribute, $htmlOptions);
     }
 
     /**
@@ -1872,7 +1952,7 @@ EOD;
      */
     public static function activeSearchQueryRow($model, $attribute, $htmlOptions = array())
     {
-        return self::activeRow(self::INPUT_SEARCH, $model, $attribute, $htmlOptions);
+        return self::activeRow(self::INPUT_TYPE_SEARCH, $model, $attribute, $htmlOptions);
     }
 
     /**
@@ -1888,12 +1968,13 @@ EOD;
     {
         $wrap = self::popOption('wrap', $htmlOptions, false);
         $label = self::popOption('label', $htmlOptions);
+        $labelEx = self::popOption('labelEx', $htmlOptions, true);
         $color = self::popOption('color', $htmlOptions);
         $groupOptions = self::popOption('groupOptions', $htmlOptions, array());
         $labelOptions = self::popOption('labelOptions', $htmlOptions, array());
         $controlOptions = self::popOption('controlOptions', $htmlOptions, array());
 
-        if (in_array($type, array(self::INPUT_CHECKBOX, self::INPUT_RADIOBUTTON)))
+        if (in_array($type, array(self::INPUT_TYPE_CHECKBOX, self::INPUT_TYPE_RADIOBUTTON)))
         {
             $htmlOptions = self::defaultOption('label', $model->getAttributeLabel($attribute), $htmlOptions);
             $htmlOptions['labelOptions'] = $labelOptions;
@@ -1916,7 +1997,12 @@ EOD;
             ob_start();
             echo self::openTag('div', $groupOptions);
             if ($label !== false)
-                echo self::activeLabel($model, $attribute, $labelOptions);
+            {
+                if ($labelEx)
+                    CHtml::activeLabelEx($model, $attribute, $labelOptions);
+                else
+                    CHtml::activeLabel($model, $attribute, $labelOptions);
+            }
             echo self::formControls($input . $error . $help, $controlOptions);
             echo '</div>';
             return ob_get_clean();
@@ -1925,7 +2011,7 @@ EOD;
         {
             ob_start();
             if ($label !== false)
-                echo self::activeLabel($model, $attribute, $labelOptions);
+                echo CHtml::activeLabel($model, $attribute, $labelOptions);
             echo $input . $error . $help;
             return ob_get_clean();
         }
@@ -1960,25 +2046,25 @@ EOD;
     {
         switch ($type)
         {
-            case self::INPUT_URL: return self::activeUrlField($model, $attribute, $htmlOptions);
-            case self::INPUT_EMAIL: return self::activeEmailField($model, $attribute, $htmlOptions);
-            case self::INPUT_NUMBER: return self::activeNumberField($model, $attribute, $htmlOptions);
-            case self::INPUT_RANGE: return self::activeRangeField($model, $attribute, $htmlOptions);
-            case self::INPUT_DATE: return self::activeDateField($model, $attribute, $htmlOptions);
-            case self::INPUT_TEXT: return self::activeTextField($model, $attribute, $htmlOptions);
-            case self::INPUT_PASSWORD: return self::activePasswordField($model, $attribute, $htmlOptions);
-            case self::INPUT_TEXTAREA: return self::activeTextArea($model, $attribute, $htmlOptions);
-            case self::INPUT_FILE: return self::activeFileField($model, $attribute, $htmlOptions);
-            case self::INPUT_RADIOBUTTON: return self::activeRadioButton($model, $attribute, $htmlOptions);
-            case self::INPUT_CHECKBOX: return self::activeCheckBox($model, $attribute, $htmlOptions);
-            case self::INPUT_DROPDOWN: return self::activeDropDownList($model, $attribute, $data, $htmlOptions);
-            case self::INPUT_LISTBOX: return self::activeListBox($model, $attribute, $data, $htmlOptions);
-            case self::INPUT_CHECKBOXLIST: return self::activeCheckBoxList($model, $attribute, $data, $htmlOptions);
-            case self::INPUT_INLINECHECKBOXLIST: return self::activeInlineCheckBoxList($model, $attribute, $data, $htmlOptions);
-            case self::INPUT_RADIOBUTTONLIST: return self::activeRadioButtonList($model, $attribute, $data, $htmlOptions);
-            case self::INPUT_INLINERADIOBUTTONLIST: return self::activeInlineRadioButtonList($model, $attribute, $data, $htmlOptions);
-            case self::INPUT_UNEDITABLE: return self::activeUneditableField($model, $attribute, $htmlOptions);
-            case self::INPUT_SEARCH: return self::activeSearchQuery($model, $attribute, $htmlOptions);
+            case self::INPUT_TYPE_URL: return self::activeUrlField($model, $attribute, $htmlOptions);
+            case self::INPUT_TYPE_EMAIL: return self::activeEmailField($model, $attribute, $htmlOptions);
+            case self::INPUT_TYPE_NUMBER: return self::activeNumberField($model, $attribute, $htmlOptions);
+            case self::INPUT_TYPE_RANGE: return self::activeRangeField($model, $attribute, $htmlOptions);
+            case self::INPUT_TYPE_DATE: return self::activeDateField($model, $attribute, $htmlOptions);
+            case self::INPUT_TYPE_TEXT: return self::activeTextField($model, $attribute, $htmlOptions);
+            case self::INPUT_TYPE_PASSWORD: return self::activePasswordField($model, $attribute, $htmlOptions);
+            case self::INPUT_TYPE_TEXTAREA: return self::activeTextArea($model, $attribute, $htmlOptions);
+            case self::INPUT_TYPE_FILE: return self::activeFileField($model, $attribute, $htmlOptions);
+            case self::INPUT_TYPE_RADIOBUTTON: return self::activeRadioButton($model, $attribute, $htmlOptions);
+            case self::INPUT_TYPE_CHECKBOX: return self::activeCheckBox($model, $attribute, $htmlOptions);
+            case self::INPUT_TYPE_DROPDOWNLIST: return self::activeDropDownList($model, $attribute, $data, $htmlOptions);
+            case self::INPUT_TYPE_LISTBOX: return self::activeListBox($model, $attribute, $data, $htmlOptions);
+            case self::INPUT_TYPE_CHECKBOXLIST: return self::activeCheckBoxList($model, $attribute, $data, $htmlOptions);
+            case self::INPUT_TYPE_INLINECHECKBOXLIST: return self::activeInlineCheckBoxList($model, $attribute, $data, $htmlOptions);
+            case self::INPUT_TYPE_RADIOBUTTONLIST: return self::activeRadioButtonList($model, $attribute, $data, $htmlOptions);
+            case self::INPUT_TYPE_INLINERADIOBUTTONLIST: return self::activeInlineRadioButtonList($model, $attribute, $data, $htmlOptions);
+            case self::INPUT_TYPE_UNEDITABLE: return self::activeUneditableField($model, $attribute, $htmlOptions);
+            case self::INPUT_TYPE_SEARCH: return self::activeSearchQuery($model, $attribute, $htmlOptions);
             default: throw new CException('Invalid input type "' . $type . '".');
         }
     }
@@ -2107,8 +2193,8 @@ EOD;
      */
     protected static function inputHelp($help, $htmlOptions)
     {
-        $type = self::popOption('type', $htmlOptions, self::HELP_INLINE);
-        return $type === self::HELP_INLINE
+        $type = self::popOption('type', $htmlOptions, self::HELP_TYPE_INLINE);
+        return $type === self::HELP_TYPE_INLINE
             ? self::help($help, $htmlOptions)
             : self::helpBlock($help, $htmlOptions);
     }
@@ -2222,14 +2308,28 @@ EOD;
     // --------------------------------------------------
 
     /**
-     * Generates an input button.
+     * Generates a hyperlink tag.
+     * @param string $text link body. It will NOT be HTML-encoded.
+     * @param mixed $url a URL or an action route that can be used to create a URL.
+     * @param array $htmlOptions additional HTML attributes.
+     * @return string the generated hyperlink
+     */
+    public static function link($text, $url = '#', $htmlOptions = array())
+    {
+        $htmlOptions = self::defaultOption('href', CHtml::normalizeUrl($url), $htmlOptions);
+        self::clientChange('click', $htmlOptions);
+        return self::tag('a', $htmlOptions, $text);
+    }
+
+    /**
+     * Generates an button.
      * @param string $label the button label text.
      * @param array $htmlOptions additional HTML attributes.
      * @return string the generated button.
      */
-    public static function button($label = 'button', $htmlOptions = array())
+    public static function button($label = 'Button', $htmlOptions = array())
     {
-        return self::btn(self::BUTTON_INPUTBUTTON, $label, $htmlOptions);
+        return self::htmlButton($label, $htmlOptions);
     }
 
     /**
@@ -2240,7 +2340,7 @@ EOD;
      */
     public static function htmlButton($label = 'Button', $htmlOptions = array())
     {
-        return self::btn(self::BUTTON_HTML, $label, $htmlOptions);
+        return self::btn(self::BUTTON_TYPE_HTML, $label, $htmlOptions);
     }
 
     /**
@@ -2251,7 +2351,7 @@ EOD;
      */
     public static function submitButton($label = 'Submit', $htmlOptions = array())
     {
-        return self::btn(self::BUTTON_SUBMIT, $label, $htmlOptions);
+        return self::btn(self::BUTTON_TYPE_SUBMIT, $label, $htmlOptions);
     }
 
     /**
@@ -2262,7 +2362,7 @@ EOD;
      */
     public static function resetButton($label = 'Reset', $htmlOptions = array())
     {
-        return self::btn(self::BUTTON_RESET, $label, $htmlOptions);
+        return self::btn(self::BUTTON_TYPE_RESET, $label, $htmlOptions);
     }
 
     /**
@@ -2274,7 +2374,7 @@ EOD;
     public static function imageButton($src, $htmlOptions = array())
     {
         $htmlOptions['src'] = $src;
-        return self::btn(self::BUTTON_IMAGE, 'Submit', $htmlOptions);
+        return self::btn(self::BUTTON_TYPE_IMAGE, 'Submit', $htmlOptions);
     }
 
     /**
@@ -2285,7 +2385,7 @@ EOD;
      */
     public static function linkButton($label = 'Submit', $htmlOptions = array())
     {
-        return self::btn(self::BUTTON_LINKBUTTON, $label, $htmlOptions);
+        return self::btn(self::BUTTON_TYPE_LINKBUTTON, $label, $htmlOptions);
     }
 
     /**
@@ -2300,7 +2400,7 @@ EOD;
     {
         $htmlOptions['url'] = $url;
         $htmlOptions['ajaxOptions'] = $ajaxOptions;
-        return self::btn(self::BUTTON_AJAXLINK, $text, $htmlOptions);
+        return self::btn(self::BUTTON_TYPE_AJAXLINK, $text, $htmlOptions);
     }
 
     /**
@@ -2315,7 +2415,7 @@ EOD;
     {
         $ajaxOptions['url']  = $url;
         $htmlOptions['ajax'] = $ajaxOptions;
-        return self::btn(self::BUTTON_AJAXBUTTON, $label, $htmlOptions);
+        return self::btn(self::BUTTON_TYPE_AJAXBUTTON, $label, $htmlOptions);
     }
 
     /**
@@ -2384,7 +2484,7 @@ EOD;
         if (self::popOption('dropup', $htmlOptions, false))
             $groupOptions = self::addClassName('dropup', $groupOptions);
         ob_start();
-        echo CHtml::openTag('div', $groupOptions);
+        echo self::openTag('div', $groupOptions);
         if (self::popOption('split', $htmlOptions, false))
         {
             echo self::createButton($type, $label, $htmlOptions);
@@ -2410,42 +2510,44 @@ EOD;
         $ajaxOptions = self::popOption('ajaxOptions', $htmlOptions, array());
         switch ($type)
         {
-            case self::BUTTON_HTML:
+            case self::BUTTON_TYPE_HTML:
                 return CHtml::htmlButton($label, $htmlOptions);
 
-            case self::BUTTON_SUBMIT:
+            case self::BUTTON_TYPE_SUBMIT:
                 $htmlOptions['type'] = 'submit';
                 return CHtml::htmlButton($label, $htmlOptions);
 
-            case self::BUTTON_RESET:
+            case self::BUTTON_TYPE_RESET:
                 $htmlOptions['type'] = 'reset';
                 return CHtml::htmlButton($label, $htmlOptions);
 
-            case self::BUTTON_IMAGE:
+            case self::BUTTON_TYPE_IMAGE:
                 $htmlOptions['type'] = 'image';
                 return CHtml::htmlButton($label, $htmlOptions);
 
-            case self::BUTTON_LINKBUTTON:
+            case self::BUTTON_TYPE_LINKBUTTON:
                 return CHtml::linkButton($label, $htmlOptions);
 
-            case self::BUTTON_AJAXLINK:
+            case self::BUTTON_TYPE_AJAXLINK:
                 return CHtml::ajaxLink($label, $url, $ajaxOptions, $htmlOptions);
 
-            case self::BUTTON_AJAXBUTTON:
+            case self::BUTTON_TYPE_AJAXBUTTON:
                 $ajaxOptions['url'] = $url;
                 $htmlOptions['ajax'] = $ajaxOptions;
                 return CHtml::htmlButton($label, $htmlOptions);
 
-            case self::BUTTON_INPUTBUTTON:
+            case self::BUTTON_TYPE_INPUTBUTTON:
                 return CHtml::button($label, $htmlOptions);
 
-            case self::BUTTON_INPUTSUBMIT:
+            case self::BUTTON_TYPE_INPUTSUBMIT:
                 $htmlOptions['type'] = 'submit';
                 return CHtml::button($label, $htmlOptions);
 
+            case self::BUTTON_TYPE_LINK:
+                return self::link($label, $url, $htmlOptions);
+
             default:
-            case self::BUTTON_LINK:
-                return CHtml::link($label, $url, $htmlOptions);
+                throw new CException('Invalid button type "' . $type . '".');
         }
     }
 
@@ -2462,7 +2564,7 @@ EOD;
      */
     public static function imageRounded($src, $alt = '', $htmlOptions = array())
     {
-        $htmlOptions['type'] = self::IMAGE_ROUNDED;
+        $htmlOptions['type'] = self::IMAGE_TYPE_ROUNDED;
         return self::image($src, $alt, $htmlOptions);
     }
 
@@ -2475,7 +2577,7 @@ EOD;
      */
     public static function imageCircle($src, $alt = '', $htmlOptions = array())
     {
-        $htmlOptions['type'] = self::IMAGE_CIRCLE;
+        $htmlOptions['type'] = self::IMAGE_TYPE_CIRCLE;
         return self::image($src, $alt, $htmlOptions);
     }
 
@@ -2488,7 +2590,7 @@ EOD;
      */
     public static function imagePolaroid($src, $alt = '', $htmlOptions = array())
     {
-        $htmlOptions['type'] = self::IMAGE_POLAROID;
+        $htmlOptions['type'] = self::IMAGE_TYPE_POLAROID;
         return self::image($src, $alt, $htmlOptions);
     }
 
@@ -2525,7 +2627,7 @@ EOD;
             if (strpos($icon, 'icon') === false)
                 $icon = 'icon-' . implode(' icon-', explode(' ', $icon));
             $htmlOptions = self::addClassName($icon, $htmlOptions);
-            return CHtml::openTag($tagName, $htmlOptions) . CHtml::closeTag($tagName); // tag won't work in this case
+            return self::openTag($tagName, $htmlOptions) . CHtml::closeTag($tagName); // tag won't work in this case
         }
         return '';
     }
@@ -2549,9 +2651,6 @@ EOD;
         // todo: think about how to apply this, now it applies to all depths while it should only apply for the first.
         //$htmlOptions = self::setDefaultValue('role', 'menu', $htmlOptions);
         $htmlOptions = self::addClassName('dropdown-menu', $htmlOptions);
-        $align = self::popOption('align', $htmlOptions);
-        if (isset($align) && $align === self::ALIGN_RIGHT)
-            $htmlOptions = self::addClassName('pull-right', $htmlOptions);
         ob_start();
         echo self::menu($items, $htmlOptions);
         return ob_get_clean();
@@ -2565,7 +2664,7 @@ EOD;
      */
     public static function dropdownToggleLink($label, $htmlOptions = array())
     {
-        return self::dropdownToggle(self::BUTTON_LINK, $label, $htmlOptions);
+        return self::dropdownToggle(self::BUTTON_TYPE_LINK, $label, $htmlOptions);
     }
 
     /**
@@ -2576,7 +2675,7 @@ EOD;
      */
     public static function dropdownToggleButton($label = '', $htmlOptions = array())
     {
-        return self::dropdownToggle(self::BUTTON_HTML, $label, $htmlOptions);
+        return self::dropdownToggle(self::BUTTON_TYPE_HTML, $label, $htmlOptions);
     }
 
     /**
@@ -2605,7 +2704,7 @@ EOD;
         $htmlOptions = self::addClassName('dropdown-toggle', $htmlOptions);
         $htmlOptions = self::defaultOption('data-toggle', 'dropdown', $htmlOptions);
         $label .= ' <b class="caret"></b>';
-        return CHtml::link($label, '#', $htmlOptions);
+        return self::link($label, '#', $htmlOptions);
     }
 
     // Button groups
@@ -2631,7 +2730,7 @@ EOD;
                 'disabled' => self::popOption('disabled', $htmlOptions)
             );
             ob_start();
-            echo CHtml::openTag('div', $htmlOptions);
+            echo self::openTag('div', $htmlOptions);
             foreach ($buttons as $buttonOptions)
             {
                 $options = self::popOption('htmlOptions', $buttonOptions, array());
@@ -2670,7 +2769,7 @@ EOD;
                 'disabled' => self::popOption('disabled', $htmlOptions)
             );
             ob_start();
-            echo CHtml::openTag('div', $htmlOptions);
+            echo self::openTag('div', $htmlOptions);
             foreach ($groups as $groupOptions)
             {
                 $items = self::popOption('items', $groupOptions, array());
@@ -2702,25 +2801,8 @@ EOD;
     public static function buttonDropdown($label, $items, $htmlOptions = array())
     {
         $htmlOptions['items'] = $items;
-        return self::btn(self::BUTTON_LINKBUTTON, $label, $htmlOptions);
-
-        $menuOptions = self::popOption('menuOptions', $htmlOptions, array());
-        $groupOptions = self::popOption('groupOptions', $htmlOptions, array());
-        $groupOptions = self::addClassName('btn-group', $groupOptions);
-        if (self::popOption('dropup', $htmlOptions, false))
-            $groupOptions = self::addClassName('dropup', $groupOptions);
-        ob_start();
-        echo CHtml::openTag('div', $groupOptions);
-        if (self::popOption('split', $htmlOptions, false))
-        {
-            echo self::linkButton($label, $htmlOptions);
-            echo self::dropdownToggleButton('', $htmlOptions);
-        }
-        else
-            echo self::dropdownToggleLink($label, $htmlOptions);
-        echo self::dropdown($items, $menuOptions);
-        echo '</div>';
-        return ob_get_clean();
+        $type = self::popOption('type', $htmlOptions, self::BUTTON_TYPE_LINKBUTTON);
+        return self::btn($type, $label, $htmlOptions);
     }
 
     /**
@@ -2748,7 +2830,7 @@ EOD;
      */
     public static function tabs($items, $htmlOptions = array())
     {
-        return self::nav(self::NAV_TABS, $items, $htmlOptions);
+        return self::nav(self::NAV_TYPE_TABS, $items, $htmlOptions);
     }
 
     /**
@@ -2771,7 +2853,7 @@ EOD;
      */
     public static function pills($items, $htmlOptions = array())
     {
-        return self::nav(self::NAV_PILLS, $items, $htmlOptions);
+        return self::nav(self::NAV_TYPE_PILLS, $items, $htmlOptions);
     }
 
     /**
@@ -2794,7 +2876,7 @@ EOD;
      */
     public static function navList($items, $htmlOptions = array())
     {
-        return self::nav(self::NAV_LIST, $items, $htmlOptions);
+        return self::nav(self::NAV_TYPE_LIST, $items, $htmlOptions);
     }
 
     /**
@@ -2808,7 +2890,7 @@ EOD;
     {
         $htmlOptions = self::addClassName('nav', $htmlOptions);
         $htmlOptions = self::addClassName('nav-' . $type, $htmlOptions);
-        if ($type !== self::NAV_LIST && self::popOption('stacked', $htmlOptions, false))
+        if ($type !== self::NAV_TYPE_LIST && self::popOption('stacked', $htmlOptions, false))
             $htmlOptions = self::addClassName('nav-stacked', $htmlOptions);
         ob_start();
         echo self::menu($items, $htmlOptions);
@@ -2824,7 +2906,7 @@ EOD;
     public static function menu($items, $htmlOptions = array())
     {
         ob_start();
-        echo CHtml::openTag('ul', $htmlOptions);
+        echo self::openTag('ul', $htmlOptions);
         foreach ($items as $itemOptions)
         {
             if (is_string($itemOptions))
@@ -2853,7 +2935,8 @@ EOD;
                     {
                         $url = self::popOption('url', $itemOptions, false);
                         echo self::menuLink($label, $url, $itemOptions);
-                    } else
+                    }
+                    else
                         echo self::menuDropdown($label, $items, $itemOptions);
                 }
             }
@@ -2873,8 +2956,8 @@ EOD;
     {
         $linkOptions = self::popOption('linkOptions', $htmlOptions, array());
         ob_start();
-        echo CHtml::openTag('li', $htmlOptions);
-        echo CHtml::link($label, $url, $linkOptions);
+        echo self::openTag('li', $htmlOptions);
+        echo self::link($label, $url, $linkOptions);
         echo '</li>';
         return ob_get_clean();
     }
@@ -2895,7 +2978,7 @@ EOD;
         if (self::popOption('active', $htmlOptions, false))
             $htmlOptions = self::addClassName('active', $htmlOptions);
         ob_start();
-        echo CHtml::openTag('li', $htmlOptions);
+        echo self::openTag('li', $htmlOptions);
         echo self::dropdownToggleMenuLink($label, $linkOptions);
         echo self::menu($items, $menuOptions);
         echo '</li>';
@@ -2947,7 +3030,7 @@ EOD;
         $innerOptions = self::popOption('innerOptions', $htmlOptions, array());
         $innerOptions = self::addClassName('navbar-inner', $innerOptions);
         ob_start();
-        echo CHtml::openTag('div', $htmlOptions);
+        echo self::openTag('div', $htmlOptions);
         echo self::tag('div', $innerOptions, $content);
         echo '</div>';
         return ob_get_clean();
@@ -2963,7 +3046,7 @@ EOD;
     public static function navbarBrandLink($label, $url, $htmlOptions = array())
     {
         $htmlOptions = self::addClassName('brand', $htmlOptions);
-        return CHtml::link($label, $url, $htmlOptions);
+        return self::link($label, $url, $htmlOptions);
     }
 
     /**
@@ -3005,13 +3088,13 @@ EOD;
         $divider = self::popOption('divider', $htmlOptions, '/');
         $htmlOptions = self::addClassName('breadcrumb', $htmlOptions);
         ob_start();
-        echo CHtml::openTag('ul', $htmlOptions);
+        echo self::openTag('ul', $htmlOptions);
         foreach ($links as $label => $url)
         {
             if (is_string($label))
             {
-                echo CHtml::openTag('li');
-                echo CHtml::link($label, CHtml::normalizeUrl($url));
+                echo self::openTag('li');
+                echo self::link($label, $url);
                 echo self::tag('span', array('class' => 'divider'), $divider);
                 echo '</li>';
             }
@@ -3045,8 +3128,8 @@ EOD;
                 $htmlOptions = self::addClassName('pagination-' . $align, $htmlOptions);
             $listOptions = self::popOption('listOptions', $htmlOptions, array());
             ob_start();
-            echo CHtml::openTag('div', $htmlOptions);
-            echo CHtml::openTag('ul', $listOptions);
+            echo self::openTag('div', $htmlOptions);
+            echo self::openTag('ul', $listOptions);
             foreach ($links as $itemOptions)
             {
                 $options = self::popOption('htmlOptions', $itemOptions, array());
@@ -3079,8 +3162,8 @@ EOD;
             $htmlOptions = self::addClassName('disabled', $htmlOptions);
         $linkOptions = self::popOption('linkOptions', $itemOptions, array());
         ob_start();
-        echo CHtml::openTag('li', $htmlOptions);
-        echo CHtml::link($label, $url, $linkOptions);
+        echo self::openTag('li', $htmlOptions);
+        echo self::link($label, $url, $linkOptions);
         echo '</li>';
         return ob_get_clean();
     }
@@ -3097,7 +3180,7 @@ EOD;
         {
             $htmlOptions = self::addClassName('pager', $htmlOptions);
             ob_start();
-            echo CHtml::openTag('ul', $htmlOptions);
+            echo self::openTag('ul', $htmlOptions);
             foreach ($links as $itemOptions)
             {
                 $options = self::popOption('htmlOptions', $itemOptions, array());
@@ -3132,8 +3215,8 @@ EOD;
             $htmlOptions = self::addClassName('disabled', $htmlOptions);
         $linkOptions = self::popOption('linkOptions', $itemOptions, array());
         ob_start();
-        echo CHtml::openTag('li', $htmlOptions);
-        echo CHtml::link($label, $url, $linkOptions);
+        echo self::openTag('li', $htmlOptions);
+        echo self::link($label, $url, $linkOptions);
         echo '</li>';
         return ob_get_clean();
     }
@@ -3218,8 +3301,8 @@ EOD;
         $headerOptions = self::popOption('headerOptions', $htmlOptions, array());
         $subtextOptions = self::popOption('subtextOptions', $htmlOptions, array());
         ob_start();
-        echo CHtml::openTag('div', $htmlOptions);
-        echo CHtml::openTag('h1', $headerOptions);
+        echo self::openTag('div', $htmlOptions);
+        echo self::openTag('h1', $headerOptions);
         echo CHtml::encode($heading) . ' ' . self::tag('small', $subtextOptions, $subtext);
         echo '</h1>';
         echo '</div>';
@@ -3244,7 +3327,7 @@ EOD;
             $htmlOptions = self::addClassName('thumbnails', $htmlOptions);
             $defaultSpan = self::popOption('span', $htmlOptions, 3);
             ob_start();
-            echo CHtml::openTag('ul', $htmlOptions);
+            echo self::openTag('ul', $htmlOptions);
             foreach ($thumbnails as $thumbnailOptions)
             {
                 $options = self::popOption('htmlOptions', $thumbnailOptions, array());
@@ -3292,8 +3375,8 @@ EOD;
         $itemOptions = self::addClassName('span' . $span, $itemOptions);
         $htmlOptions = self::addClassName('thumbnail', $htmlOptions);
         ob_start();
-        echo CHtml::openTag('li', $itemOptions);
-        echo CHtml::openTag('div', $htmlOptions);
+        echo self::openTag('li', $itemOptions);
+        echo self::openTag('div', $htmlOptions);
         echo $content;
         echo '</div>';
         echo '</li>';
@@ -3314,8 +3397,8 @@ EOD;
         $itemOptions = self::addClassName('span' . $span, $itemOptions);
         $htmlOptions = self::addClassName('thumbnail', $htmlOptions);
         ob_start();
-        echo CHtml::openTag('li', $itemOptions);
-        echo CHtml::link($content, $url, $htmlOptions);
+        echo self::openTag('li', $itemOptions);
+        echo self::link($content, $url, $htmlOptions);
         echo '</li>';
         return ob_get_clean();
     }
@@ -3345,7 +3428,7 @@ EOD;
         $closeText = self::popOption('closeText', $htmlOptions, self::CLOSE_TEXT);
         $closeOptions = self::popOption('closeOptions', $htmlOptions, array());
         ob_start();
-        echo CHtml::openTag('div', $htmlOptions);
+        echo self::openTag('div', $htmlOptions);
         echo $closeText !== false ? self::closeLink($closeText, $closeOptions) : '';
         echo $message;
         echo '</div>';
@@ -3391,7 +3474,7 @@ EOD;
         $content = self::popOption('content', $htmlOptions, '');
         $barOptions = self::defaultOption('content', $content, $barOptions);
         ob_start();
-        echo CHtml::openTag('div', $htmlOptions);
+        echo self::openTag('div', $htmlOptions);
         echo self::bar($width, $barOptions);
         echo '</div>';
         return ob_get_clean();
@@ -3433,7 +3516,7 @@ EOD;
         {
             $htmlOptions = self::addClassName('progress', $htmlOptions);
             ob_start();
-            echo CHtml::openTag('div', $htmlOptions);
+            echo self::openTag('div', $htmlOptions);
             foreach ($bars as $barOptions)
             {
                 $options = self::popOption('htmlOptions', $barOptions, array());
@@ -3554,14 +3637,14 @@ EOD;
 
         ob_start();
 
-        echo CHtml::openTag('div', self::addClassName('media', $htmlOptions)); // media
+        echo self::openTag('div', self::addClassName('media', $htmlOptions)); // media
 
-        echo CHtml::link(
+        echo self::link(
             CHtml::image($imageUrl, self::popOption('alt', $imageOptions, ''), $imageOptions),
             self::popOption('href', $urlOptions, '#'),
             $urlOptions);
 
-        echo CHtml::openTag('div', $contentOptions); // media-body
+        echo self::openTag('div', $contentOptions); // media-body
 
         // render heading
         echo self::tag('h4', $headingOptions, $heading);
@@ -3645,7 +3728,7 @@ EOD;
     public static function collapseLink($label, $target, $htmlOptions = array())
     {
         $htmlOptions['data-toggle'] = 'collapse';
-        return CHtml::link($label, $target, $htmlOptions);
+        return self::link($label, $target, $htmlOptions);
     }
 
     /**
@@ -3662,7 +3745,7 @@ EOD;
                 'data-target' => $target,
             ));
         ob_start();
-        echo CHtml::openTag('a', $htmlOptions);
+        echo self::openTag('a', $htmlOptions);
         echo '<span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span>';
         echo '</a>';
         return ob_get_clean();
@@ -3732,7 +3815,7 @@ EOD;
             $htmlOptions = self::defaultOption('data-trigger', $trigger, $htmlOptions);
         if (($delay = self::popOption('delay', $htmlOptions)) !== null)
             $htmlOptions = self::defaultOption('data-delay', $delay, $htmlOptions);
-        return CHtml::link($label, $url, $htmlOptions);
+        return self::link($label, $url, $htmlOptions);
     }
 
     // Carousel
@@ -3769,9 +3852,9 @@ EOD;
             $nextOptions = self::popOption('nextOptions', $htmlOptions, array());
             $nextLabel = self::popOption('label', $nextOptions, '&rsaquo;');
             ob_start();
-            echo CHtml::openTag('div', $htmlOptions);
+            echo self::openTag('div', $htmlOptions);
             echo self::carouselIndicators($selector, count($items), $indicatorOptions);
-            echo CHtml::openTag('div', $innerOptions);
+            echo self::openTag('div', $innerOptions);
             foreach ($items as $i => $itemOptions)
             {
                 $itemOptions = self::addClassName('item', $itemOptions);
@@ -3808,11 +3891,11 @@ EOD;
         $labelOptions = self::popOption('labelOptions', $htmlOptions, array());
         $captionOptions = self::popOption('captionOptions', $htmlOptions, array());
         ob_start();
-        echo CHtml::openTag('div', $htmlOptions);
+        echo self::openTag('div', $htmlOptions);
         echo CHtml::image($image, $alt, $imageOptions);
         if (isset($label) || isset($caption))
         {
-            echo CHtml::openTag('div', $overlayOptions);
+            echo self::openTag('div', $overlayOptions);
             if ($label)
                 echo self::tag('h4', $labelOptions, $label);
             if ($caption)
@@ -3834,7 +3917,7 @@ EOD;
     {
         $htmlOptions['data-slide'] = 'prev';
         $htmlOptions = self::addClassName('carousel-control left', $htmlOptions);
-        return CHtml::link($label, $url, $htmlOptions);
+        return self::link($label, $url, $htmlOptions);
     }
 
     /**
@@ -3848,7 +3931,7 @@ EOD;
     {
         $htmlOptions['data-slide'] = 'next';
         $htmlOptions = self::addClassName('carousel-control right', $htmlOptions);
-        return CHtml::link($label, $url, $htmlOptions);
+        return self::link($label, $url, $htmlOptions);
     }
 
     /**
@@ -3862,13 +3945,13 @@ EOD;
     {
         $htmlOptions = self::addClassName('carousel-indicators', $htmlOptions);
         ob_start();
-        echo CHtml::openTag('ol', $htmlOptions);
+        echo self::openTag('ol', $htmlOptions);
         for ($i = 0; $i < $numSlides; $i++)
         {
             $itemOptions = array('data-target' => $target, 'data-slide-to' => $i);
             if ($i === 0)
                 $itemOptions['class'] = 'active';
-            echo CHtml::tag('li', $itemOptions);
+            echo self::tag('li', $itemOptions);
         }
         echo '</ol>';
         return ob_get_clean();

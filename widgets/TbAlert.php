@@ -52,7 +52,14 @@ class TbAlert extends TbWidget
 		if (is_string($this->alerts))
 			$styles = explode(' ', $this->alerts);
 		else if (!isset($this->alerts))
-			$styles = array(TbHtml::COLOR_SUCCESS, TbHtml::COLOR_WARNING, TbHtml::COLOR_INFO, TbHtml::COLOR_ERROR); // render all styles by default
+        {
+			$styles = array(
+                TbHtml::ALERT_COLOR_SUCCESS,
+                TbHtml::ALERT_COLOR_WARNING,
+                TbHtml::ALERT_COLOR_INFO,
+                TbHtml::ALERT_COLOR_ERROR
+            ); // render all styles by default
+        }
 		if (isset($styles))
 		{
 			$this->alerts = array();
@@ -68,7 +75,7 @@ class TbAlert extends TbWidget
 	{
 		/* @var $user CWebUser */
 		$user = Yii::app()->getUser();
-		echo CHtml::openTag('div', $this->htmlOptions);
+		echo TbHtml::openTag('div', $this->htmlOptions);
 		foreach ($this->alerts as $style => $alert)
 		{
 			if (isset($alert['visible']) && !$alert['visible'])

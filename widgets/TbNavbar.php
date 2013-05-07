@@ -34,7 +34,7 @@ class TbNavbar extends CWidget
     /**
      * @var string nanvbar display type.
      */
-    public $display = TbHtml::NAVBAR_FIXED_TOP;
+    public $display = TbHtml::NAVBAR_DISPLAY_FIXEDTOP;
     /**
      * @var boolean whether the navbar spans over the whole page.
      */
@@ -71,7 +71,7 @@ class TbNavbar extends CWidget
         }
         if (isset($this->color))
             $this->htmlOptions = TbHtml::defaultOption('color', $this->color, $this->htmlOptions);
-        if (isset($this->display) && $this->display !== TbHtml::NAVBAR_INLINE)
+        if (isset($this->display) && $this->display !== TbHtml::NAVBAR_DISPLAY_NONE)
             $this->htmlOptions = TbHtml::defaultOption('display', $this->display, $this->htmlOptions);
     }
 
@@ -119,7 +119,7 @@ class TbNavbar extends CWidget
         $containerOptions = TbHtml::popOption('containerOptions', $this->htmlOptions, array());
         $containerOptions = TbHtml::addClassName($this->fluid ? 'container-fluid' : 'container', $containerOptions);
         ob_start();
-        echo CHtml::openTag('div', $containerOptions);
+        echo TbHtml::openTag('div', $containerOptions);
         echo $containerContent;
         echo '</div>';
         $content = ob_get_clean();
