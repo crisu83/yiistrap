@@ -102,6 +102,9 @@ class TbHtml extends CHtml // required in order to access protected methods
     const BUTTON_SIZE_DEFAULT = '';
     const BUTTON_SIZE_LARGE = 'large';
 
+    const BUTTON_TOGGLE_CHECKBOX = 'checkbox';
+    const BUTTON_TOGGLE_RADIO = 'radio';
+
     //
     // IMAGES
     // --------------------------------------------------
@@ -2459,6 +2462,11 @@ EOD;
             $htmlOptions = self::addClassName('btn-block', $htmlOptions);
         if (self::popOption('disabled', $htmlOptions, false))
             $htmlOptions = self::addClassName('disabled', $htmlOptions);
+        $loading = self::popOption('loading', $htmlOptions);
+        if (!empty($loading))
+            $htmlOptions['data-loading-text'] = $loading;
+        if (self::popOption('toggle', $htmlOptions, false))
+            $htmlOptions['data-toggle'] = 'button';
         $items = strpos($type, 'input') === false ? self::popOption('items', $htmlOptions, array()) : array();
         if (strpos($type, 'input') === false) // inputs cannot have icons
         {
@@ -2729,8 +2737,11 @@ EOD;
             $htmlOptions = self::addClassName('btn-group', $htmlOptions);
             if (self::popOption('vertical', $htmlOptions, false))
                 $htmlOptions = self::addClassName('btn-group-vertical', $htmlOptions);
+            $toggle = self::popOption('toggle', $htmlOptions);
+            if (!empty($toggle))
+                $htmlOptions['data-toggle'] = 'buttons-' . $toggle;
             $parentOptions = array(
-                'style' => self::popOption('style', $htmlOptions),
+                'color' => self::popOption('color', $htmlOptions),
                 'size' => self::popOption('size', $htmlOptions),
                 'disabled' => self::popOption('disabled', $htmlOptions)
             );
@@ -2742,7 +2753,7 @@ EOD;
                 if (!empty($options))
                     $buttonOptions = self::mergeOptions($options, $buttonOptions);
                 $buttonLabel = self::popOption('label', $buttonOptions, '');
-                $buttonOptions = self::copyOptions(array('style', 'size', 'disabled'), $parentOptions, $buttonOptions);
+                $buttonOptions = self::copyOptions(array('color', 'size', 'disabled'), $parentOptions, $buttonOptions);
                 if (isset($buttonOptions['items']))
                 {
                     $items = self::popOption('items', $buttonOptions);
@@ -2769,7 +2780,7 @@ EOD;
         {
             $htmlOptions = self::addClassName('btn-toolbar', $htmlOptions);
             $parentOptions = array(
-                'style' => self::popOption('style', $htmlOptions),
+                'color' => self::popOption('color', $htmlOptions),
                 'size' => self::popOption('size', $htmlOptions),
                 'disabled' => self::popOption('disabled', $htmlOptions)
             );
@@ -2783,7 +2794,7 @@ EOD;
                 $options = self::popOption('htmlOptions', $groupOptions, array());
                 if (!empty($options))
                     $groupOptions = self::mergeOptions($options, $groupOptions);
-                $groupOptions = self::copyOptions(array('style', 'size', 'disabled'), $parentOptions, $groupOptions);
+                $groupOptions = self::copyOptions(array('color', 'size', 'disabled'), $parentOptions, $groupOptions);
                 echo self::buttonGroup($items, $groupOptions);
             }
             echo '</div>';
