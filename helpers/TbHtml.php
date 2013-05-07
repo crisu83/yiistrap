@@ -1331,7 +1331,7 @@ EOD;
             ob_start();
             echo self::openTag('div', $groupOptions);
             if ($label !== false)
-                echo CHtml::label($label, $name, $labelOptions);
+                echo CHtml::labelEx($label, $name, $labelOptions);
             echo self::formControls($input . $help, $controlOptions);
             echo '</div>';
             return ob_get_clean();
@@ -1340,7 +1340,7 @@ EOD;
         {
             ob_start();
             if ($label !== false)
-                echo CHtml::label($label, $name, $labelOptions);
+                echo CHtml::labelEx($label, $name, $labelOptions);
             echo $input . $help;
             return ob_get_clean();
         }
@@ -1976,7 +1976,6 @@ EOD;
     {
         $wrap = self::popOption('wrap', $htmlOptions, false);
         $label = self::popOption('label', $htmlOptions);
-        $labelEx = self::popOption('labelEx', $htmlOptions, true);
         $color = self::popOption('color', $htmlOptions);
         $groupOptions = self::popOption('groupOptions', $htmlOptions, array());
         $labelOptions = self::popOption('labelOptions', $htmlOptions, array());
@@ -2005,12 +2004,7 @@ EOD;
             ob_start();
             echo self::openTag('div', $groupOptions);
             if ($label !== false)
-            {
-                if ($labelEx)
-                    CHtml::activeLabelEx($model, $attribute, $labelOptions);
-                else
-                    CHtml::activeLabel($model, $attribute, $labelOptions);
-            }
+                CHtml::activeLabelEx($model, $attribute, $labelOptions);
             echo self::formControls($input . $error . $help, $controlOptions);
             echo '</div>';
             return ob_get_clean();
@@ -2019,7 +2013,7 @@ EOD;
         {
             ob_start();
             if ($label !== false)
-                echo CHtml::activeLabel($model, $attribute, $labelOptions);
+                echo CHtml::activeLabelEx($model, $attribute, $labelOptions);
             echo $input . $error . $help;
             return ob_get_clean();
         }
