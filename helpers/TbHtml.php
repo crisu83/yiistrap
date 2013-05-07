@@ -2004,7 +2004,7 @@ EOD;
             ob_start();
             echo self::openTag('div', $groupOptions);
             if ($label !== false)
-                CHtml::activeLabelEx($model, $attribute, $labelOptions);
+                echo CHtml::activeLabelEx($model, $attribute, $labelOptions);
             echo self::formControls($input . $error . $help, $controlOptions);
             echo '</div>';
             return ob_get_clean();
