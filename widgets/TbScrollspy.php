@@ -6,7 +6,7 @@
  * @license http://www.opensource.org/licenses/bsd-license.php New BSD License
  */
 
-Yii::import('bootstrap.widgets.TbWidget');
+Yii::import('bootstrap.behaviors.TbWidget');
 
 /**
  * Bootstrap scrollspy widget.

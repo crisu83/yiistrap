@@ -7,7 +7,7 @@
  * @package bootstrap.widgets
  */
 
-Yii::import('bootstrap.widgets.TbWidget');
+Yii::import('bootstrap.behaviors.TbWidget');
 
 /**
  * Bootstrap alert widget.

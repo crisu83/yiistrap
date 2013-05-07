@@ -8,7 +8,7 @@
  */
 
 Yii::import('bootstrap.helpers.TbHtml');
-Yii::import('bootstrap.widgets.TbWidget');
+Yii::import('bootstrap.behaviors.TbWidget');
 
 /**
  * Bootstrap collapse widget.
