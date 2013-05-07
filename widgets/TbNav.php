@@ -64,10 +64,8 @@ class TbNav extends CWidget
 	 */
 	public function init()
 	{
-        if (!isset($this->htmlOptions['id']))
-            $this->htmlOptions['id'] = $this->id;
-        else
-            $this->id = $this->htmlOptions['id'];
+        $this->attachBehavior('tbWidget', new TbWidget);
+        $this->copyId();
 		$route = $this->controller->getRoute();
 		if ($this->stacked)
 			$this->htmlOptions = TbHtml::addClassName('nav-stacked', $this->htmlOptions);

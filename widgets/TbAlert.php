@@ -13,7 +13,7 @@ Yii::import('bootstrap.widgets.TbWidget');
  * Bootstrap alert widget.
  * @see http://twitter.github.com/bootstrap/javascript.html#alerts
  */
-class TbAlert extends TbWidget
+class TbAlert extends CWidget
 {
 	/**
 	 * @var array the alerts configurations (style=>config).
@@ -45,10 +45,8 @@ class TbAlert extends TbWidget
 	 */
 	public function init()
 	{
-        if (!isset($this->htmlOptions['id']))
-            $this->htmlOptions['id'] = $this->id;
-        else
-            $this->id = $this->htmlOptions['id'];
+        $this->attachBehavior('tbWidget', new TbWidget);
+        $this->copyId();
 		if (is_string($this->alerts))
 			$styles = explode(' ', $this->alerts);
 		else if (!isset($this->alerts))

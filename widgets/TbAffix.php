@@ -13,7 +13,7 @@ Yii::import('bootstrap.widgets.TbWidget');
  * Bootstrap affix widget.
  * @see http://twitter.github.com/bootstrap/javascript.html#affix
  */
-class TbAffix extends TbWidget
+class TbAffix extends CWidget
 {
     /**
      * @var string the HTML tag for the container.
@@ -33,10 +33,8 @@ class TbAffix extends TbWidget
      */
     public function init()
     {
-        if (!isset($this->htmlOptions['id']))
-            $this->htmlOptions['id'] = $this->id;
-        else
-            $this->id = $this->htmlOptions['id'];
+        $this->attachBehavior('tbWidget', new TbWidget);
+        $this->copyId();
         $this->htmlOptions['data-spy'] = 'affix';
         if (isset($this->offset))
         {

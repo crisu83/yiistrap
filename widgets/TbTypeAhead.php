@@ -67,6 +67,7 @@ class TbTypeAhead extends CInputWidget
 	 */
 	public function init()
 	{
+        $this->attachBehavior('tbWidget', new TbWidget);
 		$this->initOptions();
 	}
 
@@ -128,8 +129,7 @@ class TbTypeAhead extends CInputWidget
 	public function registerClientScript()
 	{
 		/** @var TbApi $api */
-		$api = Yii::app()->getComponent('bootstrap');
 		$selector = '#'.TbHtml::getOption('id', $this->htmlOptions, $this->getId());
-		$api->registerPlugin(TbApi::PLUGIN_TYPEAHEAD, $selector, $this->pluginOptions);
+		$this->registerPlugin(TbApi::PLUGIN_TYPEAHEAD, $selector, $this->pluginOptions);
 	}
 }

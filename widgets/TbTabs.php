@@ -12,7 +12,7 @@ Yii::import('bootstrap.widgets.TbWidget');
 /**
  * Class TbTabs
  */
-class TbTabs extends TbWidget
+class TbTabs extends CWidget
 {
 	/**
 	 * @var array Additional data submitted to the views
@@ -76,10 +76,8 @@ class TbTabs extends TbWidget
 	 */
 	public function init()
 	{
-        if (!isset($this->htmlOptions['id']))
-            $this->htmlOptions['id'] = $this->id;
-        else
-            $this->id = $this->htmlOptions['id'];
+        $this->attachBehavior('tbWidget', new TbWidget);
+        $this->copyId();
 		if(isset($this->placement))
 			$this->htmlOptions = TbHtml::addClassName('tabs-'.$this->placement, $this->htmlOptions);
 		$this->menuItems = $this->normalizeTabs($this->tabs, $this->tabsContent);

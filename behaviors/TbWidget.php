@@ -4,18 +4,30 @@
  * @author Christoffer Niska <christoffer.niska@gmail.com>
  * @copyright Copyright &copy; Christoffer Niska 2013-
  * @license http://www.opensource.org/licenses/bsd-license.php New BSD License
- * @package bootstrap.widgets
+ * @package bootstrap.behaviors
  */
 
 Yii::import('bootstrap.helpers.TbHtml');
 Yii::import('bootstrap.components.TbApi');
 
 /**
- * Bootstrap base widget.
+ * Bootstrap widget behavior.
+ * @property $owner CWidget
  */
-class TbWidget extends CWidget
+class TbWidget extends CBehavior
 {
 	private $_api;
+
+    /**
+     * Copies the id to the widget HTML attributes or vise versa.
+     */
+    public function copyId()
+    {
+        if (!isset($this->htmlOptions['id']))
+            $this->htmlOptions['id'] = $this->id;
+        else
+            $this->id = $this->htmlOptions['id'];
+    }
 
 	/**
 	 * Registers the given plugin with the API.
@@ -25,7 +37,7 @@ class TbWidget extends CWidget
 	 * @param int $position the position of the JavaScript code.
 	 * @return boolean whether the plugin was registered.
 	 */
-	protected function registerPlugin($name, $selector, $options = array(), $position = CClientScript::POS_END)
+    public function registerPlugin($name, $selector, $options = array(), $position = CClientScript::POS_END)
 	{
 		if (($api = $this->getApi()) !== null)
 		{
@@ -42,7 +54,7 @@ class TbWidget extends CWidget
 	 * @param int $position the position of the JavaScript code.
 	 * @return boolean whether the events were registered.
 	 */
-	protected function registerEvents($selector, $events, $position = CClientScript::POS_END)
+    public function registerEvents($selector, $events, $position = CClientScript::POS_END)
 	{
 		if (($api = $this->getApi()) !== null)
 		{
@@ -58,6 +70,9 @@ class TbWidget extends CWidget
 	 */
 	private function getApi()
 	{
-		return $this->_api !== null ? $this->_api : $this->_api = Yii::app()->getComponent('bootstrap');
+        if (isset($this->_api))
+		    return $this->_api;
+        else
+            return $this->_api = Yii::app()->getComponent('bootstrap');
 	}
 }

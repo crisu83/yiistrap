@@ -16,7 +16,6 @@ class TbActiveForm extends CActiveForm
 {
     /**
      * @var string the form layout.
-     * Valid values are TbHtml::FORM_VERTICAL, TbHtml::FORM_HORIZONTAL, TbHtml::FORM_INLINE and TbHtml::FORM_SEARCH.
      */
     public $layout;
     /**
@@ -37,11 +36,8 @@ class TbActiveForm extends CActiveForm
      */
     public function init()
     {
-        if (!isset($this->htmlOptions['id']))
-            $this->htmlOptions['id'] = $this->id;
-        else
-            $this->id = $this->htmlOptions['id'];
-
+        $this->attachBehavior('tbWidget', new TbWidget);
+        $this->copyId();
         if ($this->stateful)
             echo TbHtml::statefulFormTb($this->layout, $this->action, $this->method, $this->htmlOptions);
         else

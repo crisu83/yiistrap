@@ -14,7 +14,7 @@ Yii::import('bootstrap.widgets.TbWidget');
  * Bootstrap collapse widget.
  * @see http://twitter.github.com/bootstrap/javascript.html#collapse
  */
-class TbCollapse extends TbWidget
+class TbCollapse extends CWidget
 {
     /**
      * @var string the HTML tag for the container.
@@ -50,10 +50,8 @@ class TbCollapse extends TbWidget
      */
     public function init()
     {
-        if (!isset($this->htmlOptions['id']))
-            $this->htmlOptions['id'] = $this->id;
-        else
-            $this->id = $this->htmlOptions['id'];
+        $this->attachBehavior('tbWidget', new TbWidget);
+        $this->copyId();
         $this->htmlOptions = TbHtml::addClassName('collapse', $this->htmlOptions);
         $this->htmlOptions['data-toggle'] = 'collapse';
         if (isset($this->parent))

@@ -12,7 +12,7 @@ Yii::import('bootstrap.widgets.TbWidget');
 /**
  * Class TbModal
  */
-class TbModal extends TbWidget
+class TbModal extends CWidget
 {
 
 	/**
@@ -116,6 +116,8 @@ class TbModal extends TbWidget
 	 */
 	public function init()
 	{
+        $this->attachBehavior('tbWidget', new TbWidget);
+
 		$this->htmlOptions = TbHtml::defaultOption('id', $this->getId(), $this->htmlOptions);
 		$this->htmlOptions = TbHtml::defaultOption('role', 'dialog', $this->htmlOptions);
 		$this->htmlOptions = TbHtml::defaultOption('tabindex', '-1', $this->htmlOptions);
