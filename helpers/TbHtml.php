@@ -3558,13 +3558,7 @@ EOD;
 
     /**
      * Generates a list of media objects.
-     * @param array $mediaObjects, media objects with the following configuration options:
-     * <ul>
-     *  <li> image: string, url of the image. </li>
-     *  <li> heading: string, the heading of the content. </li>
-     *  <li> content: string, content of the image. </li>
-     *  <li> htmlOptions: array, additional HTML attributes. Factorial attributes see {@link mediaObject}.
-     * </ul>
+     * @param array $mediaObjects media object configurations.
      * @return string generated list.
      */
     public static function mediaObjects($mediaObjects)
@@ -3574,7 +3568,7 @@ EOD;
             ob_start();
             foreach ($mediaObjects as $mediaObjectOptions)
             {
-                $image = self::getOption('image', $mediaObjectOptions, '#');
+                $image = self::getOption('image', $mediaObjectOptions);
                 $heading = self::getOption('heading', $mediaObjectOptions, '');
                 $content = self::getOption('content', $mediaObjectOptions, '');
                 $itemOptions = self::getOption('htmlOptions', $mediaObjectOptions, array());
@@ -3587,77 +3581,38 @@ EOD;
     }
 
     /**
-     * Generates a single media object. Factorial.
-     * @param $image string the header of the media object
-     * @param $title
-     * @param $content
-     * @param array $htmlOptions additional HTML attributes. The following special attributes are supported:
-     * <ul>
-     * 	<li> urlOptions: array(), additional HTML attributes for the url of the media-object header image. The following
-     *       special attributes are supported:
-     *      <ul>
-     * 			<li> href: the url of the link </li>
-     * 		</ul>
-     *  </li>
-     *  <li> imageOptions: array(), additional HTML attributes for the image of the media-object header. The following
-     *  	 special attributes are supported:
-     *       <ul>
-     * 			<li> alt: the alt of the image </li>
-     * 		 </ul>
-     *  </li>
-     *  <li> contentOptions: array(), additional HTML attributes for the media-body content. </li>
-     *  <li> headingOptions: array(), additional HTML attributes for the heading content. </li>
-     *  <li> items: array(), nested media object (childrens) with the following configuration options:
-     *       <ul>
-     *         <li> image: string, url of the image. </li>
-     *         <li> heading: string, the heading of the content. </li>
-     *         <li> content: string, content of the image. </li>
-     *         <li> htmlOptions: array, additional HTML attributes. Factorial attributes see above.
-     *      </ul>
-     * </li>
-     * </ul>
-     * @return string
+     * Generates a single media object.
+     * @param string $image the image url.
+     * @param string $title the title text.
+     * @param string $content the content text.
+     * @param array $htmlOptions additional HTML attributes.
+     * @return string the media object.
      */
-    public static function mediaObject($imageUrl, $heading, $content, $htmlOptions = array())
+    public static function mediaObject($image, $heading, $content, $htmlOptions = array())
     {
-        // extract supported options - brainstorm for better approach --
-        $urlOptions = self::popOption('urlOptions', $htmlOptions, array());
+        $htmlOptions = self::addClassName('media', $htmlOptions);
+        $linkOptions = self::popOption('linkOptions', $htmlOptions, array());
+        $linkOptions = self::defaultOption('pull', self::PULL_LEFT, $linkOptions);
         $imageOptions = self::popOption('imageOptions', $htmlOptions, array());
-        $contentOptions = self::popOption('contentOptions', $htmlOptions, array());
-        $headingOptions = self::popOption('headingOptions', $htmlOptions, array());
-
-        // add required classes
-        $urlOptions = self::defaultOption('class', 'pull-left', $urlOptions);
         $imageOptions = self::addClassName('media-object', $imageOptions);
+        $contentOptions = self::popOption('contentOptions', $htmlOptions, array());
         $contentOptions = self::addClassName('media-body', $contentOptions);
+        $headingOptions = self::popOption('headingOptions', $htmlOptions, array());
         $headingOptions = self::addClassName('media-heading', $headingOptions);
-
-        // do we have any children?
-        $children= self::popOption('items', $htmlOptions);
+        $items = self::popOption('items', $htmlOptions);
 
         ob_start();
-
-        echo self::openTag('div', self::addClassName('media', $htmlOptions)); // media
-
-        echo self::link(
-            CHtml::image($imageUrl, self::popOption('alt', $imageOptions, ''), $imageOptions),
-            self::popOption('href', $urlOptions, '#'),
-            $urlOptions);
-
-        echo self::openTag('div', $contentOptions); // media-body
-
-        // render heading
+        echo self::openTag('div', $htmlOptions);
+        $alt = self::popOption('alt', $imageOptions, '');
+        $href = self::popOption('href', $linkOptions, '#');
+        if (!empty($image))
+            echo self::link(CHtml::image($image, $alt, $imageOptions), $href, $linkOptions);
+        echo self::openTag('div', $contentOptions);
         echo self::tag('h4', $headingOptions, $heading);
-
-        // render content
         echo $content;
-
-        // render children
-        echo self::mediaObjects($children);
-
-        echo '</div>'; // media-body
-        echo '</div>'; // media
-
+        if (!empty($items))
+            echo self::mediaObjects($items);
+        echo '</div></div>';
         return ob_get_clean();
     }
 
