@@ -3064,7 +3064,7 @@ EOD;
             $tabOptions = self::addClassName('tab-pane', $tabOptions);
             echo TbHtml::tag('div', $tabOptions, $tabContent);
         }
-        echo '</div>';
+        echo '</div></div>';
         return ob_get_clean();
     }
 
