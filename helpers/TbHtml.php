@@ -2424,7 +2424,7 @@ EOD;
 	 */
 	public static function linkButton($label = 'Submit', $htmlOptions = array())
 	{
-		return self::btn(self::BUTTON_TYPE_LINKBUTTON, $label, $htmlOptions);
+		return self::btn(self::BUTTON_TYPE_LINK, $label, $htmlOptions);
 	}
 
 	/**
