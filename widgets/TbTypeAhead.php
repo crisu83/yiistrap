@@ -68,7 +68,7 @@ class TbTypeAhead extends CInputWidget
 	 */
 	public function init()
 	{
-        $this->attachBehavior('tbWidget', new TbWidget);
+        $this->attachBehavior('TbWidget', new TbWidget);
 		$this->initOptions();
 	}
 

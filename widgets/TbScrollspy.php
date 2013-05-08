@@ -36,7 +36,7 @@ class TbScrollspy extends CWidget
      */
     public function init()
     {
-        $this->attachBehavior('tbWidget', new TbWidget);
+        $this->attachBehavior('TbWidget', new TbWidget);
     }
 
 	/**

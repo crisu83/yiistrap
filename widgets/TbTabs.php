@@ -76,7 +76,7 @@ class TbTabs extends CWidget
 	 */
 	public function init()
 	{
-        $this->attachBehavior('tbWidget', new TbWidget);
+        $this->attachBehavior('TbWidget', new TbWidget);
         $this->copyId();
 		if(isset($this->placement))
 			$this->htmlOptions = TbHtml::addClassName('tabs-'.$this->placement, $this->htmlOptions);

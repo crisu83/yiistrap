@@ -8,6 +8,7 @@
  */
 
 Yii::import('bootstrap.helpers.TbHtml');
+Yii::import('bootstrap.behaviors.TbWidget');
 
 /**
  * Bootstrap pager widget.
@@ -49,7 +50,7 @@ class TbPager extends CBasePager
 	 */
 	public function init()
 	{
-        $this->attachBehavior('tbWidget', new TbWidget);
+        $this->attachBehavior('TbWidget', new TbWidget);
         $this->copyId();
 		if (isset($this->size))
 			$this->htmlOptions = TbHtml::defaultOption('size', $this->size, $this->htmlOptions);

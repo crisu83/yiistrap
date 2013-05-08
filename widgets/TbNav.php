@@ -65,7 +65,7 @@ class TbNav extends CWidget
 	 */
 	public function init()
 	{
-        $this->attachBehavior('tbWidget', new TbWidget);
+        $this->attachBehavior('TbWidget', new TbWidget);
         $this->copyId();
 		$route = $this->controller->getRoute();
 		if ($this->stacked)

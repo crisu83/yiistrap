@@ -116,7 +116,7 @@ class TbModal extends CWidget
 	 */
 	public function init()
 	{
-        $this->attachBehavior('tbWidget', new TbWidget);
+        $this->attachBehavior('TbWidget', new TbWidget);
 
 		$this->htmlOptions = TbHtml::defaultOption('id', $this->getId(), $this->htmlOptions);
 		$this->htmlOptions = TbHtml::defaultOption('role', 'dialog', $this->htmlOptions);

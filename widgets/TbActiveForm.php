@@ -8,6 +8,7 @@
  */
 
 Yii::import('bootstrap.helpers.TbHtml');
+Yii::import('bootstrap.behaviors.TbWidget');
 
 /**
  * Class TbActiveForm
@@ -36,7 +37,7 @@ class TbActiveForm extends CActiveForm
      */
     public function init()
     {
-        $this->attachBehavior('tbWidget', new TbWidget);
+        $this->attachBehavior('TbWidget', new TbWidget);
         $this->copyId();
         if ($this->stateful)
             echo TbHtml::statefulFormTb($this->layout, $this->action, $this->method, $this->htmlOptions);

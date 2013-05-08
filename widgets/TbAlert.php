@@ -45,7 +45,7 @@ class TbAlert extends CWidget
 	 */
 	public function init()
 	{
-        $this->attachBehavior('tbWidget', new TbWidget);
+        $this->attachBehavior('TbWidget', new TbWidget);
         $this->copyId();
 		if (is_string($this->alerts))
 			$styles = explode(' ', $this->alerts);

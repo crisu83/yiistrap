@@ -33,7 +33,7 @@ class TbAffix extends CWidget
      */
     public function init()
     {
-        $this->attachBehavior('tbWidget', new TbWidget);
+        $this->attachBehavior('TbWidget', new TbWidget);
         $this->copyId();
         $this->htmlOptions['data-spy'] = 'affix';
         if (isset($this->offset))
