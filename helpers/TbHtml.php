@@ -450,9 +450,13 @@ class TbHtml extends CHtml // required in order to access protected methods
 	 * @param string $tag the HTML tag.
 	 * @return string the generated text.
 	 */
-	public static function em($style, $text, $htmlOptions = array(), $tag = 'p')
+	public static function em($text, $htmlOptions = array(), $tag = 'p')
 	{
-		$htmlOptions = self::addClassName('text-' . $style, $htmlOptions);
+		$color = self::popOption('color', $htmlOptions);
+		if (self::popOption('muted', $htmlOptions, false))
+			$htmlOptions = self::addClassName('muted', $htmlOptions);
+		else if (!empty($color))
+			$htmlOptions = self::addClassName('text-' . $color, $htmlOptions);
 		return self::tag($tag, $htmlOptions, $text);
 	}
 
@@ -465,9 +469,8 @@ class TbHtml extends CHtml // required in order to access protected methods
 	 */
 	public static function muted($text, $htmlOptions = array(), $tag = 'p')
 	{
-		if (self::popOption('muted', $htmlOptions, false))
-			$htmlOptions = self::addClassName('muted', $htmlOptions);
-		return self::tag($tag, $htmlOptions, $text);
+		$htmlOptions['muted'] = true;
+		return self::em($text, $htmlOptions, $tag);
 	}
 
 	/**
