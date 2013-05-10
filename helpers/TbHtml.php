@@ -3558,7 +3558,7 @@ EOD;
 	 */
 	public static function mediaObjects($mediaObjects)
 	{
-		if ($mediaObjects !== null && is_array($mediaObjects))
+		if (is_array($mediaObjects) && !empty($mediaObjects))
 		{
 			ob_start();
 			foreach ($mediaObjects as $mediaObjectOptions)
