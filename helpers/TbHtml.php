@@ -11,7 +11,7 @@
 /**
  * Bootstrap HTML helper.
  */
-class TbHtml extends CHtml // required in order to access protected methods
+class TbHtml extends CHtml // required in order to access the protected methods in CHtml
 {
 	//
 	// TYPOGRAPHY
@@ -603,13 +603,13 @@ class TbHtml extends CHtml // required in order to access protected methods
 	 */
 	public static function tag($tag, $htmlOptions = array(), $content = false, $closeTag = true)
 	{
-		self::addSpanClass($htmlOptions);
 		$textAlign = self::popOption('textAlign', $htmlOptions);
 		if (!empty($textAlign))
 			$htmlOptions = self::addClassName('text-' . $textAlign, $htmlOptions);
 		$pull = self::popOption('pull', $htmlOptions);
 		if (!empty($pull))
 			$htmlOptions = self::addClassName('pull-' . $pull, $htmlOptions);
+		self::addSpanClass($htmlOptions);
 		return CHtml::tag($tag, $htmlOptions, $content, $closeTag);
 	}
 
@@ -1004,16 +1004,8 @@ EOD;
 	 */
 	public static function uneditableField($value = '', $htmlOptions = array())
 	{
-		$size = self::popOption('size', $htmlOptions);
-		$block = self::popOption('block', $htmlOptions, false);
-		if (!self::addSpanClass($htmlOptions))
-		{
-			if ($block)
-				$htmlOptions = self::addClassName('input-block-level', $htmlOptions);
-			else if (!empty($size))
-				$htmlOptions = self::addClassName('input-' . $size, $htmlOptions);
-		}
 		$htmlOptions = self::addClassName('uneditable-input', $htmlOptions);
+		$htmlOptions = self::normalizeInputOptions($htmlOptions);
 		return self::tag('span', $htmlOptions, $value);
 	}
 
@@ -1321,7 +1313,7 @@ EOD;
 		echo self::openTag('div', $controlGroupOptions);
 		if ($label !== false)
 			echo CHtml::label($label, $name, $labelOptions);
-		echo self::formControls($input . $help, $controlOptions);
+		echo self::controls($input . $help, $controlOptions);
 		echo '</div>';
 		return ob_get_clean();
 	}
@@ -1974,7 +1966,7 @@ EOD;
 		echo self::openTag('div', $controlGroupOptions);
 		if ($label !== false)
 			echo CHtml::activeLabelEx($model, $attribute, $labelOptions);
-		echo self::formControls($input . $error . $help, $controlOptions);
+		echo self::controls($input . $error . $help, $controlOptions);
 		echo '</div>';
 		return ob_get_clean();
 	}
@@ -2135,25 +2127,6 @@ EOD;
 	}
 
 	/**
-	 * Normalizes input options.
-	 * @param array $options the options.
-	 * @return array the normalized options.
-	 */
-	protected static function normalizeInputOptions($options)
-	{
-		$block = self::popOption('block', $options, false);
-		$size = self::popOption('size', $options);
-		if (!self::addSpanClass($options))
-		{
-			if ($block)
-				$options = self::addClassName('input-block-level', $options);
-			else if (!empty($size))
-				$options = self::addClassName('input-' . $size, $options);
-		}
-		return $options;
-	}
-
-	/**
 	 * Generates a help text for an input field.
 	 * @param string $help the help text.
 	 * @param array $htmlOptions additional HTML attributes.
@@ -2168,12 +2141,29 @@ EOD;
 	}
 
 	/**
+	 * Normalizes input options.
+	 * @param array $options the options.
+	 * @return array the normalized options.
+	 */
+	protected static function normalizeInputOptions($options)
+	{
+		self::addSpanClass($options); // must be called here as CHtml renders inputs
+		$block = self::popOption('block', $options, false);
+		$size = self::popOption('size', $options);
+		if ($block)
+			$options = self::addClassName('input-block-level', $options);
+		else if (!empty($size))
+			$options = self::addClassName('input-' . $size, $options);
+		return $options;
+	}
+
+	/**
 	 * Generates form controls.
 	 * @param mixed $controls the controls.
 	 * @param array $htmlOptions additional HTML attributes.
 	 * @return string the generated controls.
 	 */
-	public static function formControls($controls, $htmlOptions = array())
+	public static function controls($controls, $htmlOptions = array())
 	{
 		$htmlOptions = self::addClassName('controls', $htmlOptions);
 		$row = self::popOption('row', $htmlOptions, false);
@@ -2196,10 +2186,10 @@ EOD;
 	 * @param array $htmlOptions additional HTML attributes.
 	 * @return string the generated controls.
 	 */
-	public static function formControlsRow($controls, $htmlOptions = array())
+	public static function controlsRow($controls, $htmlOptions = array())
 	{
 		$htmlOptions['row'] = true;
-		return self::formControls($controls, $htmlOptions);
+		return self::controls($controls, $htmlOptions);
 	}
 
 	/**
@@ -2406,7 +2396,6 @@ EOD;
 	 */
 	public static function btn($type, $label, $htmlOptions = array())
 	{
-		self::addSpanClass($htmlOptions);
 		$htmlOptions = self::addClassName('btn', $htmlOptions);
 		$color = self::popOption('color', $htmlOptions);
 		if (!empty($color))
@@ -2429,6 +2418,7 @@ EOD;
 			$label = self::icon($icon) . '&nbsp;' . $label;
 		$dropdownOptions = $htmlOptions;
 		self::removeOptions($htmlOptions, array('groupOptions', 'menuOptions', 'dropup'));
+		self::addSpanClass($htmlOptions); // must be called here as CHtml renders buttons
 		return count($items) > 0
 			? self::btnDropdown($type, $label, $items, $dropdownOptions)
 			: self::createButton($type, $label, $htmlOptions);
@@ -3255,7 +3245,11 @@ EOD;
 	 */
 	public static function labelTb($label, $htmlOptions = array())
 	{
-		return self::labelBadge('label', $label, $htmlOptions);
+		$htmlOptions = self::addClassName('label', $htmlOptions);
+		$color = self::popOption('color', $htmlOptions);
+		if (!empty($color))
+			$htmlOptions = self::addClassName('label-' . $color, $htmlOptions);
+		return self::tag('span', $htmlOptions, $label);
 	}
 
 	/**
@@ -3263,26 +3257,13 @@ EOD;
 	 * @param string $label the badge text.
 	 * @param array $htmlOptions additional HTML attributes.
 	 * @return string the generated span.
-	 *
 	 */
 	public static function badge($label, $htmlOptions = array())
 	{
-		return self::labelBadge('badge', $label, $htmlOptions);
-	}
-
-	/**
-	 * Generates a label or badge span.
-	 * @param string $type the span type.
-	 * @param string $label the label text.
-	 * @param array $htmlOptions additional HTML attributes.
-	 * @return string the generated span.
-	 */
-	public static function labelBadge($type, $label, $htmlOptions = array())
-	{
-		$htmlOptions = self::addClassName($type, $htmlOptions);
+		$htmlOptions = self::addClassName('badge', $htmlOptions);
 		$color = self::popOption('color', $htmlOptions);
 		if (!empty($color))
-			$htmlOptions = self::addClassName($type . '-' . $color, $htmlOptions);
+			$htmlOptions = self::addClassName('badge-' . $color, $htmlOptions);
 		return self::tag('span', $htmlOptions, $label);
 	}
 
@@ -3355,7 +3336,7 @@ EOD;
 				$options = self::popOption('htmlOptions', $thumbnailOptions, array());
 				if (!empty($options))
 					$thumbnailOptions = self::mergeOptions($options, $thumbnailOptions);
-				$span = self::popOption('span', $thumbnailOptions, $defaultSpan);
+				$thumbnailOptions = self::defaultOption('span', $thumbnailOptions, $defaultSpan);
 				$caption = self::popOption('caption', $thumbnailOptions, '');
 				$captionOptions = self::popOption('captionOptions', $thumbnailOptions, array());
 				$captionOptions = self::addClassName('caption', $captionOptions);
@@ -3371,8 +3352,8 @@ EOD;
 					$content = CHtml::image($image, $imageAlt, $imageOptions) . $content;
 				$url = self::popOption('url', $thumbnailOptions, false);
 				echo $url !== false
-					? self::thumbnailLink($span, $content, $url, $thumbnailOptions)
-					: self::thumbnail($span, $content, $thumbnailOptions);
+					? self::thumbnailLink($content, $url, $thumbnailOptions)
+					: self::thumbnail($content, $thumbnailOptions);
 			}
 			echo '</ul>';
 			return ob_get_clean();
@@ -3382,15 +3363,13 @@ EOD;
 
 	/**
 	 * Generates a thumbnail.
-	 * @param integer $span the number of grid columns that the thumbnail spans over.
 	 * @param string $content the thumbnail content.
 	 * @param array $htmlOptions additional HTML attributes.
 	 * @return string the generated thumbnail.
 	 */
-	public static function thumbnail($span, $content, $htmlOptions = array())
+	public static function thumbnail($content, $htmlOptions = array())
 	{
 		$itemOptions = self::popOption('itemOptions', $htmlOptions, array());
-		$itemOptions = self::addClassName('span' . $span, $itemOptions);
 		$htmlOptions = self::addClassName('thumbnail', $htmlOptions);
 		ob_start();
 		echo self::openTag('li', $itemOptions);
@@ -3403,16 +3382,14 @@ EOD;
 
 	/**
 	 * Generates a link thumbnail.
-	 * @param integer $span the number of grid columns that the thumbnail spans over.
 	 * @param string $content the thumbnail content.
 	 * @param mixed $url the url that the thumbnail links to.
 	 * @param array $htmlOptions additional HTML attributes.
 	 * @return string the generated thumbnail.
 	 */
-	public static function thumbnailLink($span, $content, $url, $htmlOptions = array())
+	public static function thumbnailLink($content, $url, $htmlOptions = array())
 	{
 		$itemOptions = self::popOption('itemOptions', $htmlOptions, array());
-		$itemOptions = self::addClassName('span' . $span, $itemOptions);
 		$htmlOptions = self::addClassName('thumbnail', $htmlOptions);
 		ob_start();
 		echo self::openTag('li', $itemOptions);
@@ -3427,10 +3404,10 @@ EOD;
 
 	/**
 	 * Generates an alert.
-	 * @param string $color the style of the alert.
+	 * @param string $color the color of the alert.
 	 * @param string $message the message to display.
 	 * @param array $htmlOptions additional HTML options.
-	 * @param string the generated alert.
+	 * @return string the generated alert.
 	 */
 	public static function alert($color, $message, $htmlOptions = array())
 	{
@@ -3455,15 +3432,15 @@ EOD;
 
 	/**
 	 * Generates an alert block.
-	 * @param string $style the style of the alert.
+	 * @param string $color the color of the alert.
 	 * @param string $message the message to display.
 	 * @param array $htmlOptions additional HTML options.
 	 * @return string the generated alert.
 	 */
-	public static function blockAlert($style, $message, $htmlOptions = array())
+	public static function blockAlert($color, $message, $htmlOptions = array())
 	{
 		$htmlOptions['block'] = true;
-		return self::alert($style, $message, $htmlOptions);
+		return self::alert($color, $message, $htmlOptions);
 	}
 
 	// Progress bars
@@ -4091,11 +4068,6 @@ EOD;
 	{
 		$span = self::popOption('span', $htmlOptions);
 		if (!empty($span))
-		{
 			$htmlOptions = self::addClassName('span' . $span, $htmlOptions);
-			return true;
-		}
-		else
-			return false;
 	}
 }
