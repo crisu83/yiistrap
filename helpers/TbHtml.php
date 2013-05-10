@@ -3810,10 +3810,15 @@ EOD;
 				$itemOptions = self::addClassName('item', $itemOptions);
 				if ($i === 0) // first item should be active
 					$itemOptions = self::addClassName('active', $itemOptions);
+				$content = self::popOption('content', $itemOptions, '');
 				$image = self::popOption('image', $itemOptions, '');
+				$imageAlt = self::popOption('alt', $itemOptions, '');
+				$imageOptions = self::popOption('imageOptions', $itemOptions, array());
+				if (!empty($image))
+					$content = CHtml::image($image, $imageAlt, $imageOptions);
 				$label = self::popOption('label', $itemOptions);
 				$caption = self::popOption('caption', $itemOptions);
-				echo self::carouselItem($image, $label, $caption, $itemOptions);
+				echo self::carouselItem($content, $label, $caption, $itemOptions);
 			}
 			echo '</div>';
 			echo self::carouselPrevLink($prevLabel, $selector, $prevOptions);
@@ -3826,23 +3831,21 @@ EOD;
 
 	/**
 	 * Generates a carousel item.
-	 * @param string $image the image url.
+	 * @param string $content the content.
 	 * @param string $label the item label text.
 	 * @param string $caption the item caption text.
 	 * @param array $htmlOptions additional HTML attributes.
 	 * @return string the generated item.
 	 */
-	public static function carouselItem($image, $label, $caption, $htmlOptions = array())
+	public static function carouselItem($content, $label, $caption, $htmlOptions = array())
 	{
-		$alt = self::popOption('alt', $htmlOptions, '');
-		$imageOptions = self::popOption('imageOptions', $htmlOptions, array());
 		$overlayOptions = self::popOption('overlayOptions', $htmlOptions, array());
 		$overlayOptions = self::addClassName('carousel-caption', $overlayOptions);
 		$labelOptions = self::popOption('labelOptions', $htmlOptions, array());
 		$captionOptions = self::popOption('captionOptions', $htmlOptions, array());
 		ob_start();
 		echo self::openTag('div', $htmlOptions);
-		echo CHtml::image($image, $alt, $imageOptions);
+		echo $content;
 		if (isset($label) || isset($caption))
 		{
 			echo self::openTag('div', $overlayOptions);
