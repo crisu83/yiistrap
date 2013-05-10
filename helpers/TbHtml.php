@@ -3336,7 +3336,8 @@ EOD;
 				$options = self::popOption('htmlOptions', $thumbnailOptions, array());
 				if (!empty($options))
 					$thumbnailOptions = self::mergeOptions($options, $thumbnailOptions);
-				$thumbnailOptions = self::defaultOption('span', $defaultSpan, $thumbnailOptions);
+				if (!isset($thumbnailOptions['itemOptions']['span']))
+					$thumbnailOptions['itemOptions']['span'] = $defaultSpan;
 				$caption = self::popOption('caption', $thumbnailOptions, '');
 				$captionOptions = self::popOption('captionOptions', $thumbnailOptions, array());
 				$captionOptions = self::addClassName('caption', $captionOptions);
