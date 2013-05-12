@@ -393,9 +393,9 @@ class TbActiveForm extends CActiveForm
      * @return string the generated input.
      * @see TbHtml::activeSearchField
      */
-    public function searchField($model, $attribute, $data, $htmlOptions = array())
+    public function searchField($model, $attribute, $htmlOptions = array())
     {
-        return TbHtml::activeSearchField($model, $attribute, $data, $htmlOptions);
+        return TbHtml::activeSearchField($model, $attribute, $htmlOptions);
     }
 
     /**
