@@ -451,7 +451,7 @@ class TbActiveForm extends CActiveForm
     public function emailFieldControlGroup($model, $attribute, $htmlOptions = array())
     {
         $htmlOptions = $this->processRowOptions($model, $attribute, $htmlOptions);
-        return TbHtml::activeEmailFieldControlGroup($model, $attribute, null/* no data */, $htmlOptions);
+        return TbHtml::activeEmailFieldControlGroup($model, $attribute, $htmlOptions);
     }
 
     /**
