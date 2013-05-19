@@ -684,6 +684,7 @@ class TbActiveForm extends CActiveForm
     protected function processRowOptions($model, $attribute, $options)
     {
         $errorOptions = TbHtml::popOption('errorOptions', $options, array());
+        $errorOptions = TbHtml::defaultOption('class', 'help-block', $errorOptions);
         $error = $this->error($model, $attribute, $errorOptions);
         if (!empty($error))
         {
