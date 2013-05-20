@@ -621,7 +621,7 @@ class TbHtml extends CHtml // required in order to access the protected methods 
 	 */
 	public static function openTag($tag, $htmlOptions = array())
 	{
-		return self::tag($tag, $htmlOptions);
+		return self::tag($tag, $htmlOptions, false, false);
 	}
 
 	// Tables
