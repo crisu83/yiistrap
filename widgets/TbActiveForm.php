@@ -27,6 +27,10 @@ class TbActiveForm extends CActiveForm
      * @var string the CSS class name for error messages.
      */
     public $errorMessageCssClass = 'error';
+    /**
+     * @var string the CSS class name for success messages.
+     */
+    public $successMessageCssClass = 'success';
 
     /**
      * Initializes the widget.
@@ -70,6 +74,8 @@ class TbActiveForm extends CActiveForm
             'model' => get_class($model),
             'name' => CHtml::resolveName($model, $attribute),
             'enableAjaxValidation' => $enableAjaxValidation,
+            'errorCssClass' => $this->errorMessageCssClass,
+            'successCssClass' => $this->successMessageCssClass,
             'inputContainer' => 'div.control-group', // Bootstrap requires this
         );
         $optionNames = array(
@@ -86,7 +92,7 @@ class TbActiveForm extends CActiveForm
         );
         foreach ($optionNames as $name)
         {
-            $option[$name] = TbHtml::getOption($name, $htmlOptions);
+            $option[$name] = TbHtml::getOption($name, $htmlOptions, (isset($option[$name]) ? $option[$name] : null));
             unset($htmlOptions[$name]);
         }
         if ($model instanceof CActiveRecord && !$model->isNewRecord)
@@ -678,6 +684,7 @@ class TbActiveForm extends CActiveForm
     protected function processRowOptions($model, $attribute, $options)
     {
         $errorOptions = TbHtml::popOption('errorOptions', $options, array());
+        $errorOptions = TbHtml::defaultOption('class', 'help-block', $errorOptions);
         $error = $this->error($model, $attribute, $errorOptions);
         if (!empty($error))
         {
