@@ -2368,7 +2368,7 @@ EOD;
 	public static function ajaxButton($label, $url, $ajaxOptions = array(), $htmlOptions = array())
 	{
 		$ajaxOptions['url']  = $url;
-		$htmlOptions['ajax'] = $ajaxOptions;
+		$htmlOptions['ajaxOptions'] = $ajaxOptions;
 		return self::btn(self::BUTTON_TYPE_AJAXBUTTON, $label, $htmlOptions);
 	}
 
@@ -2488,7 +2488,6 @@ EOD;
 				return CHtml::ajaxLink($label, $url, $ajaxOptions, $htmlOptions);
 
 			case self::BUTTON_TYPE_AJAXBUTTON:
-				$ajaxOptions['url'] = $url;
 				$htmlOptions['ajax'] = $ajaxOptions;
 				return CHtml::htmlButton($label, $htmlOptions);
 
