@@ -380,9 +380,9 @@ class TbActiveForm extends CActiveForm
      * @return string the generated field.
      * @see TbHtml::activeUneditableField
      */
-    public function uneditableField($model, $attribute, $data, $htmlOptions = array())
+    public function uneditableField($model, $attribute, $htmlOptions = array())
     {
-        return TbHtml::activeUneditableField($model, $attribute, $data, $htmlOptions);
+        return TbHtml::activeUneditableField($model, $attribute, $htmlOptions);
     }
 
     /**
