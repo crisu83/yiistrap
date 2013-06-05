@@ -46,7 +46,7 @@ class TbThumbnails extends TbListView
 				$d['index'] = $i;
 				$d['data'] = $row;
 				$d['widget'] = $this;
-				$thumbnail['content'] = $owner->$render($this->itemView, $d, true);
+				$thumbnail['caption'] = $owner->$render($this->itemView, $d, true);
 				if (isset($this->url))
 					$thumbnail['url'] = $this->evaluateExpression($this->url, array('data' => $row));
 				if (isset($this->span))
