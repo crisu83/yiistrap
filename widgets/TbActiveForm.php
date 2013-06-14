@@ -399,9 +399,9 @@ class TbActiveForm extends CActiveForm
      * @return string the generated input.
      * @see TbHtml::activeSearchField
      */
-    public function searchField($model, $attribute, $htmlOptions = array())
+    public function searchQuery($model, $attribute, $htmlOptions = array())
     {
-        return TbHtml::activeSearchField($model, $attribute, $htmlOptions);
+        return TbHtml::activeSearchQuery($model, $attribute, $htmlOptions);
     }
 
     /**
@@ -668,10 +668,10 @@ class TbActiveForm extends CActiveForm
      * @return string the generated row.
      * @see TbHtml::activeSearchFieldControlGroup
      */
-    public function searchFieldControlGroup($model, $attribute, $htmlOptions = array())
+    public function searchQueryControlGroup($model, $attribute, $htmlOptions = array())
     {
         $htmlOptions = $this->processRowOptions($model, $attribute, $htmlOptions);
-        return TbHtml::activeSearchFieldControlGroup($model, $attribute, $htmlOptions);
+        return TbHtml::activeSearchQueryControlGroup($model, $attribute, $htmlOptions);
     }
 
     /**
