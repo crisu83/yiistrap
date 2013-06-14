@@ -655,7 +655,7 @@ class TbHtml extends CHtml // required in order to access the protected methods 
 	 * @param array $htmlOptions additional HTML attributes.
 	 * @return string the generated tag.
 	 */
-	public static function beginFormTb($layout, $action = '', $method = 'post', $htmlOptions = array())
+	public static function beginFormTb($layout = self::FORM_LAYOUT_VERTICAL, $action = '', $method = 'post', $htmlOptions = array())
 	{
 		if (!empty($layout))
 			$htmlOptions = self::addClassName('form-' . $layout, $htmlOptions);
@@ -669,7 +669,7 @@ class TbHtml extends CHtml // required in order to access the protected methods 
 	 * @param array $htmlOptions additional HTML attributes.
 	 * @return string the generated form tag.
 	 */
-	public static function statefulFormTb($layout, $action = '', $method = 'post', $htmlOptions = array())
+	public static function statefulFormTb($layout = self::FORM_LAYOUT_VERTICAL, $action = '', $method = 'post', $htmlOptions = array())
 	{
 		return self::formTb($layout, $action, $method, $htmlOptions)
 		. self::tag('div', array('style' => 'display:none'), CHtml::pageStateField(''));
