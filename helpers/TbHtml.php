@@ -655,9 +655,10 @@ class TbHtml extends CHtml // required in order to access the protected methods 
 	 * @param array $htmlOptions additional HTML attributes.
 	 * @return string the generated tag.
 	 */
-	public static function beginFormTb($layout = self::FORM_LAYOUT_VERTICAL, $action = '', $method = 'post', $htmlOptions = array())
+	public static function beginFormTb($layout, $action = '', $method = 'post', $htmlOptions = array())
 	{
-		$htmlOptions = self::addClassName('form-' . $layout, $htmlOptions);
+		if (!empty($layout))
+			$htmlOptions = self::addClassName('form-' . $layout, $htmlOptions);
 		return CHtml::beginForm($action, $method, $htmlOptions);
 	}
 
@@ -668,10 +669,10 @@ class TbHtml extends CHtml // required in order to access the protected methods 
 	 * @param array $htmlOptions additional HTML attributes.
 	 * @return string the generated form tag.
 	 */
-	public static function statefulFormTb($layout = self::FORM_LAYOUT_VERTICAL, $action = '', $method = 'post', $htmlOptions = array())
+	public static function statefulFormTb($layout, $action = '', $method = 'post', $htmlOptions = array())
 	{
 		return self::formTb($layout, $action, $method, $htmlOptions)
-			. self::tag('div', array('style' => 'display:none'), CHtml::pageStateField(''));
+		. self::tag('div', array('style' => 'display:none'), CHtml::pageStateField(''));
 	}
 
 	/**
@@ -1016,7 +1017,7 @@ EOD;
 	 * @param array $htmlOptions additional HTML attributes.
 	 * @return string the generated input.
 	 */
-	public static function searchField($name, $value = '', $htmlOptions = array())
+	public static function searchQueryField($name, $value = '', $htmlOptions = array())
 	{
 		$htmlOptions = self::addClassName('search-query', $htmlOptions);
 		return self::textField($name, $value, $htmlOptions);
@@ -1269,7 +1270,7 @@ EOD;
 	 * @return string the generated control group.
 	 * @see TbHtml::controlGroup
 	 */
-	public static function searchFieldControlGroup($name, $value = '', $htmlOptions = array())
+	public static function searchQueryControlGroup($name, $value = '', $htmlOptions = array())
 	{
 		return self::controlGroup(self::INPUT_TYPE_SEARCH, $name, $value, $htmlOptions);
 	}
@@ -1369,7 +1370,7 @@ EOD;
 			case self::INPUT_TYPE_UNEDITABLE:
 				return self::uneditableField($value, $htmlOptions);
 			case self::INPUT_TYPE_SEARCH:
-				return self::searchField($name, $value, $htmlOptions);
+				return self::searchQueryField($name, $value, $htmlOptions);
 			default:
 				throw new CException('Invalid input type "' . $type . '".');
 		}
@@ -1667,7 +1668,7 @@ EOD;
 	 * @param array $htmlOptions additional HTML attributes.
 	 * @return string the generated input.
 	 */
-	public static function activeSearchField($model, $attribute, $htmlOptions = array())
+	public static function activeSearchQuery($model, $attribute, $htmlOptions = array())
 	{
 		$htmlOptions = self::addClassName('search-query', $htmlOptions);
 		return self::activeTextField($model, $attribute, $htmlOptions);
@@ -1921,7 +1922,7 @@ EOD;
 	 * @return string the generated control group.
 	 * @see TbHtml::activeControlGroup
 	 */
-	public static function activeSearchFieldControlGroup($model, $attribute, $htmlOptions = array())
+	public static function activeSearchQueryControlGroup($model, $attribute, $htmlOptions = array())
 	{
 		return self::activeControlGroup(self::INPUT_TYPE_SEARCH, $model, $attribute, $htmlOptions);
 	}
@@ -2022,7 +2023,7 @@ EOD;
 			case self::INPUT_TYPE_UNEDITABLE:
 				return self::activeUneditableField($model, $attribute, $htmlOptions);
 			case self::INPUT_TYPE_SEARCH:
-				return self::activeSearchField($model, $attribute, $htmlOptions);
+				return self::activeSearchQuery($model, $attribute, $htmlOptions);
 			default:
 				throw new CException('Invalid input type "' . $type . '".');
 		}
@@ -2226,7 +2227,7 @@ EOD;
 		$value = self::popOption('value', $inputOptions, '');
 		ob_start();
 		echo self::beginFormTb(self::FORM_LAYOUT_SEARCH, $action, $method, $htmlOptions);
-		echo self::searchField($name, $value, $inputOptions);
+		echo self::searchQueryField($name, $value, $inputOptions);
 		echo CHtml::endForm();
 		return ob_get_clean();
 	}
@@ -2415,7 +2416,7 @@ EOD;
 		$items = strpos($type, 'input') === false ? self::popOption('items', $htmlOptions, array()) : array();
 		$icon = self::popOption('icon', $htmlOptions);
 		if (!empty($icon) && strpos($type, 'input') === false) // inputs cannot have icons
-			$label = self::icon($icon) . '&nbsp;' . $label;
+		$label = self::icon($icon) . '&nbsp;' . $label;
 		$dropdownOptions = $htmlOptions;
 		self::removeOptions($htmlOptions, array('groupOptions', 'menuOptions', 'dropup'));
 		self::addSpanClass($htmlOptions); // must be called here as CHtml renders buttons
@@ -2691,6 +2692,8 @@ EOD;
 			echo self::openTag('div', $htmlOptions);
 			foreach ($buttons as $buttonOptions)
 			{
+				if (isset($buttonOptions['visible']) && $buttonOptions['visible'] === false)
+					continue;
 				$options = self::popOption('htmlOptions', $buttonOptions, array());
 				if (!empty($options))
 					$buttonOptions = self::mergeOptions($options, $buttonOptions);
@@ -2728,6 +2731,8 @@ EOD;
 			echo self::openTag('div', $htmlOptions);
 			foreach ($groups as $groupOptions)
 			{
+				if (isset($groupOptions['visible']) && $groupOptions['visible'] === false)
+					continue;
 				$items = self::popOption('items', $groupOptions, array());
 				if (empty($items))
 					continue;
@@ -2845,7 +2850,8 @@ EOD;
 	public static function nav($type, $items, $htmlOptions = array())
 	{
 		$htmlOptions = self::addClassName('nav', $htmlOptions);
-		$htmlOptions = self::addClassName('nav-' . $type, $htmlOptions);
+		if (!empty($type))
+			$htmlOptions = self::addClassName('nav-' . $type, $htmlOptions);
 		if ($type !== self::NAV_TYPE_LIST && self::popOption('stacked', $htmlOptions, false))
 			$htmlOptions = self::addClassName('nav-stacked', $htmlOptions);
 		ob_start();
@@ -2869,6 +2875,8 @@ EOD;
 				echo $itemOptions;
 			else
 			{
+				if (isset($itemOptions['visible']) && $itemOptions['visible'] === false)
+					continue;
 				$options = self::popOption('itemOptions', $itemOptions, array());
 				if (!empty($options))
 					$itemOptions = self::mergeOptions($options, $itemOptions);
@@ -2982,6 +2990,8 @@ EOD;
 		$menuItems = array();
 		foreach ($tabs as $i => &$tabOptions)
 		{
+			if (isset($tabOptions['visible']) && $tabOptions['visible'] === false)
+				continue;
 			$icon = self::popOption('icon', $tabOptions);
 			$label = self::popOption('label', $tabOptions, '');
 			$id = $tabOptions['id'] = self::popOption('id', $tabOptions, 'tab_' . ($i + 1));
@@ -3332,6 +3342,8 @@ EOD;
 			echo self::openTag('ul', $htmlOptions);
 			foreach ($thumbnails as $thumbnailOptions)
 			{
+				if (isset($thumbnailOptions['visible']) && $thumbnailOptions['visible'] === false)
+					continue;
 				$options = self::popOption('htmlOptions', $thumbnailOptions, array());
 				if (!empty($options))
 					$thumbnailOptions = self::mergeOptions($options, $thumbnailOptions);
@@ -3513,6 +3525,8 @@ EOD;
 			echo self::openTag('div', $htmlOptions);
 			foreach ($bars as $barOptions)
 			{
+				if (isset($barOptions['visible']) && $barOptions['visible'] === false)
+					continue;
 				$options = self::popOption('htmlOptions', $barOptions, array());
 				if (!empty($options))
 					$barOptions = self::mergeOptions($options, $barOptions);
@@ -3562,6 +3576,8 @@ EOD;
 			ob_start();
 			foreach ($mediaObjects as $mediaObjectOptions)
 			{
+				if (isset($mediaObjectOptions['visible']) && $mediaObjectOptions['visible'] === false)
+					continue;
 				$image = self::getOption('image', $mediaObjectOptions);
 				$heading = self::getOption('heading', $mediaObjectOptions, '');
 				$content = self::getOption('content', $mediaObjectOptions, '');
@@ -3792,7 +3808,7 @@ EOD;
 				$htmlOptions = self::defaultOption('data-interval', $interval, $htmlOptions);
 			$pause = self::popOption('data-interval', $htmlOptions);
 			if ($pause) // todo: add attribute validation if seen necessary.
-				$htmlOptions = self::defaultOption('data-pause', $pause, $htmlOptions);
+			$htmlOptions = self::defaultOption('data-pause', $pause, $htmlOptions);
 			$indicatorOptions = self::popOption('indicatorOptions', $htmlOptions, array());
 			$innerOptions = self::popOption('innerOptions', $htmlOptions, array());
 			$innerOptions = self::addClassName('carousel-inner', $innerOptions);
@@ -3807,9 +3823,11 @@ EOD;
 			echo self::openTag('div', $innerOptions);
 			foreach ($items as $i => $itemOptions)
 			{
+				if (isset($itemOptions['visible']) && $itemOptions['visible'] === false)
+					continue;
 				$itemOptions = self::addClassName('item', $itemOptions);
 				if ($i === 0) // first item should be active
-					$itemOptions = self::addClassName('active', $itemOptions);
+				$itemOptions = self::addClassName('active', $itemOptions);
 				$content = self::popOption('content', $itemOptions, '');
 				$image = self::popOption('image', $itemOptions, '');
 				$imageAlt = self::popOption('alt', $itemOptions, '');
