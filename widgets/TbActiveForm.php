@@ -54,73 +54,71 @@ class TbActiveForm extends CActiveForm
      * @param boolean $enableClientValidation whether to enable client-side validation for the specified attribute.
      * @return string the validation result (error display or success message).
      */
-    public function error($model, $attribute, $htmlOptions = array(), $enableAjaxValidation = true, $enableClientValidation = true)
-    {
-        if (!$this->enableAjaxValidation)
-            $enableAjaxValidation = false;
-        if (!$this->enableClientValidation)
-            $enableClientValidation = false;
-        if (!$enableAjaxValidation && !$enableClientValidation)
-            return TbHtml::error($model, $attribute, $htmlOptions);
-        $id = CHtml::activeId($model, $attribute);
-        $inputID = TbHtml::getOption('inputID', $htmlOptions, $id);
-        unset($htmlOptions['inputID']);
-        if (!isset($htmlOptions['id']))
-            $htmlOptions['id'] = $inputID . '_em_';
-        $option = array(
-            'id' => $id,
-            'inputID' => $inputID,
-            'errorID' => $htmlOptions['id'],
-            'model' => get_class($model),
-            'name' => CHtml::resolveName($model, $attribute),
-            'enableAjaxValidation' => $enableAjaxValidation,
-            'errorCssClass' => $this->errorMessageCssClass,
-            'successCssClass' => $this->successMessageCssClass,
-            'inputContainer' => 'div.control-group', // Bootstrap requires this
-        );
-        $optionNames = array(
-            'validationDelay',
-            'validateOnChange',
-            'validateOnType',
-            'hideErrorMessage',
-            'inputContainer',
-            'errorCssClass',
-            'successCssClass',
-            'validatingCssClass',
-            'beforeValidateAttribute',
-            'afterValidateAttribute',
-        );
-        foreach ($optionNames as $name)
-        {
-            $option[$name] = TbHtml::getOption($name, $htmlOptions, (isset($option[$name]) ? $option[$name] : null));
-            unset($htmlOptions[$name]);
-        }
-        if ($model instanceof CActiveRecord && !$model->isNewRecord)
-            $option['status'] = 1;
-        if ($enableClientValidation)
-        {
-            $validators = TbHtml::getOption('clientValidation', $htmlOptions, array());
-            $attributeName = $attribute;
-            if (($pos = strrpos($attribute, ']')) !== false && $pos !== strlen($attribute) - 1) // e.g. [a]name
-                $attributeName = substr($attribute, $pos + 1);
-            foreach ($model->getValidators($attributeName) as $validator)
-            {
-                if ($validator->enableClientValidation)
-                    if (($js = $validator->clientValidateAttribute($model, $attributeName)) != '')
-                        $validators[] = $js;
-            }
-            if ($validators !== array())
-                $option['clientValidation'] = "js:function(value, messages, attribute) {\n" . implode("\n", $validators) . "\n}";
-        }
-        $html = TbHtml::error($model, $attribute, $htmlOptions);
-        if ($html === '')
-        {
-            $htmlOptions = TbHtml::addStyles('display:none', $htmlOptions);
-            $html = CHtml::tag('span', $htmlOptions, '');
-        }
-        $this->attributes[$inputID] = $option;
-        return $html;
-    }
+	public function error($model, $attribute, $htmlOptions = array(), $enableAjaxValidation = true, $enableClientValidation = true)
+	{
+		if (!$this->enableAjaxValidation)
+			$enableAjaxValidation = false;
+		if (!$this->enableClientValidation)
+			$enableClientValidation = false;
+		if (!$enableAjaxValidation && !$enableClientValidation)
+			return TbHtml::error($model, $attribute, $htmlOptions);
+		$id = CHtml::activeId($model, $attribute);
+		$inputID = TbHtml::getOption('inputID', $htmlOptions, $id);
+		unset($htmlOptions['inputID']);
+		$htmlOptions = TbHtml::defaultOption('id', $inputID . '_em_', $htmlOptions);
+		$option = array(
+			'id' => $id,
+			'inputID' => $inputID,
+			'errorID' => $htmlOptions['id'],
+			'model' => get_class($model),
+			'name' => $attribute,
+			'enableAjaxValidation' => $enableAjaxValidation,
+			'inputContainer' => 'div.control-group', // Bootstrap requires this
+		);
+		$optionNames = array(
+			'validationDelay',
+			'validateOnChange',
+			'validateOnType',
+			'hideErrorMessage',
+			'inputContainer',
+			'errorCssClass',
+			'successCssClass',
+			'validatingCssClass',
+			'beforeValidateAttribute',
+			'afterValidateAttribute',
+		);
+		foreach ($optionNames as $name)
+		{
+			if (isset($htmlOptions[$name]))
+				$option[$name] = TbHtml::popOption($name, $htmlOptions);
+		}
+		if ($model instanceof CActiveRecord && !$model->isNewRecord)
+			$option['status'] = 1;
+		if ($enableClientValidation)
+		{
+			$validators = TbHtml::getOption('clientValidation', $htmlOptions, array());
+			$attributeName = $attribute;
+			if (($pos = strrpos($attribute, ']')) !== false && $pos !== strlen($attribute) - 1) // e.g. [a]name
+			$attributeName = substr($attribute, $pos + 1);
+			foreach ($model->getValidators($attributeName) as $validator)
+			{
+				if ($validator->enableClientValidation)
+					if (($js = $validator->clientValidateAttribute($model, $attributeName)) != '')
+						$validators[] = $js;
+			}
+			if ($validators !== array())
+				$option['clientValidation'] = "js:function(value, messages, attribute) {\n" . implode("\n", $validators) . "\n}";
+		}
+		$html = TbHtml::error($model, $attribute, $htmlOptions);
+		if ($html === '')
+		{
+			$htmlOptions = TbHtml::addClassName('help-inline', $htmlOptions);
+			$htmlOptions = TbHtml::addStyles('display:none', $htmlOptions);
+			$html = CHtml::tag('span', $htmlOptions, '');
+		}
+		$this->attributes[$inputID]=$option;
+		return $html;
+	}
 
     /**
      * Displays a summary of validation errors for one or several models.
@@ -683,17 +681,15 @@ class TbActiveForm extends CActiveForm
      */
     protected function processRowOptions($model, $attribute, $options)
     {
-        $errorOptions = TbHtml::popOption('errorOptions', $options, array());
-        $errorOptions = TbHtml::defaultOption('class', 'help-block', $errorOptions);
-        $error = $this->error($model, $attribute, $errorOptions);
-        if (!empty($error))
-        {
-            $options['error'] = $error;
-            $options['color'] = TbHtml::INPUT_COLOR_ERROR;
-        }
-        $helpOptions = TbHtml::popOption('helpOptions', $options, array());
-        $helpOptions['type'] = $this->helpType;
-        $options['helpOptions'] = $helpOptions;
-        return $options;
+		$errorOptions = TbHtml::popOption('errorOptions', $options, array());
+		$error = $this->error($model, $attribute, $errorOptions);
+		// kind of a hack for ajax forms but this works for now.
+		if (!empty($error) && strpos($error, 'display:none') === false)
+			$options['color'] = TbHtml::INPUT_COLOR_ERROR;
+		$options['error'] = $error;
+		$helpOptions = TbHtml::popOption('helpOptions', $options, array());
+		$helpOptions['type'] = $this->helpType;
+		$options['helpOptions'] = $helpOptions;
+		return $options;
     }
 }
