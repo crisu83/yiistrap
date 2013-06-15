@@ -1966,7 +1966,7 @@ EOD;
 		ob_start();
 		echo self::openTag('div', $controlGroupOptions);
 		if ($label !== false)
-			echo CHtml::activeLabelEx($model, $attribute, $labelOptions);
+			echo CHtml::activeLabel($model, $attribute, $labelOptions);
 		echo self::controls($input . $error . $help, $controlOptions);
 		echo '</div>';
 		return ob_get_clean();
@@ -2980,6 +2980,7 @@ EOD;
 	 */
 	public static function tabbable($tabs, $htmlOptions = array())
 	{
+		// todo: fix nested menu items, current it's not supported.
 		$htmlOptions = self::addClassName('tabbable', $htmlOptions);
 		$placement = self::popOption('placement', $htmlOptions);
 		if (!empty($placement))
