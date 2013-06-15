@@ -2974,13 +2974,13 @@ EOD;
 
 	/**
 	 * Generates a tabbable menu.
+	 * @param string $type the menu type.
 	 * @param array $tabs the tab configurations.
 	 * @param array $htmlOptions additional HTML attributes.
 	 * @return string the generated menu.
 	 */
-	public static function tabbable($tabs, $htmlOptions = array())
+	public static function tabbable($type, $tabs, $htmlOptions = array())
 	{
-		// todo: fix nested menu items, current it's not supported.
 		$htmlOptions = self::addClassName('tabbable', $htmlOptions);
 		$placement = self::popOption('placement', $htmlOptions);
 		if (!empty($placement))
@@ -2988,46 +2988,86 @@ EOD;
 		$menuOptions = self::popOption('menuOptions', $htmlOptions, array());
 		$contentOptions = self::popOption('contentOptions', $htmlOptions, array());
 		$contentOptions = self::addClassName('tab-content', $contentOptions);
+		$panes = array();
+		$menu = TbHtml::nav($type, self::normalizeTabs($tabs, $panes), $menuOptions);
+		ob_start();
+		echo TbHtml::openTag('div', $contentOptions);
+		echo implode('', $panes);
+		echo '</div>';
+		$content = ob_get_clean();
+		ob_start();
+		echo TbHtml::openTag('div', $htmlOptions);
+		echo $placement === self::TABS_PLACEMENT_BELOW ? $content . $menu : $menu . $content;
+		echo '</div>';
+		return ob_get_clean();
+	}
+
+	/**
+	 * Generates a tabbable tabs menu.
+	 * @param array $tabs the tab configurations.
+	 * @param array $htmlOptions additional HTML attributes.
+	 * @return string the generated menu.
+	 */
+	public static function tabbableTabs($tabs, $htmlOptions = array())
+	{
+		return self::tabbable(self::NAV_TYPE_TABS, $tabs, $htmlOptions);
+	}
+
+	/**
+	 * Generates a tabbable pills menu.
+	 * @param array $tabs the tab configurations.
+	 * @param array $htmlOptions additional HTML attributes.
+	 * @return string the generated menu.
+	 */
+	public static function tabbablePills($pills, $htmlOptions = array())
+	{
+		return self::tabbable(self::NAV_TYPE_PILLS, $pills, $htmlOptions);
+	}
+
+	/**
+	 * Normalizes the tab configuration.
+	 * @param array $tabs the tab configuration.
+	 * @param array $panes a reference to the panes array.
+	 * @param integer $i the running index.
+	 * @return array the items.
+	 */
+	protected function normalizeTabs($tabs, &$panes, $i = 0)
+	{
 		$menuItems = array();
-		foreach ($tabs as $i => &$tabOptions)
+		foreach ($tabs as $tabOptions)
 		{
 			if (isset($tabOptions['visible']) && $tabOptions['visible'] === false)
 				continue;
-			$icon = self::popOption('icon', $tabOptions);
-			$label = self::popOption('label', $tabOptions, '');
-			$id = $tabOptions['id'] = self::popOption('id', $tabOptions, 'tab_' . ($i + 1));
-			$active = self::getOption('active', $tabOptions, false);
-			$disabled = self::popOption('disabled', $tabOptions, false);
-			$linkOptions = self::popOption('linkOptions', $tabOptions, array());
-			$linkOptions['data-toggle'] = 'tab';
-			$itemOptions = self::popOption('itemOptions', $tabOptions, array());
+			$menuItem = array();
+			$menuItem['icon'] = self::popOption('icon', $tabOptions);
+			$menuItem['label'] = self::popOption('label', $tabOptions, '');
+			$menuItem['active'] = self::getOption('active', $tabOptions, false);
+			$menuItem['disabled'] = self::popOption('disabled', $tabOptions, false);
+			$menuItem['itemOptions'] = self::popOption('itemOptions', $tabOptions, array());
+			$menuItem['linkOptions'] = self::popOption('linkOptions', $tabOptions, array());
 			$items = self::popOption('items', $tabOptions, array());
-			$menuItem = array(
-				'icon' => $icon,
-				'label' => $label,
-				'url' => '#' . $id,
-				'active' => $active,
-				'disabled' => $disabled,
-				'itemOptions' => $itemOptions,
-				'linkOptions' => $linkOptions,
-				'items' => $items,
-			);
+			if (!empty($items))
+			{
+				$menuItem['linkOptions']['data-toggle'] = 'dropdown';
+				$menuItem['items'] = self::normalizeTabs($items, $panes, $i);
+			}
+			else
+			{
+				$paneOptions = self::popOption('paneOptions', $tabOptions, array());
+				$id = $paneOptions['id'] = self::popOption('id', $tabOptions, 'tab_' . ++$i);
+				$menuItem['linkOptions']['data-toggle'] = 'tab';
+				$menuItem['url'] = '#' . $id;
+				$paneOptions = self::addClassName('tab-pane', $paneOptions);
+				if (self::popOption('fade', $tabOptions, true))
+					$paneOptions = self::addClassName('fade', $paneOptions);
+				if (self::popOption('active', $tabOptions, false))
+					$paneOptions = self::addClassName('active in', $paneOptions);
+				$paneContent = self::popOption('content', $tabOptions, '');
+				$panes[] = TbHtml::tag('div', $paneOptions, $paneContent);
+			}
 			$menuItems[] = $menuItem;
 		}
-		ob_start();
-		echo TbHtml::openTag('div', $htmlOptions);
-		echo TbHtml::tabs($menuItems, $menuOptions);
-		echo TbHtml::openTag('div', $contentOptions);
-		foreach ($tabs as &$tabOptions)
-		{
-			if (self::popOption('active', $tabOptions, false))
-				$tabOptions = self::addClassName('active', $tabOptions);
-			$tabContent = self::popOption('content', $tabOptions, '');
-			$tabOptions = self::addClassName('tab-pane', $tabOptions);
-			echo TbHtml::tag('div', $tabOptions, $tabContent);
-		}
-		echo '</div></div>';
-		return ob_get_clean();
+		return $menuItems;
 	}
 
 	// Navbar
@@ -3809,7 +3849,7 @@ EOD;
 				$htmlOptions = self::defaultOption('data-interval', $interval, $htmlOptions);
 			$pause = self::popOption('data-interval', $htmlOptions);
 			if ($pause) // todo: add attribute validation if seen necessary.
-			$htmlOptions = self::defaultOption('data-pause', $pause, $htmlOptions);
+				$htmlOptions = self::defaultOption('data-pause', $pause, $htmlOptions);
 			$indicatorOptions = self::popOption('indicatorOptions', $htmlOptions, array());
 			$innerOptions = self::popOption('innerOptions', $htmlOptions, array());
 			$innerOptions = self::addClassName('carousel-inner', $innerOptions);
