@@ -120,35 +120,31 @@ class TbActiveForm extends CActiveForm
 		return $html;
 	}
 
-    /**
-     * Displays a summary of validation errors for one or several models.
-     * @param mixed $models the models whose input errors are to be displayed.
-     * @param string $header a piece of HTML code that appears in front of the errors
-     * @param string $footer a piece of HTML code that appears at the end of the errors
-     * @param array $htmlOptions additional HTML attributes to be rendered in the container div tag.
-     * @return string the error summary. Empty if no errors are found.
-     */
-    public function errorSummary($models, $header = null, $footer = null, $htmlOptions = array())
-    {
-        if (!$this->enableAjaxValidation && !$this->enableClientValidation)
-            return TbHtml::errorSummary($models, $header, $footer, $htmlOptions);
-        if (!isset($htmlOptions['id']))
-            $htmlOptions['id'] = $this->id . '_es_';
-        $html = TbHtml::errorSummary($models, $header, $footer, $htmlOptions);
-        if ($html === '')
-        {
-            if ($header === null)
-                $header = '<p>' . Yii::t('yii', 'Please fix the following input errors:') . '</p>';
-            if (!isset($htmlOptions['class']))
-                $htmlOptions['class'] = CHtml::$errorSummaryCss;
-            $htmlOptions['style'] = isset($htmlOptions['style'])
-                ? rtrim($htmlOptions['style'], ';') . ';display:none'
-                : 'display:none';
-            $html = CHtml::tag('div', $htmlOptions, $header . '<ul><li>dummy</li></ul>' . $footer);
-        }
-        $this->summaryID = $htmlOptions['id'];
-        return $html;
-    }
+	/**
+	 * Displays a summary of validation errors for one or several models.
+	 * @param mixed $models the models whose input errors are to be displayed.
+	 * @param string $header a piece of HTML code that appears in front of the errors
+	 * @param string $footer a piece of HTML code that appears at the end of the errors
+	 * @param array $htmlOptions additional HTML attributes to be rendered in the container div tag.
+	 * @return string the error summary. Empty if no errors are found.
+	 */
+	public function errorSummary($models, $header = null, $footer = null, $htmlOptions = array())
+	{
+		if (!$this->enableAjaxValidation && !$this->enableClientValidation)
+			return TbHtml::errorSummary($models, $header, $footer, $htmlOptions);
+		$htmlOptions = TbHtml::defaultOption('id', $this->id . '_es_', $htmlOptions);
+		$html = TbHtml::errorSummary($models, $header, $footer, $htmlOptions);
+		if ($html === '')
+		{
+			if ($header === null)
+				$header = '<p>' . Yii::t('yii', 'Please fix the following input errors:') . '</p>';
+			$htmlOptions = TbHtml::addClassName(TbHtml::$errorSummaryCss, $htmlOptions);
+			$htmlOptions = TbHtml::addStyles('display:none', $htmlOptions);
+			$html = CHtml::tag('div', $htmlOptions, $header . '<ul><li>dummy</li></ul>' . $footer);
+		}
+		$this->summaryID = $htmlOptions['id'];
+		return $html;
+	}
 
     /**
      * Renders a text field for a model attribute.

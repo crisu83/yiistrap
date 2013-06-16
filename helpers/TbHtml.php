@@ -389,6 +389,11 @@ class TbHtml extends CHtml // required in order to access the protected methods 
 	// Default close text.
 	const CLOSE_TEXT = '&times;';
 
+	/**
+	 * @var string the CSS class for displaying error summaries.
+	 */
+	public static $errorSummaryCss = 'alert alert-block alert-error';
+
 	//
 	// BASE CSS
 	// --------------------------------------------------
