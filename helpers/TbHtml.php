@@ -2644,9 +2644,7 @@ EOD;
 		// todo: think about how to apply this, now it applies to all depths while it should only apply for the first.
 		//$htmlOptions = self::setDefaultValue('role', 'menu', $htmlOptions);
 		$htmlOptions = self::addClassName('dropdown-menu', $htmlOptions);
-		ob_start();
-		echo self::menu($items, $htmlOptions);
-		return ob_get_clean();
+		return self::menu($items, $htmlOptions);
 	}
 
 	/**
@@ -2891,9 +2889,7 @@ EOD;
 			$htmlOptions = self::addClassName('nav-' . $type, $htmlOptions);
 		if ($type !== self::NAV_TYPE_LIST && self::popOption('stacked', $htmlOptions, false))
 			$htmlOptions = self::addClassName('nav-stacked', $htmlOptions);
-		ob_start();
-		echo self::menu($items, $htmlOptions);
-		return ob_get_clean();
+		return self::menu($items, $htmlOptions);
 	}
 
 	/**
@@ -2904,46 +2900,50 @@ EOD;
 	 */
 	public static function menu($items, $htmlOptions = array())
 	{
-		ob_start();
-		echo self::openTag('ul', $htmlOptions);
-		foreach ($items as $itemOptions)
+		if (is_array($items) && !empty($items))
 		{
-			if (is_string($itemOptions))
-				echo $itemOptions;
-			else
+			ob_start();
+			echo self::openTag('ul', $htmlOptions);
+			foreach ($items as $itemOptions)
 			{
-				if (isset($itemOptions['visible']) && $itemOptions['visible'] === false)
-					continue;
-				$options = self::popOption('itemOptions', $itemOptions, array());
-				if (!empty($options))
-					$itemOptions = self::mergeOptions($options, $itemOptions);
-				// todo: I'm not quite happy with the logic below but it will have to do for now.
-				$label = self::popOption('label', $itemOptions, '');
-				if (self::popOption('active', $itemOptions, false))
-					$itemOptions = self::addClassName('active', $itemOptions);
-				if (self::popOption('disabled', $itemOptions, false))
-					$itemOptions = self::addClassName('disabled', $itemOptions);
-				if (self::popOption('header', $itemOptions, false))
-					echo self::menuHeader($label, $itemOptions);
+				if (is_string($itemOptions))
+					echo $itemOptions;
 				else
 				{
-					$itemOptions['linkOptions'] = self::getOption('linkOptions', $itemOptions, array());
-					$icon = self::popOption('icon', $itemOptions);
-					if (!empty($icon))
-						$label = self::icon($icon) . ' ' . $label;
-					$items = self::popOption('items', $itemOptions, array());
-					if (empty($items))
-					{
-						$url = self::popOption('url', $itemOptions, false);
-						echo self::menuLink($label, $url, $itemOptions);
-					}
+					if (isset($itemOptions['visible']) && $itemOptions['visible'] === false)
+						continue;
+					$options = self::popOption('itemOptions', $itemOptions, array());
+					if (!empty($options))
+						$itemOptions = self::mergeOptions($options, $itemOptions);
+					$label = self::popOption('label', $itemOptions, '');
+					if (self::popOption('active', $itemOptions, false))
+						$itemOptions = self::addClassName('active', $itemOptions);
+					if (self::popOption('disabled', $itemOptions, false))
+						$itemOptions = self::addClassName('disabled', $itemOptions);
+					if (self::popOption('header', $itemOptions, false))
+						echo self::menuHeader($label, $itemOptions);
 					else
-						echo self::menuDropdown($label, $items, $itemOptions);
+					{
+						$itemOptions['linkOptions'] = self::getOption('linkOptions', $itemOptions, array());
+						$icon = self::popOption('icon', $itemOptions);
+						if (!empty($icon))
+							$label = self::icon($icon) . ' ' . $label;
+						$items = self::popOption('items', $itemOptions, array());
+						if (empty($items))
+						{
+							$url = self::popOption('url', $itemOptions, false);
+							echo self::menuLink($label, $url, $itemOptions);
+						}
+						else
+							echo self::menuDropdown($label, $items, $itemOptions);
+					}
 				}
 			}
+			echo '</ul>';
+			return ob_get_clean();
 		}
-		echo '</ul>';
-		return ob_get_clean();
+		else
+			return '';
 	}
 
 	/**
@@ -3447,7 +3447,8 @@ EOD;
 			echo '</ul>';
 			return ob_get_clean();
 		}
-		return '';
+		else
+			return '';
 	}
 
 	/**
@@ -3720,9 +3721,7 @@ EOD;
 		$size = self::popOption('size', $htmlOptions);
 		if (!empty($size))
 			$htmlOptions = self::addClassName('well-' . $size, $htmlOptions);
-		ob_start();
-		echo self::tag('div', $htmlOptions, $content);
-		return ob_get_clean();
+		return self::tag('div', $htmlOptions, $content);
 	}
 
 	/**
