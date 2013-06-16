@@ -1330,13 +1330,14 @@ EOD;
 	/**
 	 * Generates a custom (pre-rendered) form control group.
 	 * @param string $input the rendered input.
+	 * @param string $name the input name.
 	 * @param array $htmlOptions additional HTML attributes.
 	 * @return string the generated control group.
 	 */
-	public static function customControlGroup($input, $htmlOptions = array())
+	public static function customControlGroup($input, $name, $htmlOptions = array())
 	{
 		$htmlOptions['input'] = $input;
-		return self::controlGroup(self::INPUT_TYPE_CUSTOM, null, null, $htmlOptions);
+		return self::controlGroup(self::INPUT_TYPE_CUSTOM, $name, '', $htmlOptions);
 	}
 
 	/**
@@ -1997,13 +1998,15 @@ EOD;
 	/**
 	 * Generates a custom (pre-rendered) active form control group.
 	 * @param string $input the rendered input.
+	 * @param CModel $model the data model.
+	 * @param string $attribute the attribute.
 	 * @param array $htmlOptions additional HTML attributes.
 	 * @return string the generated control group.
 	 */
-	public static function customActiveControlGroup($input, $htmlOptions = array())
+	public static function customActiveControlGroup($input, $model, $attribute, $htmlOptions = array())
 	{
 		$htmlOptions['input'] = $input;
-		return self::activeControlGroup(self::INPUT_TYPE_CUSTOM, null, null, $htmlOptions);
+		return self::activeControlGroup(self::INPUT_TYPE_CUSTOM, $model, $attribute, $htmlOptions);
 	}
 
 	/**
