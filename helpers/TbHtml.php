@@ -58,6 +58,7 @@ class TbHtml extends CHtml // required in order to access the protected methods 
 	const INPUT_TYPE_INLINERADIOBUTTONLIST = 'inlineRadioButtonList';
 	const INPUT_TYPE_UNEDITABLE = 'uneditableField';
 	const INPUT_TYPE_SEARCH = 'searchQuery';
+	const INPUT_TYPE_WIDGET = 'widget';
 
 	const INPUT_SIZE_MINI = 'mini';
 	const INPUT_SIZE_SMALL = 'small';
@@ -1376,9 +1377,34 @@ EOD;
 				return self::uneditableField($value, $htmlOptions);
 			case self::INPUT_TYPE_SEARCH:
 				return self::searchQueryField($name, $value, $htmlOptions);
+			case self::INPUT_TYPE_WIDGET:
+				return self::createWidget($name, $value, $htmlOptions);
 			default:
 				throw new CException('Invalid input type "' . $type . '".');
 		}
+	}
+
+	/**
+	 * Creates a widget.
+	 * @param string $name the input name.
+	 * @param string $value the input value.
+	 * @param array $htmlOptions additional HTML attributes.
+	 * @return string the rendered widget.
+	 * @throws CException if widget class is not defined or the controller is not available.
+	 */
+	protected  static function createWidget($name, $value, $htmlOptions)
+	{
+		$class = self::popOption('class', $htmlOptions);
+		if (!isset($class))
+			throw new CException('Failed to create widget. Widget class not defined.');
+		$properties = self::popOption('widgetOptions', $htmlOptions, array());
+		$properties['name'] = $name;
+		$properties['value'] = $value;
+		/* @var CBaseController $controller */
+		$controller = Yii::app()->getController();
+		if (!isset($controller))
+			throw new CException('Failed to create widget. Controller is null.');
+		return $controller->widget($class, $properties, true);
 	}
 
 	/**
@@ -2029,9 +2055,34 @@ EOD;
 				return self::activeUneditableField($model, $attribute, $htmlOptions);
 			case self::INPUT_TYPE_SEARCH:
 				return self::activeSearchQuery($model, $attribute, $htmlOptions);
+			case self::INPUT_TYPE_WIDGET:
+				return self::createActiveWidget($model, $attribute, $htmlOptions);
 			default:
 				throw new CException('Invalid input type "' . $type . '".');
 		}
+	}
+
+	/**
+	 * Creates an active widget.
+	 * @param string $name the input name.
+	 * @param string $value the input value.
+	 * @param array $htmlOptions additional HTML attributes.
+	 * @return string the rendered widget.
+	 * @throws CException if widget class is not defined or the controller is not available.
+	 */
+	protected static function createActiveWidget($model, $attribute, $htmlOptions)
+	{
+		$class = self::popOption('class', $htmlOptions);
+		if (!isset($class))
+			throw new CException('Failed to create widget. Widget class not defined.');
+		$properties = self::popOption('widgetOptions', $htmlOptions, array());
+		$properties['model'] = $model;
+		$properties['attribute'] = $attribute;
+		/* @var CBaseController $controller */
+		$controller = Yii::app()->getController();
+		if (!isset($controller))
+			throw new CException('Failed to create widget. Controller is null.');
+		return $controller->widget($class, $properties, true);
 	}
 
 	/**
@@ -2045,7 +2096,7 @@ EOD;
 	public static function errorSummary($model, $header = null, $footer = null, $htmlOptions = array())
 	{
 		// kind of a quick fix but it will do for now.
-		$htmlOptions = self::addClassName('alert alert-block alert-error', $htmlOptions);
+		$htmlOptions = self::addClassName(self::$errorSummaryCss, $htmlOptions);
 		return CHtml::errorSummary($model, $header, $footer, $htmlOptions);
 	}
 
@@ -3854,7 +3905,7 @@ EOD;
 				$htmlOptions = self::defaultOption('data-interval', $interval, $htmlOptions);
 			$pause = self::popOption('data-interval', $htmlOptions);
 			if ($pause) // todo: add attribute validation if seen necessary.
-				$htmlOptions = self::defaultOption('data-pause', $pause, $htmlOptions);
+			$htmlOptions = self::defaultOption('data-pause', $pause, $htmlOptions);
 			$indicatorOptions = self::popOption('indicatorOptions', $htmlOptions, array());
 			$innerOptions = self::popOption('innerOptions', $htmlOptions, array());
 			$innerOptions = self::addClassName('carousel-inner', $innerOptions);
