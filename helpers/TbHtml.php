@@ -58,7 +58,7 @@ class TbHtml extends CHtml // required in order to access the protected methods 
 	const INPUT_TYPE_INLINERADIOBUTTONLIST = 'inlineRadioButtonList';
 	const INPUT_TYPE_UNEDITABLE = 'uneditableField';
 	const INPUT_TYPE_SEARCH = 'searchQuery';
-	const INPUT_TYPE_WIDGET = 'widget';
+	const INPUT_TYPE_CUSTOM = 'widget';
 
 	const INPUT_SIZE_MINI = 'mini';
 	const INPUT_SIZE_SMALL = 'small';
@@ -1310,7 +1310,9 @@ EOD;
 		if (!empty($help))
 			$help = self::inputHelp($help, $helpOptions);
 
-		$input = static::createInput($type, $name, $value, $htmlOptions, $data);
+		$input = isset($htmlOptions['input'])
+			? $htmlOptions['input']
+			: static::createInput($type, $name, $value, $htmlOptions, $data);
 
 		$controlGroupOptions = self::addClassName('control-group', $controlGroupOptions);
 		if (!empty($color))
@@ -1323,6 +1325,18 @@ EOD;
 		echo self::controls($input . $help, $controlOptions);
 		echo '</div>';
 		return ob_get_clean();
+	}
+
+	/**
+	 * Generates a custom (pre-rendered) form control group.
+	 * @param string $input the rendered input.
+	 * @param array $htmlOptions additional HTML attributes.
+	 * @return string the generated control group.
+	 */
+	public static function customControlGroup($input, $htmlOptions = array())
+	{
+		$htmlOptions['input'] = $input;
+		return self::controlGroup(self::INPUT_TYPE_CUSTOM, null, null, $htmlOptions);
 	}
 
 	/**
@@ -1377,34 +1391,9 @@ EOD;
 				return self::uneditableField($value, $htmlOptions);
 			case self::INPUT_TYPE_SEARCH:
 				return self::searchQueryField($name, $value, $htmlOptions);
-			case self::INPUT_TYPE_WIDGET:
-				return self::createWidget($name, $value, $htmlOptions);
 			default:
 				throw new CException('Invalid input type "' . $type . '".');
 		}
-	}
-
-	/**
-	 * Creates a widget.
-	 * @param string $name the input name.
-	 * @param string $value the input value.
-	 * @param array $htmlOptions additional HTML attributes.
-	 * @return string the rendered widget.
-	 * @throws CException if widget class is not defined or the controller is not available.
-	 */
-	protected  static function createWidget($name, $value, $htmlOptions)
-	{
-		$class = self::popOption('class', $htmlOptions);
-		if (!isset($class))
-			throw new CException('Failed to create widget. Widget class not defined.');
-		$properties = self::popOption('widgetOptions', $htmlOptions, array());
-		$properties['name'] = $name;
-		$properties['value'] = $value;
-		/* @var CBaseController $controller */
-		$controller = Yii::app()->getController();
-		if (!isset($controller))
-			throw new CException('Failed to create widget. Controller is null.');
-		return $controller->widget($class, $properties, true);
 	}
 
 	/**
@@ -1988,7 +1977,9 @@ EOD;
 			$help = self::inputHelp($help, $helpOptions);
 		$error = self::popOption('error', $htmlOptions, '');
 
-		$input = self::createActiveInput($type, $model, $attribute, $htmlOptions, $data);
+		$input = isset($htmlOptions['input'])
+			? $htmlOptions['input']
+			: static::createActiveInput($type, $model, $attribute, $htmlOptions, $data);
 
 		$controlGroupOptions = self::addClassName('control-group', $controlGroupOptions);
 		if (!empty($color))
@@ -2001,6 +1992,18 @@ EOD;
 		echo self::controls($input . $error . $help, $controlOptions);
 		echo '</div>';
 		return ob_get_clean();
+	}
+
+	/**
+	 * Generates a custom (pre-rendered) active form control group.
+	 * @param string $input the rendered input.
+	 * @param array $htmlOptions additional HTML attributes.
+	 * @return string the generated control group.
+	 */
+	public static function customActiveControlGroup($input, $htmlOptions = array())
+	{
+		$htmlOptions['input'] = $input;
+		return self::activeControlGroup(self::INPUT_TYPE_CUSTOM, null, null, $htmlOptions);
 	}
 
 	/**
@@ -2055,34 +2058,9 @@ EOD;
 				return self::activeUneditableField($model, $attribute, $htmlOptions);
 			case self::INPUT_TYPE_SEARCH:
 				return self::activeSearchQuery($model, $attribute, $htmlOptions);
-			case self::INPUT_TYPE_WIDGET:
-				return self::createActiveWidget($model, $attribute, $htmlOptions);
 			default:
 				throw new CException('Invalid input type "' . $type . '".');
 		}
-	}
-
-	/**
-	 * Creates an active widget.
-	 * @param string $name the input name.
-	 * @param string $value the input value.
-	 * @param array $htmlOptions additional HTML attributes.
-	 * @return string the rendered widget.
-	 * @throws CException if widget class is not defined or the controller is not available.
-	 */
-	protected static function createActiveWidget($model, $attribute, $htmlOptions)
-	{
-		$class = self::popOption('class', $htmlOptions);
-		if (!isset($class))
-			throw new CException('Failed to create widget. Widget class not defined.');
-		$properties = self::popOption('widgetOptions', $htmlOptions, array());
-		$properties['model'] = $model;
-		$properties['attribute'] = $attribute;
-		/* @var CBaseController $controller */
-		$controller = Yii::app()->getController();
-		if (!isset($controller))
-			throw new CException('Failed to create widget. Controller is null.');
-		return $controller->widget($class, $properties, true);
 	}
 
 	/**
