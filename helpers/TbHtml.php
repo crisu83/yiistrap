@@ -1318,13 +1318,13 @@ EOD;
 		if (!empty($color))
 			$controlGroupOptions = self::addClassName($color, $controlGroupOptions);
 		$labelOptions = self::addClassName('control-label', $labelOptions);
-		ob_start();
-		echo self::openTag('div', $controlGroupOptions);
+
+		$output = self::openTag('div', $controlGroupOptions);
 		if ($label !== false)
-			echo CHtml::label($label, $name, $labelOptions);
-		echo self::controls($input . $help, $controlOptions);
-		echo '</div>';
-		return ob_get_clean();
+            $output .= CHtml::label($label, $name, $labelOptions);
+        $output .= self::controls($input . $help, $controlOptions);
+        $output .= '</div>';
+		return $output;
 	}
 
 	/**
@@ -1426,13 +1426,13 @@ EOD;
 		if (!empty($append))
 			$append = self::inputAddOn($append, $appendOptions);
 
-		ob_start();
+        $output = '';
 		if (!empty($addOnClasses))
-			echo self::openTag('div', $addOnOptions);
-		echo $prepend . CHtml::inputField($type, $name, $value, $htmlOptions) . $append;
+            $output .= self::openTag('div', $addOnOptions);
+        $output .=  $prepend . CHtml::inputField($type, $name, $value, $htmlOptions) . $append;
 		if (!empty($addOnClasses))
-			echo '</div>';
-		return ob_get_clean();
+            $output .= '</div>';
+		return $output;
 	}
 
 	/**
@@ -1986,13 +1986,12 @@ EOD;
 		if (!empty($color))
 			$controlGroupOptions = self::addClassName($color, $controlGroupOptions);
 		$labelOptions = self::addClassName('control-label', $labelOptions);
-		ob_start();
-		echo self::openTag('div', $controlGroupOptions);
+		$output = self::openTag('div', $controlGroupOptions);
 		if ($label !== false)
-			echo CHtml::activeLabel($model, $attribute, $labelOptions);
-		echo self::controls($input . $error . $help, $controlOptions);
-		echo '</div>';
-		return ob_get_clean();
+            $output .= CHtml::activeLabel($model, $attribute, $labelOptions);
+        $output .= self::controls($input . $error . $help, $controlOptions);
+        $output .= '</div>';
+		return $output;
 	}
 
 	/**
@@ -2125,13 +2124,13 @@ EOD;
 		if (!empty($append))
 			$append = self::inputAddOn($append, $appendOptions);
 
-		ob_start();
+        $output = '';
 		if (!empty($addOnClasses))
-			echo self::openTag('div', $addOnOptions);
-		echo $prepend . CHtml::activeInputField($type, $model, $attribute, $htmlOptions) . $append;
+            $output .= self::openTag('div', $addOnOptions);
+        $output .= $prepend . CHtml::activeInputField($type, $model, $attribute, $htmlOptions) . $append;
 		if (!empty($addOnClasses))
-			echo '</div>';
-		return ob_get_clean();
+            $output .= '</div>';
+		return $output;
 	}
 
 	/**
@@ -2211,11 +2210,10 @@ EOD;
 		$after = self::popOption('after', $htmlOptions, '');
 		if (is_array($controls))
 			$controls = implode(' ', $controls);
-		ob_start();
-		echo self::openTag('div', $htmlOptions);
-		echo $before . $controls . $after;
-		echo '</div>';
-		return ob_get_clean();
+        $output = self::openTag('div', $htmlOptions);
+        $output .= $before . $controls . $after;
+        $output .= '</div>';
+		return $output;
 	}
 
 	/**
@@ -2241,11 +2239,10 @@ EOD;
 		$htmlOptions = self::addClassName('form-actions', $htmlOptions);
 		if (is_array($actions))
 			$actions = implode(' ', $actions);
-		ob_start();
-		echo self::openTag('div', $htmlOptions);
-		echo $actions;
-		echo '</div>';
-		return ob_get_clean();
+		$output = self::openTag('div', $htmlOptions);
+        $output .= $actions;
+        $output .= '</div>';
+		return $output;
 	}
 
 	/**
@@ -2262,11 +2259,10 @@ EOD;
 		$inputOptions = self::mergeOptions(array('type' => 'text', 'placeholder' => 'Search'), $inputOptions);
 		$name = self::popOption('name', $inputOptions, 'search');
 		$value = self::popOption('value', $inputOptions, '');
-		ob_start();
-		echo self::beginFormTb(self::FORM_LAYOUT_SEARCH, $action, $method, $htmlOptions);
-		echo self::searchQueryField($name, $value, $inputOptions);
-		echo CHtml::endForm();
-		return ob_get_clean();
+		$output = self::beginFormTb(self::FORM_LAYOUT_SEARCH, $action, $method, $htmlOptions);
+        $output .= self::searchQueryField($name, $value, $inputOptions);
+        $output .= CHtml::endForm();
+		return $output;
 	}
 
 	/**
@@ -2477,18 +2473,17 @@ EOD;
 		$groupOptions = self::addClassName('btn-group', $groupOptions);
 		if (self::popOption('dropup', $htmlOptions, false))
 			$groupOptions = self::addClassName('dropup', $groupOptions);
-		ob_start();
-		echo self::openTag('div', $groupOptions);
+        $output = self::openTag('div', $groupOptions);
 		if (self::popOption('split', $htmlOptions, false))
 		{
-			echo self::createButton($type, $label, $htmlOptions);
-			echo self::dropdownToggleButton('', $htmlOptions);
+            $output .= self::createButton($type, $label, $htmlOptions);
+            $output .= self::dropdownToggleButton('', $htmlOptions);
 		}
 		else
-			echo self::dropdownToggleLink($label, $htmlOptions);
-		echo self::dropdown($items, $menuOptions);
-		echo '</div>';
-		return ob_get_clean();
+            $output .= self::dropdownToggleLink($label, $htmlOptions);
+        $output .= self::dropdown($items, $menuOptions);
+        $output .= '</div>';
+		return $output;
 	}
 
 	/**
@@ -2723,8 +2718,7 @@ EOD;
 				'size' => self::popOption('size', $htmlOptions),
 				'disabled' => self::popOption('disabled', $htmlOptions)
 			);
-			ob_start();
-			echo self::openTag('div', $htmlOptions);
+            $output = self::openTag('div', $htmlOptions);
 			foreach ($buttons as $buttonOptions)
 			{
 				if (isset($buttonOptions['visible']) && $buttonOptions['visible'] === false)
@@ -2736,12 +2730,12 @@ EOD;
 				$buttonOptions = self::copyOptions(array('color', 'size', 'disabled'), $parentOptions, $buttonOptions);
 				$items = self::popOption('items', $buttonOptions, array());
 				if (!empty($items))
-					echo self::buttonDropdown($buttonLabel, $items, $buttonOptions);
+                    $output .= self::buttonDropdown($buttonLabel, $items, $buttonOptions);
 				else
-					echo self::linkButton($buttonLabel, $buttonOptions);
+                    $output .= self::linkButton($buttonLabel, $buttonOptions);
 			}
-			echo '</div>';
-			return ob_get_clean();
+            $output .= '</div>';
+			return $output;
 		}
 		return '';
 	}
@@ -2762,8 +2756,7 @@ EOD;
 				'size' => self::popOption('size', $htmlOptions),
 				'disabled' => self::popOption('disabled', $htmlOptions)
 			);
-			ob_start();
-			echo self::openTag('div', $htmlOptions);
+            $output = self::openTag('div', $htmlOptions);
 			foreach ($groups as $groupOptions)
 			{
 				if (isset($groupOptions['visible']) && $groupOptions['visible'] === false)
@@ -2775,10 +2768,10 @@ EOD;
 				if (!empty($options))
 					$groupOptions = self::mergeOptions($options, $groupOptions);
 				$groupOptions = self::copyOptions(array('color', 'size', 'disabled'), $parentOptions, $groupOptions);
-				echo self::buttonGroup($items, $groupOptions);
+                $output .= self::buttonGroup($items, $groupOptions);
 			}
-			echo '</div>';
-			return ob_get_clean();
+            $output .= '</div>';
+			return $output;
 		}
 		return '';
 	}
@@ -2902,12 +2895,11 @@ EOD;
 	{
 		if (is_array($items) && !empty($items))
 		{
-			ob_start();
-			echo self::openTag('ul', $htmlOptions);
+            $output = self::openTag('ul', $htmlOptions);
 			foreach ($items as $itemOptions)
 			{
 				if (is_string($itemOptions))
-					echo $itemOptions;
+                    $output .= $itemOptions;
 				else
 				{
 					if (isset($itemOptions['visible']) && $itemOptions['visible'] === false)
@@ -2921,7 +2913,7 @@ EOD;
 					if (self::popOption('disabled', $itemOptions, false))
 						$itemOptions = self::addClassName('disabled', $itemOptions);
 					if (self::popOption('header', $itemOptions, false))
-						echo self::menuHeader($label, $itemOptions);
+                        $output .= self::menuHeader($label, $itemOptions);
 					else
 					{
 						$itemOptions['linkOptions'] = self::getOption('linkOptions', $itemOptions, array());
@@ -2932,15 +2924,15 @@ EOD;
 						if (empty($items))
 						{
 							$url = self::popOption('url', $itemOptions, false);
-							echo self::menuLink($label, $url, $itemOptions);
+                            $output .= self::menuLink($label, $url, $itemOptions);
 						}
 						else
-							echo self::menuDropdown($label, $items, $itemOptions);
+                            $output .= self::menuDropdown($label, $items, $itemOptions);
 					}
 				}
 			}
-			echo '</ul>';
-			return ob_get_clean();
+            $output .= '</ul>';
+			return $output;
 		}
 		else
 			return '';
@@ -2956,11 +2948,10 @@ EOD;
 	public static function menuLink($label, $url, $htmlOptions = array())
 	{
 		$linkOptions = self::popOption('linkOptions', $htmlOptions, array());
-		ob_start();
-		echo self::openTag('li', $htmlOptions);
-		echo self::link($label, $url, $linkOptions);
-		echo '</li>';
-		return ob_get_clean();
+        $output = self::openTag('li', $htmlOptions);
+        $output .= self::link($label, $url, $linkOptions);
+        $output .= '</li>';
+		return $output;
 	}
 
 	/**
@@ -2978,12 +2969,11 @@ EOD;
 		$menuOptions = self::addClassName('dropdown-menu', $menuOptions);
 		if (self::popOption('active', $htmlOptions, false))
 			$htmlOptions = self::addClassName('active', $htmlOptions);
-		ob_start();
-		echo self::openTag('li', $htmlOptions);
-		echo self::dropdownToggleMenuLink($label, $linkOptions);
-		echo self::menu($items, $menuOptions);
-		echo '</li>';
-		return ob_get_clean();
+        $output = self::openTag('li', $htmlOptions);
+        $output .= self::dropdownToggleMenuLink($label, $linkOptions);
+        $output .= self::menu($items, $menuOptions);
+        $output .= '</li>';
+		return $output;
 	}
 
 	/**
@@ -3027,16 +3017,15 @@ EOD;
 		$contentOptions = self::addClassName('tab-content', $contentOptions);
 		$panes = array();
 		$menu = TbHtml::nav($type, self::normalizeTabs($tabs, $panes), $menuOptions);
-		ob_start();
-		echo TbHtml::openTag('div', $contentOptions);
-		echo implode('', $panes);
-		echo '</div>';
-		$content = ob_get_clean();
-		ob_start();
-		echo TbHtml::openTag('div', $htmlOptions);
-		echo $placement === self::TABS_PLACEMENT_BELOW ? $content . $menu : $menu . $content;
-		echo '</div>';
-		return ob_get_clean();
+        $content = TbHtml::openTag('div', $contentOptions);
+        $content .= implode('', $panes);
+        $content .= '</div>';
+
+
+		$output = TbHtml::openTag('div', $htmlOptions);
+        $output .= $placement === self::TABS_PLACEMENT_BELOW ? $content . $menu : $menu . $content;
+        $output .= '</div>';
+		return $output;
 	}
 
 	/**
@@ -3128,11 +3117,10 @@ EOD;
 			$htmlOptions = self::addClassName('navbar-' . $color, $htmlOptions);
 		$innerOptions = self::popOption('innerOptions', $htmlOptions, array());
 		$innerOptions = self::addClassName('navbar-inner', $innerOptions);
-		ob_start();
-		echo self::openTag('div', $htmlOptions);
-		echo self::tag('div', $innerOptions, $content);
-		echo '</div>';
-		return ob_get_clean();
+        $output = self::openTag('div', $htmlOptions);
+        $output .= self::tag('div', $innerOptions, $content);
+        $output .= '</div>';
+		return $output;
 	}
 
 	/**
@@ -3186,22 +3174,21 @@ EOD;
 	{
 		$divider = self::popOption('divider', $htmlOptions, '/');
 		$htmlOptions = self::addClassName('breadcrumb', $htmlOptions);
-		ob_start();
-		echo self::openTag('ul', $htmlOptions);
+        $output = self::openTag('ul', $htmlOptions);
 		foreach ($links as $label => $url)
 		{
 			if (is_string($label))
 			{
-				echo self::openTag('li');
-				echo self::link($label, $url);
-				echo self::tag('span', array('class' => 'divider'), $divider);
-				echo '</li>';
+                $output .= self::openTag('li');
+                $output .= self::link($label, $url);
+                $output .= self::tag('span', array('class' => 'divider'), $divider);
+                $output .= '</li>';
 			}
 			else
-				echo self::tag('li', array('class' => 'active'), $url);
+                $output .= self::tag('li', array('class' => 'active'), $url);
 		}
-		echo '</ul>';
-		return ob_get_clean();
+        $output .= '</ul>';
+		return $output;
 	}
 
 	// Pagination
@@ -3226,9 +3213,8 @@ EOD;
 			if (!empty($align))
 				$htmlOptions = self::addClassName('pagination-' . $align, $htmlOptions);
 			$listOptions = self::popOption('listOptions', $htmlOptions, array());
-			ob_start();
-			echo self::openTag('div', $htmlOptions);
-			echo self::openTag('ul', $listOptions);
+            $output = self::openTag('div', $htmlOptions);
+            $output .= self::openTag('ul', $listOptions);
 			foreach ($links as $itemOptions)
 			{
 				$options = self::popOption('htmlOptions', $itemOptions, array());
@@ -3236,10 +3222,10 @@ EOD;
 					$itemOptions = self::mergeOptions($options, $itemOptions);
 				$label = self::popOption('label', $itemOptions, '');
 				$url = self::popOption('url', $itemOptions, false);
-				echo self::paginationLink($label, $url, $itemOptions);
+                $output .= self::paginationLink($label, $url, $itemOptions);
 			}
-			echo '</ul>' . '</div>';
-			return ob_get_clean();
+            $output .= '</ul>' . '</div>';
+			return $output;
 		}
 		return '';
 	}
@@ -3260,11 +3246,10 @@ EOD;
 		else if ($disabled)
 			$htmlOptions = self::addClassName('disabled', $htmlOptions);
 		$linkOptions = self::popOption('linkOptions', $itemOptions, array());
-		ob_start();
-		echo self::openTag('li', $htmlOptions);
-		echo self::link($label, $url, $linkOptions);
-		echo '</li>';
-		return ob_get_clean();
+        $output = self::openTag('li', $htmlOptions);
+        $output .= self::link($label, $url, $linkOptions);
+        $output .= '</li>';
+		return $output;
 	}
 
 	/**
@@ -3278,8 +3263,7 @@ EOD;
 		if (is_array($links) && !empty($links))
 		{
 			$htmlOptions = self::addClassName('pager', $htmlOptions);
-			ob_start();
-			echo self::openTag('ul', $htmlOptions);
+			$output = self::openTag('ul', $htmlOptions);
 			foreach ($links as $itemOptions)
 			{
 				$options = self::popOption('htmlOptions', $itemOptions, array());
@@ -3287,10 +3271,10 @@ EOD;
 					$itemOptions = self::mergeOptions($options, $itemOptions);
 				$label = self::popOption('label', $itemOptions, '');
 				$url = self::popOption('url', $itemOptions, false);
-				echo self::pagerLink($label, $url, $itemOptions);
+                $output .= self::pagerLink($label, $url, $itemOptions);
 			}
-			echo '</ul>';
-			return ob_get_clean();
+            $output .= '</ul>';
+			return $output;
 		}
 		return '';
 	}
@@ -3313,11 +3297,10 @@ EOD;
 		if (self::popOption('disabled', $htmlOptions, false))
 			$htmlOptions = self::addClassName('disabled', $htmlOptions);
 		$linkOptions = self::popOption('linkOptions', $itemOptions, array());
-		ob_start();
-		echo self::openTag('li', $htmlOptions);
-		echo self::link($label, $url, $linkOptions);
-		echo '</li>';
-		return ob_get_clean();
+        $output = self::openTag('li', $htmlOptions);
+        $output .= self::link($label, $url, $linkOptions);
+        $output .= '</li>';
+		return $output;
 	}
 
 	// Labels and badges
@@ -3369,12 +3352,11 @@ EOD;
 	{
 		$htmlOptions = self::addClassName('hero-unit', $htmlOptions);
 		$headingOptions = self::popOption('headingOptions', $htmlOptions, array());
-		ob_start();
-		echo self::tag('div', $htmlOptions);
-		echo self::tag('h1', $headingOptions, $heading);
-		echo $content;
-		echo '</div>';
-		return ob_get_clean();
+		$output = self::tag('div', $htmlOptions);
+        $output .= self::tag('h1', $headingOptions, $heading);
+        $output .= $content;
+        $output .= '</div>';
+		return $output;
 	}
 
 	/**
@@ -3390,13 +3372,12 @@ EOD;
 		$htmlOptions = self::addClassName('page-header', $htmlOptions);
 		$headerOptions = self::popOption('headerOptions', $htmlOptions, array());
 		$subtextOptions = self::popOption('subtextOptions', $htmlOptions, array());
-		ob_start();
-		echo self::openTag('div', $htmlOptions);
-		echo self::openTag('h1', $headerOptions);
-		echo CHtml::encode($heading) . ' ' . self::tag('small', $subtextOptions, $subtext);
-		echo '</h1>';
-		echo '</div>';
-		return ob_get_clean();
+        $output = self::openTag('div', $htmlOptions);
+        $output .= self::openTag('h1', $headerOptions);
+        $output .= CHtml::encode($heading) . ' ' . self::tag('small', $subtextOptions, $subtext);
+        $output .= '</h1>';
+        $output .= '</div>';
+		return $output;
 	}
 
 	// Thumbnails
@@ -3416,8 +3397,7 @@ EOD;
 			/* todo: we may have to set an empty array() as default value */
 			$htmlOptions = self::addClassName('thumbnails', $htmlOptions);
 			$defaultSpan = self::popOption('span', $htmlOptions, 3);
-			ob_start();
-			echo self::openTag('ul', $htmlOptions);
+            $output = self::openTag('ul', $htmlOptions);
 			foreach ($thumbnails as $thumbnailOptions)
 			{
 				if (isset($thumbnailOptions['visible']) && $thumbnailOptions['visible'] === false)
@@ -3440,12 +3420,12 @@ EOD;
 				if (!empty($image))
 					$content = CHtml::image($image, $imageAlt, $imageOptions) . $content;
 				$url = self::popOption('url', $thumbnailOptions, false);
-				echo $url !== false
+                $output .= $url !== false
 					? self::thumbnailLink($content, $url, $thumbnailOptions)
 					: self::thumbnail($content, $thumbnailOptions);
 			}
-			echo '</ul>';
-			return ob_get_clean();
+            $output .= '</ul>';
+			return $output;
 		}
 		else
 			return '';
@@ -3461,13 +3441,12 @@ EOD;
 	{
 		$itemOptions = self::popOption('itemOptions', $htmlOptions, array());
 		$htmlOptions = self::addClassName('thumbnail', $htmlOptions);
-		ob_start();
-		echo self::openTag('li', $itemOptions);
-		echo self::openTag('div', $htmlOptions);
-		echo $content;
-		echo '</div>';
-		echo '</li>';
-		return ob_get_clean();
+		$output = self::openTag('li', $itemOptions);
+        $output .= self::openTag('div', $htmlOptions);
+        $output .= $content;
+        $output .= '</div>';
+        $output .= '</li>';
+		return $output;
 	}
 
 	/**
@@ -3481,11 +3460,10 @@ EOD;
 	{
 		$itemOptions = self::popOption('itemOptions', $htmlOptions, array());
 		$htmlOptions = self::addClassName('thumbnail', $htmlOptions);
-		ob_start();
-		echo self::openTag('li', $itemOptions);
-		echo self::link($content, $url, $htmlOptions);
-		echo '</li>';
-		return ob_get_clean();
+        $output = self::openTag('li', $itemOptions);
+        $output .= self::link($content, $url, $htmlOptions);
+        $output .= '</li>';
+		return $output;
 	}
 
 	// Alerts
@@ -3512,12 +3490,11 @@ EOD;
 			$htmlOptions = self::addClassName('fade', $htmlOptions);
 		$closeText = self::popOption('closeText', $htmlOptions, self::CLOSE_TEXT);
 		$closeOptions = self::popOption('closeOptions', $htmlOptions, array());
-		ob_start();
-		echo self::openTag('div', $htmlOptions);
-		echo $closeText !== false ? self::closeLink($closeText, $closeOptions) : '';
-		echo $message;
-		echo '</div>';
-		return ob_get_clean();
+        $output = self::openTag('div', $htmlOptions);
+        $output .= $closeText !== false ? self::closeLink($closeText, $closeOptions) : '';
+        $output .= $message;
+        $output .= '</div>';
+		return $output;
 	}
 
 	/**
@@ -3558,11 +3535,10 @@ EOD;
 		$barOptions = self::popOption('barOptions', $htmlOptions, array());
 		$content = self::popOption('content', $htmlOptions, '');
 		$barOptions = self::defaultOption('content', $content, $barOptions);
-		ob_start();
-		echo self::openTag('div', $htmlOptions);
-		echo self::bar($width, $barOptions);
-		echo '</div>';
-		return ob_get_clean();
+        $output = self::openTag('div', $htmlOptions);
+        $output .= self::bar($width, $barOptions);
+        $output .= '</div>';
+		return $output;
 	}
 
 	/**
@@ -3600,8 +3576,7 @@ EOD;
 		if (is_array($bars) && !empty($bars))
 		{
 			$htmlOptions = self::addClassName('progress', $htmlOptions);
-			ob_start();
-			echo self::openTag('div', $htmlOptions);
+            $output = self::openTag('div', $htmlOptions);
 			foreach ($bars as $barOptions)
 			{
 				if (isset($barOptions['visible']) && $barOptions['visible'] === false)
@@ -3610,10 +3585,10 @@ EOD;
 				if (!empty($options))
 					$barOptions = self::mergeOptions($options, $barOptions);
 				$width = self::popOption('width', $barOptions, 0);
-				echo self::bar($width, $barOptions);
+                $output .= self::bar($width, $barOptions);
 			}
-			echo '</div>';
-			return ob_get_clean();
+            $output .= '</div>';
+			return $output;
 		}
 		return '';
 	}
@@ -3652,7 +3627,7 @@ EOD;
 	{
 		if (is_array($mediaObjects) && !empty($mediaObjects))
 		{
-			ob_start();
+            $output = '';
 			foreach ($mediaObjects as $mediaObjectOptions)
 			{
 				if (isset($mediaObjectOptions['visible']) && $mediaObjectOptions['visible'] === false)
@@ -3662,9 +3637,9 @@ EOD;
 				$content = self::getOption('content', $mediaObjectOptions, '');
 				$itemOptions = self::getOption('htmlOptions', $mediaObjectOptions, array());
 				$itemOptions['items'] = self::popOption('items', $mediaObjectOptions, array());
-				echo self::mediaObject($image, $heading, $content, $itemOptions);
+                $output .= self::mediaObject($image, $heading, $content, $itemOptions);
 			}
-			return ob_get_clean();
+			return $output;
 		}
 		return '';
 	}
@@ -3690,19 +3665,18 @@ EOD;
 		$headingOptions = self::addClassName('media-heading', $headingOptions);
 		$items = self::popOption('items', $htmlOptions);
 
-		ob_start();
-		echo self::openTag('div', $htmlOptions);
+        $output = self::openTag('div', $htmlOptions);
 		$alt = self::popOption('alt', $imageOptions, '');
 		$href = self::popOption('href', $linkOptions, '#');
 		if (!empty($image))
-			echo self::link(CHtml::image($image, $alt, $imageOptions), $href, $linkOptions);
-		echo self::openTag('div', $contentOptions);
-		echo self::tag('h4', $headingOptions, $heading);
-		echo $content;
+            $output .= self::link(CHtml::image($image, $alt, $imageOptions), $href, $linkOptions);
+        $output .= self::openTag('div', $contentOptions);
+        $output .= self::tag('h4', $headingOptions, $heading);
+        $output .= $content;
 		if (!empty($items))
-			echo self::mediaObjects($items);
-		echo '</div></div>';
-		return ob_get_clean();
+            $output .= self::mediaObjects($items);
+        $output .= '</div></div>';
+		return $output;
 	}
 
 	// Misc
@@ -3786,11 +3760,10 @@ EOD;
 			'data-toggle' => 'collapse',
 			'data-target' => $target,
 		));
-		ob_start();
-		echo self::openTag('a', $htmlOptions);
-		echo '<span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span>';
-		echo '</a>';
-		return ob_get_clean();
+        $output = self::openTag('a', $htmlOptions);
+        $output .= '<span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span>';
+        $output .= '</a>';
+		return $output;
 	}
 
 	//
@@ -3894,10 +3867,9 @@ EOD;
 			$nextOptions = self::popOption('nextOptions', $htmlOptions, array());
 			$nextLabel = self::popOption('label', $nextOptions, '&rsaquo;');
 			$hidePrevAndNext = self::popOption('hidePrevAndNext', $htmlOptions, false);
-			ob_start();
-			echo self::openTag('div', $htmlOptions);
-			echo self::carouselIndicators($selector, count($items), $indicatorOptions);
-			echo self::openTag('div', $innerOptions);
+            $output = self::openTag('div', $htmlOptions);
+            $output .= self::carouselIndicators($selector, count($items), $indicatorOptions);
+            $output .= self::openTag('div', $innerOptions);
 			foreach ($items as $i => $itemOptions)
 			{
 				if (isset($itemOptions['visible']) && $itemOptions['visible'] === false)
@@ -3913,16 +3885,16 @@ EOD;
 					$content = CHtml::image($image, $imageAlt, $imageOptions);
 				$label = self::popOption('label', $itemOptions);
 				$caption = self::popOption('caption', $itemOptions);
-				echo self::carouselItem($content, $label, $caption, $itemOptions);
+                $output .= self::carouselItem($content, $label, $caption, $itemOptions);
 			}
-			echo '</div>';
+            $output .= '</div>';
 			if (!$hidePrevAndNext)
 			{
-				echo self::carouselPrevLink($prevLabel, $selector, $prevOptions);
-				echo self::carouselNextLink($nextLabel, $selector, $nextOptions);
+                $output .= self::carouselPrevLink($prevLabel, $selector, $prevOptions);
+                $output .= self::carouselNextLink($nextLabel, $selector, $nextOptions);
 			}
-			echo '</div>';
-			return ob_get_clean();
+            $output .= '</div>';
+			return $output;
 		}
 		return '';
 	}
@@ -3941,20 +3913,19 @@ EOD;
 		$overlayOptions = self::addClassName('carousel-caption', $overlayOptions);
 		$labelOptions = self::popOption('labelOptions', $htmlOptions, array());
 		$captionOptions = self::popOption('captionOptions', $htmlOptions, array());
-		ob_start();
-		echo self::openTag('div', $htmlOptions);
-		echo $content;
+        $output = self::openTag('div', $htmlOptions);
+        $output .= $content;
 		if (isset($label) || isset($caption))
 		{
-			echo self::openTag('div', $overlayOptions);
+            $output .= self::openTag('div', $overlayOptions);
 			if ($label)
-				echo self::tag('h4', $labelOptions, $label);
+                $output .= self::tag('h4', $labelOptions, $label);
 			if ($caption)
-				echo self::tag('p', $captionOptions, $caption);
-			echo '</div>';
+                $output .= self::tag('p', $captionOptions, $caption);
+            $output .= '</div>';
 		}
-		echo '</div>';
-		return ob_get_clean();
+        $output .= '</div>';
+		return $output;
 	}
 
 	/**
@@ -3995,17 +3966,16 @@ EOD;
 	public static function carouselIndicators($target, $numSlides, $htmlOptions = array())
 	{
 		$htmlOptions = self::addClassName('carousel-indicators', $htmlOptions);
-		ob_start();
-		echo self::openTag('ol', $htmlOptions);
+        $output = self::openTag('ol', $htmlOptions);
 		for ($i = 0; $i < $numSlides; $i++)
 		{
 			$itemOptions = array('data-target' => $target, 'data-slide-to' => $i);
 			if ($i === 0)
 				$itemOptions['class'] = 'active';
-			echo self::tag('li', $itemOptions);
+            $output .= self::tag('li', $itemOptions);
 		}
-		echo '</ol>';
-		return ob_get_clean();
+        $output .= '</ol>';
+		return $output;
 	}
 
 	// UTILITIES
