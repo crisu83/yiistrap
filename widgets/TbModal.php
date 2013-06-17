@@ -126,6 +126,9 @@ class TbModal extends CWidget
 		if($this->fade)
 			$this->htmlOptions = TbHtml::addClassName('fade', $this->htmlOptions);
 
+        if (is_array($this->footer))
+            $this->footer = implode('&nbsp;', $this->footer);
+
 		$this->initOptions();
 		$this->initEvents();
 	}
@@ -187,13 +190,9 @@ class TbModal extends CWidget
 				$this->buttonOptions = TbHtml::defaultOption('data-remote', CHtml::normalizeUrl($this->remote), $this->buttonOptions);
 
 			$selector = '#' . $this->htmlOptions['id'];
-
 			$label = TbHtml::popOption('label', $this->buttonOptions, 'button');
-
 			$attr = isset($this->buttonOptions['data-remote']) ? 'data-target' : 'href';
-
 			$this->buttonOptions = TbHtml::defaultOption($attr, $selector, $this->buttonOptions);
-
 			echo TbHtml::button($label, $this->buttonOptions);
 		}
 	}
