@@ -14,7 +14,6 @@ Yii::import('bootstrap.behaviors.TbWidget');
  */
 class TbModal extends CWidget
 {
-
 	/**
 	 * @var array the HTML options for the view container tag.
 	 */

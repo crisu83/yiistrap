@@ -21,9 +21,13 @@ class TbCollapse extends CWidget
      */
     public $tagName = 'div';
     /**
-     * @var string the content text or path to a partial view with the content.
+     * @var string the content text.
      */
     public $content;
+    /**
+     * @var string the path to a partial view.
+     */
+    public $view;
     /**
      * @var string the CSS selector for the parent element.
      */
@@ -57,9 +61,12 @@ class TbCollapse extends CWidget
             $this->htmlOptions = TbHtml::defaultOption('data-parent', $this->parent, $this->htmlOptions);
         if (isset($this->toggle) && $this->toggle)
             $this->htmlOptions = TbHtml::addClassName('in', $this->htmlOptions);
-        $controller = $this->getController();
-        if (isset($controller) && $controller->getViewFile($this->content) !== false)
-            $this->content = $this->controller->renderPartial($this->content, $this->viewData, true);
+        if (isset($this->view))
+        {
+            $controller = $this->getController();
+            if (isset($controller) && $controller->getViewFile($this->view) !== false)
+                $this->content = $this->controller->renderPartial($this->view, $this->viewData, true);
+        }
         echo TbHtml::openTag($this->tagName, $this->htmlOptions);
         echo $this->content;
     }

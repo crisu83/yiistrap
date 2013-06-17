@@ -82,7 +82,8 @@ class TbApi extends CApplicationComponent
 	 */
 	public function registerCoreScripts($url = null, $position = CClientScript::POS_END)
 	{
-		if ($url === null) {
+		if ($url === null)
+        {
 			$fileName = YII_DEBUG ? 'bootstrap.js' : 'bootstrap.min.js';
 			$url = $this->getAssetsUrl() . '/js/' . $fileName;
 		}
@@ -167,7 +168,7 @@ class TbApi extends CApplicationComponent
 	 */
 	public function registerEvents($selector, $events, $position = CClientScript::POS_END)
 	{
-		if(empty($events))
+		if (empty($events))
 			return;
 
 		$script = '';
@@ -193,7 +194,7 @@ class TbApi extends CApplicationComponent
 		else
 		{
 			$assetsPath = Yii::getPathOfAlias('bootstrap.assets');
-			$assetsUrl = Yii::app()->assetManager->publish($assetsPath, true, -1, $this->forceCopyAssets);
+			$assetsUrl = Yii::app()->assetManager->publish($assetsPath, false, -1, $this->forceCopyAssets);
 			return $this->_assetsUrl = $assetsUrl;
 		}
 	}

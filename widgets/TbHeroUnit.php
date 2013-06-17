@@ -24,9 +24,13 @@ class TbHeroUnit extends CWidget
 	 */
 	public $headingOptions = array();
 	/**
-	 * @var string the content text or path to a partial view with the content.
+	 * @var string the content text.
 	 */
 	public $content;
+    /**
+     * @var string the path to a partial view.
+     */
+    public $view;
 	/**
 	 * @var array the HTML attributes for the container tag.
 	 */
@@ -41,9 +45,12 @@ class TbHeroUnit extends CWidget
 	 */
 	public function init()
 	{
-		$controller = $this->getController();
-		if (isset($controller) && $controller->getViewFile($this->content) !== false)
-			$this->content = $this->controller->renderPartial($this->content, $this->viewData, true);
+        if (isset($this->view))
+        {
+            $controller = $this->getController();
+            if (isset($controller) && $controller->getViewFile($this->view) !== false)
+                $this->content = $this->controller->renderPartial($this->view, $this->viewData, true);
+        }
 		$this->htmlOptions['headingOptions'] = $this->headingOptions;
 	}
 
