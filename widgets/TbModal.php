@@ -220,7 +220,7 @@ class TbModal extends CWidget
 		echo '<div class="modal-header">' . PHP_EOL;
 		if($this->closeText)
 			echo TbHtml::closeButton($this->closeText, array('data-dismiss'=>'modal'));
-		echo $this->header;
+		echo TbHtml::tag('h3', array(), $this->header);
 		echo '</div>' . PHP_EOL;
 	}
 
