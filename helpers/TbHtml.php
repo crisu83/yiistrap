@@ -1989,7 +1989,7 @@ EOD;
 		$labelOptions = self::addClassName('control-label', $labelOptions);
 		$output = self::openTag('div', $controlGroupOptions);
 		if ($label !== false)
-			$output .= CHtml::activeLabel($model, $attribute, $labelOptions);
+			$output .= CHtml::activeLabelEx($model, $attribute, $labelOptions);
 		$output .= self::controls($input . $error . $help, $controlOptions);
 		$output .= '</div>';
 		return $output;
