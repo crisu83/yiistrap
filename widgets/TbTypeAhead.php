@@ -11,7 +11,7 @@ Yii::import('bootstrap.behaviors.TbWidget');
 Yii::import('bootstrap.helpers.TbHtml');
 
 /**
- * Class TbTypeAhead
+ * Bootstrap typeahead widget.
  */
 class TbTypeAhead extends CInputWidget
 {

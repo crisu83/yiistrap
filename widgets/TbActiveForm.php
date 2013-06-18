@@ -11,7 +11,7 @@ Yii::import('bootstrap.helpers.TbHtml');
 Yii::import('bootstrap.behaviors.TbWidget');
 
 /**
- * Class TbActiveForm
+ * Bootstrap active form widget.
  */
 class TbActiveForm extends CActiveForm
 {

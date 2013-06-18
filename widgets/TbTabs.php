@@ -10,7 +10,7 @@
 Yii::import('bootstrap.behaviors.TbWidget');
 
 /**
- * Class TbTabs
+ * Boostrap tabs widget.
  */
 class TbTabs extends CWidget
 {

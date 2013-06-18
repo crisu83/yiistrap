@@ -10,7 +10,7 @@
 Yii::import('bootstrap.behaviors.TbWidget');
 
 /**
- * Class TbModal
+ * Bootstrap modal widget.
  */
 class TbModal extends CWidget
 {
