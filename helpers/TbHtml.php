@@ -1292,11 +1292,12 @@ EOD;
 	 */
 	public static function controlGroup($type, $name, $value, $htmlOptions = array(), $data = array())
 	{
-		$label = self::popOption('label', $htmlOptions, false);
 		$color = self::popOption('color', $htmlOptions);
 		$controlGroupOptions = self::popOption('groupOptions', $htmlOptions, array());
-		$labelOptions = self::popOption('labelOptions', $htmlOptions, array());
 		$controlOptions = self::popOption('controlOptions', $htmlOptions, array());
+		$label = self::popOption('label', $htmlOptions, false);
+		$labelOptions = self::popOption('labelOptions', $htmlOptions, array());
+		$labelOptions = self::defaultOption('label', $label, $labelOptions);
 
 		if (in_array($type, array(self::INPUT_TYPE_CHECKBOX, self::INPUT_TYPE_RADIOBUTTON)))
 		{
@@ -1958,11 +1959,12 @@ EOD;
 	 */
 	public static function activeControlGroup($type, $model, $attribute, $htmlOptions = array(), $data = array())
 	{
-		$label = self::popOption('label', $htmlOptions);
 		$color = self::popOption('color', $htmlOptions);
 		$controlGroupOptions = self::popOption('groupOptions', $htmlOptions, array());
-		$labelOptions = self::popOption('labelOptions', $htmlOptions, array());
 		$controlOptions = self::popOption('controlOptions', $htmlOptions, array());
+		$label = self::popOption('label', $htmlOptions, false);
+		$labelOptions = self::popOption('labelOptions', $htmlOptions, array());
+		$labelOptions = self::defaultOption('label', $label, $labelOptions);
 
 		if (in_array($type, array(self::INPUT_TYPE_CHECKBOX, self::INPUT_TYPE_RADIOBUTTON)))
 		{
