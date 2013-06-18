@@ -79,7 +79,7 @@
   font-style: italic;
 }
 .grid-view.grid-view-loading {
-  background: url(../images/loader.gif) no-repeat 100% 10px;
+  background: url(../img/loader.gif) no-repeat 100% 10px;
 }
 span.required {
   color: #b94a48;
