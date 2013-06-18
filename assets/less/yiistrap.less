@@ -1,0 +1,91 @@
+@import "variables.less";
+@import "mixins.less";
+
+// Grid view
+// -------------------------
+
+.grid-view {
+  font-size: 13px;
+
+  .table {
+    th > .sort-link {
+      color: #333;
+      display: block;
+      font-size: 14px;
+      font-weight: bold;
+      position: relative;
+
+      &:hover {
+        text-decoration: none;
+      }
+
+      .caret {
+        display: none;
+        position: absolute;
+        right: 5px;
+        top: 8px;
+      }
+
+      &.asc .caret {
+        display: block;
+      }
+
+      &.desc .caret {
+        border-bottom: 4px solid #000;
+        border-top: none;
+        display: block;
+      }
+    }
+
+
+    .filters {
+      > td {
+        .filter-container {
+          padding: 0 16px 0 0; // compensate for the margin on the input
+
+          input[type="text"] {
+            margin-bottom: 0;
+            width: 100%;
+          }
+        }
+      }
+    }
+
+    tr.selected td {
+      background: #eee;
+    }
+
+    td {
+      vertical-align: middle;
+    }
+
+    .checkbox-column {
+      width: 15px;
+    }
+
+    .number-column {
+      text-align: right;
+    }
+
+    .button-column {
+      text-align: right;
+      min-width: 50px;
+    }
+  }
+
+  .empty {
+    font-style: italic;
+  }
+
+  &.grid-view-loading {
+    background: url(../images/loader.gif) no-repeat 100% 10px;
+  }
+}
+
+// Form
+// -------------------------
+
+span.required {
+  color: #b94a48;
+  font-weight: bold;
+}

@@ -20,6 +20,9 @@ nbproject
 # mac deployment helpers
 switch
 
+# Node modules
+node_modules
+
 # Composer files
 composer*
 vendor/*

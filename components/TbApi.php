@@ -66,6 +66,22 @@ class TbApi extends CApplicationComponent
 		$cs->registerCssFile($url);
 	}
 
+    /**
+     * Registers the Yiistrap CSS.
+     * @param string $url the URL to the CSS file to register.
+     */
+    public function registerYiistrapCss($url = null)
+    {
+        if ($url === null)
+        {
+            $fileName = YII_DEBUG ? 'yiistrap.css' : 'yiistrap.min.css';
+            $url = $this->getAssetsUrl() . '/css/' . $fileName;
+        }
+        /** @var CClientScript $cs */
+        $cs = Yii::app()->getClientScript();
+        $cs->registerCssFile($url);
+    }
+
 	/**
 	 * Registers all Bootstrap CSS files.
 	 */
@@ -73,6 +89,7 @@ class TbApi extends CApplicationComponent
 	{
 		$this->registerCoreCss();
 		$this->registerResponsiveCss();
+        $this->registerYiistrapCss();
 	}
 
 	/**
