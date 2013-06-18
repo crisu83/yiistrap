@@ -1295,7 +1295,7 @@ EOD;
 		$color = self::popOption('color', $htmlOptions);
 		$controlGroupOptions = self::popOption('groupOptions', $htmlOptions, array());
 		$controlOptions = self::popOption('controlOptions', $htmlOptions, array());
-		$label = self::popOption('label', $htmlOptions, false);
+		$label = self::popOption('label', $htmlOptions);
 		$labelOptions = self::popOption('labelOptions', $htmlOptions, array());
 		$labelOptions = self::defaultOption('label', $label, $labelOptions);
 
@@ -1962,7 +1962,7 @@ EOD;
 		$color = self::popOption('color', $htmlOptions);
 		$controlGroupOptions = self::popOption('groupOptions', $htmlOptions, array());
 		$controlOptions = self::popOption('controlOptions', $htmlOptions, array());
-		$label = self::popOption('label', $htmlOptions, false);
+		$label = self::popOption('label', $htmlOptions);
 		$labelOptions = self::popOption('labelOptions', $htmlOptions, array());
 		$labelOptions = self::defaultOption('label', $label, $labelOptions);
 
