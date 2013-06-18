@@ -81,6 +81,9 @@
 .grid-view.grid-view-loading {
   background: url(../img/loader.gif) no-repeat 100% 10px;
 }
+.grid-view.grid-view-loading .table th > .sort-link .caret {
+  display: none;
+}
 span.required {
   color: #b94a48;
   font-weight: bold;
