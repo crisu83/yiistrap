@@ -48,11 +48,11 @@
   top: 8px;
 }
 .grid-view .table th > .sort-link.asc .caret {
-  border-top-color: #333;
+  border-bottom-color: #333;
   display: block;
 }
 .grid-view .table th > .sort-link.desc .caret {
-  border-bottom-color: #333;
+  border-top-color: #333;
   display: block;
 }
 .grid-view .table .filters > td .filter-container {
