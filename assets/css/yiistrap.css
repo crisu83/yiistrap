@@ -39,17 +39,20 @@
   text-decoration: none;
 }
 .grid-view .table th > .sort-link .caret {
+  border-color: transparent;
+  border-style: solid;
+  border-width: 4px;
   display: none;
   position: absolute;
   right: 5px;
   top: 8px;
 }
 .grid-view .table th > .sort-link.asc .caret {
+  border-top-color: #333;
   display: block;
 }
 .grid-view .table th > .sort-link.desc .caret {
-  border-bottom: 4px solid #000;
-  border-top: none;
+  border-bottom-color: #333;
   display: block;
 }
 .grid-view .table .filters > td .filter-container {
