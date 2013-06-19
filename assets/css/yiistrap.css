@@ -45,15 +45,16 @@
   display: none;
   position: absolute;
   right: 5px;
-  top: 8px;
 }
 .grid-view .table th > .sort-link.asc .caret {
   border-bottom-color: #333;
   display: block;
+  top: 8px;
 }
 .grid-view .table th > .sort-link.desc .caret {
   border-top-color: #333;
   display: block;
+  top: 4px;
 }
 .grid-view .table .filters > td .filter-container {
   padding: 0 16px 0 0;
