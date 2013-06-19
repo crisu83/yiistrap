@@ -28,6 +28,12 @@
 .grid-view {
   font-size: 13px;
 }
+.grid-view.grid-view-loading {
+  background: url(../img/loader.gif) no-repeat 100% 10px;
+}
+.grid-view.grid-view-loading .table th > .sort-link .caret {
+  display: none;
+}
 .grid-view .table th > .sort-link {
   color: #333;
   display: block;
@@ -79,14 +85,14 @@
   text-align: right;
   min-width: 50px;
 }
+.grid-view .summary {
+  color: #999999;
+  font-size: 12px;
+  padding: 6px 0;
+  text-align: right;
+}
 .grid-view .empty {
   font-style: italic;
-}
-.grid-view.grid-view-loading {
-  background: url(../img/loader.gif) no-repeat 100% 10px;
-}
-.grid-view.grid-view-loading .table th > .sort-link .caret {
-  display: none;
 }
 span.required {
   color: #b94a48;

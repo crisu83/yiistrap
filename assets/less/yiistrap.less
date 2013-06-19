@@ -7,6 +7,14 @@
 .grid-view {
   font-size: 13px;
 
+  &.grid-view-loading {
+    background: url(../img/loader.gif) no-repeat 100% 10px;
+
+    .table th > .sort-link .caret {
+      display: none;
+    }
+  }
+
   .table {
     th > .sort-link {
       color: #333;
@@ -40,7 +48,6 @@
         top: 8px;
       }
     }
-
 
     .filters {
       > td {
@@ -77,16 +84,15 @@
     }
   }
 
-  .empty {
-    font-style: italic;
+  .summary {
+    color: @grayLight;
+    font-size: 12px;
+    padding: 6px 0;
+    text-align: right;
   }
 
-  &.grid-view-loading {
-    background: url(../img/loader.gif) no-repeat 100% 10px;
-
-    .table th > .sort-link .caret {
-      display: none;
-    }
+  .empty {
+    font-style: italic;
   }
 }
 
