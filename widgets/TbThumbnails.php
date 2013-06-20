@@ -25,6 +25,16 @@ class TbThumbnails extends TbListView
 	 * @var integer the number of grid columns that the thumbnails spans over.
 	 */
 	public $span;
+    /**
+     * Initializes the widget
+     */
+    public function init()
+    {
+        parent::init();
+
+        if (isset($this->itemsCssClass))
+            $this->htmlOptions = TbHtml::addClassName($this->itemsCssClass, $this->htmlOptions);
+    }
 
 	/**
 	 * Renders the data items for the view.
