@@ -2678,15 +2678,17 @@ EOD;
     /**
      * Generates a dropdown toggle menu item.
      * @param string $label the menu item text.
+     * @param string $url the menu item URL. If emtpy/false, # will be used.
      * @param array $htmlOptions additional HTML attributes.
      * @return string the generated menu item.
      */
-    public static function dropdownToggleMenuLink($label, $htmlOptions = array())
+    public static function dropdownToggleMenuLink($label, $url, $htmlOptions = array())
     {
         $htmlOptions = self::addClassName('dropdown-toggle', $htmlOptions);
         $htmlOptions = self::defaultOption('data-toggle', 'dropdown', $htmlOptions);
         $label .= ' <b class="caret"></b>';
-        return self::link($label, '#', $htmlOptions);
+        $url = $url ? $url : '#';
+        return self::link($label, $url, $htmlOptions);
     }
 
     // Button groups
@@ -2919,14 +2921,14 @@ EOD;
                         if (!empty($icon))
                             $label = self::icon($icon) . ' ' . $label;
                         $items = self::popOption('items', $itemOptions, array());
+                        $url = self::popOption('url', $itemOptions, false);
                         if (empty($items))
                         {
                             $itemOptions['linkOptions']['tabindex'] = -1;
-                            $url = self::popOption('url', $itemOptions, false);
                             $output .= self::menuLink($label, $url, $itemOptions);
                         }
                         else
-                            $output .= self::menuDropdown($label, $items, $itemOptions, $depth);
+                            $output .= self::menuDropdown($label, $url, $items, $itemOptions, $depth);
                     }
                 }
             }
@@ -2954,12 +2956,13 @@ EOD;
     /**
      * Generates a menu dropdown.
      * @param string $label the link label.
+     * @param string $url the link URL.
      * @param array $items the menu configuration.
      * @param array $htmlOptions additional HTML attributes.
      * @param integer $depth the current depth.
      * @return string the generated dropdown.
      */
-    public static function menuDropdown($label, $items, $htmlOptions, $depth = 0)
+    public static function menuDropdown($label, $url, $items, $htmlOptions, $depth = 0)
     {
         $htmlOptions = self::addClassName($depth === 0 ? 'dropdown' : 'dropdown-submenu', $htmlOptions);
         $linkOptions = self::popOption('linkOptions', $htmlOptions, array());
@@ -2973,7 +2976,7 @@ EOD;
         if (self::popOption('active', $htmlOptions, false))
             $htmlOptions = self::addClassName('active', $htmlOptions);
         $output = self::openTag('li', $htmlOptions);
-        $output .= self::dropdownToggleMenuLink($label, $linkOptions);
+        $output .= self::dropdownToggleMenuLink($label, $url, $linkOptions);
         $output .= self::menu($items, $menuOptions, $depth + 1);
         $output .= '</li>';
         return $output;
