@@ -246,6 +246,9 @@ class TbHtml extends CHtml // required in order to access the protected methods 
     // ICON
     // --------------------------------------------------
 
+    const ICON_COLOR_DEFAULT = '';
+    const ICON_COLOR_WHITE = 'white';
+    
     const ICON_GLASS = 'icon-glass';
     const ICON_MUSIC = 'icon-music';
     const ICON_SEARCH = 'icon-search';
@@ -2611,6 +2614,9 @@ EOD;
             if (strpos($icon, 'icon') === false)
                 $icon = 'icon-' . implode(' icon-', explode(' ', $icon));
             $htmlOptions = self::addClassName($icon, $htmlOptions);
+            $color = self::popOption('color', $htmlOptions);
+            if (isset($color) && $color === self::ICON_COLOR_WHITE)
+                $htmlOptions = self::addClassName('icon-white', $htmlOptions);
             return self::openTag($tagName, $htmlOptions) . CHtml::closeTag($tagName); // tag won't work in this case
         }
         return '';
