@@ -8,7 +8,7 @@
 /* @var $this <?php echo $this->getControllerClass(); ?> */
 /* @var $model <?php echo $this->getModelClass(); ?> */
 /* @var $form TbActiveForm */
-?>
+<?php echo "?>\n"; ?>
 
 <div class="form">
 
@@ -37,7 +37,7 @@ foreach($this->tableSchema->columns as $column)
 }
 ?>
 	<div class="form-actions">
-		<?php echo "<?php TbHtml::submitButton(\$model->isNewRecord ? 'Create' : 'Save',array(
+		<?php echo "<?php echo TbHtml::submitButton(\$model->isNewRecord ? 'Create' : 'Save',array(
 		    'color'=>TbHtml::BUTTON_COLOR_PRIMARY,
 		    'size'=>TbHtml::BUTTON_SIZE_LARGE,
 		)); ?>\n"; ?>
