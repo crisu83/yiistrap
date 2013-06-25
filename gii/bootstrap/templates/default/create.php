@@ -7,6 +7,7 @@
 <?php echo "<?php\n"; ?>
 /* @var $this <?php echo $this->getControllerClass(); ?> */
 /* @var $model <?php echo $this->getModelClass(); ?> */
+<?php echo "?>\n"; ?>
 
 <?php
 echo "<?php\n";

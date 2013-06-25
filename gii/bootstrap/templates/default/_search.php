@@ -8,7 +8,7 @@
 /* @var $this <?php echo $this->getControllerClass(); ?> */
 /* @var $model <?php echo $this->getModelClass(); ?> */
 /* @var $form CActiveForm */
-?>
+<?php echo "?>\n"; ?>
 
 <div class="wide form">
 
@@ -27,11 +27,7 @@
 
 <?php endforeach; ?>
 	<div class="form-actions">
-		<?php echo "<?php \$this->widget('bootstrap.widgets.TbButton', array(
-			'buttonType'=>'submit',
-			'type'=>'primary',
-			'label'=>'Search',
-		)); ?>\n"; ?>
+		<?php echo "<?php echo TbHtml::submitButton('Search',  array('color' => TbHtml::BUTTON_COLOR_PRIMARY,));?>\n" ?>
 	</div>
 
 <?php echo "<?php \$this->endWidget(); ?>\n"; ?>

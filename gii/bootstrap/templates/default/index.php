@@ -7,6 +7,7 @@
 <?php echo "<?php\n"; ?>
 /* @var $this <?php echo $this->getControllerClass(); ?> */
 /* @var $dataProvider CActiveDataProvider */
+<?php echo "?>\n"; ?>
 
 <?php
 echo "<?php\n";
