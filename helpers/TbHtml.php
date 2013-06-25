@@ -1314,7 +1314,7 @@ EOD;
 
         $input = isset($htmlOptions['input'])
             ? $htmlOptions['input']
-            : static::createInput($type, $name, $value, $htmlOptions, $data);
+            : self::createInput($type, $name, $value, $htmlOptions, $data);
 
         $controlGroupOptions = self::addClassName('control-group', $controlGroupOptions);
         if (!empty($color))
@@ -1982,7 +1982,7 @@ EOD;
 
         $input = isset($htmlOptions['input'])
             ? $htmlOptions['input']
-            : static::createActiveInput($type, $model, $attribute, $htmlOptions, $data);
+            : self::createActiveInput($type, $model, $attribute, $htmlOptions, $data);
 
         $controlGroupOptions = self::addClassName('control-group', $controlGroupOptions);
         if (!empty($color))
