@@ -557,8 +557,9 @@ class TbHtml extends CHtml // required in order to access the protected methods 
      */
     public static function help($text, $htmlOptions = array())
     {
-        $htmlOptions = self::addClassName('help-inline', $htmlOptions);
-        return self::tag('span', $htmlOptions, $text);
+        $type = self::popOption('type', $htmlOptions, self::HELP_TYPE_INLINE);
+        $htmlOptions = self::addClassName('help-' . $type, $htmlOptions);
+        return self::tag($type === self::HELP_TYPE_INLINE ? 'span' : 'p', $htmlOptions, $text);
     }
 
     /**
@@ -569,8 +570,8 @@ class TbHtml extends CHtml // required in order to access the protected methods 
      */
     public static function helpBlock($text, $htmlOptions = array())
     {
-        $htmlOptions = self::addClassName('help-block', $htmlOptions);
-        return self::tag('p', $htmlOptions, $text);
+        $htmlOptions['type'] = self::HELP_TYPE_BLOCK;
+        return self::help($text, $htmlOptions);
     }
 
     // Code

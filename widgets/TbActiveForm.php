@@ -110,12 +110,12 @@ class TbActiveForm extends CActiveForm
 				$option['clientValidation'] = "js:function(value, messages, attribute) {\n" . implode("\n", $validators) . "\n}";
 		}
 		$html = TbHtml::error($model, $attribute, $htmlOptions);
-		if ($html === '')
-		{
-			$htmlOptions = TbHtml::addClassName('help-inline', $htmlOptions);
-			$htmlOptions = TbHtml::addStyles('display:none', $htmlOptions);
-			$html = CHtml::tag('span', $htmlOptions, '');
-		}
+        if ($html === '')
+        {
+            $htmlOptions['type'] = $this->helpType;
+            $htmlOptions = TbHtml::addStyles('display:none', $htmlOptions);
+            $html = TbHtml::help('', $htmlOptions);
+        }
 		$this->attributes[$inputID]=$option;
 		return $html;
 	}
@@ -678,6 +678,7 @@ class TbActiveForm extends CActiveForm
     protected function processRowOptions($model, $attribute, $options)
     {
 		$errorOptions = TbHtml::popOption('errorOptions', $options, array());
+        $errorOptions['type'] = $this->helpType;
 		$error = $this->error($model, $attribute, $errorOptions);
 		// kind of a hack for ajax forms but this works for now.
 		if (!empty($error) && strpos($error, 'display:none') === false)
