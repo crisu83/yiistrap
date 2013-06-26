@@ -9,7 +9,7 @@
 /* @var $model <?php echo $this->getModelClass(); ?> */
 
 <?php
-echo "<?php\n";
+echo "\n";
 $label=$this->pluralize($this->class2name($this->modelClass));
 echo "\$this->breadcrumbs=array(
 	'$label'=>array('index'),
