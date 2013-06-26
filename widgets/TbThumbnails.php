@@ -27,6 +27,17 @@ class TbThumbnails extends TbListView
 	public $span;
 
 	/**
+	 * Initializes the widget
+	 */
+	public function init()
+	{
+		parent::init();
+
+		if (isset($this->itemsCssClass))
+			$this->htmlOptions = TbHtml::addClassName($this->itemsCssClass, $this->htmlOptions);
+	}
+
+	/**
 	 * Renders the data items for the view.
 	 * Each item is corresponding to a single data model instance.
 	 */
