@@ -41,6 +41,10 @@ class TbPager extends CBasePager
 	 */
 	public $lastPageLabel = '&raquo;';
 	/**
+	 * @var boolean whether to display the first and last items.
+	 */
+	public $displayFirstAndLast = false;
+	/**
 	 * @var array HTML attributes for the pager container tag.
 	 */
 	public $htmlOptions = array();
@@ -81,7 +85,8 @@ class TbPager extends CBasePager
 		$links = array();
 
 		// first page
-		$links[] = $this->createPageLink($this->firstPageLabel, 0, $currentPage <= 0, false);
+		if ($this->displayFirstAndLast)
+			$links[] = $this->createPageLink($this->firstPageLabel, 0, $currentPage <= 0, false);
 
 		// prev page
 		if (($page = $currentPage - 1) < 0)
@@ -100,7 +105,8 @@ class TbPager extends CBasePager
 		$links[] = $this->createPageLink($this->nextPageLabel, $page, $currentPage >= $pageCount - 1, false);
 
 		// last page
-		$links[] = $this->createPageLink($this->lastPageLabel, $pageCount - 1, $currentPage >= $pageCount - 1, false);
+		if ($this->displayFirstAndLast)
+			$links[] = $this->createPageLink($this->lastPageLabel, $pageCount - 1, $currentPage >= $pageCount - 1, false);
 
 		return $links;
 	}
