@@ -3909,6 +3909,9 @@ EOD;
         $overlayOptions = self::addClassName('carousel-caption', $overlayOptions);
         $labelOptions = self::popOption('labelOptions', $htmlOptions, array());
         $captionOptions = self::popOption('captionOptions', $htmlOptions, array());
+        $url = self::popOption('url', $htmlOptions);
+        if ($url)
+            $content = CHtml::link($content, $url);
         $output = self::openTag('div', $htmlOptions);
         $output .= $content;
         if (isset($label) || isset($caption))
