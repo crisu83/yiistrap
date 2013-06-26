@@ -73,6 +73,8 @@ class TbAlert extends CWidget
 	{
 		/* @var $user CWebUser */
 		$user = Yii::app()->getUser();
+		if (count($user->getFlashes(false)) == 0)
+			return;
 		echo TbHtml::openTag('div', $this->htmlOptions);
 		foreach ($this->alerts as $style => $alert)
 		{
