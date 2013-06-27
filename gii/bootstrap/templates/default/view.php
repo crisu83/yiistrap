@@ -7,6 +7,7 @@
 <?php echo "<?php\n"; ?>
 /* @var $this <?php echo $this->getControllerClass(); ?> */
 /* @var $model <?php echo $this->getModelClass(); ?> */
+<?php echo "?>\n"; ?>
 
 <?php
 echo "<?php\n";
@@ -29,9 +30,12 @@ $this->menu=array(
 
 <h1>View <?php echo $this->modelClass." #<?php echo \$model->{$this->tableSchema->primaryKey}; ?>"; ?></h1>
 
-<?php echo "<?php"; ?> $this->widget('bootstrap.widgets.TbDetailView',array(
-	'data'=>$model,
-	'attributes'=>array(
+<?php echo "<?php"; ?> $this->widget('zii.widgets.CDetailView',array(
+    'htmlOptions' => array(
+        'class' => 'table table-striped table-condensed table-hover',
+    ),
+    'data'=>$model,
+    'attributes'=>array(
 <?php
 foreach($this->tableSchema->columns as $column)
 	echo "\t\t'".$column->name."',\n";

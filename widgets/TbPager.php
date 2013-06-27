@@ -40,6 +40,12 @@ class TbPager extends CBasePager
 	 * @var string the text label for the last page button.
 	 */
 	public $lastPageLabel = '&raquo;';
+	
+	/**
+	 * @var boolean whether the "first" and "last" buttons should be hidden. 
+	 * Defaults to false.
+	 */
+	public $hideFirstAndLast = false;
 	/**
 	 * @var array HTML attributes for the pager container tag.
 	 */
@@ -81,7 +87,8 @@ class TbPager extends CBasePager
 		$links = array();
 
 		// first page
-		$links[] = $this->createPageLink($this->firstPageLabel, 0, $currentPage <= 0, false);
+		if (!$this->hideFirstAndLast)
+			$links[] = $this->createPageLink($this->firstPageLabel, 0, $currentPage <= 0, false);
 
 		// prev page
 		if (($page = $currentPage - 1) < 0)
@@ -100,7 +107,8 @@ class TbPager extends CBasePager
 		$links[] = $this->createPageLink($this->nextPageLabel, $page, $currentPage >= $pageCount - 1, false);
 
 		// last page
-		$links[] = $this->createPageLink($this->lastPageLabel, $pageCount - 1, $currentPage >= $pageCount - 1, false);
+		if (!$this->hideFirstAndLast)
+			$links[] = $this->createPageLink($this->lastPageLabel, $pageCount - 1, $currentPage >= $pageCount - 1, false);
 
 		return $links;
 	}

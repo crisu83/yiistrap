@@ -246,6 +246,9 @@ class TbHtml extends CHtml // required in order to access the protected methods 
     // ICON
     // --------------------------------------------------
 
+    const ICON_COLOR_DEFAULT = '';
+    const ICON_COLOR_WHITE = 'white';
+    
     const ICON_GLASS = 'icon-glass';
     const ICON_MUSIC = 'icon-music';
     const ICON_SEARCH = 'icon-search';
@@ -2445,8 +2448,9 @@ EOD;
             $htmlOptions['data-toggle'] = 'button';
         $items = strpos($type, 'input') === false ? self::popOption('items', $htmlOptions, array()) : array();
         $icon = self::popOption('icon', $htmlOptions);
+        $iconOptions = self::popOption('iconOptions', $htmlOptions, array());
         if (!empty($icon) && strpos($type, 'input') === false) // inputs cannot have icons
-        $label = self::icon($icon) . '&nbsp;' . $label;
+        $label = self::icon($icon, $iconOptions) . '&nbsp;' . $label;
         $dropdownOptions = $htmlOptions;
         self::removeOptions($htmlOptions, array('groupOptions', 'menuOptions', 'dropup'));
         self::addSpanClass($htmlOptions); // must be called here as CHtml renders buttons
@@ -2612,6 +2616,9 @@ EOD;
             if (strpos($icon, 'icon') === false)
                 $icon = 'icon-' . implode(' icon-', explode(' ', $icon));
             $htmlOptions = self::addClassName($icon, $htmlOptions);
+            $color = self::popOption('color', $htmlOptions);
+            if (isset($color) && $color === self::ICON_COLOR_WHITE)
+                $htmlOptions = self::addClassName('icon-white', $htmlOptions);
             return self::openTag($tagName, $htmlOptions) . CHtml::closeTag($tagName); // tag won't work in this case
         }
         return '';
@@ -2679,15 +2686,17 @@ EOD;
     /**
      * Generates a dropdown toggle menu item.
      * @param string $label the menu item text.
+     * @param string $url the menu item URL. If emtpy/false, # will be used.
      * @param array $htmlOptions additional HTML attributes.
      * @return string the generated menu item.
      */
-    public static function dropdownToggleMenuLink($label, $htmlOptions = array())
+    public static function dropdownToggleMenuLink($label, $url, $htmlOptions = array())
     {
         $htmlOptions = self::addClassName('dropdown-toggle', $htmlOptions);
         $htmlOptions = self::defaultOption('data-toggle', 'dropdown', $htmlOptions);
         $label .= ' <b class="caret"></b>';
-        return self::link($label, '#', $htmlOptions);
+        $url = $url ? $url : '#';
+        return self::link($label, $url, $htmlOptions);
     }
 
     // Button groups
@@ -2920,14 +2929,14 @@ EOD;
                         if (!empty($icon))
                             $label = self::icon($icon) . ' ' . $label;
                         $items = self::popOption('items', $itemOptions, array());
+                        $url = self::popOption('url', $itemOptions, false);
                         if (empty($items))
                         {
                             $itemOptions['linkOptions']['tabindex'] = -1;
-                            $url = self::popOption('url', $itemOptions, false);
                             $output .= self::menuLink($label, $url, $itemOptions);
                         }
                         else
-                            $output .= self::menuDropdown($label, $items, $itemOptions, $depth);
+                            $output .= self::menuDropdown($label, $url, $items, $itemOptions, $depth);
                     }
                 }
             }
@@ -2955,12 +2964,13 @@ EOD;
     /**
      * Generates a menu dropdown.
      * @param string $label the link label.
+     * @param string $url the link URL.
      * @param array $items the menu configuration.
      * @param array $htmlOptions additional HTML attributes.
      * @param integer $depth the current depth.
      * @return string the generated dropdown.
      */
-    public static function menuDropdown($label, $items, $htmlOptions, $depth = 0)
+    public static function menuDropdown($label, $url, $items, $htmlOptions, $depth = 0)
     {
         $htmlOptions = self::addClassName($depth === 0 ? 'dropdown' : 'dropdown-submenu', $htmlOptions);
         $linkOptions = self::popOption('linkOptions', $htmlOptions, array());
@@ -2974,7 +2984,7 @@ EOD;
         if (self::popOption('active', $htmlOptions, false))
             $htmlOptions = self::addClassName('active', $htmlOptions);
         $output = self::openTag('li', $htmlOptions);
-        $output .= self::dropdownToggleMenuLink($label, $linkOptions);
+        $output .= self::dropdownToggleMenuLink($label, $url, $linkOptions);
         $output .= self::menu($items, $menuOptions, $depth + 1);
         $output .= '</li>';
         return $output;
@@ -3057,7 +3067,7 @@ EOD;
      * @param integer $i the running index.
      * @return array the items.
      */
-    protected function normalizeTabs($tabs, &$panes, $i = 0)
+    protected static function normalizeTabs($tabs, &$panes, $i = 0)
     {
         $menuItems = array();
         foreach ($tabs as $tabOptions)
@@ -3901,6 +3911,9 @@ EOD;
         $overlayOptions = self::addClassName('carousel-caption', $overlayOptions);
         $labelOptions = self::popOption('labelOptions', $htmlOptions, array());
         $captionOptions = self::popOption('captionOptions', $htmlOptions, array());
+        $url = self::popOption('url', $htmlOptions);
+        if ($url)
+            $content = CHtml::link($content, $url);
         $output = self::openTag('div', $htmlOptions);
         $output .= $content;
         if (isset($label) || isset($caption))

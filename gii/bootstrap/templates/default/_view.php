@@ -7,7 +7,7 @@
 <?php echo "<?php\n"; ?>
 /* @var $this <?php echo $this->getControllerClass(); ?> */
 /* @var $data <?php echo $this->getModelClass(); ?> */
-?>
+<?php echo "?>\n"; ?>
 
 <div class="view">
 
