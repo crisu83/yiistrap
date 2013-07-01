@@ -1570,9 +1570,9 @@ EOD;
     {
         $label = self::popOption('label', $htmlOptions, false);
         $labelOptions = self::popOption('labelOptions', $htmlOptions, array());
-        $radioButton = CHtml::activeCheckBox($model, $attribute, $htmlOptions);
+        $checkBox = CHtml::activeCheckBox($model, $attribute, $htmlOptions);
         $labelOptions = self::addClassName('checkbox', $labelOptions);
-        return $label !== false ? self::tag('label', $labelOptions, $radioButton . $label) : $radioButton;
+        return $label !== false ? self::tag('label', $labelOptions, $checkBox . $label) : $checkBox;
     }
 
     /**
