@@ -1619,7 +1619,7 @@ EOD;
         $name = self::popOption('name', $htmlOptions);
         $unCheck = self::popOption('uncheckValue', $htmlOptions, '');
         $hiddenOptions = isset($htmlOptions['id']) ? array('id' => CHtml::ID_PREFIX . $htmlOptions['id']) : array('id' => false);
-        $hidden = $unCheck !== null ? CHtml::hiddenField($name, $unCheck, $hiddenOptions) : '';
+        $hidden = $unCheck !== false ? CHtml::hiddenField($name, $unCheck, $hiddenOptions) : '';
         return $hidden . self::radioButtonList($name, $selection, $data, $htmlOptions);
     }
 
@@ -1654,7 +1654,7 @@ EOD;
         $name = self::popOption('name', $htmlOptions);
         $unCheck = self::popOption('uncheckValue', $htmlOptions, '');
         $hiddenOptions = isset($htmlOptions['id']) ? array('id' => CHtml::ID_PREFIX . $htmlOptions['id']) : array('id' => false);
-        $hidden = $unCheck !== null ? CHtml::hiddenField($name, $unCheck, $hiddenOptions) : '';
+        $hidden = $unCheck !== false ? CHtml::hiddenField($name, $unCheck, $hiddenOptions) : '';
         return $hidden . self::checkBoxList($name, $selection, $data, $htmlOptions);
     }
 
