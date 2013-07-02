@@ -97,6 +97,11 @@
 .grid-view.grid-view-loading .table th > .sort-link .caret {
   display: none;
 }
+.detail-view .null { color:#ffc0cb; }
+.detail-view th {
+  text-align:right;
+  width:160px;
+}
 span.required {
   color: #b94a48;
   font-weight: bold;
