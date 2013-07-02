@@ -2688,13 +2688,15 @@ EOD;
      * @param string $label the menu item text.
      * @param string $url the menu item URL. If emtpy/false, # will be used.
      * @param array $htmlOptions additional HTML attributes.
+     * @param int $depth the menu depth at which this link is located
      * @return string the generated menu item.
      */
-    public static function dropdownToggleMenuLink($label, $url, $htmlOptions = array())
+    public static function dropdownToggleMenuLink($label, $url, $depth, $htmlOptions = array())
     {
         $htmlOptions = self::addClassName('dropdown-toggle', $htmlOptions);
         $htmlOptions = self::defaultOption('data-toggle', 'dropdown', $htmlOptions);
-        $label .= ' <b class="caret"></b>';
+        if($depth === 0)
+            $label .= ' <b class="caret"></b>';
         $url = $url ? $url : '#';
         return self::link($label, $url, $htmlOptions);
     }
@@ -2984,7 +2986,7 @@ EOD;
         if (self::popOption('active', $htmlOptions, false))
             $htmlOptions = self::addClassName('active', $htmlOptions);
         $output = self::openTag('li', $htmlOptions);
-        $output .= self::dropdownToggleMenuLink($label, $url, $linkOptions);
+        $output .= self::dropdownToggleMenuLink($label, $url, $depth, $linkOptions);
         $output .= self::menu($items, $menuOptions, $depth + 1);
         $output .= '</li>';
         return $output;
