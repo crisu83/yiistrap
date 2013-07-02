@@ -2978,8 +2978,9 @@ EOD;
         $menuOptions = self::addClassName('dropdown-menu', $menuOptions);
         if ($depth === 0)
         {
+            $menuOptions = self::defaultOption('id', CHtml::ID_PREFIX . CHtml::$count++, $menuOptions);
             $menuOptions = self::defaultOption('role', 'menu', $menuOptions);
-            $menuOptions = self::defaultOption('aria-labelledby', 'dropdownMenu', $menuOptions);
+            $menuOptions = self::defaultOption('aria-labelledby', $menuOptions['id'], $menuOptions);
         }
         if (self::popOption('active', $htmlOptions, false))
             $htmlOptions = self::addClassName('active', $htmlOptions);
