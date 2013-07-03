@@ -227,6 +227,15 @@ class TbHtml extends CHtml // required in order to access the protected methods 
     const PULL_RIGHT = 'right';
 
     //
+    // DETAIL VIEW
+    // --------------------------------------------------
+
+    const DETAIL_TYPE_STRIPED = 'striped';
+    const DETAIL_TYPE_BORDERED = 'bordered';
+    const DETAIL_TYPE_CONDENSED = 'condensed';
+    const DETAIL_TYPE_HOVER = 'hover';
+    
+    //
     // GRID VIEW
     // --------------------------------------------------
 
