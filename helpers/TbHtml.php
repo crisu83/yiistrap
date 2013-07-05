@@ -1981,7 +1981,7 @@ EOD;
 
         if (in_array($type, array(self::INPUT_TYPE_CHECKBOX, self::INPUT_TYPE_RADIOBUTTON)))
         {
-            $htmlOptions = self::defaultOption('label', $model->getAttributeLabel($attribute), $htmlOptions);
+            $htmlOptions = self::defaultOption('label', CHtml::activeLabelEx($model, $attribute, $labelOptions), $htmlOptions);
             $htmlOptions['labelOptions'] = $labelOptions;
             $label = false;
         }
