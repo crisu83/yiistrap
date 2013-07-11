@@ -19,21 +19,19 @@ class TbGridView extends CGridView
 {
 	/**
 	 * @var string|array the table style.
-	 * Valid values are TbHtml::GRID_STRIPED, TbHtml::GRID_BORDERED, TbHtml::GRID_CONDENSED and/or TbHtml::GRID_HOVER.
+	 * Valid values are TbHtml::GRID_TYPE_STRIPED, TbHtml::GRID_TYPE_BORDERED, TbHtml::GRID_TYPE_CONDENSED and/or
+     * TbHtml::GRID_TYPE_HOVER.
 	 */
 	public $type;
-
 	/**
 	 * @var string the CSS class name for the pager container. Defaults to 'pagination'.
 	 */
 	public $pagerCssClass = 'pagination';
-
 	/**
 	 * @var array the configuration for the pager.
 	 * Defaults to <code>array('class'=>'ext.bootstrap.widgets.TbPager')</code>.
 	 */
 	public $pager = array('class' => 'bootstrap.widgets.TbPager');
-
 	/**
 	 * @var string the URL of the CSS file used by this grid view.
 	 * Defaults to false, meaning that no CSS will be included.

@@ -18,40 +18,30 @@ class TbDetailView extends CDetailView
 
     /**
      * @var string|array the detail view style.
-     * Valid values are TbHtml::DETAIL_STRIPED, TbHtml::DETAIL_BORDERED, 
-     * TbHtml::DETAIL_CONDENSED and/or TbHtml::DETAIL_HOVER.
+     * Valid values are TbHtml::DETAIL_STRIPED, TbHtml::DETAIL_BORDERED, TbHtml::DETAIL_CONDENSED and/or TbHtml::DETAIL_HOVER.
      */
     public $type = array(TbHtml::DETAIL_TYPE_STRIPED, TbHtml::DETAIL_TYPE_CONDENSED);
+    /**
+     * @var string the URL of the CSS file used by this grid view.
+     * Defaults to false, meaning that no CSS will be included.
+     */
+    public $cssFile = false;
 
     /**
      * Initializes the widget.
      */
     public function init()
     {
-        // Don't let Yii include its default stylesheet
-        if ($this->cssFile === null)
-            $this->cssFile = false;
-
         parent::init();
+        $classes = array('table');
+        if (isset($this->type) && !empty($this->type))
+        {
+            if (is_string($this->type))
+                $this->type = explode(' ', $this->type);
 
-        if (is_string($this->type))
-            $types = explode(' ', $this->type);
-        else
-            $types = $this->type;
-
-        $validTypes = array(
-            TbHtml::DETAIL_TYPE_BORDERED,
-            TbHtml::DETAIL_TYPE_CONDENSED,
-            TbHtml::DETAIL_TYPE_HOVER,
-            TbHtml::DETAIL_TYPE_STRIPED,
-        );
-
-        // Set class names
-        foreach ($types as $type)
-            if (in_array($type, $validTypes))
-                $this->htmlOptions = TbHtml::addClassName('table-'.$type, $this->htmlOptions);
-
-        $this->htmlOptions = TbHtml::addClassName('table', $this->htmlOptions);
+            foreach ($this->type as $type)
+                $classes[] = 'table-' . $type;
+        }
+        $this->htmlOptions = TbHtml::addClassName(implode(' ', $classes), $this->htmlOptions);
     }
-
 }
