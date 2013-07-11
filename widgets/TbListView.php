@@ -39,6 +39,6 @@ class TbListView extends CListView
     public function renderEmptyText()
     {
         $emptyText = $this->emptyText === null ? Yii::t('zii', 'No results found.') : $this->emptyText;
-        echo TbHtml::tag('div', array('span' => 12), $emptyText);
+        echo TbHtml::tag('div', array('class' => 'empty', 'span' => 12), $emptyText);
     }
 }
