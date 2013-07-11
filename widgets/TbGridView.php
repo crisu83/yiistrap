@@ -57,7 +57,14 @@ class TbGridView extends CGridView
 			foreach ($this->type as $type)
                 $classes[] = 'table-' . $type;
 		}
-		$this->itemsCssClass = implode(' ', $classes);
+		if (!empty($classes)) {
+			$classes = implode(' ', $classes);
+			if (isset($this->itemsCssClass)) {
+				$this->itemsCssClass .= ' ' . $classes;
+			} else {
+				$this->itemsCssClass = $classes;
+			}
+		}
 	}
 
 	/**
