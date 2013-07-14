@@ -63,7 +63,10 @@ class TbHeroUnit extends CWidget
 	 */
 	public function run()
 	{
-		$this->content = ob_get_clean();
-		echo TbHtml::heroUnit($this->heading, $this->content, $this->htmlOptions);
+		if( isset( $this->view ) )
+		{
+			$this->content = ob_get_clean();
+		}
+		echo TbHtml::heroUnit( $this->heading, $this->content, $this->htmlOptions );
 	}
 }
