@@ -3370,11 +3370,8 @@ EOD;
     {
         $htmlOptions = self::addClassName('hero-unit', $htmlOptions);
         $headingOptions = self::popOption('headingOptions', $htmlOptions, array());
-        $output = self::tag('div', $htmlOptions);
-        $output .= self::tag('h1', $headingOptions, $heading);
-        $output .= $content;
-        $output .= '</div>';
-        return $output;
+        $headingOutput = self::tag('h1', $headingOptions, $heading);
+        return self::tag('div', $htmlOptions, $headingOutput . $content);
     }
 
     /**
