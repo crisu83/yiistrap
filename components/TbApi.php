@@ -27,6 +27,11 @@ class TbApi extends CApplicationComponent
 	const PLUGIN_TOOLTIP = 'tooltip';
 	const PLUGIN_TRANSITION = 'transition';
 	const PLUGIN_TYPEAHEAD = 'typeahead';
+	
+	/**
+	 * @var int static counter, used for determining script identifiers
+	 */
+	public static $counter = 0;
 
 	/**
 	 * @var bool whether we should copy the asset file or directory even if it is already published before.
@@ -174,7 +179,8 @@ class TbApi extends CApplicationComponent
 	{
 		$options = !empty($options) ? CJavaScript::encode($options) : '';
 		$script = "jQuery('{$selector}').{$name}({$options});";
-		Yii::app()->clientScript->registerScript($this->getUniqueScriptId(), $script, $position);
+		$id = __CLASS__.'#Plugin'.self::$counter++;
+		Yii::app()->clientScript->registerScript($id, $script, $position);
 	}
 
 	/**
@@ -197,7 +203,8 @@ class TbApi extends CApplicationComponent
 
 			$script .= "jQuery('{$selector}').on('{$name}', {$handler});";
 		}
-		Yii::app()->clientScript->registerScript($this->getUniqueScriptId(), $script, $position);
+		$id = __CLASS__.'#Events'.self::$counter++;
+		Yii::app()->clientScript->registerScript($id, $script, $position);
 	}
 
 	/**
@@ -216,12 +223,4 @@ class TbApi extends CApplicationComponent
 		}
 	}
 
-	/**
-	 * Generates a "somewhat" random id string.
-	 * @return string the id.
-	 */
-	protected function getUniqueScriptId()
-	{
-		return uniqid(__CLASS__ . '#', true);
-	}
 }
