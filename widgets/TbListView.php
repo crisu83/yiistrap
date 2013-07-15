@@ -32,4 +32,13 @@ class TbListView extends CListView
 	 * @var string the template to be used to control the layout of various sections in the view.
 	 */
 	public $template = "{items}\n<div class=\"row-fluid\"><div class=\"span6\">{pager}</div><div class=\"span6\">{summary}</div></div>";
+
+	/**
+     * Renders the empty message when there is no data.
+     */
+    public function renderEmptyText()
+    {
+        $emptyText = $this->emptyText === null ? Yii::t('zii', 'No results found.') : $this->emptyText;
+        echo TbHtml::tag('div', array('class' => 'empty', 'span' => 12), $emptyText);
+    }
 }
