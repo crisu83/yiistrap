@@ -3866,9 +3866,9 @@ EOD;
             $interval = self::popOption('data-interval', $htmlOptions);
             if ($interval)
                 $htmlOptions = self::defaultOption('data-interval', $interval, $htmlOptions);
-            $pause = self::popOption('data-interval', $htmlOptions);
+            $pause = self::popOption('data-pause', $htmlOptions);
             if ($pause) // todo: add attribute validation if seen necessary.
-            $htmlOptions = self::defaultOption('data-pause', $pause, $htmlOptions);
+                $htmlOptions = self::defaultOption('data-pause', $pause, $htmlOptions);
             $indicatorOptions = self::popOption('indicatorOptions', $htmlOptions, array());
             $innerOptions = self::popOption('innerOptions', $htmlOptions, array());
             $innerOptions = self::addClassName('carousel-inner', $innerOptions);
