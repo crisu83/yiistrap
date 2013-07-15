@@ -63,7 +63,7 @@ class TbHeroUnit extends CWidget
 	 */
 	public function run()
 	{
-		if( isset( $this->view ) )
+		if( !isset( $this->view ) )
 		{
 			$this->content = ob_get_clean();
 		}
