@@ -33,9 +33,9 @@ class TbActiveForm extends CActiveForm
     public $successMessageCssClass = 'success';
 	
 	/**
-	 * @var boolean shows inline error if true.
+	 * @var boolean hides inline error if true.
 	 */
-	public $inlineError = 'false';
+	public $hideInlineErrors = false;
 
     /**
      * Initializes the widget.
@@ -689,7 +689,7 @@ class TbActiveForm extends CActiveForm
 		if (!empty($error) && strpos($error, 'display:none') === false)
 			$options['color'] = TbHtml::INPUT_COLOR_ERROR;
 		
-		if($this->inlineError)
+		if($this->hideInlineErrors)
 			$options['error'] = $error;
 			
 		$helpOptions = TbHtml::popOption('helpOptions', $options, array());
