@@ -33,9 +33,9 @@ class TbActiveForm extends CActiveForm
     public $successMessageCssClass = 'success';
     
     /**
-     * @var boolean whether to display inline errors. Defaults to true.
+     * @var boolean whether to hide inline errors. Defaults to false.
      */
-    public $inlineErrors = true;
+    public $hideInlineErrors = false;
 
     /**
      * Initializes the widget.
@@ -688,7 +688,7 @@ class TbActiveForm extends CActiveForm
 		// kind of a hack for ajax forms but this works for now.
 		if (!empty($error) && strpos($error, 'display:none') === false)
 			$options['color'] = TbHtml::INPUT_COLOR_ERROR;
-		if ($this->inlineErrors)
+		if (!$this->hideInlineErrors)
 			$options['error'] = $error;
 		$helpOptions = TbHtml::popOption('helpOptions', $options, array());
 		$helpOptions['type'] = $this->helpType;
