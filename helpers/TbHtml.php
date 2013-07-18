@@ -3988,7 +3988,7 @@ EOD;
             $itemOptions = array('data-target' => $target, 'data-slide-to' => $i);
             if ($i === 0)
                 $itemOptions['class'] = 'active';
-            $output .= self::tag('li', $itemOptions);
+            $output .= self::tag('li', $itemOptions, '', true);
         }
         $output .= '</ol>';
         return $output;
