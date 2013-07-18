@@ -2913,6 +2913,7 @@ EOD;
     {
         if (is_array($items) && !empty($items))
         {
+            $htmlOptions = self::defaultOption('role', 'menu', $htmlOptions);
             $output = self::openTag('ul', $htmlOptions);
             foreach ($items as $itemOptions)
             {
@@ -2967,6 +2968,7 @@ EOD;
      */
     public static function menuLink($label, $url, $htmlOptions = array())
     {
+        $htmlOptions = self::defaultOption('role', 'menuitem', $htmlOptions);
         $linkOptions = self::popOption('linkOptions', $htmlOptions, array());
         $content = self::link($label, $url, $linkOptions);
         return self::tag('li', $htmlOptions, $content);
@@ -2984,6 +2986,7 @@ EOD;
     public static function menuDropdown($label, $url, $items, $htmlOptions, $depth = 0)
     {
         $htmlOptions = self::addClassName($depth === 0 ? 'dropdown' : 'dropdown-submenu', $htmlOptions);
+        $htmlOptions = self::defaultOption('role', 'menuitem', $htmlOptions);
         $linkOptions = self::popOption('linkOptions', $htmlOptions, array());
         $menuOptions = self::popOption('menuOptions', $htmlOptions, array());
         $menuOptions = self::addClassName('dropdown-menu', $menuOptions);
