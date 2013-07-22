@@ -51,6 +51,10 @@ class TbHeroUnit extends CWidget
             if (isset($controller) && $controller->getViewFile($this->view) !== false)
                 $this->content = $this->controller->renderPartial($this->view, $this->viewData, true);
         }
+		else
+		{
+			ob_start();
+		}
 		$this->htmlOptions['headingOptions'] = $this->headingOptions;
 	}
 
@@ -59,6 +63,10 @@ class TbHeroUnit extends CWidget
 	 */
 	public function run()
 	{
-		echo TbHtml::heroUnit($this->heading, $this->content, $this->htmlOptions);
+		if( !isset( $this->view ) )
+		{
+			$this->content = ob_get_clean();
+		}
+		echo TbHtml::heroUnit( $this->heading, $this->content, $this->htmlOptions );
 	}
 }
