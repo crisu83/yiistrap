@@ -34,13 +34,14 @@ class TbDetailView extends CDetailView
     {
         parent::init();
         $classes = array('table');
-        if (isset($this->type) && !empty($this->type))
-        {
-            if (is_string($this->type))
+        if (isset($this->type) && !empty($this->type)) {
+            if (is_string($this->type)) {
                 $this->type = explode(' ', $this->type);
+            }
 
-            foreach ($this->type as $type)
+            foreach ($this->type as $type) {
                 $classes[] = 'table-' . $type;
+            }
         }
         $this->htmlOptions = TbHtml::addClassName(implode(' ', $classes), $this->htmlOptions);
     }

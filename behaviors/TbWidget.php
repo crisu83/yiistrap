@@ -16,63 +16,63 @@ Yii::import('bootstrap.components.TbApi');
  */
 class TbWidget extends CBehavior
 {
-	private $_api;
+    private $_api;
 
     /**
      * Copies the id to the widget HTML attributes or vise versa.
      */
     public function copyId()
     {
-        if (!isset($this->owner->htmlOptions['id']))
+        if (!isset($this->owner->htmlOptions['id'])) {
             $this->owner->htmlOptions['id'] = $this->owner->id;
-        else
+        } else {
             $this->owner->id = $this->owner->htmlOptions['id'];
+        }
     }
 
-	/**
-	 * Registers the given plugin with the API.
-	 * @param string $name the plugin name.
-	 * @param string $selector the CSS selector.
-	 * @param array $options the JavaScript options for the plugin.
-	 * @param int $position the position of the JavaScript code.
-	 * @return boolean whether the plugin was registered.
-	 */
+    /**
+     * Registers the given plugin with the API.
+     * @param string $name the plugin name.
+     * @param string $selector the CSS selector.
+     * @param array $options the JavaScript options for the plugin.
+     * @param int $position the position of the JavaScript code.
+     * @return boolean whether the plugin was registered.
+     */
     public function registerPlugin($name, $selector, $options = array(), $position = CClientScript::POS_END)
-	{
-		if (($api = $this->getApi()) !== null)
-		{
-			$api->registerPlugin($name, $selector, $options, $position);
-			return true;
-		}
-		return false;
-	}
+    {
+        if (($api = $this->getApi()) !== null) {
+            $api->registerPlugin($name, $selector, $options, $position);
+            return true;
+        }
+        return false;
+    }
 
-	/**
-	 * Registers plugin events with the API.
-	 * @param string $selector the CSS selector.
-	 * @param string[] $events  the JavaScript event configuration (name=>handler).
-	 * @param int $position the position of the JavaScript code.
-	 * @return boolean whether the events were registered.
-	 */
+    /**
+     * Registers plugin events with the API.
+     * @param string $selector the CSS selector.
+     * @param string[] $events  the JavaScript event configuration (name=>handler).
+     * @param int $position the position of the JavaScript code.
+     * @return boolean whether the events were registered.
+     */
     public function registerEvents($selector, $events, $position = CClientScript::POS_END)
-	{
-		if (($api = $this->getApi()) !== null)
-		{
-			$api->registerEvents($selector, $events, $position);
-			return true;
-		}
-		return false;
-	}
+    {
+        if (($api = $this->getApi()) !== null) {
+            $api->registerEvents($selector, $events, $position);
+            return true;
+        }
+        return false;
+    }
 
-	/**
-	 * Returns the API instance.
-	 * @return TbApi the api.
-	 */
-	private function getApi()
-	{
-        if (isset($this->_api))
-		    return $this->_api;
-        else
+    /**
+     * Returns the API instance.
+     * @return TbApi the api.
+     */
+    private function getApi()
+    {
+        if (isset($this->_api)) {
+            return $this->_api;
+        } else {
             return $this->_api = Yii::app()->getComponent('bootstrap');
-	}
+        }
+    }
 }

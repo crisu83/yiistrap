@@ -30,3 +30,4 @@ vendor/*
 # docs app
 docs/app/runtime
 docs/web/assets
+releases/

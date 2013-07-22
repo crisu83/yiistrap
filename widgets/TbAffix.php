@@ -36,16 +36,16 @@ class TbAffix extends CWidget
         $this->attachBehavior('TbWidget', new TbWidget);
         $this->copyId();
         $this->htmlOptions['data-spy'] = 'affix';
-        if (isset($this->offset))
-        {
-            if (is_string($this->offset))
+        if (isset($this->offset)) {
+            if (is_string($this->offset)) {
                 $this->offset = array('top', $this->offset);
+            }
 
-            if (is_array($this->offset) && count($this->offset) === 2)
-            {
+            if (is_array($this->offset) && count($this->offset) === 2) {
                 list($position, $offset) = $this->offset;
-                if (!empty($position))
+                if (!empty($position)) {
                     $this->options = TbHtml::defaultOption('data-offset-' . $position, $offset, $this->options);
+                }
             }
         }
         echo TbHtml::openTag($this->tagName, $this->htmlOptions);
