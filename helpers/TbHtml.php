@@ -3014,6 +3014,7 @@ EOD;
     public static function menuHeader($label, $htmlOptions = array())
     {
         $htmlOptions = self::addClassName('nav-header', $htmlOptions);
+        $htmlOptions = self::defaultOption('role', 'presentation', $htmlOptions);
         return self::tag('li', $htmlOptions, $label);
     }
 
