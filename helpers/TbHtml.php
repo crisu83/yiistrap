@@ -3747,6 +3747,7 @@ EOD;
     {
         $htmlOptions = self::addClassName('close', $htmlOptions);
         $htmlOptions = self::defaultOption('data-dismiss', 'alert', $htmlOptions);
+        $htmlOptions = self::defaultOption('type', 'button', $htmlOptions);
         return self::tag($tag, $htmlOptions, $label);
     }
 
