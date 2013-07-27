@@ -43,6 +43,6 @@ class TbDetailView extends CDetailView
                 $classes[] = 'table-' . $type;
             }
         }
-        $this->htmlOptions = TbHtml::addClassName(implode(' ', $classes), $this->htmlOptions);
+        $this->htmlOptions = TbHtml::addCssClass(implode(' ', $classes), $this->htmlOptions);
     }
 }

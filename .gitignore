@@ -24,10 +24,15 @@ switch
 node_modules
 
 # Composer files
-composer*
+composer.phar
 vendor/*
 
-# docs app
-docs/app/runtime
-docs/web/assets
+# Codeception files
+codecept.phar
+tests/_log/*
+tests/acceptance/*
+tests/functional/*
+tests/*suite.yml
+
+# releases
 releases/

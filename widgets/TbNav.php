@@ -69,7 +69,7 @@ class TbNav extends CWidget
         $this->copyId();
         $route = $this->controller->getRoute();
         if ($this->stacked) {
-            $this->htmlOptions = TbHtml::addClassName('nav-stacked', $this->htmlOptions);
+            $this->htmlOptions = TbHtml::addCssClass('nav-stacked', $this->htmlOptions);
         }
         if (isset($this->scrollspy)) {
             if (is_string($this->scrollspy)) {

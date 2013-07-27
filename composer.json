@@ -15,5 +15,27 @@
             "email": "ramirez.cobos@gmail.com",
             "homepage": "http://www.ramirezcobos.com/"
         }
-    ]
+    ],
+    "repositories": [
+        {
+            "type": "composer",
+            "url": "http://packages.phundament.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.3.0",
+        "crisu83/yii-composer": "dev-master",
+        "yiisoft/yii": "1.1.13"
+    },
+    "minimum-stability": "dev",
+    "scripts": {
+        "post-install-cmd": [
+            "Crisu83\\YiiComposer\\InstallHandler::setPermissions"
+        ]
+    },
+    "extra": {
+        "yii-install-writable": [
+            "tests/_log"
+        ]
+    }
 }

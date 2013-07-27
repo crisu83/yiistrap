@@ -100,7 +100,7 @@ class TbNavbar extends CWidget
         $items = ob_get_clean();
         ob_start();
         if ($this->collapse !== false) {
-            $this->collapseOptions = TbHtml::addClassName('nav-collapse', $this->collapseOptions);
+            $this->collapseOptions = TbHtml::addCssClass('nav-collapse', $this->collapseOptions);
             // todo: fix collapse, currently it cannot be clicked when within a navbar
             ob_start();
             /* @var TbCollapse $collapseWidget */
@@ -121,7 +121,7 @@ class TbNavbar extends CWidget
         }
         $containerContent = ob_get_clean();
         $containerOptions = TbHtml::popOption('containerOptions', $this->htmlOptions, array());
-        $containerOptions = TbHtml::addClassName($this->fluid ? 'container-fluid' : 'container', $containerOptions);
+        $containerOptions = TbHtml::addCssClass($this->fluid ? 'container-fluid' : 'container', $containerOptions);
         ob_start();
         echo TbHtml::openTag('div', $containerOptions);
         echo $containerContent;

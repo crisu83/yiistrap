@@ -159,7 +159,7 @@ class TbActiveForm extends CActiveForm
             if ($header === null) {
                 $header = '<p>' . Yii::t('yii', 'Please fix the following input errors:') . '</p>';
             }
-            $htmlOptions = TbHtml::addClassName(TbHtml::$errorSummaryCss, $htmlOptions);
+            $htmlOptions = TbHtml::addCssClass(TbHtml::$errorSummaryCss, $htmlOptions);
             $htmlOptions = TbHtml::addStyles('display:none', $htmlOptions);
             $html = CHtml::tag('div', $htmlOptions, $header . '<ul><li>dummy</li></ul>' . $footer);
         }
@@ -416,7 +416,7 @@ class TbActiveForm extends CActiveForm
      */
     public function searchQuery($model, $attribute, $htmlOptions = array())
     {
-        return TbHtml::activeSearchQuery($model, $attribute, $htmlOptions);
+        return TbHtml::activeSearchQueryField($model, $attribute, $htmlOptions);
     }
 
     /**

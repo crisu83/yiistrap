@@ -121,9 +121,9 @@ class TbModal extends CWidget
         $this->htmlOptions = TbHtml::defaultOption('role', 'dialog', $this->htmlOptions);
         $this->htmlOptions = TbHtml::defaultOption('tabindex', '-1', $this->htmlOptions);
 
-        $this->htmlOptions = TbHtml::addClassName('modal hide', $this->htmlOptions);
+        $this->htmlOptions = TbHtml::addCssClass('modal hide', $this->htmlOptions);
         if ($this->fade) {
-            $this->htmlOptions = TbHtml::addClassName('fade', $this->htmlOptions);
+            $this->htmlOptions = TbHtml::addCssClass('fade', $this->htmlOptions);
         }
 
         if (is_array($this->footer)) {

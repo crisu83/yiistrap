@@ -34,7 +34,7 @@ class TbThumbnails extends TbListView
         parent::init();
 
         if (isset($this->itemsCssClass)) {
-            $this->htmlOptions = TbHtml::addClassName($this->itemsCssClass, $this->htmlOptions);
+            $this->htmlOptions = TbHtml::addCssClass($this->itemsCssClass, $this->htmlOptions);
         }
     }
 
