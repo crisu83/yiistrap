@@ -553,8 +553,10 @@ class TbHtmlTest extends \Codeception\TestCase\Test
 
     public function testLink()
     {
-        $link = TbHtml::link('Link', array('site/index'));
-        $this->assertEquals('<a href="codecept.phar?r=site/index">Link</a>', $link);
+        $link = TbHtml::link('Link', '#', array(
+            'class' => 'link'
+        ));
+        $this->assertEquals('<a class="link" href="#">Link</a>', $link);
     }
 
     public function testButton()
