@@ -126,7 +126,7 @@ class TbHtmlTest extends \Codeception\TestCase\Test
             'pull' => TbHtml::PULL_RIGHT,
             'span' => 3,
         ), 'Content');
-        $this->assertEquals('<div class="text-right pull-right span3">Content</div>', $div);
+        $this->assertEquals('<div class="span3 pull-right text-right">Content</div>', $div);
     }
 
     public function testOpenTag()
@@ -643,7 +643,6 @@ class TbHtmlTest extends \Codeception\TestCase\Test
 
     public function testAjaxLink()
     {
-        // todo: think about how to improve this test.
         $button = TbHtml::ajaxLink('Link', '#', array(), array(
             'class' => 'link',
         ));
@@ -891,8 +890,8 @@ class TbHtmlTest extends \Codeception\TestCase\Test
     public function testPaginationLink()
     {
         $link = TbHtml::paginationLink('Link', '#', array(
-            'class' => 'item',
-            'linkOptions' => array('class' => 'link'),
+            'class' => 'link',
+            'itemOptions' => array('class' => 'item'),
         ));
         $this->assertEquals('<li class="item"><a class="link" href="#">Link</a></li>', $link);
     }
@@ -905,8 +904,8 @@ class TbHtmlTest extends \Codeception\TestCase\Test
     public function testPagerLink()
     {
         $link = TbHtml::pagerLink('Link', '#', array(
-            'class' => 'item',
-            'linkOptions' => array('class' => 'link'),
+            'class' => 'link',
+            'itemOptions' => array('class' => 'item'),
             'disabled' => true,
         ));
         $this->assertEquals('<li class="item disabled"><a class="link" href="#">Link</a></li>', $link);

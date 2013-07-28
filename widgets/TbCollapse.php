@@ -56,12 +56,12 @@ class TbCollapse extends CWidget
     {
         $this->attachBehavior('TbWidget', new TbWidget);
         $this->copyId();
-        $this->htmlOptions = TbHtml::addCssClass('collapse', $this->htmlOptions);
+        TbHtml::addCssClass('collapse', $this->htmlOptions);
         if (isset($this->parent)) {
-            $this->htmlOptions = TbHtml::defaultOption('data-parent', $this->parent, $this->htmlOptions);
+            TbArray::defaultValue('data-parent', $this->parent, $this->htmlOptions);
         }
         if (isset($this->toggle) && $this->toggle) {
-            $this->htmlOptions = TbHtml::addCssClass('in', $this->htmlOptions);
+            TbHtml::addCssClass('in', $this->htmlOptions);
         }
         if (isset($this->view)) {
             $controller = $this->getController();

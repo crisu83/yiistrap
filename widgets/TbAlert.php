@@ -84,10 +84,10 @@ class TbAlert extends CWidget
             }
 
             if ($user->hasFlash($style)) {
-                $htmlOptions = TbHtml::popOption('htmlOptions', $alert, array());
-                $htmlOptions = TbHtml::defaultOption('closeText', $this->closeText, $htmlOptions);
-                $htmlOptions = TbHtml::defaultOption('block', $this->block, $htmlOptions);
-                $htmlOptions = TbHtml::defaultOption('fade', $this->fade, $htmlOptions);
+                $htmlOptions = TbArray::popValue('htmlOptions', $alert, array());
+                TbArray::defaultValue('closeText', $this->closeText, $htmlOptions);
+                TbArray::defaultValue('block', $this->block, $htmlOptions);
+                TbArray::defaultValue('fade', $this->fade, $htmlOptions);
                 echo TbHtml::alert($style, $user->getFlash($style), $htmlOptions);
             }
         }

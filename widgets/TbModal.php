@@ -117,13 +117,13 @@ class TbModal extends CWidget
     {
         $this->attachBehavior('TbWidget', new TbWidget);
 
-        $this->htmlOptions = TbHtml::defaultOption('id', $this->getId(), $this->htmlOptions);
-        $this->htmlOptions = TbHtml::defaultOption('role', 'dialog', $this->htmlOptions);
-        $this->htmlOptions = TbHtml::defaultOption('tabindex', '-1', $this->htmlOptions);
+        TbArray::defaultValue('id', $this->getId(), $this->htmlOptions);
+        TbArray::defaultValue('role', 'dialog', $this->htmlOptions);
+        TbArray::defaultValue('tabindex', '-1', $this->htmlOptions);
 
-        $this->htmlOptions = TbHtml::addCssClass('modal hide', $this->htmlOptions);
+        TbHtml::addCssClass('modal hide', $this->htmlOptions);
         if ($this->fade) {
-            $this->htmlOptions = TbHtml::addCssClass('fade', $this->htmlOptions);
+            TbHtml::addCssClass('fade', $this->htmlOptions);
         }
 
         if (is_array($this->footer)) {
@@ -157,13 +157,13 @@ class TbModal extends CWidget
      */
     public function initOptions()
     {
-        if ($remote = TbHtml::popOption('remote', $this->options)) {
+        if ($remote = TbArray::popValue('remote', $this->options)) {
             $this->options['remote'] = CHtml::normalizeUrl($remote);
         }
 
-        $this->options = TbHtml::defaultOption('backdrop', $this->backdrop, $this->options);
-        $this->options = TbHtml::defaultOption('keyboard', $this->keyboard, $this->options);
-        $this->options = TbHtml::defaultOption('show', $this->show, $this->options);
+        TbArray::defaultValue('backdrop', $this->backdrop, $this->options);
+        TbArray::defaultValue('keyboard', $this->keyboard, $this->options);
+        TbArray::defaultValue('show', $this->show, $this->options);
     }
 
     /**
@@ -182,20 +182,16 @@ class TbModal extends CWidget
     public function renderButton()
     {
         if (!empty($this->buttonOptions) && is_array($this->buttonOptions)) {
-            $this->buttonOptions = TbHtml::defaultOption('data-toggle', 'modal', $this->buttonOptions);
+            TbArray::defaultValue('data-toggle', 'modal', $this->buttonOptions);
 
             if ($this->remote !== null) {
-                $this->buttonOptions = TbHtml::defaultOption(
-                    'data-remote',
-                    CHtml::normalizeUrl($this->remote),
-                    $this->buttonOptions
-                );
+                $this->buttonOptions['data-remote'] = CHtml::normalizeUrl($this->remote);
             }
 
             $selector = '#' . $this->htmlOptions['id'];
-            $label = TbHtml::popOption('label', $this->buttonOptions, 'button');
+            $label = TbArray::popValue('label', $this->buttonOptions, 'button');
             $attr = isset($this->buttonOptions['data-remote']) ? 'data-target' : 'href';
-            $this->buttonOptions = TbHtml::defaultOption($attr, $selector, $this->buttonOptions);
+            TbArray::defaultValue($attr, $selector, $this->buttonOptions);
             echo TbHtml::button($label, $this->buttonOptions);
         }
     }

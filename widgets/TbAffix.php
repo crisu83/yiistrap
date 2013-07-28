@@ -44,7 +44,7 @@ class TbAffix extends CWidget
             if (is_array($this->offset) && count($this->offset) === 2) {
                 list($position, $offset) = $this->offset;
                 if (!empty($position)) {
-                    $this->options = TbHtml::defaultOption('data-offset-' . $position, $offset, $this->options);
+                    $this->options['data-offset-' . $position] = $offset;
                 }
             }
         }

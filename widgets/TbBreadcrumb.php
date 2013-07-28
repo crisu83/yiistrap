@@ -45,7 +45,7 @@ class TbBreadcrumb extends CWidget
      */
     public function init()
     {
-        $this->htmlOptions = TbHtml::defaultOption('divider', $this->divider, $this->htmlOptions);
+        $this->htmlOptions['divider'] = $this->divider;
     }
 
     /**

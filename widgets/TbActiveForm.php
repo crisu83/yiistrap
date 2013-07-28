@@ -77,9 +77,9 @@ class TbActiveForm extends CActiveForm
             return TbHtml::error($model, $attribute, $htmlOptions);
         }
         $id = CHtml::activeId($model, $attribute);
-        $inputID = TbHtml::getOption('inputID', $htmlOptions, $id);
+        $inputID = TbArray::getValue('inputID', $htmlOptions, $id);
         unset($htmlOptions['inputID']);
-        $htmlOptions = TbHtml::defaultOption('id', $inputID . '_em_', $htmlOptions);
+        TbArray::defaultValue('id', $inputID . '_em_', $htmlOptions);
         $option = array(
             'id' => $id,
             'inputID' => $inputID,
@@ -103,14 +103,14 @@ class TbActiveForm extends CActiveForm
         );
         foreach ($optionNames as $name) {
             if (isset($htmlOptions[$name])) {
-                $option[$name] = TbHtml::popOption($name, $htmlOptions);
+                $option[$name] = TbArray::popValue($name, $htmlOptions);
             }
         }
         if ($model instanceof CActiveRecord && !$model->isNewRecord) {
             $option['status'] = 1;
         }
         if ($enableClientValidation) {
-            $validators = TbHtml::getOption('clientValidation', $htmlOptions, array());
+            $validators = TbArray::getValue('clientValidation', $htmlOptions, array());
             $attributeName = $attribute;
             if (($pos = strrpos($attribute, ']')) !== false && $pos !== strlen($attribute) - 1) // e.g. [a]name
             {
@@ -133,7 +133,7 @@ class TbActiveForm extends CActiveForm
         $html = TbHtml::error($model, $attribute, $htmlOptions);
         if ($html === '') {
             $htmlOptions['type'] = $this->helpType;
-            $htmlOptions = TbHtml::addStyles('display:none', $htmlOptions);
+            $htmlOptions = TbHtml::addCssStyle('display:none', $htmlOptions);
             $html = TbHtml::help('', $htmlOptions);
         }
         $this->attributes[$inputID] = $option;
@@ -153,14 +153,14 @@ class TbActiveForm extends CActiveForm
         if (!$this->enableAjaxValidation && !$this->enableClientValidation) {
             return TbHtml::errorSummary($models, $header, $footer, $htmlOptions);
         }
-        $htmlOptions = TbHtml::defaultOption('id', $this->id . '_es_', $htmlOptions);
+        TbArray::defaultValue('id', $this->id . '_es_', $htmlOptions);
         $html = TbHtml::errorSummary($models, $header, $footer, $htmlOptions);
         if ($html === '') {
             if ($header === null) {
                 $header = '<p>' . Yii::t('yii', 'Please fix the following input errors:') . '</p>';
             }
-            $htmlOptions = TbHtml::addCssClass(TbHtml::$errorSummaryCss, $htmlOptions);
-            $htmlOptions = TbHtml::addStyles('display:none', $htmlOptions);
+            TbHtml::addCssClass(TbHtml::$errorSummaryCss, $htmlOptions);
+            $htmlOptions = TbHtml::addCssStyle('display:none', $htmlOptions);
             $html = CHtml::tag('div', $htmlOptions, $header . '<ul><li>dummy</li></ul>' . $footer);
         }
         $this->summaryID = $htmlOptions['id'];
@@ -698,7 +698,7 @@ class TbActiveForm extends CActiveForm
      */
     protected function processRowOptions($model, $attribute, $options)
     {
-        $errorOptions = TbHtml::popOption('errorOptions', $options, array());
+        $errorOptions = TbArray::popValue('errorOptions', $options, array());
         $errorOptions['type'] = $this->helpType;
         $error = $this->error($model, $attribute, $errorOptions);
         // kind of a hack for ajax forms but this works for now.
@@ -708,7 +708,7 @@ class TbActiveForm extends CActiveForm
         if (!$this->hideInlineErrors) {
             $options['error'] = $error;
         }
-        $helpOptions = TbHtml::popOption('helpOptions', $options, array());
+        $helpOptions = TbArray::popValue('helpOptions', $options, array());
         $helpOptions['type'] = $this->helpType;
         $options['helpOptions'] = $helpOptions;
         return $options;

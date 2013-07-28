@@ -64,26 +64,20 @@ class TbButtonColumn extends CButtonColumn
             return;
         }
 
-        $url = TbHtml::popOption('url', $button, '#');
+        $url = TbArray::popValue('url', $button, '#');
         if (strcmp($url, '#') !== 0) {
             $url = $this->evaluateExpression($url, array('data' => $data, 'row' => $row));
         }
 
-        $imageUrl = TbHtml::popOption('imageUrl', $button, false);
-        $label = TbHtml::popOption('label', $button, $id);
-        $options = TbHtml::popOption('options', $button, array());
+        $imageUrl = TbArray::popValue('imageUrl', $button, false);
+        $label = TbArray::popValue('label', $button, $id);
+        $options = TbArray::popValue('options', $button, array());
 
-        $options = TbHtml::defaultOption('title', $label, $options);
-        $options = TbHtml::defaultOption('rel', 'tooltip', $options);
+        TbArray::defaultValue('title', $label, $options);
+        TbArray::defaultValue('rel', 'tooltip', $options);
 
-        if ($icon = TbHtml::popOption('icon', $button, false)) {
-            /* todo: not sure if we require this anymore */
-            if (strpos($icon, 'icon') === false) {
-                $icon = 'icon-' . implode(' icon-', explode(' ', $icon));
-            }
-
-            echo CHtml::link('<i class="' . $icon . '"></i>', $url, $options);
-
+        if ($icon = TbArray::popValue('icon', $button, false)) {
+            echo CHtml::link(TbHtml::icon($icon), $url, $options);
         } else {
             if ($imageUrl && is_string($imageUrl)) {
                 echo CHtml::link(CHtml::image($imageUrl, $label), $url, $options);

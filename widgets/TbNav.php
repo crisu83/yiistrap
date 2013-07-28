@@ -69,7 +69,7 @@ class TbNav extends CWidget
         $this->copyId();
         $route = $this->controller->getRoute();
         if ($this->stacked) {
-            $this->htmlOptions = TbHtml::addCssClass('nav-stacked', $this->htmlOptions);
+            TbHtml::addCssClass('nav-stacked', $this->htmlOptions);
         }
         if (isset($this->scrollspy)) {
             if (is_string($this->scrollspy)) {
@@ -110,7 +110,7 @@ class TbNav extends CWidget
                 continue;
             }
 
-            $item = TbHtml::defaultOption('label', '', $item);
+            TbArray::defaultValue('label', '', $item);
 
             if ($this->encodeLabel) {
                 $items[$i]['label'] = CHtml::encode($item['label']);

@@ -71,10 +71,10 @@ class TbNavbar extends CWidget
             }
         }
         if (isset($this->color)) {
-            $this->htmlOptions = TbHtml::defaultOption('color', $this->color, $this->htmlOptions);
+            TbArray::defaultValue('color', $this->color, $this->htmlOptions);
         }
         if (isset($this->display) && $this->display !== TbHtml::NAVBAR_DISPLAY_NONE) {
-            $this->htmlOptions = TbHtml::defaultOption('display', $this->display, $this->htmlOptions);
+            TbArray::defaultValue('display', $this->display, $this->htmlOptions);
         }
     }
 
@@ -91,7 +91,7 @@ class TbNavbar extends CWidget
             if (is_string($item)) {
                 echo $item;
             } else {
-                $widgetClassName = TbHtml::popOption('class', $item);
+                $widgetClassName = TbArray::popValue('class', $item);
                 if ($widgetClassName !== null) {
                     $this->controller->widget($widgetClassName, $item);
                 }
@@ -100,8 +100,7 @@ class TbNavbar extends CWidget
         $items = ob_get_clean();
         ob_start();
         if ($this->collapse !== false) {
-            $this->collapseOptions = TbHtml::addCssClass('nav-collapse', $this->collapseOptions);
-            // todo: fix collapse, currently it cannot be clicked when within a navbar
+            TbHtml::addCssClass('nav-collapse', $this->collapseOptions);
             ob_start();
             /* @var TbCollapse $collapseWidget */
             $collapseWidget = $this->controller->widget(
@@ -120,8 +119,8 @@ class TbNavbar extends CWidget
             echo $brand . $items;
         }
         $containerContent = ob_get_clean();
-        $containerOptions = TbHtml::popOption('containerOptions', $this->htmlOptions, array());
-        $containerOptions = TbHtml::addCssClass($this->fluid ? 'container-fluid' : 'container', $containerOptions);
+        $containerOptions = TbArray::popValue('containerOptions', $this->htmlOptions, array());
+        TbHtml::addCssClass($this->fluid ? 'container-fluid' : 'container', $containerOptions);
         ob_start();
         echo TbHtml::openTag('div', $containerOptions);
         echo $containerContent;

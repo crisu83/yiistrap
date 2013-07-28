@@ -59,7 +59,7 @@ class TbTabs extends CWidget
     {
         $this->attachBehavior('TbWidget', new TbWidget);
         $this->copyId();
-        $this->htmlOptions = TbHtml::defaultOption('placement', $this->placement, $this->htmlOptions);
+        TbArray::defaultValue('placement', $this->placement, $this->htmlOptions);
         $this->initEvents();
     }
 
@@ -99,12 +99,12 @@ class TbTabs extends CWidget
         $controller = $this->getController();
         if (isset($controller)) {
             foreach ($tabs as &$tabOptions) {
-                $items = TbHtml::getOption('items', $tabOptions, array());
+                $items = TbArray::getValue('items', $tabOptions, array());
                 if (!empty($items)) {
                     $tabOptions['items'] = $this->normalizeTabs($items);
                 } else {
                     if (isset($tabOptions['view'])) {
-                        $view = TbHtml::popOption('view', $tabOptions);
+                        $view = TbArray::popValue('view', $tabOptions);
                         if ($controller->getViewFile($view) !== false) {
                             $tabOptions['content'] = $controller->renderPartial($view, $this->viewData, true);
                         }

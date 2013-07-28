@@ -15,7 +15,6 @@ Yii::import('zii.widgets.CDetailView');
  */
 class TbDetailView extends CDetailView
 {
-
     /**
      * @var string|array the detail view style.
      * Valid values are TbHtml::DETAIL_STRIPED, TbHtml::DETAIL_BORDERED, TbHtml::DETAIL_CONDENSED and/or TbHtml::DETAIL_HOVER.
@@ -34,7 +33,7 @@ class TbDetailView extends CDetailView
     {
         parent::init();
         $classes = array('table');
-        if (isset($this->type) && !empty($this->type)) {
+        if (!empty($this->type)) {
             if (is_string($this->type)) {
                 $this->type = explode(' ', $this->type);
             }
@@ -43,6 +42,6 @@ class TbDetailView extends CDetailView
                 $classes[] = 'table-' . $type;
             }
         }
-        $this->htmlOptions = TbHtml::addCssClass(implode(' ', $classes), $this->htmlOptions);
+        TbHtml::addCssClass($classes, $this->htmlOptions);
     }
 }
