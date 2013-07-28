@@ -827,7 +827,7 @@ class TbHtml extends CHtml // required in order to access the protected methods 
     {
         $label = TbArray::popValue('label', $htmlOptions, false);
         $labelOptions = TbArray::popValue('labelOptions', $htmlOptions, array());
-        $labelOptions = self::addCssClass('radio', $labelOptions);
+        self::addCssClass('radio', $labelOptions);
         $radioButton = CHtml::radioButton($name, $checked, $htmlOptions);
         return $label !== false ? self::tag('label', $labelOptions, $radioButton . ' ' . $label) : $radioButton;
     }
@@ -2810,9 +2810,9 @@ EOD;
      * @param array $htmlOptions additional HTML options.
      * @return string the generated button group.
      */
-    public static function buttonGroup($buttons, $htmlOptions = array())
+    public static function buttonGroup(array $buttons, $htmlOptions = array())
     {
-        if (is_array($buttons) && !empty($buttons)) {
+        if (!empty($buttons)) {
             self::addCssClass('btn-group', $htmlOptions);
             if (TbArray::popValue('vertical', $htmlOptions, false)) {
                 self::addCssClass('btn-group-vertical', $htmlOptions);
@@ -2856,9 +2856,9 @@ EOD;
      * @param array $htmlOptions additional HTML options.
      * @return string the generated button toolbar.
      */
-    public static function buttonToolbar($groups, $htmlOptions = array())
+    public static function buttonToolbar(array $groups, $htmlOptions = array())
     {
-        if (is_array($groups) && !empty($groups)) {
+        if (!empty($groups)) {
             self::addCssClass('btn-toolbar', $htmlOptions);
             $parentOptions = array(
                 'color' => TbArray::popValue('color', $htmlOptions),
@@ -3005,9 +3005,9 @@ EOD;
      * @param integer $depth the current depth.
      * @return string the generated menu.
      */
-    public static function menu($items, $htmlOptions = array(), $depth = 0)
+    public static function menu(array $items, $htmlOptions = array(), $depth = 0)
     {
-        if (is_array($items) && !empty($items)) {
+        if (!empty($items)) {
             TbArray::defaultValue('role', 'menu', $htmlOptions);
             $output = self::openTag('ul', $htmlOptions);
             foreach ($items as $itemOptions) {
@@ -3322,9 +3322,9 @@ EOD;
      * @param array $htmlOptions additional HTML attributes.
      * @return string the generated pagination.
      */
-    public static function pagination($links, $htmlOptions = array())
+    public static function pagination(array $links, $htmlOptions = array())
     {
-        if (is_array($links) && !empty($links)) {
+        if (!empty($links)) {
             self::addCssClass('pagination', $htmlOptions);
             $size = TbArray::popValue('size', $htmlOptions);
             if (!empty($size)) {
@@ -3378,9 +3378,9 @@ EOD;
      * @param array $htmlOptions additional HTML attributes.
      * @return string the generated pager.
      */
-    public static function pager($links, $htmlOptions = array())
+    public static function pager(array $links, $htmlOptions = array())
     {
-        if (is_array($links) && !empty($links)) {
+        if (!empty($links)) {
             self::addCssClass('pager', $htmlOptions);
             $output = self::openTag('ul', $htmlOptions);
             foreach ($links as $itemOptions) {
@@ -3509,9 +3509,9 @@ EOD;
      * @param array $htmlOptions additional HTML attributes.
      * @return string the generated thumbnails.
      */
-    public static function thumbnails($thumbnails, $htmlOptions = array())
+    public static function thumbnails(array $thumbnails, $htmlOptions = array())
     {
-        if (is_array($thumbnails) && !empty($thumbnails)) {
+        if (!empty($thumbnails)) {
             self::addCssClass('thumbnails', $htmlOptions);
             $defaultSpan = TbArray::popValue('span', $htmlOptions, 3);
             $output = self::openTag('ul', $htmlOptions);
@@ -3693,9 +3693,9 @@ EOD;
      * @param array $htmlOptions additional HTML attributes.
      * @return string the generated progress bar.
      */
-    public static function stackedProgressBar($bars, $htmlOptions = array())
+    public static function stackedProgressBar(array $bars, $htmlOptions = array())
     {
-        if (is_array($bars) && !empty($bars)) {
+        if (!empty($bars)) {
             self::addCssClass('progress', $htmlOptions);
             $output = self::openTag('div', $htmlOptions);
             $totalWidth = 0;
@@ -3736,7 +3736,7 @@ EOD;
         if ($width > 100) {
             $width = 100;
         }
-        $htmlOptions = self::addCssStyle("width: {$width}%;", $htmlOptions);
+        self::addCssStyle("width: {$width}%;", $htmlOptions);
         $content = TbArray::popValue('content', $htmlOptions, '');
         return self::tag('div', $htmlOptions, $content);
     }
@@ -3750,9 +3750,9 @@ EOD;
      * @param array $mediaObjects media object configurations.
      * @return string generated list.
      */
-    public static function mediaObjects($mediaObjects)
+    public static function mediaObjects(array $mediaObjects)
     {
-        if (is_array($mediaObjects) && !empty($mediaObjects)) {
+        if (!empty($mediaObjects)) {
             $output = '';
             foreach ($mediaObjects as $mediaObjectOptions) {
                 if (isset($mediaObjectOptions['visible']) && $mediaObjectOptions['visible'] === false) {
@@ -3971,9 +3971,9 @@ EOD;
      * @param array $htmlOptions additional HTML attributes.
      * @return string the generated carousel.
      */
-    public static function carousel($items, $htmlOptions = array())
+    public static function carousel(array $items, $htmlOptions = array())
     {
-        if (is_array($items) && !empty($items)) {
+        if (!empty($items)) {
             $id = TbArray::getValue('id', $htmlOptions, CHtml::ID_PREFIX . CHtml::$count++);
             TbArray::defaultValue('id', $id, $htmlOptions);
             $selector = '#' . $id;

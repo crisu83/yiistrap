@@ -19,9 +19,9 @@ class TbArray
      * @param mixed $defaultValue the default value.
      * @return mixed the value.
      */
-    public static function getValue($key, $array, $defaultValue = null)
+    public static function getValue($key, array $array, $defaultValue = null)
     {
-        return (is_array($array) && isset($array[$key])) ? $array[$key] : $defaultValue;
+        return isset($array[$key]) ? $array[$key] : $defaultValue;
     }
 
     /**
@@ -31,15 +31,11 @@ class TbArray
      * @param mixed $defaultValue the default value.
      * @return mixed the value.
      */
-    public static function popValue($key, &$array, $defaultValue = null)
+    public static function popValue($key, array &$array, $defaultValue = null)
     {
-        if (is_array($array)) {
-            $value = self::getValue($key, $array, $defaultValue);
-            unset($array[$key]);
-            return $value;
-        } else {
-            return $defaultValue;
-        }
+        $value = self::getValue($key, $array, $defaultValue);
+        unset($array[$key]);
+        return $value;
     }
 
     /**
@@ -48,9 +44,9 @@ class TbArray
      * @param mixed $value the default value.
      * @param array $array the array.
      */
-    public static function defaultValue($key, $value, &$array)
+    public static function defaultValue($key, $value, array &$array)
     {
-        if (is_array($array) && !isset($array[$key])) {
+        if (!isset($array[$key])) {
             $array[$key] = $value;
         }
     }
@@ -60,12 +56,10 @@ class TbArray
      * @param array $array the array to set values for.
      * @param array $values the default values.
      */
-    public static function defaultValues($values, &$array)
+    public static function defaultValues(array $values, array &$array)
     {
-        if (is_array($values) && is_array($array)) {
-            foreach ($values as $name => $value) {
-                self::defaultValue($name, $value, $array);
-            }
+        foreach ($values as $name => $value) {
+            self::defaultValue($name, $value, $array);
         }
     }
 
@@ -73,11 +67,9 @@ class TbArray
      * Removes a specific value from the given array.
      * @param string $key the item key.
      */
-    public static function removeValue($key, &$array)
+    public static function removeValue($key, array &$array)
     {
-        if (is_array($array)) {
-            unset($array[$key]);
-        }
+        unset($array[$key]);
     }
 
     /**
@@ -85,7 +77,7 @@ class TbArray
      * @param array $keys the keys to remove.
      * @param array $array the array to remove from.
      */
-    public static function removeValues($keys, &$array)
+    public static function removeValues(array $keys, array &$array)
     {
         $array = array_diff_key($array, array_flip($keys));
     }
@@ -98,14 +90,12 @@ class TbArray
      * @param boolean $force whether to allow overriding of existing values.
      * @return array the options.
      */
-    public static function copyValues($keys, $from, $to, $force = false)
+    public static function copyValues(array $keys, array $from, array $to, $force = false)
     {
-        if (is_array($from) && is_array($to)) {
-            foreach ($keys as $key) {
-                if (isset($from[$key])) {
-                    if ($force || !isset($to[$key])) {
-                        $to[$key] = self::getValue($key, $from);
-                    }
+        foreach ($keys as $key) {
+            if (isset($from[$key])) {
+                if ($force || !isset($to[$key])) {
+                    $to[$key] = self::getValue($key, $from);
                 }
             }
         }
@@ -120,16 +110,14 @@ class TbArray
      * @param boolean $force whether to allow overriding of existing values.
      * @return array the options.
      */
-    public static function moveValues($keys, &$from, $to, $force = false)
+    public static function moveValues(array $keys, array &$from, array $to, $force = false)
     {
-        if (is_array($from) && is_array($to)) {
-            foreach ($keys as $key) {
-                if (isset($from[$key])) {
-                    $value = self::popValue($key, $from);
-                    if ($force || !isset($to[$key])) {
-                        $to[$key] = $value;
-                        unset($from[$key]);
-                    }
+        foreach ($keys as $key) {
+            if (isset($from[$key])) {
+                $value = self::popValue($key, $from);
+                if ($force || !isset($to[$key])) {
+                    $to[$key] = $value;
+                    unset($from[$key]);
                 }
             }
         }
@@ -142,7 +130,7 @@ class TbArray
      * @param array $from array to be merged from.
      * @return array the merged array.
      */
-    public static function merge($to, $from)
+    public static function merge(array $to, array $from)
     {
         $args = func_get_args();
         $res = array_shift($args);
