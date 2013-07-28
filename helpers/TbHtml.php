@@ -3095,7 +3095,7 @@ EOD;
             self::addCssClass('active', $htmlOptions);
         }
         $output = self::openTag('li', $htmlOptions);
-        $output .= self::dropdownToggleMenuLink($label, $url, $depth, $linkOptions);
+        $output .= self::dropdownToggleMenuLink($label, $url, $linkOptions, $depth);
         $output .= self::menu($items, $menuOptions, $depth + 1);
         $output .= '</li>';
         return $output;
@@ -4129,7 +4129,6 @@ EOD;
             $className = implode(' ', $className);
         }
         $htmlOptions['class'] = isset($htmlOptions['class']) ? $htmlOptions['class'] . ' ' . $className : $className;
-        return $htmlOptions;
     }
 
     /**
@@ -4144,7 +4143,6 @@ EOD;
             $style = implode(' ', $style);
         }
         $htmlOptions['style'] = isset($htmlOptions['style']) ? $htmlOptions['style'] . ' ' . $style : $style;
-        return $htmlOptions;
     }
 
     /**
