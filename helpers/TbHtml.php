@@ -2021,7 +2021,7 @@ EOD;
         $labelOptions = TbArray::popValue('labelOptions', $htmlOptions, array());
 
         if (in_array($type, array(self::INPUT_TYPE_CHECKBOX, self::INPUT_TYPE_RADIOBUTTON))) {
-            $htmlOptions['label'] = CHtml::activeLabel($model, $attribute, $labelOptions);
+            $htmlOptions['label'] = $model->getAttributeLabel($attribute);
             $htmlOptions['labelOptions'] = $labelOptions;
             $label = false;
         }

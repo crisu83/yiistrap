@@ -477,10 +477,9 @@ class TbHtmlTest extends \Codeception\TestCase\Test
         ));
         $this->assertEquals('<div class="group control-group error"><label class="label control-label" for="Dummy_text">Text</label><div class="controls"><input name="Dummy[text]" id="Dummy_text" type="text" value="text" /><span class="help help-inline">Help text</span></div></div>', $controlGroup);
         $controlGroup = TbHtml::activeControlGroup(TbHtml::INPUT_TYPE_RADIOBUTTON, $model, 'radio', array(
-            'label' => 'Label text',
             'labelOptions' => array('class' => 'label'),
         ));
-        $this->assertEquals('<div class="control-group"><div class="controls"><label class="label radio"><input id="ytDummy_radio" type="hidden" value="0" name="Dummy[radio]" /><input name="Dummy[radio]" id="Dummy_radio" value="1" checked="checked" type="radio" /> Label text</label></div></div>', $controlGroup);
+        $this->assertEquals('<div class="control-group"><div class="controls"><label class="label radio"><input id="ytDummy_radio" type="hidden" value="0" name="Dummy[radio]" /><input name="Dummy[radio]" id="Dummy_radio" value="1" checked="checked" type="radio" /> Radio</label></div></div>', $controlGroup);
     }
 
     public function testActiveCustomControlGroup()
