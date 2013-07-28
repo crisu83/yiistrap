@@ -88,13 +88,12 @@ class TbTypeAhead extends CInputWidget
             }
         }
 
-        $this->pluginOptions = TbHtml::mergeOptions(
+        $this->pluginOptions = TbArray::merge(
             array(
                 'source' => $this->source,
                 'items' => $this->items,
                 'minLength' => $this->minLength
-            )
-            ,
+            ),
             $options
         );
     }
