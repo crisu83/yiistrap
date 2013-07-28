@@ -226,6 +226,9 @@ class TbHtml extends CHtml // required in order to access the protected methods 
     const PULL_LEFT = 'left';
     const PULL_RIGHT = 'right';
 
+    const CLOSE_DISMISS_ALERT = 'alert';
+    const CLOSE_DISMISS_MODAL = 'modal';
+
     //
     // DETAIL VIEW
     // --------------------------------------------------
@@ -412,7 +415,7 @@ class TbHtml extends CHtml // required in order to access the protected methods 
     // --------------------------------------------------
 
     // Typography
-    // http://twitter.github.com/bootstrap/base-css.html#typography
+    // http://twitter.github.io/bootstrap/2.3.2/base-css.html#typography
     // --------------------------------------------------
 
     /**
@@ -591,7 +594,7 @@ class TbHtml extends CHtml // required in order to access the protected methods 
     }
 
     // Code
-    // http://twitter.github.com/bootstrap/base-css.html#code
+    // http://twitter.github.io/bootstrap/2.3.2/base-css.html#code
     // --------------------------------------------------
 
     /**
@@ -650,13 +653,13 @@ class TbHtml extends CHtml // required in order to access the protected methods 
     }
 
     // Tables
-    // http://twitter.github.com/bootstrap/base-css.html#forms
+    // http://twitter.github.io/bootstrap/2.3.2/base-css.html#forms
     // --------------------------------------------------
 
     // todo: create table methods here.
 
     // Forms
-    // http://twitter.github.com/bootstrap/base-css.html#tables
+    // http://twitter.github.io/bootstrap/2.3.2/base-css.html#tables
     // --------------------------------------------------
 
     /**
@@ -2369,8 +2372,23 @@ EOD;
         return self::searchForm($action, $method, $htmlOptions);
     }
 
+    /**
+     * Generates a collapse element.
+     * @param string $target the CSS selector for the target element.
+     * @param array $htmlOptions additional HTML attributes.
+     * @return string the generated icon.
+     */
+    public static function navbarCollapseLink($target, $htmlOptions = array())
+    {
+        $htmlOptions = self::addCssClass('btn btn-navbar', $htmlOptions);
+        $htmlOptions['data-toggle'] = 'collapse';
+        $htmlOptions['data-target'] = $target;
+        $content = '<span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span>';
+        return self::tag('a', $htmlOptions, $content);
+    }
+
     // Buttons
-    // http://twitter.github.com/bootstrap/base-css.html#buttons
+    // http://twitter.github.io/bootstrap/2.3.2/base-css.html#buttons
     // --------------------------------------------------
 
     /**
@@ -2625,7 +2643,7 @@ EOD;
     }
 
     // Images
-    // http://twitter.github.com/bootstrap/base-css.html#images
+    // http://twitter.github.io/bootstrap/2.3.2/base-css.html#images
     // --------------------------------------------------
 
     /**
@@ -2684,7 +2702,7 @@ EOD;
     }
 
     // Icons by Glyphicons
-    // http://twitter.github.com/bootstrap/base-css.html#icons
+    // http://twitter.github.io/bootstrap/2.3.2/base-css.html#icons
     // --------------------------------------------------
 
     /**
@@ -2715,7 +2733,7 @@ EOD;
     // --------------------------------------------------
 
     // Dropdowns
-    // http://twitter.github.com/bootstrap/components.html#dropdowns
+    // http://twitter.github.io/bootstrap/2.3.2/components.html#dropdowns
     // --------------------------------------------------
 
     /**
@@ -2787,7 +2805,7 @@ EOD;
     }
 
     // Button groups
-    // http://twitter.github.com/bootstrap/components.html#buttonGroups
+    // http://twitter.github.io/bootstrap/2.3.2/components.html#buttonGroups
     // --------------------------------------------------
 
     /**
@@ -2874,7 +2892,7 @@ EOD;
     }
 
     // Button dropdowns
-    // http://twitter.github.com/bootstrap/components.html#buttonDropdowns
+    // http://twitter.github.io/bootstrap/2.3.2/components.html#buttonDropdowns
     // --------------------------------------------------
 
     /**
@@ -2905,7 +2923,7 @@ EOD;
     }
 
     // Navs
-    // http://twitter.github.com/bootstrap/components.html#navs
+    // http://twitter.github.io/bootstrap/2.3.2/components.html#navs
     // --------------------------------------------------
 
     /**
@@ -3203,7 +3221,7 @@ EOD;
     }
 
     // Navbar
-    // http://twitter.github.com/bootstrap/components.html#navbar
+    // http://twitter.github.io/bootstrap/2.3.2/components.html#navbar
     // --------------------------------------------------
 
     /**
@@ -3269,7 +3287,7 @@ EOD;
     }
 
     // Breadcrumbs
-    // http://twitter.github.com/bootstrap/components.html#breadcrumbs
+    // http://twitter.github.io/bootstrap/2.3.2/components.html#breadcrumbs
     // --------------------------------------------------
 
     /**
@@ -3298,7 +3316,7 @@ EOD;
     }
 
     // Pagination
-    // http://twitter.github.com/bootstrap/components.html#pagination
+    // http://twitter.github.io/bootstrap/2.3.2/components.html#pagination
     // --------------------------------------------------
 
     /**
@@ -3409,7 +3427,7 @@ EOD;
     }
 
     // Labels and badges
-    // http://twitter.github.com/bootstrap/components.html#labels-badges
+    // http://twitter.github.io/bootstrap/2.3.2/components.html#labels-badges
     // --------------------------------------------------
 
     /**
@@ -3445,7 +3463,7 @@ EOD;
     }
 
     // Typography
-    // http://twitter.github.com/bootstrap/components.html#typography
+    // http://twitter.github.io/bootstrap/2.3.2/components.html#typography
     // --------------------------------------------------
 
     /**
@@ -3487,7 +3505,7 @@ EOD;
     }
 
     // Thumbnails
-    // http://twitter.github.com/bootstrap/components.html#thumbnails
+    // http://twitter.github.io/bootstrap/2.3.2/components.html#thumbnails
     // --------------------------------------------------
 
     /**
@@ -3571,7 +3589,7 @@ EOD;
     }
 
     // Alerts
-    // http://twitter.github.com/bootstrap/components.html#alerts
+    // http://twitter.github.io/bootstrap/2.3.2/components.html#alerts
     // --------------------------------------------------
 
     /**
@@ -3598,8 +3616,9 @@ EOD;
         }
         $closeText = self::popOption('closeText', $htmlOptions, self::CLOSE_TEXT);
         $closeOptions = self::popOption('closeOptions', $htmlOptions, array());
+        $closeOptions['dismiss'] = TbHtml::CLOSE_DISMISS_ALERT;
         $output = self::openTag('div', $htmlOptions);
-        $output .= $closeText !== false ? self::closeLink($closeText, $closeOptions) : '';
+        $output .= $closeText !== false ? self::closeLink($closeText, '#', $closeOptions) : '';
         $output .= $message;
         $output .= '</div>';
         return $output;
@@ -3619,7 +3638,7 @@ EOD;
     }
 
     // Progress bars
-    // http://twitter.github.com/bootstrap/components.html#progress
+    // http://twitter.github.io/bootstrap/2.3.2/components.html#progress
     // --------------------------------------------------
 
     /**
@@ -3637,13 +3656,15 @@ EOD;
         }
         if (self::popOption('striped', $htmlOptions, false)) {
             $htmlOptions = self::addCssClass('progress-striped', $htmlOptions);
-            if (self::popOption('animated', $htmlOptions, false)) {
-                $htmlOptions = self::addCssClass('active', $htmlOptions);
-            }
+        }
+        if (self::popOption('animated', $htmlOptions, false)) {
+            $htmlOptions = self::addCssClass('active', $htmlOptions);
         }
         $barOptions = self::popOption('barOptions', $htmlOptions, array());
-        $content = self::popOption('content', $htmlOptions, '');
-        $barOptions = self::defaultOption('content', $content, $barOptions);
+        $content = self::popOption('content', $htmlOptions);
+        if (!empty($content)) {
+            $barOptions['content'] = $content;
+        }
         $content = self::bar($width, $barOptions);
         return self::tag('div', $htmlOptions, $content);
     }
@@ -3683,15 +3704,17 @@ EOD;
         if (is_array($bars) && !empty($bars)) {
             $htmlOptions = self::addCssClass('progress', $htmlOptions);
             $output = self::openTag('div', $htmlOptions);
+            $totalWidth = 0;
             foreach ($bars as $barOptions) {
-                if (isset($barOptions['visible']) && $barOptions['visible'] === false) {
+                if (isset($barOptions['visible']) && !$barOptions['visible']) {
                     continue;
                 }
-                $options = self::popOption('htmlOptions', $barOptions, array());
-                if (!empty($options)) {
-                    $barOptions = self::mergeOptions($options, $barOptions);
-                }
                 $width = self::popOption('width', $barOptions, 0);
+                $tmp = $totalWidth;
+                $totalWidth += $width;
+                if ($totalWidth > 100) {
+                    $width = 100 - $tmp;
+                }
                 $output .= self::bar($width, $barOptions);
             }
             $output .= '</div>';
@@ -3725,7 +3748,7 @@ EOD;
     }
 
     // Media objects
-    // http://twitter.github.com/bootstrap/components.html#media
+    // http://twitter.github.io/bootstrap/2.3.2/components.html#media
     // --------------------------------------------------
 
     /**
@@ -3756,7 +3779,7 @@ EOD;
     /**
      * Generates a single media object.
      * @param string $image the image url.
-     * @param string $title the title text.
+     * @param string $heading the heading text.
      * @param string $content the content text.
      * @param array $htmlOptions additional HTML attributes.
      * @return string the media object.
@@ -3791,7 +3814,7 @@ EOD;
     }
 
     // Misc
-    // http://twitter.github.com/bootstrap/components.html#misc
+    // http://twitter.github.io/bootstrap/2.3.2/components.html#misc
     // --------------------------------------------------
 
     /**
@@ -3813,13 +3836,14 @@ EOD;
     /**
      * Generates a close link.
      * @param string $label the link label text.
+     * @param mixed $url the link url.
      * @param array $htmlOptions additional HTML attributes.
      * @return string the generated link.
      */
-    public static function closeLink($label = self::CLOSE_TEXT, $htmlOptions = array())
+    public static function closeLink($label = self::CLOSE_TEXT, $url = '#', $htmlOptions = array())
     {
-        $htmlOptions = self::defaultOption('href', '#', $htmlOptions);
-        return self::closeIcon('a', $label, $htmlOptions);
+        $htmlOptions['href'] = $url;
+        return self::close('a', $label, $htmlOptions);
     }
 
     /**
@@ -3830,20 +3854,24 @@ EOD;
      */
     public static function closeButton($label = self::CLOSE_TEXT, $htmlOptions = array())
     {
-        return self::closeIcon('button', $label, $htmlOptions);
+        return self::close('button', $label, $htmlOptions);
     }
 
     /**
      * Generates a close element.
+     * @param string $tag the tag name.
      * @param string $label the element label text.
      * @param array $htmlOptions additional HTML attributes.
      * @return string the generated element.
      */
-    public static function closeIcon($tag, $label, $htmlOptions = array())
+    public static function close($tag, $label, $htmlOptions = array())
     {
         $htmlOptions = self::addCssClass('close', $htmlOptions);
-        $htmlOptions = self::defaultOption('data-dismiss', 'alert', $htmlOptions);
-        $htmlOptions = self::defaultOption('type', 'button', $htmlOptions);
+        $dismiss = TbHtml::popOption('dismiss', $htmlOptions);
+        if (!empty($dismiss)) {
+            $htmlOptions['data-dismiss'] = $dismiss;
+        }
+        $htmlOptions['type'] = 'button';
         return self::tag($tag, $htmlOptions, $label);
     }
 
@@ -3860,33 +3888,19 @@ EOD;
         return self::link($label, $target, $htmlOptions);
     }
 
-    /**
-     * Generates a collapse icon.
-     * @param string $target the CSS selector for the target element.
-     * @param array $htmlOptions additional HTML attributes.
-     * @return string the generated icon.
-     */
-    public static function collapseIcon($target, $htmlOptions = array())
-    {
-        $htmlOptions = self::addCssClass('btn btn-navbar', $htmlOptions);
-        $htmlOptions = self::defaultOptions(
-            $htmlOptions,
-            array(
-                'data-toggle' => 'collapse',
-                'data-target' => $target,
-            )
-        );
-        $content = '<span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span>';
-        return self::tag('a', $htmlOptions, $content);
-    }
-
     //
     // JAVASCRIPT
     // --------------------------------------------------
 
+    // Modals
+    // http://twitter.github.io/bootstrap/2.3.2/javascript.html#modals
+    // --------------------------------------------------
+
+    // todo: create modal methods here.
+
     // Tooltips and Popovers
-    // http://twitter.github.com/bootstrap/javascript.html#tooltips
-    // http://twitter.github.com/bootstrap/javascript.html#popovers
+    // http://twitter.github.io/bootstrap/2.3.2/javascript.html#tooltips
+    // http://twitter.github.io/bootstrap/2.3.2/javascript.html#popovers
     // --------------------------------------------------
 
     /**
@@ -3954,7 +3968,7 @@ EOD;
     }
 
     // Carousel
-    // http://twitter.github.com/bootstrap/javascript.html#carousel
+    // http://twitter.github.io/bootstrap/2.3.2/javascript.html#carousel
     // --------------------------------------------------
 
     /**
@@ -4065,10 +4079,10 @@ EOD;
      * @param array $htmlOptions additional HTML attributes.
      * @return string the generated link.
      */
-    public static function carouselPrevLink($label, $url, $htmlOptions = array())
+    public static function carouselPrevLink($label, $url = '#', $htmlOptions = array())
     {
-        $htmlOptions['data-slide'] = 'prev';
         $htmlOptions = self::addCssClass('carousel-control left', $htmlOptions);
+        $htmlOptions['data-slide'] = 'prev';
         return self::link($label, $url, $htmlOptions);
     }
 
@@ -4079,10 +4093,10 @@ EOD;
      * @param array $htmlOptions additional HTML attributes.
      * @return string the generated link.
      */
-    public static function carouselNextLink($label, $url, $htmlOptions = array())
+    public static function carouselNextLink($label, $url = '#', $htmlOptions = array())
     {
-        $htmlOptions['data-slide'] = 'next';
         $htmlOptions = self::addCssClass('carousel-control right', $htmlOptions);
+        $htmlOptions['data-slide'] = 'next';
         return self::link($label, $url, $htmlOptions);
     }
 

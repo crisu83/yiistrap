@@ -113,7 +113,7 @@ class TbNavbar extends CWidget
                 )
             );
             $collapseContent = ob_get_clean();
-            echo TbHtml::collapseIcon('#' . $collapseWidget->getId());
+            echo TbHtml::navbarCollapseLink('#' . $collapseWidget->getId());
             echo $brand . $collapseContent;
 
         } else {

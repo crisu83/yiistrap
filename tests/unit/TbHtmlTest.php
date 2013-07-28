@@ -1006,8 +1006,143 @@ class TbHtmlTest extends \Codeception\TestCase\Test
 
     public function testProgressBar()
     {
+        $progress = TbHtml::progressBar(60, array(
+            'class' => 'div',
+            'color' => TbHtml::PROGRESS_COLOR_INFO,
+            'content' => 'Bar text',
+        ));
+        $this->assertEquals('<div class="div progress progress-info"><div class="bar" style="width: 60%;">Bar text</div></div>', $progress);
+        $progress = TbHtml::progressBar(35, array(
+            'barOptions' => array('color' => TbHtml::PROGRESS_COLOR_SUCCESS),
+        ));
+        $this->assertEquals('<div class="progress"><div class="bar bar-success" style="width: 35%;"></div></div>', $progress);
+        $progress = TbHtml::progressBar(-1);
+        $this->assertEquals('<div class="progress"><div class="bar" style="width: 0%;"></div></div>', $progress);
+        $progress = TbHtml::progressBar(100.1);
+        $this->assertEquals('<div class="progress"><div class="bar" style="width: 100%;"></div></div>', $progress);
+    }
+
+    public function testStripedProgressBar()
+    {
+        $progress = TbHtml::stripedProgressBar(20);
+        $this->assertEquals('<div class="progress progress-striped"><div class="bar" style="width: 20%;"></div></div>', $progress);
+    }
+
+    public function testAnimatedProgressBar()
+    {
+        $progress = TbHtml::animatedProgressBar(40);
+        $this->assertEquals('<div class="progress progress-striped active"><div class="bar" style="width: 40%;"></div></div>', $progress);
+    }
+
+    public function testStackedProgressBar()
+    {
+        $progress = TbHtml::stackedProgressBar(array(
+            array('color' => TbHtml::PROGRESS_COLOR_SUCCESS, 'width' => 35),
+            array('color' => TbHtml::PROGRESS_COLOR_WARNING, 'width' => 20),
+            array('color' => TbHtml::PROGRESS_COLOR_DANGER, 'width' => 10),
+        ));
+        $this->assertEquals('<div class="progress"><div class="bar bar-success" style="width: 35%;"></div><div class="bar bar-warning" style="width: 20%;"></div><div class="bar bar-danger" style="width: 10%;"></div></div>', $progress);
+        $progress = TbHtml::stackedProgressBar(array(
+            array('width' => 35),
+            array('width' => 20),
+            array('width' => 100),
+        ));
+        $this->assertEquals('<div class="progress"><div class="bar" style="width: 35%;"></div><div class="bar" style="width: 20%;"></div><div class="bar" style="width: 45%;"></div></div>', $progress);
+        $progress = TbHtml::stackedProgressBar(array(
+            array('width' => 35),
+            array('width' => 20),
+            array('width' => 10, 'visible' => false),
+        ));
+        $this->assertEquals('<div class="progress"><div class="bar" style="width: 35%;"></div><div class="bar" style="width: 20%;"></div></div>', $progress);
+    }
+
+    public function testMediaObjects()
+    {
         // todo: write this.
     }
 
-    // todo: to be continued ...
+    public function testMediaObject()
+    {
+        // todo: write this.
+    }
+
+    public function testWell()
+    {
+        $well = TbHtml::well('Well text', array(
+            'class' => 'div',
+            'size' => TbHtml::WELL_SIZE_LARGE,
+        ));
+        $this->assertEquals('<div class="div well well-large">Well text</div>', $well);
+    }
+
+    public function testCloseLink()
+    {
+        $link = TbHtml::closeLink('Close', '#', array(
+            'class' => 'link',
+            'dismiss' => TbHtml::CLOSE_DISMISS_ALERT,
+        ));
+        $this->assertEquals('<a class="link close" href="#" data-dismiss="alert" type="button">Close</a>', $link);
+    }
+
+    public function testCloseButton()
+    {
+        $button = TbHtml::closeButton('Close', array(
+            'dismiss' => TbHtml::CLOSE_DISMISS_MODAL,
+            'class' => 'button',
+        ));
+        $this->assertEquals('<button class="button close" data-dismiss="modal" type="button">Close</button>', $button);
+    }
+
+
+    public function testCollapseLink()
+    {
+        $link = TbHtml::collapseLink('Link', '#', array(
+            'class' => 'link',
+        ));
+        $this->assertEquals('<a class="link" data-toggle="collapse" href="#">Link</a>', $link);
+    }
+
+    public function testTooltip()
+    {
+        // todo: write this.
+    }
+
+    public function testPopover()
+    {
+        // todo: write this.
+    }
+
+    public function testCarousel()
+    {
+        // todo: write this.
+    }
+
+    public function testCarouselItem()
+    {
+        // todo: write this.
+    }
+
+    public function testCarouselPrevLink()
+    {
+        $link = TbHtml::carouselPrevLink('Previous', '#', array(
+            'class' => 'link',
+        ));
+        $this->assertEquals('<a class="link carousel-control left" data-slide="prev" href="#">Previous</a>', $link);
+    }
+
+    public function testCarouselNextLink()
+    {
+        $link = TbHtml::carouselNextLink('Next', '#', array(
+                'class' => 'link',
+            ));
+        $this->assertEquals('<a class="link carousel-control right" data-slide="next" href="#">Next</a>', $link);
+    }
+
+    public function testCarouselIndicators()
+    {
+        $indicators = TbHtml::carouselIndicators('#', 3, array(
+            'class' => 'list',
+        ));
+        $this->assertEquals('<ol class="list carousel-indicators"><li data-target="#" data-slide-to="0" class="active"></li><li data-target="#" data-slide-to="1"></li><li data-target="#" data-slide-to="2"></li></ol>', $indicators);
+    }
 }
