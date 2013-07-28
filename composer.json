@@ -22,7 +22,7 @@
             "url": "http://packages.phundament.com"
         }
     ],
-    "require": {
+    "require-dev": {
         "php": ">=5.3.0",
         "codeception/codeception": "@stable",
         "crisu83/yii-composer": "dev-master",
