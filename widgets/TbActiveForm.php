@@ -133,7 +133,7 @@ class TbActiveForm extends CActiveForm
         $html = TbHtml::error($model, $attribute, $htmlOptions);
         if ($html === '') {
             $htmlOptions['type'] = $this->helpType;
-            $htmlOptions = TbHtml::addCssStyle('display:none', $htmlOptions);
+            TbHtml::addCssStyle('display:none', $htmlOptions);
             $html = TbHtml::help('', $htmlOptions);
         }
         $this->attributes[$inputID] = $option;
@@ -160,7 +160,7 @@ class TbActiveForm extends CActiveForm
                 $header = '<p>' . Yii::t('yii', 'Please fix the following input errors:') . '</p>';
             }
             TbHtml::addCssClass(TbHtml::$errorSummaryCss, $htmlOptions);
-            $htmlOptions = TbHtml::addCssStyle('display:none', $htmlOptions);
+            TbHtml::addCssStyle('display:none', $htmlOptions);
             $html = CHtml::tag('div', $htmlOptions, $header . '<ul><li>dummy</li></ul>' . $footer);
         }
         $this->summaryID = $htmlOptions['id'];
