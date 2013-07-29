@@ -13,6 +13,7 @@ class Dummy extends CModel
     public $checkbox = false;
     public $uneditable = 'Uneditable text';
     public $search = 'Search query';
+    public $textarea = 'Textarea text';
 
     public function attributeNames()
     {

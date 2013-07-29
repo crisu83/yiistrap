@@ -3736,7 +3736,10 @@ EOD;
         if ($width > 100) {
             $width = 100;
         }
-        self::addCssStyle("width: {$width}%;", $htmlOptions);
+        if ($width > 0) {
+            $width .= '%';
+        }
+        self::addCssStyle("width: {$width};", $htmlOptions);
         $content = TbArray::popValue('content', $htmlOptions, '');
         return self::tag('div', $htmlOptions, $content);
     }
@@ -4142,7 +4145,9 @@ EOD;
         if (is_array($style)) {
             $style = implode(' ', $style);
         }
-        $htmlOptions['style'] = isset($htmlOptions['style']) ? $htmlOptions['style'] . ' ' . $style : $style;
+        $htmlOptions['style'] = isset($htmlOptions['style'])
+            ? rtrim($htmlOptions['style'], ';') . '; ' . $style
+            : $style;
     }
 
     /**
