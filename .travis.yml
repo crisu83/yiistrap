@@ -4,7 +4,7 @@ php:
   - 5.4
 
 before_script:
-  - composer self-upate
+  - composer self-update
   - composer install --prefer-source
 
 script: vendor/bin/codecept run unit
