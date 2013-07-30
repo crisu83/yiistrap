@@ -460,13 +460,52 @@ class CodeGuy extends \Codeception\AbstractGuy
      * Documentation taken from corresponding module.
      * ----------------------------------------------
      *
+     * @param \Symfony\Component\DomCrawler\Crawler $node
+     * @param integer $amount
+    * Conditional Assertion: Test won't be stopped on fail
+     * @see Codeception\Module\CodeHelper::seeNodeNumChildren()
+     * @return \Codeception\Maybe
+     */
+    public function canSeeNodeNumChildren($node, $amount) {
+        $this->scenario->addStep(new \Codeception\Step\ConditionalAssertion('seeNodeNumChildren', func_get_args()));
+        if ($this->scenario->running()) {
+            $result = $this->scenario->runStep();
+            return new Maybe($result);
+        }
+        return new Maybe();
+    }
+    /**
+     * This method is generated.
+     * Documentation taken from corresponding module.
+     * ----------------------------------------------
+     *
+     * @param \Symfony\Component\DomCrawler\Crawler $node
+     * @param integer $amount
+     * @see Codeception\Module\CodeHelper::seeNodeNumChildren()
+     * @return \Codeception\Maybe
+     */
+    public function seeNodeNumChildren($node, $amount) {
+        $this->scenario->addStep(new \Codeception\Step\Assertion('seeNodeNumChildren', func_get_args()));
+        if ($this->scenario->running()) {
+            $result = $this->scenario->runStep();
+            return new Maybe($result);
+        }
+        return new Maybe();
+    }
+
+ 
+    /**
+     * This method is generated.
+     * Documentation taken from corresponding module.
+     * ----------------------------------------------
+     *
      * @param mixed $content
-     * @param string $selector
+     * @param string $filter
      * @return \Symfony\Component\DomCrawler\Crawler
      * @see Codeception\Module\CodeHelper::createNode()
      * @return \Codeception\Maybe
      */
-    public function createNode($content, $selector = null) {
+    public function createNode($content, $filter = null) {
         $this->scenario->addStep(new \Codeception\Step\Action('createNode', func_get_args()));
         if ($this->scenario->running()) {
             $result = $this->scenario->runStep();

@@ -152,6 +152,15 @@ class CodeHelper extends \Codeception\Module
     }
 
     /**
+     * @param \Symfony\Component\DomCrawler\Crawler $node
+     * @param integer $amount
+     */
+    public function seeNodeNumChildren($node, $amount)
+    {
+        $this->assertEquals($amount, count($node->children()));
+    }
+
+    /**
      * @param \DomElement $node
      * @param string $selector
      * @return boolean
@@ -167,15 +176,14 @@ class CodeHelper extends \Codeception\Module
 
     /**
      * @param mixed $content
-     * @param string $selector
+     * @param string $filter
      * @return \Symfony\Component\DomCrawler\Crawler
      */
-    public function createNode($content, $selector = null)
+    public function createNode($content, $filter = null)
     {
-        $crawler = new \Symfony\Component\DomCrawler\Crawler;
-        $crawler->add($content);
-        if ($selector !== null) {
-            $node = $crawler->filter($selector);
+        $crawler = new \Symfony\Component\DomCrawler\Crawler($content);
+        if ($filter !== null) {
+            $node = $crawler->filter($filter);
             $this->assertNotEquals(null, $node);
             return $node;
         }

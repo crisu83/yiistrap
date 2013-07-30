@@ -14,6 +14,9 @@ class Dummy extends CModel
     public $uneditable = 'Uneditable text';
     public $search = 'Search query';
     public $textarea = 'Textarea text';
+    public $dropdown = '1';
+    public $radioList = '0';
+    public $checkboxList = array('0', '2');
 
     public function attributeNames()
     {

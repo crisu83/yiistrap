@@ -116,10 +116,6 @@ class TbNav extends CWidget
                 $items[$i]['label'] = CHtml::encode($item['label']);
             }
 
-            if (!isset($item['url']) && !isset($item['items'])) {
-                $items[$i]['header'] = true;
-            }
-
             $hasActiveChild = false;
 
             if (isset($item['items']) && !empty($item['items'])) {

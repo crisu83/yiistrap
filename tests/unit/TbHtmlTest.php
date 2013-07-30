@@ -1,10 +1,10 @@
 <?php
 use Codeception\Util\Stub;
 
-Yii::import('bootstrap.helpers.TbHtml');
-Yii::import('bootstrap.tests.unit.Dummy');
+require(__DIR__ . '/../../helpers/TbHtml.php');
+require(__DIR__ . '/Dummy.php');
 
-class TbHtmlTest extends \Codeception\TestCase\Test
+class TbHtmlTest extends TbTestCase
 {
     /**
      * @var \CodeGuy
@@ -13,50 +13,53 @@ class TbHtmlTest extends \Codeception\TestCase\Test
 
     protected function _before()
     {
-    }
-
-    protected function _after()
-    {
+        $this->mockApplication();
     }
 
     public function testLead()
     {
+        $I = $this->codeGuy;
         $html = TbHtml::lead('Lead text');
-        $p = $this->codeGuy->createNode($html, 'p.lead');
-        $this->codeGuy->seeNodeText($p, 'Lead text');
+        $p = $I->createNode($html, 'p.lead');
+        $I->seeNodeText($p, 'Lead text');
     }
 
     public function testSmall()
     {
+        $I = $this->codeGuy;
         $html = TbHtml::small('Small text');
-        $small = $this->codeGuy->createNode($html, 'small');
-        $this->codeGuy->seeNodeText($small, 'Small text');
+        $small = $I->createNode($html, 'small');
+        $I->seeNodeText($small, 'Small text');
     }
 
     public function testBold()
     {
+        $I = $this->codeGuy;
         $html = TbHtml::b('Bold text');
-        $strong = $this->codeGuy->createNode($html, 'strong');
-        $this->codeGuy->seeNodeText($strong, 'Bold text');
+        $strong = $I->createNode($html, 'strong');
+        $I->seeNodeText($strong, 'Bold text');
     }
 
     public function testItalic()
     {
+        $I = $this->codeGuy;
         $html = TbHtml::i('Italic text');
-        $em = $this->codeGuy->createNode($html, 'em');
-        $this->codeGuy->seeNodeText($em, 'Italic text');
+        $em = $I->createNode($html, 'em');
+        $I->seeNodeText($em, 'Italic text');
     }
 
     public function testEmphasize()
     {
+        $I = $this->codeGuy;
+
         $html = TbHtml::em(
             'Warning text',
             array(
                 'color' => TbHtml::TEXT_COLOR_WARNING,
             )
         );
-        $span = $this->codeGuy->createNode($html, 'p.text-warning');
-        $this->codeGuy->seeNodeText($span, 'Warning text');
+        $span = $I->createNode($html, 'p.text-warning');
+        $I->seeNodeText($span, 'Warning text');
 
         $html = TbHtml::em(
             'Success text',
@@ -65,50 +68,56 @@ class TbHtmlTest extends \Codeception\TestCase\Test
             ),
             'span'
         );
-        $span = $this->codeGuy->createNode($html, 'span.text-success');
-        $this->codeGuy->seeNodeText($span, 'Success text');
+        $span = $I->createNode($html, 'span.text-success');
+        $I->seeNodeText($span, 'Success text');
     }
 
     public function testMuted()
     {
+        $I = $this->codeGuy;
         $html = TbHtml::muted('Muted text');
-        $p = $this->codeGuy->createNode($html, 'p.muted');
-        $this->codeGuy->seeNodeText($p, 'Muted text');
+        $p = $I->createNode($html, 'p.muted');
+        $I->seeNodeText($p, 'Muted text');
     }
 
     public function testMutedSpan()
     {
+        $I = $this->codeGuy;
         $html = TbHtml::mutedSpan('Muted text');
-        $span = $this->codeGuy->createNode($html, 'span.muted');
-        $this->codeGuy->seeNodeText($span, 'Muted text');
+        $span = $I->createNode($html, 'span.muted');
+        $I->seeNodeText($span, 'Muted text');
     }
 
     public function testAbbreviation()
     {
+        $I = $this->codeGuy;
         $html = TbHtml::abbr('Abbreviation', 'Word');
-        $abbr = $this->codeGuy->createNode($html, 'abbr');
-        $this->codeGuy->seeNodeAttribute($abbr, 'title', 'Word');
-        $this->codeGuy->seeNodeText($abbr, 'Abbreviation');
+        $abbr = $I->createNode($html, 'abbr');
+        $I->seeNodeAttribute($abbr, 'title', 'Word');
+        $I->seeNodeText($abbr, 'Abbreviation');
     }
 
     public function testSmallAbbreviation()
     {
+        $I = $this->codeGuy;
         $html = TbHtml::smallAbbr('Abbreviation', 'Word');
-        $abbr = $this->codeGuy->createNode($html, 'abbr');
-        $this->codeGuy->seeNodeAttribute($abbr, 'title', 'Word');
-        $this->codeGuy->seeNodeCssClass($abbr, 'initialism');
-        $this->codeGuy->seeNodeText($abbr, 'Abbreviation');
+        $abbr = $I->createNode($html, 'abbr');
+        $I->seeNodeAttribute($abbr, 'title', 'Word');
+        $I->seeNodeCssClass($abbr, 'initialism');
+        $I->seeNodeText($abbr, 'Abbreviation');
     }
 
     public function testAddress()
     {
+        $I = $this->codeGuy;
         $html = TbHtml::address('Address text');
-        $addr = $this->codeGuy->createNode($html, 'address');
-        $this->codeGuy->seeNodeText($addr, 'Address text');
+        $addr = $I->createNode($html, 'address');
+        $I->seeNodeText($addr, 'Address text');
     }
 
     public function testQuote()
     {
+        $I = $this->codeGuy;
         $html = TbHtml::quote(
             'Quote text',
             array(
@@ -119,50 +128,55 @@ class TbHtmlTest extends \Codeception\TestCase\Test
                 'citeOptions' => array('class' => 'cite'),
             )
         );
-        $blockquote = $this->codeGuy->createNode($html, 'blockquote');
-        $this->codeGuy->seeNodeChildren($blockquote, array('p', 'small'));
+        $blockquote = $I->createNode($html, 'blockquote');
+        $I->seeNodeChildren($blockquote, array('p', 'small'));
         $p = $blockquote->filter('p');
-        $this->codeGuy->seeNodeCssClass($p, 'paragraph');
-        $this->codeGuy->seeNodeText($p, 'Quote text');
+        $I->seeNodeCssClass($p, 'paragraph');
+        $I->seeNodeText($p, 'Quote text');
         $small = $blockquote->filter('blockquote > small');
-        $this->codeGuy->seeNodeCssClass($small, 'source');
-        $this->codeGuy->seeNodeText($small, 'Source text');
+        $I->seeNodeCssClass($small, 'source');
+        $I->seeNodeText($small, 'Source text');
         $cite = $small->filter('small > cite');
-        $this->codeGuy->seeNodeCssClass($cite, 'cite');
-        $this->codeGuy->seeNodeText($cite, 'Cited text');
+        $I->seeNodeCssClass($cite, 'cite');
+        $I->seeNodeText($cite, 'Cited text');
         // todo: consider writing a test including the pull-right quote as well.
     }
 
     public function testHelp()
     {
+        $I = $this->codeGuy;
         $html = TbHtml::help('Help text');
-        $span = $this->codeGuy->createNode($html, 'span.help-inline');
-        $this->codeGuy->seeNodeText($span, 'Help text');
+        $span = $I->createNode($html, 'span.help-inline');
+        $I->seeNodeText($span, 'Help text');
     }
 
     public function testHelpBlock()
     {
+        $I = $this->codeGuy;
         $html = TbHtml::helpBlock('Help text');
-        $p = $this->codeGuy->createNode($html, 'p.help-block');
-        $this->codeGuy->seeNodeText($p, 'Help text');
+        $p = $I->createNode($html, 'p.help-block');
+        $I->seeNodeText($p, 'Help text');
     }
 
     public function testCode()
     {
+        $I = $this->codeGuy;
         $html = TbHtml::code('Source code');
-        $code = $this->codeGuy->createNode($html, 'code');
-        $this->codeGuy->seeNodeText($code, 'Source code');
+        $code = $I->createNode($html, 'code');
+        $I->seeNodeText($code, 'Source code');
     }
 
     public function testCodeBlock()
     {
+        $I = $this->codeGuy;
         $html = TbHtml::codeBlock('Source code');
-        $pre = $this->codeGuy->createNode($html, 'pre');
-        $this->codeGuy->seeNodeText($pre, 'Source code');
+        $pre = $I->createNode($html, 'pre');
+        $I->seeNodeText($pre, 'Source code');
     }
 
     public function testTag()
     {
+        $I = $this->codeGuy;
         $html = TbHtml::tag(
             'div',
             array(
@@ -172,27 +186,29 @@ class TbHtmlTest extends \Codeception\TestCase\Test
             ),
             'Content'
         );
-        $div = $this->codeGuy->createNode($html, 'div');
-        $this->codeGuy->seeNodeCssClass($div, 'pull-right span3 text-right');
+        $div = $I->createNode($html, 'div');
+        $I->seeNodeCssClass($div, 'pull-right span3 text-right');
     }
 
     public function testOpenTag()
     {
+        $I = $this->codeGuy;
         $html = TbHtml::openTag(
             'p',
             array(
                 'class' => 'tag',
             )
         );
-        $p = $this->codeGuy->createNode($html, 'p');
-        $this->codeGuy->seeNodeCssClass($p, 'tag');
+        $p = $I->createNode($html, 'p');
+        $I->seeNodeCssClass($p, 'tag');
     }
 
     public function testForm()
     {
+        $I = $this->codeGuy;
         $html = TbHtml::beginFormTb(TbHtml::FORM_LAYOUT_VERTICAL, '#');
-        $form = $this->codeGuy->createNode($html, 'form');
-        $this->codeGuy->seeNodeAttributes(
+        $form = $I->createNode($html, 'form');
+        $I->seeNodeAttributes(
             $form,
             array(
                 'class' => 'form-vertical',
@@ -204,6 +220,8 @@ class TbHtmlTest extends \Codeception\TestCase\Test
 
     public function testTextField()
     {
+        $I = $this->codeGuy;
+
         $html = TbHtml::textField(
             'text',
             'text',
@@ -211,8 +229,8 @@ class TbHtmlTest extends \Codeception\TestCase\Test
                 'class' => 'input',
             )
         );
-        $input = $this->codeGuy->createNode($html, 'input[type=text]');
-        $this->codeGuy->seeNodeAttributes(
+        $input = $I->createNode($html, 'input[type=text]');
+        $I->seeNodeAttributes(
             $input,
             array(
                 'class' => 'input',
@@ -229,11 +247,11 @@ class TbHtmlTest extends \Codeception\TestCase\Test
                 'prepend' => 'Prepend text',
             )
         );
-        $div = $this->codeGuy->createNode($html, 'div');
-        $this->codeGuy->seeNodeCssClass($div, 'input-prepend');
-        $this->codeGuy->seeNodeChildren($div, array('span', 'input'));
-        $span = $div->filter('div > span.add-on');
-        $this->codeGuy->seeNodeText($span, 'Prepend text');
+        $div = $I->createNode($html, 'div');
+        $I->seeNodeCssClass($div, 'input-prepend');
+        $I->seeNodeChildren($div, array('span', 'input'));
+        $span = $div->filter('span.add-on');
+        $I->seeNodeText($span, 'Prepend text');
 
         $html = TbHtml::textField(
             'text',
@@ -242,11 +260,11 @@ class TbHtmlTest extends \Codeception\TestCase\Test
                 'append' => 'Append text',
             )
         );
-        $div = $this->codeGuy->createNode($html, 'div');
-        $this->codeGuy->seeNodeCssClass($div, 'input-append');
-        $this->codeGuy->seeNodeChildren($div, array('input', 'span'));
-        $span = $div->filter('div > span.add-on');
-        $this->codeGuy->seeNodeText($span, 'Append text');
+        $div = $I->createNode($html, 'div');
+        $I->seeNodeCssClass($div, 'input-append');
+        $I->seeNodeChildren($div, array('input', 'span'));
+        $span = $div->filter('span.add-on');
+        $I->seeNodeText($span, 'Append text');
 
         $html = TbHtml::textField(
             'text',
@@ -256,13 +274,14 @@ class TbHtmlTest extends \Codeception\TestCase\Test
                 'append' => 'Append text',
             )
         );
-        $div = $this->codeGuy->createNode($html, 'div');
-        $this->codeGuy->seeNodeCssClass($div, 'input-prepend input-append');
-        $this->codeGuy->seeNodeChildren($div, array('span', 'input', 'span'));
+        $div = $I->createNode($html, 'div');
+        $I->seeNodeCssClass($div, 'input-prepend input-append');
+        $I->seeNodeChildren($div, array('span', 'input', 'span'));
     }
 
     public function testPasswordField()
     {
+        $I = $this->codeGuy;
         $html = TbHtml::passwordField(
             'password',
             'secret',
@@ -270,8 +289,8 @@ class TbHtmlTest extends \Codeception\TestCase\Test
                 'class' => 'input',
             )
         );
-        $input = $this->codeGuy->createNode($html, 'input[type=password]');
-        $this->codeGuy->seeNodeAttributes(
+        $input = $I->createNode($html, 'input[type=password]');
+        $I->seeNodeAttributes(
             $input,
             array(
                 'class' => 'input',
@@ -284,6 +303,7 @@ class TbHtmlTest extends \Codeception\TestCase\Test
 
     public function testUrlField()
     {
+        $I = $this->codeGuy;
         $html = TbHtml::urlField(
             'url',
             'http://www.getyiistrap.com',
@@ -291,8 +311,8 @@ class TbHtmlTest extends \Codeception\TestCase\Test
                 'class' => 'input',
             )
         );
-        $input = $this->codeGuy->createNode($html, 'input[type=url]');
-        $this->codeGuy->seeNodeAttributes(
+        $input = $I->createNode($html, 'input[type=url]');
+        $I->seeNodeAttributes(
             $input,
             array(
                 'class' => 'input',
@@ -305,6 +325,7 @@ class TbHtmlTest extends \Codeception\TestCase\Test
 
     public function testEmailField()
     {
+        $I = $this->codeGuy;
         $html = TbHtml::emailField(
             'email',
             'christoffer.niska@gmail.com',
@@ -312,8 +333,8 @@ class TbHtmlTest extends \Codeception\TestCase\Test
                 'class' => 'input',
             )
         );
-        $input = $this->codeGuy->createNode($html, 'input[type=email]');
-        $this->codeGuy->seeNodeAttributes(
+        $input = $I->createNode($html, 'input[type=email]');
+        $I->seeNodeAttributes(
             $input,
             array(
                 'class' => 'input',
@@ -326,6 +347,7 @@ class TbHtmlTest extends \Codeception\TestCase\Test
 
     public function testNumberField()
     {
+        $I = $this->codeGuy;
         $html = TbHtml::numberField(
             'number',
             42,
@@ -333,8 +355,8 @@ class TbHtmlTest extends \Codeception\TestCase\Test
                 'class' => 'input',
             )
         );
-        $input = $this->codeGuy->createNode($html, 'input[type=number]');
-        $this->codeGuy->seeNodeAttributes(
+        $input = $I->createNode($html, 'input[type=number]');
+        $I->seeNodeAttributes(
             $input,
             array(
                 'class' => 'input',
@@ -347,6 +369,7 @@ class TbHtmlTest extends \Codeception\TestCase\Test
 
     public function testRangeField()
     {
+        $I = $this->codeGuy;
         $html = TbHtml::rangeField(
             'range',
             3.33,
@@ -354,8 +377,8 @@ class TbHtmlTest extends \Codeception\TestCase\Test
                 'class' => 'input',
             )
         );
-        $input = $this->codeGuy->createNode($html, 'input[type=range]');
-        $this->codeGuy->seeNodeAttributes(
+        $input = $I->createNode($html, 'input[type=range]');
+        $I->seeNodeAttributes(
             $input,
             array(
                 'class' => 'input',
@@ -368,6 +391,7 @@ class TbHtmlTest extends \Codeception\TestCase\Test
 
     public function testDateField()
     {
+        $I = $this->codeGuy;
         $html = TbHtml::dateField(
             'date',
             '2013-07-27',
@@ -375,8 +399,8 @@ class TbHtmlTest extends \Codeception\TestCase\Test
                 'class' => 'input',
             )
         );
-        $input = $this->codeGuy->createNode($html, 'input[type=date]');
-        $this->codeGuy->seeNodeAttributes(
+        $input = $I->createNode($html, 'input[type=date]');
+        $I->seeNodeAttributes(
             $input,
             array(
                 'class' => 'input',
@@ -389,6 +413,7 @@ class TbHtmlTest extends \Codeception\TestCase\Test
 
     public function testTextArea()
     {
+        $I = $this->codeGuy;
         $html = TbHtml::textArea(
             'textArea',
             'Textarea text',
@@ -396,8 +421,8 @@ class TbHtmlTest extends \Codeception\TestCase\Test
                 'class' => 'textarea',
             )
         );
-        $textarea = $this->codeGuy->createNode($html, 'textarea');
-        $this->codeGuy->seeNodeAttributes(
+        $textarea = $I->createNode($html, 'textarea');
+        $I->seeNodeAttributes(
             $textarea,
             array(
                 'class' => 'textarea',
@@ -405,11 +430,12 @@ class TbHtmlTest extends \Codeception\TestCase\Test
                 'name' => 'textArea',
             )
         );
-        $this->codeGuy->seeNodeText($textarea, 'Textarea text');
+        $I->seeNodeText($textarea, 'Textarea text');
     }
 
     public function testRadioButton()
     {
+        $I = $this->codeGuy;
         $html = TbHtml::radioButton(
             'radio',
             false,
@@ -418,10 +444,10 @@ class TbHtmlTest extends \Codeception\TestCase\Test
                 'label' => 'Label text',
             )
         );
-        $label = $this->codeGuy->createNode($html, 'label');
-        $this->codeGuy->seeNodeCssClass($label, 'radio');
-        $radio = $label->filter('label > input[type=radio]');
-        $this->codeGuy->seeNodeAttributes(
+        $label = $I->createNode($html, 'label');
+        $I->seeNodeCssClass($label, 'radio');
+        $radio = $label->filter('input[type=radio]');
+        $I->seeNodeAttributes(
             $radio,
             array(
                 'class' => 'input',
@@ -430,11 +456,12 @@ class TbHtmlTest extends \Codeception\TestCase\Test
                 'value' => '1',
             )
         );
-        $this->codeGuy->seeNodePattern($label, '/> Label text$/');
+        $I->seeNodePattern($label, '/> Label text$/');
     }
 
     public function testCheckBox()
     {
+        $I = $this->codeGuy;
         $html = TbHtml::checkBox(
             'checkbox',
             false,
@@ -443,10 +470,10 @@ class TbHtmlTest extends \Codeception\TestCase\Test
                 'label' => 'Label text',
             )
         );
-        $label = $this->codeGuy->createNode($html, 'label');
-        $this->codeGuy->seeNodeCssClass($label, 'checkbox');
-        $checkbox = $label->filter('label > input[type=checkbox]');
-        $this->codeGuy->seeNodeAttributes(
+        $label = $I->createNode($html, 'label');
+        $I->seeNodeCssClass($label, 'checkbox');
+        $checkbox = $label->filter('input[type=checkbox]');
+        $I->seeNodeAttributes(
             $checkbox,
             array(
                 'class' => 'input',
@@ -455,11 +482,12 @@ class TbHtmlTest extends \Codeception\TestCase\Test
                 'value' => '1',
             )
         );
-        $this->codeGuy->seeNodePattern($label, '/> Label text$/');
+        $I->seeNodePattern($label, '/> Label text$/');
     }
 
     public function testDropDownList()
     {
+        $I = $this->codeGuy;
         $html = TbHtml::dropDownList(
             'dropdown',
             null,
@@ -471,8 +499,8 @@ class TbHtmlTest extends \Codeception\TestCase\Test
                 'textAlign' => TbHtml::TEXT_ALIGN_CENTER,
             )
         );
-        $select = $this->codeGuy->createNode($html, 'select');
-        $this->codeGuy->seeNodeCssClass($select, 'input-large text-center list');
+        $select = $I->createNode($html, 'select');
+        $I->seeNodeCssClass($select, 'input-large text-center list');
     }
 
     public function testListBox()
@@ -482,6 +510,7 @@ class TbHtmlTest extends \Codeception\TestCase\Test
 
     public function testRadioButtonList()
     {
+        $I = $this->codeGuy;
         $html = TbHtml::radioButtonList(
             'radioList',
             null,
@@ -492,12 +521,12 @@ class TbHtmlTest extends \Codeception\TestCase\Test
                 'containerOptions' => array('class' => 'container'),
             )
         );
-        $container = $this->codeGuy->createNode($html, 'div.container');
-        $this->codeGuy->seeNodeChildren($container, array('label.radio', 'br', 'label.radio', 'br', 'label.radio'));
-        $label = $container->filter('div.container > label:first-child');
-        $this->codeGuy->seeNodePattern($label, '/> Option 1$/');
-        $input = $label->filter('label > input[type=radio]');
-        $this->codeGuy->seeNodeAttributes(
+        $container = $I->createNode($html, 'div.container');
+        $I->seeNodeChildren($container, array('label.radio', 'br', 'label.radio', 'br', 'label.radio'));
+        $label = $container->filter('label')->first();
+        $I->seeNodePattern($label, '/> Option 1$/');
+        $input = $label->filter('input[type=radio]');
+        $I->seeNodeAttributes(
             $input,
             array(
                 'id' => 'radioList_0',
@@ -509,11 +538,19 @@ class TbHtmlTest extends \Codeception\TestCase\Test
 
     public function testInlineRadioButtonList()
     {
-        // todo: write this.
+        $I = $this->codeGuy;
+        $html = TbHtml::inlineRadioButtonList(
+            'radioList',
+            null,
+            array('Option 1', 'Option 2', 'Option 3')
+        );
+        $container = $I->createNode($html);
+        $I->seeNodeChildren($container, array('label.radio.inline', 'label.radio.inline', 'label.radio.inline'));
     }
 
     public function testCheckboxList()
     {
+        $I = $this->codeGuy;
         $html = TbHtml::checkBoxList(
             'checkboxList',
             null,
@@ -524,12 +561,12 @@ class TbHtmlTest extends \Codeception\TestCase\Test
                 'containerOptions' => array('class' => 'container'),
             )
         );
-        $container = $this->codeGuy->createNode($html, 'div.container');
-        $this->codeGuy->seeNodeChildren($container, array('label.checkbox', 'br', 'label.checkbox', 'br', 'label.checkbox'));
-        $label = $container->filter('div.container > label:first-child');
-        $this->codeGuy->seeNodePattern($label, '/> Option 1$/');
-        $input = $label->filter('label > input[type=checkbox]');
-        $this->codeGuy->seeNodeAttributes(
+        $container = $I->createNode($html, 'div.container');
+        $I->seeNodeChildren($container, array('label.checkbox', 'br', 'label.checkbox', 'br', 'label.checkbox'));
+        $label = $container->filter('label')->first();
+        $I->seeNodePattern($label, '/> Option 1$/');
+        $input = $label->filter('input[type=checkbox]');
+        $I->seeNodeAttributes(
             $input,
             array(
                 'id' => 'checkboxList_0',
@@ -541,24 +578,36 @@ class TbHtmlTest extends \Codeception\TestCase\Test
 
     public function testInlineCheckBoxList()
     {
-        // todo: write this.
+        $I = $this->codeGuy;
+        $html = TbHtml::inlineCheckBoxList(
+            'checkboxList',
+            null,
+            array('Option 1', 'Option 2', 'Option 3')
+        );
+        $container = $I->createNode($html);
+        $I->seeNodeChildren(
+            $container,
+            array('label.checkbox.inline', 'label.checkbox.inline', 'label.checkbox.inline')
+        );
     }
 
     public function testUneditableField()
     {
+        $I = $this->codeGuy;
         $html = TbHtml::uneditableField(
             'Uneditable text',
             array(
                 'class' => 'span',
             )
         );
-        $span = $this->codeGuy->createNode($html, 'span.uneditable-input');
-        $this->codeGuy->seeNodeCssClass($span, 'span');
-        $this->codeGuy->seeNodeText($span, 'Uneditable text');
+        $span = $I->createNode($html, 'span.uneditable-input');
+        $I->seeNodeCssClass($span, 'span');
+        $I->seeNodeText($span, 'Uneditable text');
     }
 
     public function testSearchQueryField()
     {
+        $I = $this->codeGuy;
         $html = TbHtml::searchQueryField(
             'search',
             'Search query',
@@ -566,9 +615,9 @@ class TbHtmlTest extends \Codeception\TestCase\Test
                 'class' => 'input',
             )
         );
-        $input = $this->codeGuy->createNode($html, 'input[type=text].search-query');
-        $this->codeGuy->seeNodeCssClass($input, 'input');
-        $this->codeGuy->seeNodeAttributes(
+        $input = $I->createNode($html, 'input[type=text].search-query');
+        $I->seeNodeCssClass($input, 'input');
+        $I->seeNodeAttributes(
             $input,
             array(
                 'id' => 'search',
@@ -580,6 +629,8 @@ class TbHtmlTest extends \Codeception\TestCase\Test
 
     public function testControlGroup()
     {
+        $I = $this->codeGuy;
+
         $html = TbHtml::controlGroup(
             TbHtml::INPUT_TYPE_TEXT,
             'text',
@@ -593,17 +644,17 @@ class TbHtmlTest extends \Codeception\TestCase\Test
                 'helpOptions' => array('class' => 'help'),
             )
         );
-        $group = $this->codeGuy->createNode($html, 'div.control-group');
-        $this->codeGuy->seeNodeCssClass($group, 'success group');
-        $this->codeGuy->seeNodeChildren($group, array('label.control-label', 'div.controls'));
-        $label = $group->filter('div.control-group > label.control-label');
-        $this->codeGuy->seeNodeCssClass($label, 'label');
-        $this->codeGuy->seeNodeAttribute($label, 'for', 'text');
-        $this->codeGuy->seeNodeText($label, 'Label text');
-        $controls = $group->filter('div.control-group > div.controls');
-        $this->codeGuy->seeNodeChildren($controls, array('input', 'span'));
+        $group = $I->createNode($html, 'div.control-group');
+        $I->seeNodeCssClass($group, 'success group');
+        $I->seeNodeChildren($group, array('label.control-label', 'div.controls'));
+        $label = $group->filter('label.control-label');
+        $I->seeNodeCssClass($label, 'label');
+        $I->seeNodeAttribute($label, 'for', 'text');
+        $I->seeNodeText($label, 'Label text');
+        $controls = $group->filter('div.controls');
+        $I->seeNodeChildren($controls, array('input', 'span'));
         $input = $controls->filter('input[type=text]');
-        $this->codeGuy->seeNodeAttributes(
+        $I->seeNodeAttributes(
             $input,
             array(
                 'id' => 'text',
@@ -612,8 +663,8 @@ class TbHtmlTest extends \Codeception\TestCase\Test
             )
         );
         $help = $controls->filter('span.help-inline');
-        $this->codeGuy->seeNodeCssClass($help, 'help');
-        $this->codeGuy->seeNodeText($help, 'Help text');
+        $I->seeNodeCssClass($help, 'help');
+        $I->seeNodeText($help, 'Help text');
 
         $html = TbHtml::controlGroup(
             TbHtml::INPUT_TYPE_RADIOBUTTON,
@@ -623,13 +674,13 @@ class TbHtmlTest extends \Codeception\TestCase\Test
                 'label' => 'Label text',
             )
         );
-        $group = $this->codeGuy->createNode($html, 'div.control-group');
-        $this->codeGuy->seeNodeChildren($group, array('div.controls'));
-        $controls = $group->filter('div.control-group > div.controls');
-        $label = $controls->filter('div.controls > label.radio');
-        $this->codeGuy->seeNodePattern($label, '/> Label text$/');
-        $radio = $label->filter('label > input[type=radio]');
-        $this->codeGuy->seeNodeAttributes(
+        $group = $I->createNode($html, 'div.control-group');
+        $I->seeNodeChildren($group, array('div.controls'));
+        $controls = $group->filter('div.controls');
+        $label = $controls->filter('label.radio');
+        $I->seeNodePattern($label, '/> Label text$/');
+        $radio = $label->filter('input[type=radio]');
+        $I->seeNodeAttributes(
             $radio,
             array(
                 'checked' => 'checked',
@@ -642,6 +693,7 @@ class TbHtmlTest extends \Codeception\TestCase\Test
 
     public function testCustomControlGroup()
     {
+        $I = $this->codeGuy;
         $html = TbHtml::customControlGroup(
             '<div class="widget"></div>',
             'custom',
@@ -649,13 +701,15 @@ class TbHtmlTest extends \Codeception\TestCase\Test
                 'label' => false,
             )
         );
-        $group = $this->codeGuy->createNode($html, 'div.control-group');
-        $controls = $group->filter('div.control-group > div.controls');
-        $this->codeGuy->seeNodeChildren($controls, array('div.widget'));
+        $group = $I->createNode($html, 'div.control-group');
+        $controls = $group->filter('div.controls');
+        $I->seeNodeChildren($controls, array('div.widget'));
     }
 
     public function testActiveTextField()
     {
+        $I = $this->codeGuy;
+
         $html = TbHtml::activeTextField(
             new Dummy,
             'text',
@@ -663,8 +717,8 @@ class TbHtmlTest extends \Codeception\TestCase\Test
                 'class' => 'input'
             )
         );
-        $input = $this->codeGuy->createNode($html, 'input[type=text]');
-        $this->codeGuy->seeNodeAttributes(
+        $input = $I->createNode($html, 'input[type=text]');
+        $I->seeNodeAttributes(
             $input,
             array(
                 'class' => 'input',
@@ -681,11 +735,11 @@ class TbHtmlTest extends \Codeception\TestCase\Test
                 'prepend' => 'Prepend text',
             )
         );
-        $div = $this->codeGuy->createNode($html, 'div');
-        $this->codeGuy->seeNodeCssClass($div, 'input-prepend');
-        $this->codeGuy->seeNodeChildren($div, array('span.add-on', 'input'));
-        $span = $div->filter('div > span.add-on');
-        $this->codeGuy->seeNodeText($span, 'Prepend text');
+        $div = $I->createNode($html, 'div');
+        $I->seeNodeCssClass($div, 'input-prepend');
+        $I->seeNodeChildren($div, array('span.add-on', 'input'));
+        $span = $div->filter('span.add-on');
+        $I->seeNodeText($span, 'Prepend text');
 
         $html = TbHtml::activeTextField(
             new Dummy,
@@ -694,11 +748,11 @@ class TbHtmlTest extends \Codeception\TestCase\Test
                 'append' => 'Append text',
             )
         );
-        $div = $this->codeGuy->createNode($html, 'div');
-        $this->codeGuy->seeNodeCssClass($div, 'input-append');
-        $this->codeGuy->seeNodeChildren($div, array('input', 'span'));
-        $span = $div->filter('div > span.add-on');
-        $this->codeGuy->seeNodeText($span, 'Append text');
+        $div = $I->createNode($html, 'div');
+        $I->seeNodeCssClass($div, 'input-append');
+        $I->seeNodeChildren($div, array('input', 'span'));
+        $span = $div->filter('span.add-on');
+        $I->seeNodeText($span, 'Append text');
 
         $html = TbHtml::activeTextField(
             new Dummy,
@@ -708,13 +762,14 @@ class TbHtmlTest extends \Codeception\TestCase\Test
                 'append' => 'Append text',
             )
         );
-        $div = $this->codeGuy->createNode($html, 'div');
-        $this->codeGuy->seeNodeCssClass($div, 'input-prepend input-append');
-        $this->codeGuy->seeNodeChildren($div, array('span.add-on', 'input', 'span.add-on'));
+        $div = $I->createNode($html, 'div');
+        $I->seeNodeCssClass($div, 'input-prepend input-append');
+        $I->seeNodeChildren($div, array('span.add-on', 'input', 'span.add-on'));
     }
 
     public function testActivePasswordField()
     {
+        $I = $this->codeGuy;
         $html = TbHtml::activePasswordField(
             new Dummy,
             'password',
@@ -722,8 +777,8 @@ class TbHtmlTest extends \Codeception\TestCase\Test
                 'class' => 'input'
             )
         );
-        $input = $this->codeGuy->createNode($html, 'input[type=password]');
-        $this->codeGuy->seeNodeAttributes(
+        $input = $I->createNode($html, 'input[type=password]');
+        $I->seeNodeAttributes(
             $input,
             array(
                 'class' => 'input',
@@ -736,6 +791,7 @@ class TbHtmlTest extends \Codeception\TestCase\Test
 
     public function testActiveUrlField()
     {
+        $I = $this->codeGuy;
         $html = TbHtml::activeUrlField(
             new Dummy,
             'url',
@@ -743,8 +799,8 @@ class TbHtmlTest extends \Codeception\TestCase\Test
                 'class' => 'input'
             )
         );
-        $input = $this->codeGuy->createNode($html, 'input[type=url]');
-        $this->codeGuy->seeNodeAttributes(
+        $input = $I->createNode($html, 'input[type=url]');
+        $I->seeNodeAttributes(
             $input,
             array(
                 'class' => 'input',
@@ -757,6 +813,7 @@ class TbHtmlTest extends \Codeception\TestCase\Test
 
     public function testActiveEmailField()
     {
+        $I = $this->codeGuy;
         $html = TbHtml::activeEmailField(
             new Dummy,
             'email',
@@ -764,8 +821,8 @@ class TbHtmlTest extends \Codeception\TestCase\Test
                 'class' => 'input'
             )
         );
-        $input = $this->codeGuy->createNode($html, 'input[type=email]');
-        $this->codeGuy->seeNodeAttributes(
+        $input = $I->createNode($html, 'input[type=email]');
+        $I->seeNodeAttributes(
             $input,
             array(
                 'class' => 'input',
@@ -778,6 +835,7 @@ class TbHtmlTest extends \Codeception\TestCase\Test
 
     public function testActiveNumberField()
     {
+        $I = $this->codeGuy;
         $html = TbHtml::activeNumberField(
             new Dummy,
             'number',
@@ -785,8 +843,8 @@ class TbHtmlTest extends \Codeception\TestCase\Test
                 'class' => 'input'
             )
         );
-        $input = $this->codeGuy->createNode($html, 'input[type=number]');
-        $this->codeGuy->seeNodeAttributes(
+        $input = $I->createNode($html, 'input[type=number]');
+        $I->seeNodeAttributes(
             $input,
             array(
                 'class' => 'input',
@@ -799,6 +857,7 @@ class TbHtmlTest extends \Codeception\TestCase\Test
 
     public function testActiveRangeField()
     {
+        $I = $this->codeGuy;
         $html = TbHtml::activeRangeField(
             new Dummy,
             'range',
@@ -806,8 +865,8 @@ class TbHtmlTest extends \Codeception\TestCase\Test
                 'class' => 'input'
             )
         );
-        $input = $this->codeGuy->createNode($html, 'input[type=range]');
-        $this->codeGuy->seeNodeAttributes(
+        $input = $I->createNode($html, 'input[type=range]');
+        $I->seeNodeAttributes(
             $input,
             array(
                 'class' => 'input',
@@ -820,6 +879,7 @@ class TbHtmlTest extends \Codeception\TestCase\Test
 
     public function testActiveDateField()
     {
+        $I = $this->codeGuy;
         $html = TbHtml::activeDateField(
             new Dummy,
             'date',
@@ -827,8 +887,8 @@ class TbHtmlTest extends \Codeception\TestCase\Test
                 'class' => 'input'
             )
         );
-        $input = $this->codeGuy->createNode($html, 'input[type=date]');
-        $this->codeGuy->seeNodeAttributes(
+        $input = $I->createNode($html, 'input[type=date]');
+        $I->seeNodeAttributes(
             $input,
             array(
                 'class' => 'input',
@@ -841,6 +901,7 @@ class TbHtmlTest extends \Codeception\TestCase\Test
 
     public function testActiveTextArea()
     {
+        $I = $this->codeGuy;
         $html = TbHtml::activeTextArea(
             new Dummy,
             'textarea',
@@ -848,8 +909,8 @@ class TbHtmlTest extends \Codeception\TestCase\Test
                 'class' => 'textarea',
             )
         );
-        $textarea = $this->codeGuy->createNode($html, 'textarea');
-        $this->codeGuy->seeNodeAttributes(
+        $textarea = $I->createNode($html, 'textarea');
+        $I->seeNodeAttributes(
             $textarea,
             array(
                 'class' => 'textarea',
@@ -857,11 +918,12 @@ class TbHtmlTest extends \Codeception\TestCase\Test
                 'name' => 'Dummy[textarea]',
             )
         );
-        $this->codeGuy->seeNodeText($textarea, 'Textarea text');
+        $I->seeNodeText($textarea, 'Textarea text');
     }
 
     public function testActiveRadioButton()
     {
+        $I = $this->codeGuy;
         $html = TbHtml::activeRadioButton(
             new Dummy,
             'radio',
@@ -870,11 +932,11 @@ class TbHtmlTest extends \Codeception\TestCase\Test
                 'label' => 'Label text',
             )
         );
-        $label = $this->codeGuy->createNode($html, 'label');
-        $this->codeGuy->seeNodeCssClass($label, 'radio');
-        $this->codeGuy->seeNodeChildren($label, array('input[type=hidden]', 'input[type=radio]'));
-        $hidden = $label->filter('label > input[type=hidden]');
-        $this->codeGuy->seeNodeAttributes(
+        $label = $I->createNode($html, 'label');
+        $I->seeNodeCssClass($label, 'radio');
+        $I->seeNodeChildren($label, array('input[type=hidden]', 'input[type=radio]'));
+        $hidden = $label->filter('input[type=hidden]');
+        $I->seeNodeAttributes(
             $hidden,
             array(
                 'id' => 'ytDummy_radio',
@@ -882,8 +944,8 @@ class TbHtmlTest extends \Codeception\TestCase\Test
                 'value' => '0',
             )
         );
-        $radio = $label->filter('label > input[type=radio]');
-        $this->codeGuy->seeNodeAttributes(
+        $radio = $label->filter('input[type=radio]');
+        $I->seeNodeAttributes(
             $radio,
             array(
                 'class' => 'input',
@@ -893,11 +955,12 @@ class TbHtmlTest extends \Codeception\TestCase\Test
                 'value' => '1',
             )
         );
-        $this->codeGuy->seeNodePattern($label, '/> Label text$/');
+        $I->seeNodePattern($label, '/> Label text$/');
     }
 
     public function testActiveCheckBox()
     {
+        $I = $this->codeGuy;
         $html = TbHtml::activeCheckBox(
             new Dummy,
             'checkbox',
@@ -906,11 +969,11 @@ class TbHtmlTest extends \Codeception\TestCase\Test
                 'label' => 'Label text',
             )
         );
-        $label = $this->codeGuy->createNode($html, 'label');
-        $this->codeGuy->seeNodeCssClass($label, 'checkbox');
-        $this->codeGuy->seeNodeChildren($label, array('input[type=hidden]', 'input[type=checkbox]'));
-        $hidden = $label->filter('label > input[type=hidden]');
-        $this->codeGuy->seeNodeAttributes(
+        $label = $I->createNode($html, 'label');
+        $I->seeNodeCssClass($label, 'checkbox');
+        $I->seeNodeChildren($label, array('input[type=hidden]', 'input[type=checkbox]'));
+        $hidden = $label->filter('input[type=hidden]');
+        $I->seeNodeAttributes(
             $hidden,
             array(
                 'id' => 'ytDummy_checkbox',
@@ -918,8 +981,8 @@ class TbHtmlTest extends \Codeception\TestCase\Test
                 'value' => '0',
             )
         );
-        $checkbox = $label->filter('label > input[type=checkbox]');
-        $this->codeGuy->seeNodeAttributes(
+        $checkbox = $label->filter('input[type=checkbox]');
+        $I->seeNodeAttributes(
             $checkbox,
             array(
                 'class' => 'input',
@@ -928,12 +991,25 @@ class TbHtmlTest extends \Codeception\TestCase\Test
                 'value' => '1',
             )
         );
-        $this->codeGuy->seeNodePattern($label, '/> Label text$/');
+        $I->seeNodePattern($label, '/> Label text$/');
     }
 
     public function testActiveDropDownList()
     {
-        // todo: write this.
+        $I = $this->codeGuy;
+        $html = TbHtml::activeDropDownList(
+            new Dummy,
+            'dropdown',
+            array('1', '2', '3', '4', '5'),
+            array(
+                'class' => 'list',
+                'empty' => 'Empty text',
+                'size' => TbHtml::INPUT_SIZE_LARGE,
+                'textAlign' => TbHtml::TEXT_ALIGN_CENTER,
+            )
+        );
+        $select = $I->createNode($html, 'select');
+        $I->seeNodeCssClass($select, 'input-large text-center list');
     }
 
     public function testActiveListBox()
@@ -943,26 +1019,88 @@ class TbHtmlTest extends \Codeception\TestCase\Test
 
     public function testActiveRadioButtonList()
     {
-        // todo: write this.
+        // todo: ensure that this test is actually correct.
+        $I = $this->codeGuy;
+        $html = TbHtml::activeRadioButtonList(
+            new Dummy,
+            'radioList',
+            array('Option 1', 'Option 2', 'Option 3')
+        );
+        $body = $I->createNode($html);
+        $I->seeNodeChildren(
+            $body,
+            array('input[type=hidden]', 'label.radio', 'label.radio', 'label.radio')
+        );
+        $label = $body->filter('label')->first();
+        $I->seeNodePattern($label, '/> Option 1$/');
+        $input = $label->filter('input[type=radio]');
+        $I->seeNodeAttributes(
+            $input,
+            array(
+                'id' => 'Dummy_radioList_0',
+                'name' => 'Dummy[radioList]',
+                'value' => '0',
+            )
+        );
     }
 
     public function testActiveInlineRadioButtonList()
     {
-        // todo: write this.
+        $I = $this->codeGuy;
+        $html = TbHtml::activeInlineRadioButtonList(
+            new Dummy,
+            'radioList',
+            array('Option 1', 'Option 2', 'Option 3')
+        );
+        $container = $I->createNode($html);
+        $I->seeNodeChildren($container, array('label.radio.inline', 'label.radio.inline', 'label.radio.inline'));
     }
 
     public function testActiveCheckBoxList()
     {
-        // todo: write this.
+        // todo: ensure that this test is actually correct.
+        $I = $this->codeGuy;
+        $html = TbHtml::activeCheckBoxList(
+            new Dummy,
+            'checkboxList',
+            array('Option 1', 'Option 2', 'Option 3')
+        );
+        $container = $I->createNode($html);
+        $I->seeNodeChildren(
+            $container,
+            array('input[type=hidden]', 'label.checkbox', 'label.checkbox', 'label.checkbox')
+        );
+        $label = $container->filter('label')->first();
+        $I->seeNodePattern($label, '/> Option 1$/');
+        $input = $label->filter('input[type=checkbox]');
+        $I->seeNodeAttributes(
+            $input,
+            array(
+                'id' => 'Dummy_checkboxList_0',
+                'name' => 'Dummy[checkboxList][]',
+                'value' => '0',
+            )
+        );
     }
 
     public function testActiveInlineCheckBoxList()
     {
-        // todo: write this.
+        $I = $this->codeGuy;
+        $html = TbHtml::activeInlineCheckBoxList(
+            new Dummy,
+            'checkboxList',
+            array('Option 1', 'Option 2', 'Option 3')
+        );
+        $container = $I->createNode($html);
+        $I->seeNodeChildren(
+            $container,
+            array('label.checkbox.inline', 'label.checkbox.inline', 'label.checkbox.inline')
+        );
     }
 
     public function testActiveUneditableField()
     {
+        $I = $this->codeGuy;
         $html = TbHtml::activeUneditableField(
             new Dummy,
             'uneditable',
@@ -970,13 +1108,14 @@ class TbHtmlTest extends \Codeception\TestCase\Test
                 'class' => 'span'
             )
         );
-        $span = $this->codeGuy->createNode($html, 'span.uneditable-input');
-        $this->codeGuy->seeNodeCssClass($span, 'span');
-        $this->codeGuy->seeNodeText($span, 'Uneditable text');
+        $span = $I->createNode($html, 'span.uneditable-input');
+        $I->seeNodeCssClass($span, 'span');
+        $I->seeNodeText($span, 'Uneditable text');
     }
 
     public function testActiveSearchQueryField()
     {
+        $I = $this->codeGuy;
         $model = new Dummy;
         $html = TbHtml::activeSearchQueryField(
             $model,
@@ -985,9 +1124,9 @@ class TbHtmlTest extends \Codeception\TestCase\Test
                 'class' => 'input'
             )
         );
-        $input = $this->codeGuy->createNode($html, 'input[type=text].search-query');
-        $this->codeGuy->seeNodeCssClass($input, 'input');
-        $this->codeGuy->seeNodeAttributes(
+        $input = $I->createNode($html, 'input[type=text].search-query');
+        $I->seeNodeCssClass($input, 'input');
+        $I->seeNodeAttributes(
             $input,
             array(
                 'id' => 'Dummy_search',
@@ -999,6 +1138,8 @@ class TbHtmlTest extends \Codeception\TestCase\Test
 
     public function testActiveControlGroup()
     {
+        $I = $this->codeGuy;
+
         $html = TbHtml::activeControlGroup(
             TbHtml::INPUT_TYPE_TEXT,
             new Dummy,
@@ -1011,17 +1152,17 @@ class TbHtmlTest extends \Codeception\TestCase\Test
                 'helpOptions' => array('class' => 'help'),
             )
         );
-        $group = $this->codeGuy->createNode($html, 'div.control-group');
-        $this->codeGuy->seeNodeCssClass($group, 'error group');
-        $this->codeGuy->seeNodeChildren($group, array('label.control-label', 'div.controls'));
-        $label = $group->filter('div.control-group > label.control-label');
-        $this->codeGuy->seeNodeCssClass($label, 'label');
-        $this->codeGuy->seeNodeAttribute($label, 'for', 'Dummy_text');
-        $this->codeGuy->seeNodeText($label, 'Text');
-        $controls = $group->filter('div.control-group > div.controls');
-        $this->codeGuy->seeNodeChildren($controls, array('input', 'span'));
-        $input = $controls->filter('div.controls > input[type=text]');
-        $this->codeGuy->seeNodeAttributes(
+        $group = $I->createNode($html, 'div.control-group');
+        $I->seeNodeCssClass($group, 'error group');
+        $I->seeNodeChildren($group, array('label.control-label', 'div.controls'));
+        $label = $group->filter('label.control-label');
+        $I->seeNodeCssClass($label, 'label');
+        $I->seeNodeAttribute($label, 'for', 'Dummy_text');
+        $I->seeNodeText($label, 'Text');
+        $controls = $group->filter('div.controls');
+        $I->seeNodeChildren($controls, array('input', 'span'));
+        $input = $controls->filter('input[type=text]');
+        $I->seeNodeAttributes(
             $input,
             array(
                 'id' => 'Dummy_text',
@@ -1029,9 +1170,9 @@ class TbHtmlTest extends \Codeception\TestCase\Test
                 'value' => 'text',
             )
         );
-        $help = $controls->filter('div.controls > span.help-inline');
-        $this->codeGuy->seeNodeCssClass($help, 'help');
-        $this->codeGuy->seeNodeText($help, 'Help text');
+        $help = $controls->filter('span.help-inline');
+        $I->seeNodeCssClass($help, 'help');
+        $I->seeNodeText($help, 'Help text');
 
         $html = TbHtml::activeControlGroup(
             TbHtml::INPUT_TYPE_RADIOBUTTON,
@@ -1041,14 +1182,14 @@ class TbHtmlTest extends \Codeception\TestCase\Test
                 'labelOptions' => array('class' => 'label'),
             )
         );
-        $group = $this->codeGuy->createNode($html, 'div.control-group');
-        $this->codeGuy->seeNodeChildren($group, array('div.controls'));
-        $controls = $group->filter('div.control-group > div.controls');
-        $label = $controls->filter('div.controls > label.radio');
-        $this->codeGuy->seeNodePattern($label, '/> Radio$/');
-        $this->codeGuy->seeNodeChildren($label, array('input[type=hidden]', 'input[type=radio]'));
-        $hidden = $label->filter('label > input[type=hidden]');
-        $this->codeGuy->seeNodeAttributes(
+        $group = $I->createNode($html, 'div.control-group');
+        $I->seeNodeChildren($group, array('div.controls'));
+        $controls = $group->filter('div.controls');
+        $label = $controls->filter('label.radio');
+        $I->seeNodePattern($label, '/> Radio$/');
+        $I->seeNodeChildren($label, array('input[type=hidden]', 'input[type=radio]'));
+        $hidden = $label->filter('input[type=hidden]');
+        $I->seeNodeAttributes(
             $hidden,
             array(
                 'id' => 'ytDummy_radio',
@@ -1056,8 +1197,8 @@ class TbHtmlTest extends \Codeception\TestCase\Test
                 'value' => '0',
             )
         );
-        $radio = $label->filter('label > input[type=radio]');
-        $this->codeGuy->seeNodeAttributes(
+        $radio = $label->filter('input[type=radio]');
+        $I->seeNodeAttributes(
             $radio,
             array(
                 'checked' => 'checked',
@@ -1070,6 +1211,7 @@ class TbHtmlTest extends \Codeception\TestCase\Test
 
     public function testActiveCustomControlGroup()
     {
+        $I = $this->codeGuy;
         $html = TbHtml::customActiveControlGroup(
             '<div class="widget"></div>',
             new Dummy,
@@ -1078,9 +1220,9 @@ class TbHtmlTest extends \Codeception\TestCase\Test
                 'label' => false,
             )
         );
-        $group = $this->codeGuy->createNode($html, 'div.control-group');
-        $controls = $group->filter('div.control-group > div.controls');
-        $this->codeGuy->seeNodeChildren($controls, array('div.widget'));
+        $group = $I->createNode($html, 'div.control-group');
+        $controls = $group->filter('div.controls');
+        $I->seeNodeChildren($controls, array('div.widget'));
     }
 
     public function testErrorSummary()
@@ -1090,6 +1232,7 @@ class TbHtmlTest extends \Codeception\TestCase\Test
 
     public function testError()
     {
+        $I = $this->codeGuy;
         $model = new Dummy;
         $model->addError('text', 'Error text');
         $html = TbHtml::error(
@@ -1099,13 +1242,14 @@ class TbHtmlTest extends \Codeception\TestCase\Test
                 'class' => 'error',
             )
         );
-        $span = $this->codeGuy->createNode($html, 'span.help-inline');
-        $this->codeGuy->seeNodeCssClass($span, 'error');
-        $this->codeGuy->seeNodeText($span, 'Error text');
+        $span = $I->createNode($html, 'span.help-inline');
+        $I->seeNodeCssClass($span, 'error');
+        $I->seeNodeText($span, 'Error text');
     }
 
     public function testControls()
     {
+        $I = $this->codeGuy;
         $html = TbHtml::controls(
             '<div class="control"></div><div class="control"></div>',
             array(
@@ -1113,33 +1257,36 @@ class TbHtmlTest extends \Codeception\TestCase\Test
                 'after' => 'After text',
             )
         );
-        $controls = $this->codeGuy->createNode($html, 'div.controls');
-        $this->codeGuy->seeNodeChildren($controls, array('div.control', 'div.control'));
-        $this->codeGuy->seeNodePattern($controls, '/^Before text</');
-        $this->codeGuy->seeNodePattern($controls, '/>After text$/');
+        $controls = $I->createNode($html, 'div.controls');
+        $I->seeNodeChildren($controls, array('div.control', 'div.control'));
+        $I->seeNodePattern($controls, '/^Before text</');
+        $I->seeNodePattern($controls, '/>After text$/');
     }
 
     public function testControlsRow()
     {
+        $I = $this->codeGuy;
         $html = TbHtml::controlsRow(
             array(
                 '<div class="control"></div>',
                 '<div class="control"></div>',
             )
         );
-        $controls = $this->codeGuy->createNode($html, 'div.controls');
-        $this->codeGuy->seeNodeChildren($controls, array('div.control', 'div.control'));
+        $controls = $I->createNode($html, 'div.controls');
+        $I->seeNodeChildren($controls, array('div.control', 'div.control'));
     }
 
     public function testFormActions()
     {
+        $I = $this->codeGuy;
+
         $html = TbHtml::formActions('<div class="action"></div><div class="action"></div>');
         $this->assertEquals(
             '<div class="form-actions"><div class="action"></div><div class="action"></div></div>',
             $html
         );
-        $actions = $this->codeGuy->createNode($html, 'div.form-actions');
-        $this->codeGuy->seeNodeChildren($actions, array('div.action', 'div.action'));
+        $actions = $I->createNode($html, 'div.form-actions');
+        $I->seeNodeChildren($actions, array('div.action', 'div.action'));
 
         $html = TbHtml::formActions(
             array(
@@ -1147,27 +1294,50 @@ class TbHtmlTest extends \Codeception\TestCase\Test
                 '<div class="action"></div>',
             )
         );
-        $actions = $this->codeGuy->createNode($html, 'div.form-actions');
-        $this->codeGuy->seeNodeChildren($actions, array('div.action', 'div.action'));
+        $actions = $I->createNode($html, 'div.form-actions');
+        $I->seeNodeChildren($actions, array('div.action', 'div.action'));
     }
 
     public function testSearchForm()
     {
-        // todo: write this.
+        $I = $this->codeGuy;
+        $html = TbHtml::searchForm(
+            '#',
+            'post',
+            array(
+                'class' => 'form',
+            )
+        );
+        $form = $I->createNode($html, 'form.form-search');
+        $I->seeNodeCssClass($form, 'form');
+        $I->seeNodeAttributes(
+            $form,
+            array(
+                'action' => '#',
+                'method' => 'post'
+            )
+        );
+        $input = $form->filter('input[type=text]');
+        $I->seeNodeCssClass($input, 'search-query');
     }
 
     public function testNavbarForm()
     {
-        // todo: write this.
+        $I = $this->codeGuy;
+        $html = TbHtml::navbarForm('#');
+        $I->createNode($html, 'form.navbar-form');
     }
 
     public function testNavbarSearchForm()
     {
-        // todo: write this.
+        $I = $this->codeGuy;
+        $html = TbHtml::navbarSearchForm('#');
+        $I->createNode($html, 'form.navbar-search');
     }
 
     public function testLink()
     {
+        $I = $this->codeGuy;
         $html = TbHtml::link(
             'Link',
             '#',
@@ -1175,17 +1345,19 @@ class TbHtmlTest extends \Codeception\TestCase\Test
                 'class' => 'link'
             )
         );
-        $a = $this->codeGuy->createNode($html, 'a.link');
-        $this->codeGuy->seeNodeAttribute($a, 'href', '#');
-        $this->codeGuy->seeNodeText($a, 'Link');
+        $a = $I->createNode($html, 'a.link');
+        $I->seeNodeAttribute($a, 'href', '#');
+        $I->seeNodeText($a, 'Link');
     }
 
     public function testButton()
     {
+        $I = $this->codeGuy;
         $html = TbHtml::button(
             'Button',
             array(
                 'class' => 'button',
+                'name' => 'button',
                 'color' => TbHtml::BUTTON_COLOR_PRIMARY,
                 'size' => TbHtml::BUTTON_SIZE_LARGE,
                 'block' => true,
@@ -1195,167 +1367,176 @@ class TbHtmlTest extends \Codeception\TestCase\Test
                 'icon' => TbHtml::ICON_CHECK
             )
         );
-        $button = $this->codeGuy->createNode($html, 'button[type=button].btn');
-        $this->codeGuy->seeNodeCssClass($button, 'btn-primary btn-large btn-block disabled button');
-        $this->codeGuy->seeNodeAttributes(
+        $button = $I->createNode($html, 'button[type=button].btn');
+        $I->seeNodeCssClass($button, 'btn-primary btn-large btn-block disabled button');
+        $I->seeNodeAttributes(
             $button,
             array(
-                'name' => 'yt0',
+                'name' => 'button',
                 'data-loading-text' => 'Loading text',
                 'data-toggle' => 'button',
             )
         );
-        $this->codeGuy->seeNodeChildren($button, array('i.icon-check'));
-        $this->codeGuy->seeNodePattern($button, '/> Button$/');
-        CHtml::$count = 0;
+        $I->seeNodeChildren($button, array('i.icon-check'));
+        $I->seeNodePattern($button, '/> Button$/');
         // todo: test button dropdowns as well.
     }
 
     public function testHtmlButton()
     {
+        $I = $this->codeGuy;
         $html = TbHtml::htmlButton(
             'Button',
             array(
                 'class' => 'button',
+                'name' => 'button',
             )
         );
-        $button = $this->codeGuy->createNode($html, 'button[type=button].btn');
-        $this->codeGuy->seeNodeCssClass($button, 'button');
-        $this->codeGuy->seeNodeAttribute($button, 'name', 'yt0');
-        $this->codeGuy->seeNodeText($button, 'Button');
-        CHtml::$count = 0;
+        $button = $I->createNode($html, 'button[type=button].btn');
+        $I->seeNodeCssClass($button, 'button');
+        $I->seeNodeAttribute($button, 'name', 'button');
+        $I->seeNodeText($button, 'Button');
     }
 
     public function testSubmitButton()
     {
+        $I = $this->codeGuy;
         $html = TbHtml::submitButton(
             'Submit',
             array(
-                'class' => 'button'
+                'class' => 'button',
+                'name' => 'button',
             )
         );
-        $button = $this->codeGuy->createNode($html, 'button[type=submit].btn');
-        $this->codeGuy->seeNodeCssClass($button, 'button');
-        $this->codeGuy->seeNodeAttribute($button, 'name', 'yt0');
-        $this->codeGuy->seeNodeText($button, 'Submit');
-        CHtml::$count = 0;
+        $button = $I->createNode($html, 'button[type=submit].btn');
+        $I->seeNodeCssClass($button, 'button');
+        $I->seeNodeAttribute($button, 'name', 'button');
+        $I->seeNodeText($button, 'Submit');
     }
 
     public function testResetButton()
     {
+        $I = $this->codeGuy;
         $html = TbHtml::resetButton(
             'Reset',
             array(
                 'class' => 'button',
+                'name' => 'button',
             )
         );
-        $button = $this->codeGuy->createNode($html, 'button[type=reset].btn');
-        $this->codeGuy->seeNodeCssClass($button, 'button');
-        $this->codeGuy->seeNodeAttribute($button, 'name', 'yt0');
-        $this->codeGuy->seeNodeText($button, 'Reset');
-        CHtml::$count = 0;
+        $button = $I->createNode($html, 'button[type=reset].btn');
+        $I->seeNodeCssClass($button, 'button');
+        $I->seeNodeAttribute($button, 'name', 'button');
+        $I->seeNodeText($button, 'Reset');
     }
 
     public function testImageButton()
     {
+        $I = $this->codeGuy;
         $html = TbHtml::imageButton(
             'image.png',
             array(
                 'class' => 'button',
+                'name' => 'button',
             )
         );
-        $button = $this->codeGuy->createNode($html, 'input[type=image].btn');
-        $this->codeGuy->seeNodeCssClass($button, 'button');
-        $this->codeGuy->seeNodeAttributes(
+        $button = $I->createNode($html, 'input[type=image].btn');
+        $I->seeNodeCssClass($button, 'button');
+        $I->seeNodeAttributes(
             $button,
             array(
-                'name' => 'yt0',
+                'name' => 'button',
                 'src' => 'image.png',
                 'value' => 'submit',
             )
         );
-        CHtml::$count = 0;
     }
 
     public function testLinkButton()
     {
+        $I = $this->codeGuy;
         $html = TbHtml::linkButton(
             'Link',
             array(
                 'class' => 'button',
             )
         );
-        $a = $this->codeGuy->createNode($html, 'a.btn');
-        $this->codeGuy->seeNodeCssClass($a, 'button');
-        $this->codeGuy->seeNodeAttribute($a, 'href', '#');
-        $this->codeGuy->seeNodeText($a, 'Link');
+        $a = $I->createNode($html, 'a.btn');
+        $I->seeNodeCssClass($a, 'button');
+        $I->seeNodeAttribute($a, 'href', '#');
+        $I->seeNodeText($a, 'Link');
     }
 
     public function testAjaxLink()
     {
+        $I = $this->codeGuy;
         $html = TbHtml::ajaxLink(
             'Link',
             '#',
             array(), // todo: figure out a way to test the ajax options as well.
             array(
+                'id' => 'button',
                 'class' => 'button',
             )
         );
-        $a = $this->codeGuy->createNode($html, 'a.btn');
-        $this->codeGuy->seeNodeCssClass($a, 'button');
-        $this->codeGuy->seeNodeAttributes(
+        $a = $I->createNode($html, 'a.btn');
+        $I->seeNodeCssClass($a, 'button');
+        $I->seeNodeAttributes(
             $a,
             array(
-                'id' => 'yt0',
+                'id' => 'button',
                 'href' => '#',
             )
         );
-        $this->codeGuy->seeNodeText($a, 'Link');
-        CHtml::$count = 0;
+        $I->seeNodeText($a, 'Link');
     }
 
     public function testAjaxButton()
     {
+        $I = $this->codeGuy;
         $html = TbHtml::ajaxButton(
             'Button',
             '#',
             array(),
             array(
+                'id' => 'button',
                 'class' => 'button',
             )
         );
-        $button = $this->codeGuy->createNode($html, 'button[type=button].btn');
-        $this->codeGuy->seeNodeCssClass($button, 'button');
-        $this->codeGuy->seeNodeAttribute($button, 'id', 'yt0');
-        $this->codeGuy->seeNodeText($button, 'Button');
-        CHtml::$count = 0;
+        $button = $I->createNode($html, 'button[type=button].btn');
+        $I->seeNodeCssClass($button, 'button');
+        $I->seeNodeAttribute($button, 'id', 'button');
+        $I->seeNodeText($button, 'Button');
     }
 
     public function testAjaxSubmitButton()
     {
+        $I = $this->codeGuy;
         $html = TbHtml::ajaxSubmitButton(
             'Submit',
             '#',
             array(),
             array(
                 'class' => 'button',
+                'id' => 'button',
+                'name' => 'button'
             )
         );
-        $button = $this->codeGuy->createNode($html, 'button[type=submit].btn');
-        $this->codeGuy->seeNodeCssClass($button, 'button');
-        $this->codeGuy->seeNodeAttributes(
+        $button = $I->createNode($html, 'button[type=submit].btn');
+        $I->seeNodeCssClass($button, 'button');
+        $I->seeNodeAttributes(
             $button,
             array(
-                'id' => 'yt0',
-                'name' => 'yt0'
+                'id' => 'button',
+                'name' => 'button'
             )
         );
-        $this->codeGuy->seeNodeText($button, 'Submit');
-        CHtml::$count = 0;
+        $I->seeNodeText($button, 'Submit');
     }
 
     public function testImageRounded()
     {
+        $I = $this->codeGuy;
         $html = TbHtml::imageRounded(
             'image.png',
             'Alternative text',
@@ -1363,9 +1544,9 @@ class TbHtmlTest extends \Codeception\TestCase\Test
                 'class' => 'image',
             )
         );
-        $img = $this->codeGuy->createNode($html, 'img.img-rounded');
-        $this->codeGuy->seeNodeCssClass($img, 'image');
-        $this->codeGuy->seeNodeAttributes(
+        $img = $I->createNode($html, 'img.img-rounded');
+        $I->seeNodeCssClass($img, 'image');
+        $I->seeNodeAttributes(
             $img,
             array(
                 'src' => 'image.png',
@@ -1376,6 +1557,7 @@ class TbHtmlTest extends \Codeception\TestCase\Test
 
     public function testImageCircle()
     {
+        $I = $this->codeGuy;
         $html = TbHtml::imageCircle(
             'image.png',
             'Alternative text',
@@ -1383,9 +1565,9 @@ class TbHtmlTest extends \Codeception\TestCase\Test
                 'class' => 'image',
             )
         );
-        $img = $this->codeGuy->createNode($html, 'img.img-circle');
-        $this->codeGuy->seeNodeCssClass($img, 'image');
-        $this->codeGuy->seeNodeAttributes(
+        $img = $I->createNode($html, 'img.img-circle');
+        $I->seeNodeCssClass($img, 'image');
+        $I->seeNodeAttributes(
             $img,
             array(
                 'src' => 'image.png',
@@ -1396,6 +1578,7 @@ class TbHtmlTest extends \Codeception\TestCase\Test
 
     public function testImagePolaroid()
     {
+        $I = $this->codeGuy;
         $html = TbHtml::imagePolaroid(
             'image.png',
             'Alternative text',
@@ -1403,9 +1586,9 @@ class TbHtmlTest extends \Codeception\TestCase\Test
                 'class' => 'image',
             )
         );
-        $img = $this->codeGuy->createNode($html, 'img.img-polaroid');
-        $this->codeGuy->seeNodeCssClass($img, 'image');
-        $this->codeGuy->seeNodeAttributes(
+        $img = $I->createNode($html, 'img.img-polaroid');
+        $I->seeNodeCssClass($img, 'image');
+        $I->seeNodeAttributes(
             $img,
             array(
                 'src' => 'image.png',
@@ -1416,14 +1599,16 @@ class TbHtmlTest extends \Codeception\TestCase\Test
 
     public function testIcon()
     {
+        $I = $this->codeGuy;
+
         $html = TbHtml::icon(
             TbHtml::ICON_CHECK,
             array(
                 'class' => 'icon',
             )
         );
-        $i = $this->codeGuy->createNode($html, 'i.icon-check');
-        $this->codeGuy->seeNodeEmpty($i);
+        $i = $I->createNode($html, 'i.icon-check');
+        $I->seeNodeEmpty($i);
 
         $html = TbHtml::icon(
             TbHtml::ICON_REMOVE,
@@ -1431,66 +1616,78 @@ class TbHtmlTest extends \Codeception\TestCase\Test
                 'color' => TbHtml::ICON_COLOR_WHITE,
             )
         );
-        $i = $this->codeGuy->createNode($html, 'i.icon-remove');
-        $this->codeGuy->seeNodeCssClass($i, 'icon-white');
-        $this->codeGuy->seeNodeEmpty($i);
+        $i = $I->createNode($html, 'i.icon-remove');
+        $I->seeNodeCssClass($i, 'icon-white');
+        $I->seeNodeEmpty($i);
 
         $html = TbHtml::icon('pencil white');
-        $i = $this->codeGuy->createNode($html, 'i.icon-pencil');
-        $this->codeGuy->seeNodeCssClass($i, 'icon-white');
-        $this->codeGuy->seeNodeEmpty($i);
+        $i = $I->createNode($html, 'i.icon-pencil');
+        $I->seeNodeCssClass($i, 'icon-white');
+        $I->seeNodeEmpty($i);
     }
 
     public function testDropdown()
     {
-        // todo: write this.
+        $I = $this->codeGuy;
+        $html = TbHtml::dropdown(
+            array(
+                array('label' => 'Link', 'url' => '#'),
+            )
+        );
+        $I->createNode($html, 'ul.dropdown-menu');
+
+        $html = TbHtml::dropdown(array());
+        $this->assertEquals('', $html);
     }
 
     public function testDropdownToggleLink()
     {
+        $I = $this->codeGuy;
         $html = TbHtml::dropdownToggleLink(
             'Link',
             array(
                 'class' => 'link',
             )
         );
-        $a = $this->codeGuy->createNode($html, 'a.btn.dropdown-toggle');
-        $this->codeGuy->seeNodeCssClass($a, 'link');
-        $this->codeGuy->seeNodeAttributes(
+        $a = $I->createNode($html, 'a.btn.dropdown-toggle');
+        $I->seeNodeCssClass($a, 'link');
+        $I->seeNodeAttributes(
             $a,
             array(
                 'href' => '#',
                 'data-toggle' => 'dropdown',
             )
         );
-        $this->codeGuy->seeNodePattern($a, '/^Link </');
-        $this->codeGuy->seeNodeChildren($a, array('b.caret'));
+        $I->seeNodePattern($a, '/^Link </');
+        $I->seeNodeChildren($a, array('b.caret'));
     }
 
     public function testDropdownToggleButton()
     {
+        $I = $this->codeGuy;
         $html = TbHtml::dropdownToggleButton(
             'Button',
             array(
                 'class' => 'button',
+                'name' => 'button',
             )
         );
-        $button = $this->codeGuy->createNode($html, 'button[type=button].btn.dropdown-toggle');
-        $this->codeGuy->seeNodeCssClass($button, 'button');
-        $this->codeGuy->seeNodeAttributes(
+        $button = $I->createNode($html, 'button[type=button].btn.dropdown-toggle');
+        $I->seeNodeCssClass($button, 'button');
+        $I->seeNodeAttributes(
             $button,
             array(
-                'name' => 'yt0',
+                'name' => 'button',
                 'data-toggle' => 'dropdown',
             )
         );
-        $this->codeGuy->seeNodePattern($button, '/^Button </');
-        $this->codeGuy->seeNodeChildren($button, array('b.caret'));
-        CHtml::$count = 0;
+        $I->seeNodePattern($button, '/^Button </');
+        $I->seeNodeChildren($button, array('b.caret'));
     }
 
     public function testDropdownToggleMenuLink()
     {
+        $I = $this->codeGuy;
         $html = TbHtml::dropdownToggleMenuLink(
             'Link',
             '#',
@@ -1498,62 +1695,269 @@ class TbHtmlTest extends \Codeception\TestCase\Test
                 'class' => 'link',
             )
         );
-        $a = $this->codeGuy->createNode($html, 'a.dropdown-toggle');
-        $this->codeGuy->seeNodeCssClass($a, 'link');
-        $this->codeGuy->seeNodeAttributes(
+        $a = $I->createNode($html, 'a.dropdown-toggle');
+        $I->seeNodeCssClass($a, 'link');
+        $I->seeNodeAttributes(
             $a,
             array(
                 'href' => '#',
                 'data-toggle' => 'dropdown',
             )
         );
-        $this->codeGuy->seeNodePattern($a, '/^Link </');
-        $this->codeGuy->seeNodeChildren($a, array('b.caret'));
+        $I->seeNodePattern($a, '/^Link </');
+        $I->seeNodeChildren($a, array('b.caret'));
     }
 
     public function testButtonGroup()
     {
-        // todo: write this.
+        $I = $this->codeGuy;
+
+        $buttons = array(
+            array('label' => 'Left'),
+            array('label' => 'Middle'),
+            array('label' => 'Right', 'color' => TbHtml::BUTTON_COLOR_INVERSE),
+        );
+
+        $html = TbHtml::buttonGroup(
+            $buttons,
+            array(
+                'class' => 'div',
+                'color' => TbHtml::BUTTON_COLOR_PRIMARY,
+            )
+        );
+        $group = $I->createNode($html, 'div.btn-group');
+        $I->seeNodeCssClass($group, 'div');
+        foreach ($group->children() as $i => $btnElement) {
+            $btn = $I->createNode($btnElement);
+            $I->seeNodeCssClass($btn, 'btn');
+            $I->seeNodeAttributes(
+                $btn,
+                array(
+                    'href' => '#',
+                )
+            );
+            $I->seeNodeCssClass($btn, ($i === 2 ? 'btn-inverse' : 'btn-primary'));
+            $I->seeNodeText($btn, $buttons[$i]['label']);
+        }
+
+        $html = TbHtml::buttonGroup(array());
+        $this->assertEquals('', $html);
     }
 
     public function testButtonToolbar()
     {
-        // todo: write this.
+        $I = $this->codeGuy;
+
+        $groups = array(
+            array(
+                'items' => array(
+                    array('label' => '1', 'color' => TbHtml::BUTTON_COLOR_DANGER),
+                    array('label' => '2'),
+                    array('label' => '3'),
+                    array('label' => '4'),
+                ),
+                'htmlOptions' => array(
+                    'color' => TbHtml::BUTTON_COLOR_INVERSE,
+                ),
+            ),
+            array(
+                'items' => array(
+                    array('label' => '5'),
+                    array('label' => '6'),
+                    array('label' => '7'),
+                )
+            ),
+            array(
+                'items' => array(
+                    array('label' => '8'),
+                )
+            ),
+        );
+
+        $html = TbHtml::buttonToolbar(
+            $groups,
+            array(
+                'class' => 'div',
+                'color' => TbHtml::BUTTON_COLOR_PRIMARY,
+            )
+        );
+        $toolbar = $I->createNode($html, 'div.btn-toolbar');
+        $I->seeNodeCssClass($toolbar, 'div');
+        foreach ($toolbar->children() as $i => $groupElement) {
+            $group = $I->createNode($groupElement);
+            $I->seeNodeCssClass($group, 'btn-group');
+            foreach ($group->children() as $j => $btnElement) {
+                $btn = $I->createNode($btnElement);
+                $I->seeNodeCssClass($btn, 'btn');
+                if ($i === 0) {
+                    $I->seeNodeCssClass($btn, $j === 0 ? 'btn-danger' : 'btn-inverse');
+                } else {
+                    $I->seeNodeCssClass($btn, 'btn-primary');
+                }
+                $I->seeNodeText($btn, $groups[$i]['items'][$j]['label']);
+            }
+        }
+
+        $html = TbHtml::buttonToolbar(array());
+        $this->assertEquals('', $html);
     }
 
     public function testButtonDropdown()
     {
-        // todo: write this.
+        $I = $this->codeGuy;
+
+        $items = array(
+            array(
+                'label' => 'Action',
+                'url' => '#',
+                'class' => 'item',
+                'linkOptions' => array('class' => 'link'),
+            ),
+            array('label' => 'Another action', 'url' => '#'),
+            array('label' => 'Something else here', 'url' => '#'),
+            TbHtml::menuDivider(),
+            array('label' => 'Separate link', 'url' => '#'),
+        );
+
+        $html = TbHtml::buttonDropdown(
+            'Action',
+            $items,
+            array(
+                'class' => 'link',
+                'groupOptions' => array('class' => 'group'),
+                'menuOptions' => array('class' => 'menu'),
+            )
+        );
+        $group = $I->createNode($html, 'div.btn-group');
+        $I->seeNodeCssClass($group, 'group');
+        $I->seeNodeChildren($group, array('a.dropdown-toggle', 'ul.dropdown-menu'));
+        $a = $group->filter('a.dropdown-toggle');
+        $I->seeNodeCssClass($a, 'link');
+        $I->seeNodeAttributes(
+            $a,
+            array(
+                'data-toggle' => 'dropdown',
+                'href' => '#',
+            )
+        );
+        $I->seeNodePattern($a, '/Action </');
+        $b = $a->filter('b.caret');
+        $I->seeNodeEmpty($b);
+        $ul = $group->filter('ul.dropdown-menu');
+        foreach ($ul->children() as $i => $liElement) {
+            $li = $I->createNode($liElement);
+            if ($i === 3) {
+                $I->seeNodeCssClass($li, 'divider');
+            } else {
+                $a = $li->filter('a');
+                if ($i === 0) {
+                    $I->seeNodeCssClass($li, 'item');
+                    $I->seeNodeCssClass($a, 'link');
+                }
+                $I->seeNodeAttributes(
+                    $a,
+                    array(
+                        'href' => '#',
+                        'tabindex' => '-1',
+                    )
+                );
+                $I->seeNodeText($a, $items[$i]['label']);
+            }
+        }
     }
 
     public function testSplitButtonDropdown()
     {
-        // todo: write this.
+        $I = $this->codeGuy;
+
+        $items = array(
+            array('label' => 'Action', 'url' => '#'),
+            array('label' => 'Another action', 'url' => '#'),
+            array('label' => 'Something else here', 'url' => '#'),
+            TbHtml::menuDivider(),
+            array('label' => 'Separate link', 'url' => '#'),
+        );
+
+        $html = TbHtml::splitButtonDropdown('Action',  $items);
+        $group = $I->createNode($html, 'div.btn-group');
+        $I->seeNodeChildren($group, array('a.btn', 'button.dropdown-toggle', 'ul.dropdown-menu'));
+        CHtml::$count = 0;
     }
 
     public function testTabs()
     {
-        // todo: write this.
+        $I = $this->codeGuy;
+
+        $html = TbHtml::tabs(
+            array(
+                array('label' => 'Link', 'url' => '#'),
+            )
+        );
+        $nav = $I->createNode($html, 'ul.nav');
+        $I->seeNodeCssClass($nav, 'nav-tabs');
     }
 
     public function testStackedTabs()
     {
-        // todo: write this.
+        $I = $this->codeGuy;
+
+        $html = TbHtml::stackedTabs(
+            array(
+                array('label' => 'Link', 'url' => '#'),
+            )
+        );
+        $nav = $I->createNode($html, 'ul.nav');
+        $I->seeNodeCssClass($nav, 'nav-tabs nav-stacked');
     }
 
     public function testPills()
     {
-        // todo: write this.
+        $I = $this->codeGuy;
+
+        $html = TbHtml::pills(
+            array(
+                array('label' => 'Link', 'url' => '#'),
+            )
+        );
+        $nav = $I->createNode($html, 'ul.nav');
+        $I->seeNodeCssClass($nav, 'nav-pills');
     }
 
     public function testStackedPills()
     {
-        // todo: write this.
+        $I = $this->codeGuy;
+
+        $html = TbHtml::stackedPills(
+            array(
+                array('label' => 'Link', 'url' => '#'),
+            )
+        );
+        $nav = $I->createNode($html, 'ul.nav');
+        $I->seeNodeCssClass($nav, 'nav-pills nav-stacked');
     }
 
     public function testNavList()
     {
-        // todo: write this.
+        $I = $this->codeGuy;
+
+        $items = array(
+            array('label' => 'Header text'),
+            array('label' => 'Link', 'url' => '#'),
+        );
+
+        $html = TbHtml::navList($items);
+        $nav = $I->createNode($html, 'ul.nav');
+        $I->seeNodeCssClass($nav, 'nav-list');
+        foreach ($nav->children() as $i => $liElement) {
+            $li = $I->createNode($liElement);
+            if ($i === 0) {
+                $I->seeNodeCssClass($li, 'nav-header');
+                $I->seeNodeText($li, 'Header text');
+            } else {
+                $a = $li->filter('a');
+                $I->seeNodeText($a, $items[$i]['label']);
+            }
+        }
     }
 
     public function testNav()
@@ -1563,11 +1967,75 @@ class TbHtmlTest extends \Codeception\TestCase\Test
 
     public function testMenu()
     {
-        // todo: write this.
+        $I = $this->codeGuy;
+
+        $items = array(
+            array('label' => 'Home', 'url' => '#', 'active' => true),
+            array('label' => 'Profile', 'url' => '#',),
+            array('label' => 'Dropdown', 'items' => array(
+                array('label' => 'Action', 'url' => '#'),
+                array('label' => 'Another action', 'url' => '#'),
+                array('label' => 'Dropdown', 'items' => array(
+                    array('label' => 'Action', 'url' => '#'),
+                )),
+                TbHtml::menuDivider(),
+                array('label' => 'Separate link', 'url' => '#'),
+            )),
+            array('label' => 'Hidden', 'url' => '#', 'visible' => false),
+        );
+
+        $html = TbHtml::menu(
+            $items,
+            array(
+                'class' => 'ul',
+            )
+        );
+        $nav = $I->createNode($html, 'ul');
+        $I->seeNodeAttribute($nav, 'role', 'menu');
+        $I->seeNodeNumChildren($nav, 3);
+        foreach ($nav->children() as $i => $liElement) {
+            $li = $I->createNode($liElement);
+            if ($i === 2) {
+                $I->seeNodeCssClass($li, 'dropdown');
+                $I->seeNodeChildren($li, array('a.dropdown-toggle', 'ul.dropdown-menu'));
+                $ul = $li->filter('ul.dropdown-menu');
+                $I->seeNodeNumChildren($ul, 5);
+                foreach ($ul->children() as $j => $subLiElement) {
+                    $subLi = $I->createNode($subLiElement);
+                    if ($j === 2) {
+                        $I->seeNodeCssClass($subLi, 'dropdown-submenu');
+                        $I->seeNodeChildren($subLi, array('a.dropdown-toggle', 'ul.dropdown-menu'));
+                        $subUl = $subLi->filter('ul.dropdown-menu');
+                        $I->seeNodeNumChildren($subUl, 1);
+                    } else {
+                        if ($j === 3) {
+                            $I->seeNodeCssClass($subLi, 'divider');
+                        } else {
+                            $subA = $subLi->filter('a');
+                            $I->seeNodeText($subA, $items[$i]['items'][$j]['label']);
+                        }
+                    }
+                }
+            } else {
+                if ($i === 0) {
+                    $I->seeNodeCssClass($li, 'active');
+                }
+                $a = $li->filter('a');
+                $I->seeNodeAttributes(
+                    $a,
+                    array(
+                        'href' => '#',
+                        'tabindex' => '-1',
+                    )
+                );
+                $I->seeNodeText($a, $items[$i]['label']);
+            }
+        }
     }
 
     public function testMenuLink()
     {
+        $I = $this->codeGuy;
         $html = TbHtml::menuLink(
             'Link',
             '#',
@@ -1576,42 +2044,39 @@ class TbHtmlTest extends \Codeception\TestCase\Test
                 'linkOptions' => array('class' => 'link'),
             )
         );
-        $li = $this->codeGuy->createNode($html, 'li');
-        $this->codeGuy->seeNodeCssClass($li, 'item');
-        $a = $li->filter('li > a');
-        $this->codeGuy->seeNodeCssClass($a, 'link');
-        $this->codeGuy->seeNodeAttribute($a, 'href', '#');
-        $this->codeGuy->seeNodeText($a, 'Link');
-    }
-
-    public function testMenuDropdown()
-    {
-        // todo: write this.
+        $li = $I->createNode($html, 'li');
+        $I->seeNodeCssClass($li, 'item');
+        $a = $li->filter('a');
+        $I->seeNodeCssClass($a, 'link');
+        $I->seeNodeAttribute($a, 'href', '#');
+        $I->seeNodeText($a, 'Link');
     }
 
     public function testMenuHeader()
     {
+        $I = $this->codeGuy;
         $html = TbHtml::menuHeader(
             'Header text',
             array(
                 'class' => 'item',
             )
         );
-        $li = $this->codeGuy->createNode($html, 'li.nav-header');
-        $this->codeGuy->seeNodeCssClass($li, 'item');
-        $this->codeGuy->seeNodeText($li, 'Header text');
+        $li = $I->createNode($html, 'li.nav-header');
+        $I->seeNodeCssClass($li, 'item');
+        $I->seeNodeText($li, 'Header text');
     }
 
     public function testMenuDivider()
     {
+        $I = $this->codeGuy;
         $html = TbHtml::menuDivider(
             array(
                 'class' => 'item',
             )
         );
-        $li = $this->codeGuy->createNode($html, 'li.divider');
-        $this->codeGuy->seeNodeCssClass($li, 'item');
-        $this->codeGuy->seeNodeEmpty($li);
+        $li = $I->createNode($html, 'li.divider');
+        $I->seeNodeCssClass($li, 'item');
+        $I->seeNodeEmpty($li);
     }
 
     public function testTabbable()
@@ -1631,6 +2096,8 @@ class TbHtmlTest extends \Codeception\TestCase\Test
 
     public function testNavbar()
     {
+        $I = $this->codeGuy;
+
         $html = TbHtml::navbar(
             'Navbar content',
             array(
@@ -1638,10 +2105,10 @@ class TbHtmlTest extends \Codeception\TestCase\Test
                 'innerOptions' => array('class' => 'inner'),
             )
         );
-        $navbar = $this->codeGuy->createNode($html, 'div.navbar');
-        $this->codeGuy->seeNodeCssClass($navbar, 'nav');
-        $inner = $navbar->filter('div.navbar > div.navbar-inner');
-        $this->codeGuy->seeNodeText($inner, 'Navbar content');
+        $navbar = $I->createNode($html, 'div.navbar');
+        $I->seeNodeCssClass($navbar, 'nav');
+        $inner = $navbar->filter('div.navbar-inner');
+        $I->seeNodeText($inner, 'Navbar content');
 
         $html = TbHtml::navbar(
             '',
@@ -1649,8 +2116,8 @@ class TbHtmlTest extends \Codeception\TestCase\Test
                 'display' => TbHtml::NAVBAR_DISPLAY_STATICTOP,
             )
         );
-        $navbar = $this->codeGuy->createNode($html, 'div.navbar');
-        $this->codeGuy->seeNodeCssClass($navbar, 'navbar-static-top');
+        $navbar = $I->createNode($html, 'div.navbar');
+        $I->seeNodeCssClass($navbar, 'navbar-static-top');
 
         $html = TbHtml::navbar(
             '',
@@ -1658,8 +2125,8 @@ class TbHtmlTest extends \Codeception\TestCase\Test
                 'display' => TbHtml::NAVBAR_DISPLAY_FIXEDTOP,
             )
         );
-        $navbar = $this->codeGuy->createNode($html, 'div.navbar');
-        $this->codeGuy->seeNodeCssClass($navbar, 'navbar-fixed-top');
+        $navbar = $I->createNode($html, 'div.navbar');
+        $I->seeNodeCssClass($navbar, 'navbar-fixed-top');
 
         $html = TbHtml::navbar(
             '',
@@ -1667,8 +2134,8 @@ class TbHtmlTest extends \Codeception\TestCase\Test
                 'display' => TbHtml::NAVBAR_DISPLAY_FIXEDBOTTOM,
             )
         );
-        $navbar = $this->codeGuy->createNode($html, 'div.navbar');
-        $this->codeGuy->seeNodeCssClass($navbar, 'navbar-fixed-bottom');
+        $navbar = $I->createNode($html, 'div.navbar');
+        $I->seeNodeCssClass($navbar, 'navbar-fixed-bottom');
 
         $html = TbHtml::navbar(
             '',
@@ -1676,12 +2143,13 @@ class TbHtmlTest extends \Codeception\TestCase\Test
                 'color' => TbHtml::NAVBAR_COLOR_INVERSE,
             )
         );
-        $navbar = $this->codeGuy->createNode($html, 'div.navbar');
-        $this->codeGuy->seeNodeCssClass($navbar, 'navbar-inverse');
+        $navbar = $I->createNode($html, 'div.navbar');
+        $I->seeNodeCssClass($navbar, 'navbar-inverse');
     }
 
     public function testNavbarBrandLink()
     {
+        $I = $this->codeGuy;
         $html = TbHtml::navbarBrandLink(
             'Brand text',
             '#',
@@ -1689,86 +2157,211 @@ class TbHtmlTest extends \Codeception\TestCase\Test
                 'class' => 'link',
             )
         );
-        $a = $this->codeGuy->createNode($html, 'a.brand');
-        $this->codeGuy->seeNodeCssClass($a, 'link');
-        $this->codeGuy->seeNodeAttribute($a, 'href', '#');
-        $this->codeGuy->seeNodeText($a, 'Brand text');
+        $a = $I->createNode($html, 'a.brand');
+        $I->seeNodeCssClass($a, 'link');
+        $I->seeNodeAttribute($a, 'href', '#');
+        $I->seeNodeText($a, 'Brand text');
     }
 
     public function testNavbarText()
     {
+        $I = $this->codeGuy;
         $html = TbHtml::navbarText(
             'Navbar text',
             array(
                 'class' => 'text',
             )
         );
-        $p = $this->codeGuy->createNode($html, 'p.navbar-text');
-        $this->codeGuy->seeNodeCssClass($p, 'text');
-        $this->codeGuy->seeNodeText($p, 'Navbar text');
+        $p = $I->createNode($html, 'p.navbar-text');
+        $I->seeNodeCssClass($p, 'text');
+        $I->seeNodeText($p, 'Navbar text');
     }
 
     public function testNavbarMenuDivider()
     {
+        $I = $this->codeGuy;
         $html = TbHtml::navbarMenuDivider(
             array(
                 'class' => 'item',
             )
         );
-        $li = $this->codeGuy->createNode($html, 'li.divider-vertical');
-        $this->codeGuy->seeNodeCssClass($li, 'item');
-        $this->codeGuy->seeNodeEmpty($li);
+        $li = $I->createNode($html, 'li.divider-vertical');
+        $I->seeNodeCssClass($li, 'item');
+        $I->seeNodeEmpty($li);
     }
 
     public function testBreadcrumbs()
     {
-        // todo: write this.
+        $I = $this->codeGuy;
+
+        $links = array(
+            'Home' => '#',
+            'Library' => '#',
+            'Data',
+        );
+
+        $html = TbHtml::breadcrumbs(
+            $links,
+            array(
+                'class' => 'ul',
+            )
+        );
+        $ul = $I->createNode($html, 'ul.breadcrumb');
+        $I->seeNodeCssClass($ul, 'ul');
+        $I->seeNodeNumChildren($ul, 3);
+        foreach ($ul->children() as $i => $liElement) {
+            $li = $I->createNode($liElement);
+            switch ($i) {
+                case 0:
+                    $a = $li->filter('a');
+                    $I->seeNodeAttribute($a, 'href', '#');
+                    $I->seeNodeText($a, 'Home');
+                    break;
+                case 1:
+                    $a = $li->filter('a');
+                    $I->seeNodeAttribute($a, 'href', '#');
+                    $I->seeNodeText($a, 'Library');
+                    break;
+                case 2:
+                    $I->seeNodeText($li, 'Data');
+                    break;
+            }
+        }
     }
 
     public function testPagination()
     {
-        // todo: write this.
+        $I = $this->codeGuy;
+
+        $items = array(
+            array('label' => 'Prev', 'url' => '#'),
+            array(
+                'label' => '1',
+                'url' => '#',
+                'class' => 'item',
+                'linkOptions' => array('class' => 'link'),
+            ),
+            array('label' => '2', 'url' => '#'),
+            array('label' => '3', 'url' => '#'),
+            array('label' => '4', 'url' => '#'),
+            array('label' => '5', 'url' => '#'),
+            array('label' => 'Next', 'url' => '#'),
+        );
+
+        $html = TbHtml::pagination(
+            $items,
+            array(
+                'class' => 'div',
+                'listOptions' => array('class' => 'list'),
+            )
+        );
+        $div = $I->createNode($html, 'div.pagination');
+        $I->seeNodeCssClass($div, 'div');
+        $ul = $div->filter('ul');
+        $I->seeNodeCssClass($ul, 'list');
+        $I->seeNodeNumChildren($ul, 7);
+        foreach ($ul->children() as $i => $liElement) {
+            $li = $I->createNode($liElement);
+            $a = $li->filter('a');
+            if ($i === 1) {
+                $I->seeNodeCssClass($li, 'item');
+                $I->seeNodeCssClass($a, 'link');
+            }
+            $I->seeNodeAttribute($a, 'href', '#');
+            $I->seeNodeText($a, $items[$i]['label']);
+        }
+
+        $html = TbHtml::pagination(
+            $items,
+            array(
+                'size' => TbHtml::PAGINATION_SIZE_LARGE,
+            )
+        );
+        $div = $I->createNode($html, 'div.pagination');
+        $I->seeNodeCssClass($div, 'pagination-large');
+
+        $html = TbHtml::pagination(
+            $items,
+            array(
+                'align' => TbHtml::PAGINATION_ALIGN_CENTER,
+            )
+        );
+        $div = $I->createNode($html, 'div.pagination');
+        $I->seeNodeCssClass($div, 'pagination-centered');
     }
 
     public function testPaginationLink()
     {
+        $I = $this->codeGuy;
         $html = TbHtml::paginationLink(
             'Link',
             '#',
             array(
-                'class' => 'link',
-                'itemOptions' => array('class' => 'item'),
+                'class' => 'item',
+                'linkOptions' => array('class' => 'link'),
             )
         );
-        $li = $this->codeGuy->createNode($html, 'li');
-        $this->codeGuy->seeNodeCssClass($li, 'item');
-        $a = $li->filter('li > a');
-        $this->codeGuy->seeNodeCssClass($a, 'link');
-        $this->codeGuy->seeNodeAttribute($a, 'href', '#');
+        $li = $I->createNode($html, 'li');
+        $I->seeNodeCssClass($li, 'item');
+        $a = $li->filter('a');
+        $I->seeNodeCssClass($a, 'link');
+        $I->seeNodeAttribute($a, 'href', '#');
     }
 
     public function testPager()
     {
-        // todo: write this.
+        $I = $this->codeGuy;
+
+        $items = array(
+            array(
+                'label' => 'Prev',
+                'url' => '#',
+                'previous' => true,
+                'disabled' => true,
+            ),
+            array('label' => 'Next', 'url' => '#', 'next' => true),
+        );
+
+        $html = TbHtml::pager(
+            $items,
+            array(
+                'class' => 'list',
+            )
+        );
+        $ul = $I->createNode($html, 'ul.pager');
+        $I->seeNodeCssClass($ul, 'list');
+        $I->seeNodeNumChildren($ul, 2);
+        $prev = $ul->filter('li')->first();
+        $I->seeNodeCssClass($prev, 'previous disabled');
+        $a = $prev->filter('a');
+        $I->seeNodeAttribute($a, 'href', '#');
+        $I->seeNodeText($a, 'Prev');
+        $next = $ul->filter('li')->last();
+        $I->seeNodeCssClass($next, 'next');
+        $a = $next->filter('a');
+        $I->seeNodeAttribute($a, 'href', '#');
+        $I->seeNodeText($a, 'Next');
     }
 
     public function testPagerLink()
     {
+        $I = $this->codeGuy;
+
         $html = TbHtml::pagerLink(
             'Link',
             '#',
             array(
-                'class' => 'link',
-                'itemOptions' => array('class' => 'item'),
+                'class' => 'item',
+                'linkOptions' => array('class' => 'link'),
                 'disabled' => true,
             )
         );
-        $li = $this->codeGuy->createNode($html, 'li');
-        $this->codeGuy->seeNodeCssClass($li, 'item disabled');
-        $a = $li->filter('li > a');
-        $this->codeGuy->seeNodeCssClass($a, 'link');
-        $this->codeGuy->seeNodeAttribute($a, 'href', '#');
-        $this->codeGuy->seeNodeText($a, 'Link');
+        $li = $I->createNode($html, 'li');
+        $I->seeNodeCssClass($li, 'item disabled');
+        $a = $li->filter('a');
+        $I->seeNodeCssClass($a, 'link');
+        $I->seeNodeAttribute($a, 'href', '#');
+        $I->seeNodeText($a, 'Link');
 
         $html = TbHtml::pagerLink(
             'Previous',
@@ -1777,10 +2370,10 @@ class TbHtmlTest extends \Codeception\TestCase\Test
                 'previous' => true,
             )
         );
-        $li = $this->codeGuy->createNode($html, 'li.previous');
-        $a = $li->filter('li > a');
-        $this->codeGuy->seeNodeAttribute($a, 'href', '#');
-        $this->codeGuy->seeNodeText($a, 'Previous');
+        $li = $I->createNode($html, 'li.previous');
+        $a = $li->filter('a');
+        $I->seeNodeAttribute($a, 'href', '#');
+        $I->seeNodeText($a, 'Previous');
 
         $html = TbHtml::pagerLink(
             'Next',
@@ -1789,14 +2382,15 @@ class TbHtmlTest extends \Codeception\TestCase\Test
                 'next' => true,
             )
         );
-        $li = $this->codeGuy->createNode($html, 'li.next');
-        $a = $li->filter('li > a');
-        $this->codeGuy->seeNodeAttribute($a, 'href', '#');
-        $this->codeGuy->seeNodeText($a, 'Next');
+        $li = $I->createNode($html, 'li.next');
+        $a = $li->filter('a');
+        $I->seeNodeAttribute($a, 'href', '#');
+        $I->seeNodeText($a, 'Next');
     }
 
     public function testLabel()
     {
+        $I = $this->codeGuy;
         $html = TbHtml::labelTb(
             'Label text',
             array(
@@ -1804,13 +2398,14 @@ class TbHtmlTest extends \Codeception\TestCase\Test
                 'class' => 'span',
             )
         );
-        $span = $this->codeGuy->createNode($html, 'span.label');
-        $this->codeGuy->seeNodeCssClass($span, 'label-info span');
-        $this->codeGuy->seeNodeText($span, 'Label text');
+        $span = $I->createNode($html, 'span.label');
+        $I->seeNodeCssClass($span, 'label-info span');
+        $I->seeNodeText($span, 'Label text');
     }
 
     public function testBadge()
     {
+        $I = $this->codeGuy;
         $html = TbHtml::badge(
             'Badge text',
             array(
@@ -1818,13 +2413,14 @@ class TbHtmlTest extends \Codeception\TestCase\Test
                 'class' => 'span',
             )
         );
-        $span = $this->codeGuy->createNode($html, 'span.badge');
-        $this->codeGuy->seeNodeCssClass($span, 'badge-warning span');
-        $this->codeGuy->seeNodeText($span, 'Badge text');
+        $span = $I->createNode($html, 'span.badge');
+        $I->seeNodeCssClass($span, 'badge-warning span');
+        $I->seeNodeText($span, 'Badge text');
     }
 
     public function testHeroUnit()
     {
+        $I = $this->codeGuy;
         $html = TbHtml::heroUnit(
             'Heading text',
             'Content text',
@@ -1833,16 +2429,17 @@ class TbHtmlTest extends \Codeception\TestCase\Test
                 'headingOptions' => array('class' => 'heading'),
             )
         );
-        $hero = $this->codeGuy->createNode($html, 'div.hero-unit');
-        $this->codeGuy->seeNodeCssClass($hero, 'div');
-        $this->codeGuy->seeNodeText($hero, 'Content text');
-        $h1 = $hero->filter('div.hero-unit > h1');
-        $this->codeGuy->seeNodeCssClass($h1, 'heading');
-        $this->codeGuy->seeNodeText($h1, 'Heading text');
+        $hero = $I->createNode($html, 'div.hero-unit');
+        $I->seeNodeCssClass($hero, 'div');
+        $I->seeNodeText($hero, 'Content text');
+        $h1 = $hero->filter('h1');
+        $I->seeNodeCssClass($h1, 'heading');
+        $I->seeNodeText($h1, 'Heading text');
     }
 
     public function testPageHeader()
     {
+        $I = $this->codeGuy;
         $html = TbHtml::pageHeader(
             'Heading text',
             'Subtext',
@@ -1852,14 +2449,14 @@ class TbHtmlTest extends \Codeception\TestCase\Test
                 'subtextOptions' => array('class' => 'subtext')
             )
         );
-        $header = $this->codeGuy->createNode($html, 'div.page-header');
-        $this->codeGuy->seeNodeCssClass($header, 'header');
-        $h1 = $header->filter('div.page-header > h1');
-        $this->codeGuy->seeNodeCssClass($h1, 'heading');
-        $this->codeGuy->seeNodeText($h1, 'Heading text');
-        $small = $h1->filter('h1 > small');
-        $this->codeGuy->seeNodeCssClass($small, 'subtext');
-        $this->codeGuy->seeNodeText($small, 'Subtext');
+        $header = $I->createNode($html, 'div.page-header');
+        $I->seeNodeCssClass($header, 'header');
+        $h1 = $header->filter('h1');
+        $I->seeNodeCssClass($h1, 'heading');
+        $I->seeNodeText($h1, 'Heading text');
+        $small = $h1->filter('small');
+        $I->seeNodeCssClass($small, 'subtext');
+        $I->seeNodeText($small, 'Subtext');
     }
 
     public function testThumbnails()
@@ -1869,6 +2466,7 @@ class TbHtmlTest extends \Codeception\TestCase\Test
 
     public function testThumbnail()
     {
+        $I = $this->codeGuy;
         $html = TbHtml::thumbnail(
             'Thumbnail text',
             array(
@@ -1876,15 +2474,16 @@ class TbHtmlTest extends \Codeception\TestCase\Test
                 'itemOptions' => array('class' => 'item'),
             )
         );
-        $li = $this->codeGuy->createNode($html, 'li');
-        $this->codeGuy->seeNodeCssClass($li, 'item');
-        $thumbnail = $li->filter('li > div.thumbnail');
-        $this->codeGuy->seeNodeCssClass($thumbnail, 'div');
-        $this->codeGuy->seeNodeText($thumbnail, 'Thumbnail text');
+        $li = $I->createNode($html, 'li');
+        $I->seeNodeCssClass($li, 'item');
+        $thumbnail = $li->filter('div.thumbnail');
+        $I->seeNodeCssClass($thumbnail, 'div');
+        $I->seeNodeText($thumbnail, 'Thumbnail text');
     }
 
     public function testThumbnailLink()
     {
+        $I = $this->codeGuy;
         $html = TbHtml::thumbnailLink(
             'Thumbnail text',
             '#',
@@ -1893,16 +2492,18 @@ class TbHtmlTest extends \Codeception\TestCase\Test
                 'itemOptions' => array('class' => 'item'),
             )
         );
-        $li = $this->codeGuy->createNode($html, 'li');
-        $this->codeGuy->seeNodeCssClass($li, 'item');
-        $thumbnail = $li->filter('li > a.thumbnail');
-        $this->codeGuy->seeNodeCssClass($thumbnail, 'link');
-        $this->codeGuy->seeNodeAttribute($thumbnail, 'href', '#');
-        $this->codeGuy->seeNodeText($thumbnail, 'Thumbnail text');
+        $li = $I->createNode($html, 'li');
+        $I->seeNodeCssClass($li, 'item');
+        $thumbnail = $li->filter('a.thumbnail');
+        $I->seeNodeCssClass($thumbnail, 'link');
+        $I->seeNodeAttribute($thumbnail, 'href', '#');
+        $I->seeNodeText($thumbnail, 'Thumbnail text');
     }
 
     public function testAlert()
     {
+        $I = $this->codeGuy;
+
         $html = TbHtml::alert(
             TbHtml::ALERT_COLOR_SUCCESS,
             'Alert message',
@@ -1912,19 +2513,19 @@ class TbHtmlTest extends \Codeception\TestCase\Test
                 'closeOptions' => array('class' => 'text'),
             )
         );
-        $alert = $this->codeGuy->createNode($html, 'div.alert');
-        $this->codeGuy->seeNodeCssClass($alert, 'alert-success in fade div');
-        $this->codeGuy->seeNodeText($alert, 'Alert message');
-        $close = $alert->filter('div.alert > a[type=button].close');
-        $this->codeGuy->seeNodeCssClass($close, 'text');
-        $this->codeGuy->seeNodeAttributes(
+        $alert = $I->createNode($html, 'div.alert');
+        $I->seeNodeCssClass($alert, 'alert-success in fade div');
+        $I->seeNodeText($alert, 'Alert message');
+        $close = $alert->filter('a[type=button].close');
+        $I->seeNodeCssClass($close, 'text');
+        $I->seeNodeAttributes(
             $close,
             array(
                 'href' => '#',
                 'data-dismiss' => 'alert',
             )
         );
-        $this->codeGuy->seeNodeText($close, 'Close');
+        $I->seeNodeText($close, 'Close');
 
         $html = TbHtml::alert(
             TbHtml::ALERT_COLOR_INFO,
@@ -1935,24 +2536,27 @@ class TbHtmlTest extends \Codeception\TestCase\Test
                 'fade' => false,
             )
         );
-        $alert = $this->codeGuy->createNode($html, 'div.alert');
-        $this->codeGuy->seeNodeCssClass($alert, 'alert-info');
-        $this->codeGuy->dontSeeNodeCssClass($alert, 'fade in');
-        $this->codeGuy->dontSeeNodeChildren($alert, array('.close'));
-        $this->codeGuy->seeNodeText($alert, 'Alert message');
+        $alert = $I->createNode($html, 'div.alert');
+        $I->seeNodeCssClass($alert, 'alert-info');
+        $I->dontSeeNodeCssClass($alert, 'fade in');
+        $I->dontSeeNodeChildren($alert, array('.close'));
+        $I->seeNodeText($alert, 'Alert message');
     }
 
     public function testBlockAlert()
     {
+        $I = $this->codeGuy;
         $html = TbHtml::blockAlert(TbHtml::ALERT_COLOR_WARNING, 'Alert message');
-        $alert = $this->codeGuy->createNode($html, 'div.alert');
-        $this->codeGuy->seeNodeCssClass($alert, 'alert-warning alert-block fade in');
-        $this->codeGuy->seeNodeText($alert, 'Alert message');
-        $this->codeGuy->seeNodeChildren($alert, array('div.alert > a[type=button].close'));
+        $alert = $I->createNode($html, 'div.alert');
+        $I->seeNodeCssClass($alert, 'alert-warning alert-block fade in');
+        $I->seeNodeText($alert, 'Alert message');
+        $I->seeNodeChildren($alert, array('div.alert > a[type=button].close'));
     }
 
     public function testProgressBar()
     {
+        $I = $this->codeGuy;
+
         $html = TbHtml::progressBar(
             60,
             array(
@@ -1962,12 +2566,12 @@ class TbHtmlTest extends \Codeception\TestCase\Test
                 'barOptions' => array('class' => 'div'),
             )
         );
-        $progress = $this->codeGuy->createNode($html, 'div.progress');
-        $this->codeGuy->seeNodeCssClass($progress, 'progress-info div');
-        $bar = $progress->filter('div.progress > div.bar');
-        $this->codeGuy->seeNodeCssClass($bar, 'div');
-        $this->codeGuy->seeNodeCssStyle($bar, 'width: 60%');
-        $this->codeGuy->seeNodeText($bar, 'Bar text');
+        $progress = $I->createNode($html, 'div.progress');
+        $I->seeNodeCssClass($progress, 'progress-info div');
+        $bar = $progress->filter('div.bar');
+        $I->seeNodeCssClass($bar, 'div');
+        $I->seeNodeCssStyle($bar, 'width: 60%');
+        $I->seeNodeText($bar, 'Bar text');
 
         $html = TbHtml::progressBar(
             35,
@@ -1975,42 +2579,46 @@ class TbHtmlTest extends \Codeception\TestCase\Test
                 'barOptions' => array('color' => TbHtml::PROGRESS_COLOR_SUCCESS),
             )
         );
-        $progress = $this->codeGuy->createNode($html, 'div.progress');
-        $bar = $progress->filter('div.progress > div.bar');
-        $this->codeGuy->seeNodeCssClass($bar, 'bar-success');
-        $this->codeGuy->seeNodeCssStyle($bar, 'width: 35%');
+        $progress = $I->createNode($html, 'div.progress');
+        $bar = $progress->filter('div.bar');
+        $I->seeNodeCssClass($bar, 'bar-success');
+        $I->seeNodeCssStyle($bar, 'width: 35%');
 
         $html = TbHtml::progressBar(-1);
-        $progress = $this->codeGuy->createNode($html, 'div.progress');
-        $bar = $progress->filter('div.progress > div.bar');
-        $this->codeGuy->seeNodeCssStyle($bar, 'width: 0');
+        $progress = $I->createNode($html, 'div.progress');
+        $bar = $progress->filter('div.bar');
+        $I->seeNodeCssStyle($bar, 'width: 0');
 
         $html = TbHtml::progressBar(100.1);
-        $progress = $this->codeGuy->createNode($html, 'div.progress');
-        $bar = $progress->filter('div.progress > div.bar');
-        $this->codeGuy->seeNodeCssStyle($bar, 'width: 100%');
+        $progress = $I->createNode($html, 'div.progress');
+        $bar = $progress->filter('div.bar');
+        $I->seeNodeCssStyle($bar, 'width: 100%');
     }
 
     public function testStripedProgressBar()
     {
+        $I = $this->codeGuy;
         $html = TbHtml::stripedProgressBar(20);
-        $progress = $this->codeGuy->createNode($html, 'div.progress');
-        $this->codeGuy->seeNodeCssClass($progress, 'progress-striped');
-        $bar = $progress->filter('div.progress > div.bar');
-        $this->codeGuy->seeNodeCssStyle($bar, 'width: 20%');
+        $progress = $I->createNode($html, 'div.progress');
+        $I->seeNodeCssClass($progress, 'progress-striped');
+        $bar = $progress->filter('div.bar');
+        $I->seeNodeCssStyle($bar, 'width: 20%');
     }
 
     public function testAnimatedProgressBar()
     {
+        $I = $this->codeGuy;
         $html = TbHtml::animatedProgressBar(40);
-        $progress = $this->codeGuy->createNode($html, 'div.progress');
-        $this->codeGuy->seeNodeCssClass($progress, 'progress-striped active');
-        $bar = $progress->filter('div.progress > div.bar');
-        $this->codeGuy->seeNodeCssStyle($bar, 'width: 40%');
+        $progress = $I->createNode($html, 'div.progress');
+        $I->seeNodeCssClass($progress, 'progress-striped active');
+        $bar = $progress->filter('div.bar');
+        $I->seeNodeCssStyle($bar, 'width: 40%');
     }
 
     public function testStackedProgressBar()
     {
+        $I = $this->codeGuy;
+
         $html = TbHtml::stackedProgressBar(
             array(
                 array('color' => TbHtml::PROGRESS_COLOR_SUCCESS, 'width' => 35),
@@ -2018,17 +2626,17 @@ class TbHtmlTest extends \Codeception\TestCase\Test
                 array('color' => TbHtml::PROGRESS_COLOR_DANGER, 'width' => 10),
             )
         );
-        $progress = $this->codeGuy->createNode($html, 'div.progress');
-        $this->codeGuy->seeNodeChildren($progress, array('div.bar-success', 'div.bar-warning', 'div.bar-danger'));
-        $success = $progress->filter('div.progress > div.bar-success');
-        $this->codeGuy->seeNodeCssClass($success, 'bar');
-        $this->codeGuy->seeNodeCssStyle($success, 'width: 35%');
-        $warning = $progress->filter('div.progress > div.bar-warning');
-        $this->codeGuy->seeNodeCssClass($warning, 'bar');
-        $this->codeGuy->seeNodeCssStyle($warning, 'width: 20%');
-        $danger = $progress->filter('div.progress > div.bar-danger');
-        $this->codeGuy->seeNodeCssClass($danger, 'bar');
-        $this->codeGuy->seeNodeCssStyle($danger, 'width: 10%');
+        $progress = $I->createNode($html, 'div.progress');
+        $I->seeNodeChildren($progress, array('div.bar-success', 'div.bar-warning', 'div.bar-danger'));
+        $success = $progress->filter('div.bar-success');
+        $I->seeNodeCssClass($success, 'bar');
+        $I->seeNodeCssStyle($success, 'width: 35%');
+        $warning = $progress->filter('div.bar-warning');
+        $I->seeNodeCssClass($warning, 'bar');
+        $I->seeNodeCssStyle($warning, 'width: 20%');
+        $danger = $progress->filter('div.bar-danger');
+        $I->seeNodeCssClass($danger, 'bar');
+        $I->seeNodeCssStyle($danger, 'width: 10%');
 
         $html = TbHtml::stackedProgressBar(
             array(
@@ -2037,9 +2645,9 @@ class TbHtmlTest extends \Codeception\TestCase\Test
                 array('width' => 100),
             )
         );
-        $progress = $this->codeGuy->createNode($html, 'div.progress');
-        $last = $progress->filter('div.progress > div.bar:last-child');
-        $this->codeGuy->seeNodeCssStyle($last, 'width: 45%');
+        $progress = $I->createNode($html, 'div.progress');
+        $last = $progress->filter('div.bar')->last();
+        $I->seeNodeCssStyle($last, 'width: 45%');
 
         $html = TbHtml::stackedProgressBar(
             array(
@@ -2048,23 +2656,78 @@ class TbHtmlTest extends \Codeception\TestCase\Test
                 array('width' => 10, 'visible' => false),
             )
         );
-        $progress = $this->codeGuy->createNode($html, 'div.progress');
-        $last = $progress->filter('div.progress > div.bar:last-child');
-        $this->codeGuy->seeNodeCssStyle($last, 'width: 20%');
+        $progress = $I->createNode($html, 'div.progress');
+        $last = $progress->filter('div.bar')->last();
+        $I->seeNodeCssStyle($last, 'width: 20%');
     }
 
     public function testMediaObjects()
     {
-        // todo: write this.
+        $I = $this->codeGuy;
+
+        $items = array(
+            array(
+                'image' => '#',
+                'heading' => 'Media heading',
+                'content' => 'Content text',
+                'items' => array(
+                    array(
+                        'image' => '#',
+                        'heading' => 'Media heading',
+                        'content' => 'Content text',
+                        'items' => array(
+                            array('image' => '#', 'heading' => 'Media heading', 'content' => 'Content text'),
+                        )
+                    ),
+                    array('image' => '#', 'heading' => 'Media heading', 'content' => 'Content text'),
+                )
+            ),
+            array('heading' => 'Media heading', 'content' => 'Content text'),
+        );
     }
 
     public function testMediaObject()
     {
-        // todo: write this.
+        $I = $this->codeGuy;
+
+        $html = TbHtml::mediaObject(
+            '#',
+            'Heading text',
+            'Content text',
+            array(
+                'class' => 'div',
+                'linkOptions' => array('class' => 'link'),
+                'imageOptions' => array('class' => 'image', 'alt' => 'Alternative text'),
+                'contentOptions' => array('class' => 'content'),
+                'headingOptions' => array('class' => 'heading'),
+            )
+        );
+        $div = $I->createNode($html, 'div.media');
+        $I->seeNodeCssClass($div, 'div');
+        $I->seeNodeChildren($div, array('a.pull-left', 'div.media-body'));
+        $a = $div->filter('a.pull-left');
+        $I->seeNodeCssClass($a, 'link');
+        $I->seeNodeAttribute($a, 'href', '#');
+        $img = $a->filter('img.media-object');
+        $I->seeNodeCssClass($img, 'image');
+        $I->seeNodeAttributes(
+            $img,
+            array(
+                'src' => '#',
+                'alt' => 'Alternative text',
+            )
+        );
+        $content = $div->filter('div.media-body');
+        $I->seeNodeCssClass($content, 'content');
+        $I->seeNodeText($content, 'Content text');
+        $h4 = $content->filter('h4.media-heading');
+        $I->seeNodeCssClass($h4, 'heading');
+        $I->seeNodeText($h4, 'Heading text');
     }
 
     public function testWell()
     {
+        $I = $this->codeGuy;
         $html = TbHtml::well(
             'Well text',
             array(
@@ -2072,13 +2735,14 @@ class TbHtmlTest extends \Codeception\TestCase\Test
                 'size' => TbHtml::WELL_SIZE_LARGE,
             )
         );
-        $well = $this->codeGuy->createNode($html, 'div.well');
-        $this->codeGuy->seeNodeCssClass($well, 'well-large');
-        $this->codeGuy->seeNodeText($well, 'Well text');
+        $well = $I->createNode($html, 'div.well');
+        $I->seeNodeCssClass($well, 'well-large');
+        $I->seeNodeText($well, 'Well text');
     }
 
     public function testCloseLink()
     {
+        $I = $this->codeGuy;
         $html = TbHtml::closeLink(
             'Close',
             '#',
@@ -2087,20 +2751,21 @@ class TbHtmlTest extends \Codeception\TestCase\Test
                 'dismiss' => TbHtml::CLOSE_DISMISS_ALERT,
             )
         );
-        $a = $this->codeGuy->createNode($html, 'a[type=button].close');
-        $this->codeGuy->seeNodeCssClass($a, 'link');
-        $this->codeGuy->seeNodeAttributes(
+        $a = $I->createNode($html, 'a[type=button].close');
+        $I->seeNodeCssClass($a, 'link');
+        $I->seeNodeAttributes(
             $a,
             array(
                 'href' => '#',
                 'data-dismiss' => 'alert',
             )
         );
-        $this->codeGuy->seeNodeText($a, 'Close');
+        $I->seeNodeText($a, 'Close');
     }
 
     public function testCloseButton()
     {
+        $I = $this->codeGuy;
         $html = TbHtml::closeButton(
             'Close',
             array(
@@ -2108,15 +2773,16 @@ class TbHtmlTest extends \Codeception\TestCase\Test
                 'class' => 'button',
             )
         );
-        $button = $this->codeGuy->createNode($html, 'button[type=button].close');
-        $this->codeGuy->seeNodeCssClass($button, 'button');
-        $this->codeGuy->seeNodeAttribute($button, 'data-dismiss', 'modal');
-        $this->codeGuy->seeNodeText($button, 'Close');
+        $button = $I->createNode($html, 'button[type=button].close');
+        $I->seeNodeCssClass($button, 'button');
+        $I->seeNodeAttribute($button, 'data-dismiss', 'modal');
+        $I->seeNodeText($button, 'Close');
     }
 
 
     public function testCollapseLink()
     {
+        $I = $this->codeGuy;
         $html = TbHtml::collapseLink(
             'Link',
             '#',
@@ -2124,10 +2790,10 @@ class TbHtmlTest extends \Codeception\TestCase\Test
                 'class' => 'link',
             )
         );
-        $a = $this->codeGuy->createNode($html, 'a[data-toggle=collapse]');
-        $this->codeGuy->seeNodeCssClass($a, 'link');
-        $this->codeGuy->seeNodeAttribute($a, 'href', '#');
-        $this->codeGuy->seeNodeText($a, 'Link');
+        $a = $I->createNode($html, 'a[data-toggle=collapse]');
+        $I->seeNodeCssClass($a, 'link');
+        $I->seeNodeAttribute($a, 'href', '#');
+        $I->seeNodeText($a, 'Link');
     }
 
     public function testTooltip()
@@ -2147,11 +2813,34 @@ class TbHtmlTest extends \Codeception\TestCase\Test
 
     public function testCarouselItem()
     {
-        // todo: write this.
+        $I = $this->codeGuy;
+        $html = TbHtml::carouselItem(
+            'Content text',
+            'Label text',
+            'Caption text',
+            array(
+                'class' => 'div',
+                'overlayOptions' => array('class' => 'overlay'),
+                'labelOptions' => array('class' => 'label'),
+                'captionOptions' => array('class' => 'caption'),
+            )
+        );
+        $div = $I->createNode($html, 'div.item');
+        $I->seeNodeCssClass($div, 'div');
+        $I->seeNodeText($div, 'Content text');
+        $overlay = $div->filter('div.carousel-caption');
+        $I->seeNodeCssClass($overlay, 'overlay');
+        $I->seeNodeChildren($overlay, array('h4', 'p'));
+        $h4 = $overlay->filter('h4');
+        $I->seeNodeCssClass($h4, 'label');
+        $caption = $overlay->filter('p');
+        $I->seeNodeCssClass($caption, 'caption');
+        $I->seeNodeText($caption, 'Caption text');
     }
 
     public function testCarouselPrevLink()
     {
+        $I = $this->codeGuy;
         $html = TbHtml::carouselPrevLink(
             'Previous',
             '#',
@@ -2159,20 +2848,21 @@ class TbHtmlTest extends \Codeception\TestCase\Test
                 'class' => 'link',
             )
         );
-        $a = $this->codeGuy->createNode($html, 'a.carousel-control.left');
-        $this->codeGuy->seeNodeCssClass($a, 'link');
-        $this->codeGuy->seeNodeAttributes(
+        $a = $I->createNode($html, 'a.carousel-control.left');
+        $I->seeNodeCssClass($a, 'link');
+        $I->seeNodeAttributes(
             $a,
             array(
                 'href' => '#',
                 'data-slide' => 'prev',
             )
         );
-        $this->codeGuy->seeNodeText($a, 'Previous');
+        $I->seeNodeText($a, 'Previous');
     }
 
     public function testCarouselNextLink()
     {
+        $I = $this->codeGuy;
         $html = TbHtml::carouselNextLink(
             'Next',
             '#',
@@ -2180,20 +2870,21 @@ class TbHtmlTest extends \Codeception\TestCase\Test
                 'class' => 'link',
             )
         );
-        $a = $this->codeGuy->createNode($html, 'a.carousel-control.right');
-        $this->codeGuy->seeNodeCssClass($a, 'link');
-        $this->codeGuy->seeNodeAttributes(
+        $a = $I->createNode($html, 'a.carousel-control.right');
+        $I->seeNodeCssClass($a, 'link');
+        $I->seeNodeAttributes(
             $a,
             array(
                 'href' => '#',
                 'data-slide' => 'next',
             )
         );
-        $this->codeGuy->seeNodeText($a, 'Next');
+        $I->seeNodeText($a, 'Next');
     }
 
     public function testCarouselIndicators()
     {
+        $I = $this->codeGuy;
         $html = TbHtml::carouselIndicators(
             '#',
             3,
@@ -2201,35 +2892,19 @@ class TbHtmlTest extends \Codeception\TestCase\Test
                 'class' => 'list',
             )
         );
-        $ol = $this->codeGuy->createNode($html, 'ol.carousel-indicators');
-        $this->codeGuy->seeNodeCssClass($ol, 'list');
-        $this->codeGuy->seeNodeChildren($ol, array('li.active', 'li', 'li'));
-        $first = $ol->filter('ol > li:first-child');
-        $this->codeGuy->seeNodeAttributes(
-            $first,
-            array(
-                'data-target' => '#',
-                'data-slide-to' => '0'
-            )
-        );
-        $this->codeGuy->seeNodeEmpty($first);
-        $second = $ol->filter('ol > li:nth-child(2)');
-        $this->codeGuy->seeNodeAttributes(
-            $second,
-            array(
-                'data-target' => '#',
-                'data-slide-to' => '1'
-            )
-        );
-        $this->codeGuy->seeNodeEmpty($second);
-        $third = $ol->filter('ol > li:nth-child(3)');
-        $this->codeGuy->seeNodeAttributes(
-            $third,
-            array(
-                'data-target' => '#',
-                'data-slide-to' => '2'
-            )
-        );
-        $this->codeGuy->seeNodeEmpty($third);
+        $ol = $I->createNode($html, 'ol.carousel-indicators');
+        $I->seeNodeCssClass($ol, 'list');
+        $I->seeNodeChildren($ol, array('li.active', 'li', 'li'));
+        foreach ($ol->filter('li') as $i => $element) {
+            $node = $I->createNode($element);
+            $I->seeNodeAttributes(
+                $node,
+                array(
+                    'data-target' => '#',
+                    'data-slide-to' => $i,
+                )
+            );
+            $I->seeNodeEmpty($node);
+        }
     }
 }
