@@ -460,7 +460,19 @@ class TbHtmlTest extends \Codeception\TestCase\Test
 
     public function testDropDownList()
     {
-        // todo: write this.
+        $html = TbHtml::dropDownList(
+            'dropdown',
+            null,
+            array('1', '2', '3', '4', '5'),
+            array(
+                'class' => 'list',
+                'empty' => 'Empty text',
+                'size' => TbHtml::INPUT_SIZE_LARGE,
+                'textAlign' => TbHtml::TEXT_ALIGN_CENTER,
+            )
+        );
+        $select = $this->codeGuy->createNode($html, 'select');
+        $this->codeGuy->seeNodeCssClass($select, 'input-large text-center list');
     }
 
     public function testListBox()
@@ -470,7 +482,29 @@ class TbHtmlTest extends \Codeception\TestCase\Test
 
     public function testRadioButtonList()
     {
-        // todo: write this.
+        $html = TbHtml::radioButtonList(
+            'radioList',
+            null,
+            array('Option 1', 'Option 2', 'Option 3'),
+            array(
+                'separator' => '<br>',
+                'container' => 'div',
+                'containerOptions' => array('class' => 'container'),
+            )
+        );
+        $container = $this->codeGuy->createNode($html, 'div.container');
+        $this->codeGuy->seeNodeChildren($container, array('label.radio', 'br', 'label.radio', 'br', 'label.radio'));
+        $label = $container->filter('div.container > label:first-child');
+        $this->codeGuy->seeNodePattern($label, '/> Option 1$/');
+        $input = $label->filter('label > input[type=radio]');
+        $this->codeGuy->seeNodeAttributes(
+            $input,
+            array(
+                'id' => 'radioList_0',
+                'name' => 'radioList',
+                'value' => '0',
+            )
+        );
     }
 
     public function testInlineRadioButtonList()
@@ -480,7 +514,29 @@ class TbHtmlTest extends \Codeception\TestCase\Test
 
     public function testCheckboxList()
     {
-        // todo: write this.
+        $html = TbHtml::checkBoxList(
+            'checkboxList',
+            null,
+            array('Option 1', 'Option 2', 'Option 3'),
+            array(
+                'separator' => '<br>',
+                'container' => 'div',
+                'containerOptions' => array('class' => 'container'),
+            )
+        );
+        $container = $this->codeGuy->createNode($html, 'div.container');
+        $this->codeGuy->seeNodeChildren($container, array('label.checkbox', 'br', 'label.checkbox', 'br', 'label.checkbox'));
+        $label = $container->filter('div.container > label:first-child');
+        $this->codeGuy->seeNodePattern($label, '/> Option 1$/');
+        $input = $label->filter('label > input[type=checkbox]');
+        $this->codeGuy->seeNodeAttributes(
+            $input,
+            array(
+                'id' => 'checkboxList_0',
+                'name' => 'checkboxList[]',
+                'value' => '0',
+            )
+        );
     }
 
     public function testInlineCheckBoxList()

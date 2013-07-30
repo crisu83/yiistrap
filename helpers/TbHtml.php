@@ -2260,9 +2260,8 @@ EOD;
     {
         self::addSpanClass($options); // must be called here as CHtml renders inputs
         self::addTextAlignClass($options); // must be called here as CHtml renders inputs
-        $block = TbArray::popValue('block', $options, false);
         $size = TbArray::popValue('size', $options);
-        if ($block) {
+        if (TbArray::popValue('block', $options, false)) {
             self::addCssClass('input-block-level', $options);
         } else {
             if (!empty($size)) {
