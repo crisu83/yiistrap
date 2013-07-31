@@ -155,7 +155,9 @@ class CodeHelper extends \Codeception\Module
     {
         /** @var \DomElement $child */
         foreach ($node->children() as $i => $child) {
-            $this->assertTrue($this->nodeMatchesCssSelector($child, $elements[$i]));
+            if (isset($elements[$i])) {
+                $this->assertTrue($this->nodeMatchesCssSelector($child, $elements[$i]));
+            }
         }
     }
 
@@ -167,7 +169,9 @@ class CodeHelper extends \Codeception\Module
     {
         /** @var \DomElement $child */
         foreach ($node->children() as $i => $child) {
-            $this->assertFalse($this->nodeMatchesCssSelector($child, $elements[$i]));
+            if (isset($elements[$i])) {
+                $this->assertFalse($this->nodeMatchesCssSelector($child, $elements[$i]));
+            }
         }
     }
 
@@ -175,9 +179,10 @@ class CodeHelper extends \Codeception\Module
      * @param \Symfony\Component\DomCrawler\Crawler $node
      * @param integer $amount
      */
-    public function seeNodeNumChildren($node, $amount)
+    public function seeNodeNumChildren($node, $amount, $filter = null)
     {
-        $this->assertEquals($amount, count($node->children()));
+        $count = $filter !== null ? $node->filter($filter)->count() : $node->children()->count();
+        $this->assertEquals($amount, $count);
     }
 
     /**

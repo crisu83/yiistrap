@@ -728,7 +728,22 @@ class TbHtmlTest extends TbTestCase
         $first = $span->filter('label')->first();
         $I->seeNodeAttribute($first, 'for', 'checkboxList_all');
 
-        // todo: add test case where the checkAllLast is true.
+        $html = TbHtml::checkBoxList(
+            'checkboxList',
+            null,
+            array('Option 1', 'Option 2', 'Option 3'),
+            array(
+                'checkAll' => true,
+                'checkAllLast' => true,
+            )
+        );
+        $span = $I->createNode($html, 'span');
+        $I->seeNodeChildren(
+            $span,
+            array('label.checkbox', 'label.checkbox', 'label.checkbox', 'label.checkbox', 'input[type=checkbox]')
+        );
+        $last = $span->filter('label')->last();
+        $I->seeNodeAttribute($last, 'for', 'checkboxList_all');
     }
 
     public function testInlineCheckBoxList()
@@ -1834,7 +1849,23 @@ class TbHtmlTest extends TbTestCase
 
     public function testErrorSummary()
     {
-        // todo: write this.
+        $I = $this->codeGuy;
+        $model = new Dummy;
+        $model->addError('text', 'Error text');
+        $html = TbHtml::errorSummary(
+            $model,
+            'Header text',
+            'Footer text',
+            array(
+                'class' => 'summary'
+            )
+        );
+        $div = $I->createNode($html, 'div.alert');
+        $I->seeNodeCssClass($div, 'alert-block alert-error summary');
+        $I->seeNodePattern($div, '/^Header text/');
+        $I->seeNodePattern($div, '/Footer text$/');
+        $li = $div->filter('ul > li')->first();
+        $I->seeNodeText($li, 'Error text');
     }
 
     public function testError()
@@ -1973,7 +2004,6 @@ class TbHtmlTest extends TbTestCase
         );
         $I->seeNodeChildren($button, array('i.icon-check'));
         $I->seeNodePattern($button, '/> Button$/');
-        // todo: test button dropdowns as well.
     }
 
     public function testHtmlButton()
@@ -2377,9 +2407,13 @@ class TbHtmlTest extends TbTestCase
                 )
             ),
             array(
+                'visible' => false,
                 'items' => array(
                     array('label' => '8'),
                 )
+            ),
+            array(
+                'items' => array()
             ),
         );
 
@@ -2577,9 +2611,9 @@ class TbHtmlTest extends TbTestCase
         $I = $this->codeGuy;
 
         $items = array(
-            array('label' => 'Home', 'url' => '#', 'active' => true),
-            array('label' => 'Profile', 'url' => '#',),
-            array('label' => 'Dropdown', 'items' => array(
+            array('icon' => TbHtml::ICON_HOME, 'label' => 'Home', 'url' => '#'),
+            array('label' => 'Profile', 'url' => '#', 'htmlOptions' => array('disabled' => true)),
+            array('label' => 'Dropdown', 'active' => true, 'items' => array(
                 array('label' => 'Action', 'url' => '#'),
                 array('label' => 'Another action', 'url' => '#'),
                 array('label' => 'Dropdown', 'items' => array(
@@ -2603,7 +2637,7 @@ class TbHtmlTest extends TbTestCase
         foreach ($nav->children() as $i => $liElement) {
             $li = $I->createNode($liElement);
             if ($i === 2) {
-                $I->seeNodeCssClass($li, 'dropdown');
+                $I->seeNodeCssClass($li, 'dropdown active');
                 $I->seeNodeChildren($li, array('a.dropdown-toggle', 'ul.dropdown-menu'));
                 $ul = $li->filter('ul.dropdown-menu');
                 $I->seeNodeNumChildren($ul, 5);
@@ -2625,7 +2659,10 @@ class TbHtmlTest extends TbTestCase
                 }
             } else {
                 if ($i === 0) {
-                    $I->seeNodeCssClass($li, 'active');
+                    $I->seeNodeChildren($li, array('i.icon-home', 'a'));
+                }
+                if ($i === 2) {
+                    $I->seeNodeCssClass($li, 'disabled');
                 }
                 $a = $li->filter('a');
                 $I->seeNodeAttributes(
@@ -2638,11 +2675,6 @@ class TbHtmlTest extends TbTestCase
                 $I->seeNodeText($a, $items[$i]['label']);
             }
         }
-
-        // todo: add a test for when one item is disabled.
-        // todo: add a test for when an item is active.
-        // todo: add a test for when an item has an icon.
-        // todo: add a test for when an item has htmlOptions set.
 
         $html = TbHtml::menu(array());
         $this->assertEquals('', $html);
@@ -2816,7 +2848,23 @@ class TbHtmlTest extends TbTestCase
 
     public function testNavbarCollapseLink()
     {
-        // todo: write this.
+        $I = $this->codeGuy;
+        $html = TbHtml::navbarCollapseLink(
+            '#',
+            array(
+                'class' => 'link',
+            )
+        );
+        $a = $I->createNode($html, 'a.btn.btn-navbar');
+        $I->seeNodeCssClass($a, 'link');
+        $I->seeNodeAttributes(
+            $a,
+            array(
+                'data-toggle' => 'collapse',
+                'data-target' => '#',
+            )
+        );
+        $I->seeNodeChildren($a, array('span.icon-bar', 'span.icon-bar', 'span.icon-bar'));
     }
 
     public function testBreadcrumbs()
@@ -2863,11 +2911,12 @@ class TbHtmlTest extends TbTestCase
         $I = $this->codeGuy;
 
         $items = array(
-            array('label' => 'Prev', 'url' => '#'),
+            array('label' => 'Prev', 'url' => '#', 'disabled' => true),
             array(
                 'label' => '1',
                 'url' => '#',
-                'class' => 'item',
+                'active' => true,
+                'htmlOptions' => array('class' => 'item'),
                 'linkOptions' => array('class' => 'link'),
             ),
             array('label' => '2', 'url' => '#'),
@@ -2892,8 +2941,11 @@ class TbHtmlTest extends TbTestCase
         foreach ($ul->children() as $i => $liElement) {
             $li = $I->createNode($liElement);
             $a = $li->filter('a');
+            if ($i === 0) {
+                $I->seeNodeCssClass($li, 'disabled');
+            }
             if ($i === 1) {
-                $I->seeNodeCssClass($li, 'item');
+                $I->seeNodeCssClass($li, 'item active');
                 $I->seeNodeCssClass($a, 'link');
             }
             $I->seeNodeAttribute($a, 'href', '#');
@@ -2918,8 +2970,6 @@ class TbHtmlTest extends TbTestCase
         $div = $I->createNode($html, 'div.pagination');
         $I->seeNodeCssClass($div, 'pagination-centered');
 
-        // todo: add a test for when an item has htmlOptions set.
-
         $html = TbHtml::pagination(array());
         $this->assertEquals('', $html);
     }
@@ -2940,9 +2990,6 @@ class TbHtmlTest extends TbTestCase
         $a = $li->filter('a');
         $I->seeNodeCssClass($a, 'link');
         $I->seeNodeAttribute($a, 'href', '#');
-
-        // todo: add a test for when an item is active.
-        // todo: add a test for when an item is disabled.
     }
 
     public function testPager()
@@ -2954,7 +3001,7 @@ class TbHtmlTest extends TbTestCase
                 'label' => 'Prev',
                 'url' => '#',
                 'previous' => true,
-                'disabled' => true,
+                'htmlOptions' => array('disabled' => true),
             ),
             array('label' => 'Next', 'url' => '#', 'next' => true),
         );
@@ -2978,8 +3025,6 @@ class TbHtmlTest extends TbTestCase
         $a = $next->filter('a');
         $I->seeNodeAttribute($a, 'href', '#');
         $I->seeNodeText($a, 'Next');
-
-        // todo: add a test for when an item has htmlOptions set.
 
         $html = TbHtml::pager(array());
         $this->assertEquals('', $html);
@@ -3306,18 +3351,36 @@ class TbHtmlTest extends TbTestCase
         $this->assertEquals('', $html);
     }
 
-    public function testBar()
+    public function testMediaList()
     {
-        // todo: write this.
+        $I = $this->codeGuy;
+
+        $items = array(
+            array('image' => 'image.png', 'heading' => 'Media heading', 'content' => 'Content text'),
+            array('heading' => 'Media heading', 'content' => 'Content text'),
+        );
+
+        $html = TbHtml::mediaList(
+            $items,
+            array(
+                'class' => 'list',
+            )
+        );
+        $ul = $I->createNode($html, 'ul.media-list');
+        $I->seeNodeNumChildren($ul, 2);
+        $I->seeNodeChildren($ul, array('li.media', 'li.media'));
+
+        $html = TbHtml::mediaList(array());
+        $this->assertEquals('', $html);
     }
 
-    public function testMediaObjects()
+    public function testMedias()
     {
         $I = $this->codeGuy;
 
         $items = array(
             array(
-                'image' => '#',
+                'image' => 'image.png',
                 'heading' => 'Media heading',
                 'content' => 'Content text',
                 'items' => array(
@@ -3325,25 +3388,44 @@ class TbHtmlTest extends TbTestCase
                         'image' => '#',
                         'heading' => 'Media heading',
                         'content' => 'Content text',
-                        'items' => array(
-                            array('image' => '#', 'heading' => 'Media heading', 'content' => 'Content text'),
-                        )
                     ),
-                    array('image' => '#', 'heading' => 'Media heading', 'content' => 'Content text'),
+                    array(
+                        'image' => '#',
+                        'heading' => 'Media heading',
+                        'content' => 'Content text',
+                        'visible' => false,
+                    ),
                 )
             ),
             array('heading' => 'Media heading', 'content' => 'Content text'),
         );
 
-        // todo: write this.
+        $html = TbHtml::medias($items);
+        $body = $I->createNode($html, 'body');
+        $medias = $body->filter('div.media');
+        $first = $medias->first();
+        $I->seeNodeChildren($first, array('a.pull-left', 'div.media-body'));
+        $img = $first->filter('img.media-object');
+        $I->seeNodeAttribute($img, 'src', 'image.png');
+        $mediaBody = $first->filter('div.media-body');
+        $I->seeNodeChildren($mediaBody, array('h4.media-heading', 'div.media'));
+        $I->seeNodeText($mediaBody, 'Content text');
+        $h4 = $body->filter('h4.media-heading');
+        $I->seeNodeText($h4, 'Media heading');
+        $I->seeNodeNumChildren($mediaBody, 1, 'div.media');
+        $last = $medias->last();
+        $I->seeNodeChildren($last, array('div.media-body'));
+
+        $html = TbHtml::medias(array());
+        $this->assertEquals('', $html);
     }
 
-    public function testMediaObject()
+    public function testMedia()
     {
         $I = $this->codeGuy;
 
-        $html = TbHtml::mediaObject(
-            '#',
+        $html = TbHtml::media(
+            'image.png',
             'Heading text',
             'Content text',
             array(
@@ -3365,7 +3447,7 @@ class TbHtmlTest extends TbTestCase
         $I->seeNodeAttributes(
             $img,
             array(
-                'src' => '#',
+                'src' => 'image.png',
                 'alt' => 'Alternative text',
             )
         );
@@ -3450,17 +3532,118 @@ class TbHtmlTest extends TbTestCase
 
     public function testTooltip()
     {
-        // todo: write this.
+        $I = $this->codeGuy;
+
+        $html = TbHtml::tooltip(
+            'Link',
+            '#',
+            'Tooltip text',
+            array(
+                'class' => 'link',
+                'animation' => true,
+                'html' => true,
+                'selector' => true,
+                'placement' => TbHtml::TOOLTIP_PLACEMENT_RIGHT,
+                'trigger' => TbHtml::TOOLTIP_TRIGGER_CLICK,
+                'delay' => 350,
+            )
+        );
+        $a = $I->createNode($html, 'a[rel=tooltip]');
+        $I->seeNodeCssClass($a, 'link');
+        $I->seeNodeAttributes(
+            $a,
+            array(
+                'title' => 'Tooltip text',
+                'data-animation' => '1',
+                'data-html' => '1',
+                'data-selector' => '1',
+                'data-placement' => 'right',
+                'data-trigger' => 'click',
+                'data-delay' => '350',
+                'href' => '#'
+            )
+        );
+        $I->seeNodeText($a, 'Link');
     }
 
     public function testPopover()
     {
-        // todo: write this.
+        $I = $this->codeGuy;
+
+        $html = TbHtml::popover(
+            'Link',
+            'Heading text',
+            'Content text',
+            array(
+                'class' => 'link',
+            )
+        );
+        $a = $I->createNode($html, 'a[rel=popover]');
+        $I->seeNodeCssClass($a, 'link');
+        $I->seeNodeAttributes(
+            $a,
+            array(
+                'title' => 'Heading text',
+                'data-content' => 'Content text',
+                'data-toggle' => 'popover',
+                'href' => '#'
+            )
+        );
+        $I->seeNodeText($a, 'Link');
     }
 
     public function testCarousel()
     {
-        // todo: write this.
+        $I = $this->codeGuy;
+
+        $items = array(
+            array(
+                'image' => 'image.png',
+                'label' => 'First Thumbnail label',
+                'url' => '#',
+                'caption' => 'Caption text',
+            ),
+            array('image' => 'image.png', 'label' => 'Second Thumbnail label'),
+            array('image' => 'image.png', 'imageOptions' => array('class' => 'image', 'alt' => 'Alternative text')),
+        );
+
+        $html = TbHtml::carousel(
+            $items,
+            array(
+                'id' => 'carousel',
+                'class' => 'div',
+            )
+        );
+        $carousel = $I->createNode($html, 'div.carousel');
+        $I->seeNodeCssClass($carousel, 'div slide');
+        $I->seeNodeAttribute($carousel, 'carousel');
+        $I->seeNodeChildren($carousel, array('ol.carousel-indicators', 'div.carousel-inner', 'a.carousel-control', 'a.carousel-control'));
+        $inner = $carousel->filter('div.carousel-inner');
+        foreach ($inner->children() as $i => $divElement) {
+            $div = $I->createNode($divElement);
+            $I->seeNodeCssClass($div, 'item');
+            switch ($i) {
+                case 0:
+                    $I->seeNodeCssClass($div, 'active');
+                    $I->seeNodeChildren($div, array('a', 'div.carousel-caption'));
+                    $a = $div->filter('a');
+                    $I->seeNodeAttribute($a, 'href', '#');
+                    break;
+                case 1:
+                    $I->seeNodeChildren($div, array('img', 'div.carousel-caption'));
+                    break;
+                case 2:
+                    $img = $div->filter('img.image');
+                    $I->seeNodeAttributes(
+                        $img,
+                        array(
+                            'src' => 'image.png',
+                            'alt' => 'Alternative text',
+                        )
+                    );
+                    break;
+            }
+        }
     }
 
     public function testCarouselItem()
@@ -3488,8 +3671,6 @@ class TbHtmlTest extends TbTestCase
         $caption = $overlay->filter('p');
         $I->seeNodeCssClass($caption, 'caption');
         $I->seeNodeText($caption, 'Caption text');
-
-        // todo: add a test for when an item has an url defined that is not false.
     }
 
     public function testCarouselPrevLink()
@@ -3564,11 +3745,26 @@ class TbHtmlTest extends TbTestCase
 
     public function testAddCssClass()
     {
-        // todo: write this.
+        $htmlOptions = array('class' => 'my');
+        TbHtml::addCssClass(array('class'), $htmlOptions);
+        $this->assertEquals('my class', $htmlOptions['class']);
+        TbHtml::addCssClass('more classes', $htmlOptions);
+        $this->assertEquals('my class more classes', $htmlOptions['class']);
+        TbHtml::addCssClass(array('my'), $htmlOptions);
+        $this->assertEquals('my class more classes', $htmlOptions['class']);
+        TbHtml::addCssClass('class more classes', $htmlOptions);
+        $this->assertEquals('my class more classes', $htmlOptions['class']);
     }
 
     public function testAddCssStyle()
     {
-        // todo: write this.
+        $htmlOptions = array('style' => 'display: none');
+        TbHtml::addCssStyle('color: purple', $htmlOptions);
+        TbHtml::addCssStyle('background: #fff;', $htmlOptions);
+        TbHtml::addCssStyle(array('font-family: "Open sans"', 'font-weight: bold;'), $htmlOptions);
+        $this->assertEquals(
+            'display: none; color: purple; background: #fff; font-family: "Open sans"; font-weight: bold',
+            $htmlOptions['style']
+        );
     }
 }

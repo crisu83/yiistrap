@@ -911,11 +911,7 @@ class TbHtml extends CHtml // required in order to access the protected methods 
         $separator = TbArray::popValue('separator', $htmlOptions, ' ');
         $container = TbArray::popValue('container', $htmlOptions);
         $containerOptions = TbArray::popValue('containerOptions', $htmlOptions, array());
-
         $labelOptions = TbArray::popValue('labelOptions', $htmlOptions, array());
-        if ($inline) {
-            self::addCssClass('inline', $labelOptions);
-        }
 
         $items = array();
         $baseID = $containerOptions['id'] = TbArray::popValue('baseID', $htmlOptions, parent::getIdByName($name));
@@ -927,6 +923,7 @@ class TbHtml extends CHtml // required in order to access the protected methods 
             $htmlOptions['id'] = $baseID . '_' . $id++;
             if ($inline) {
                 $htmlOptions['label'] = $label;
+                self::addCssClass('inline', $labelOptions);
                 $htmlOptions['labelOptions'] = $labelOptions;
                 $items[] = self::radioButton($name, $checked, $htmlOptions);
             } else {
@@ -968,6 +965,7 @@ class TbHtml extends CHtml // required in order to access the protected methods 
         $separator = TbArray::popValue('separator', $htmlOptions, ' ');
         $container = TbArray::popValue('container', $htmlOptions, 'span');
         $containerOptions = TbArray::popValue('containerOptions', $htmlOptions, array());
+        $labelOptions = TbArray::popValue('labelOptions', $htmlOptions, array());
 
         if (substr($name, -2) !== '[]') {
             $name .= '[]';
@@ -977,12 +975,7 @@ class TbHtml extends CHtml // required in order to access the protected methods 
         $checkAllLast = TbArray::popValue('checkAllLast', $htmlOptions);
         if ($checkAll !== null) {
             $checkAllLabel = $checkAll;
-            $checkAllLast = $checkAllLast !== null && $checkAllLast;
-        }
-
-        $labelOptions = TbArray::popValue('labelOptions', $htmlOptions, array());
-        if ($inline) {
-            self::addCssClass('inline', $labelOptions);
+            $checkAllLast = $checkAllLast !== null;
         }
 
         $items = array();
@@ -997,11 +990,12 @@ class TbHtml extends CHtml // required in order to access the protected methods 
             $htmlOptions['id'] = $baseID . '_' . $id++;
             if ($inline) {
                 $htmlOptions['label'] = $label;
+                self::addCssClass('inline', $labelOptions);
                 $htmlOptions['labelOptions'] = $labelOptions;
                 $items[] = self::checkBox($name, $checked, $htmlOptions);
             } else {
-                $option = self::checkBox($name, $checked, $htmlOptions);
                 self::addCssClass('checkbox', $labelOptions);
+                $option = self::checkBox($name, $checked, $htmlOptions);
                 $items[] = self::label($option . ' ' . $label, false, $labelOptions);
             }
         }
@@ -1010,7 +1004,7 @@ class TbHtml extends CHtml // required in order to access the protected methods 
             $htmlOptions['value'] = 1;
             $htmlOptions['id'] = $id = $baseID . '_all';
             $option = self::checkBox($id, $checkAll, $htmlOptions);
-            $label = self::label($checkAllLabel, $htmlOptions['id'], $labelOptions);
+            $label = self::label($checkAllLabel, $id, $labelOptions);
             $item = $option . ' ' . $label;
             if ($checkAllLast) {
                 $items[] = $item;
@@ -2816,6 +2810,7 @@ EOD;
                 if (isset($buttonOptions['visible']) && $buttonOptions['visible'] === false) {
                     continue;
                 }
+                // todo: consider removing the support for htmlOptions.
                 $options = TbArray::popValue('htmlOptions', $buttonOptions, array());
                 if (!empty($options)) {
                     $buttonOptions = TbArray::merge($options, $buttonOptions);
@@ -2871,6 +2866,7 @@ EOD;
                 if (empty($items)) {
                     continue;
                 }
+                // todo: consider removing the support for htmlOptions.
                 $options = TbArray::popValue('htmlOptions', $groupOptions, array());
                 if (!empty($options)) {
                     $groupOptions = TbArray::merge($options, $groupOptions);
@@ -3021,6 +3017,7 @@ EOD;
                     if (isset($itemOptions['visible']) && $itemOptions['visible'] === false) {
                         continue;
                     }
+                    // todo: consider removing the support for htmlOptions.
                     $options = TbArray::popValue('htmlOptions', $itemOptions, array());
                     if (!empty($options)) {
                         $itemOptions = TbArray::merge($options, $itemOptions);
@@ -3090,9 +3087,6 @@ EOD;
             TbArray::defaultValue('id', $defaultId, $menuOptions);
             $menuOptions['aria-labelledby'] = $menuOptions['id'];
             $menuOptions['role'] = 'menu';
-        }
-        if (TbArray::popValue('active', $htmlOptions, false)) {
-            self::addCssClass('active', $htmlOptions);
         }
         $output = self::openTag('li', $htmlOptions);
         $output .= self::dropdownToggleMenuLink($label, $url, $linkOptions, $depth);
@@ -3379,6 +3373,7 @@ EOD;
             $output = self::openTag('div', $htmlOptions);
             $output .= self::openTag('ul', $listOptions);
             foreach ($items as $itemOptions) {
+                // todo: consider removing the support for htmlOptions.
                 $options = TbArray::popValue('htmlOptions', $itemOptions, array());
                 if (!empty($options)) {
                     $itemOptions = TbArray::merge($options, $itemOptions);
@@ -3406,7 +3401,7 @@ EOD;
         if (TbArray::popValue('active', $htmlOptions, false)) {
             self::addCssClass('active', $htmlOptions);
         }
-        if (TbArray::popValue('active', $htmlOptions, false)) {
+        if (TbArray::popValue('disabled', $htmlOptions, false)) {
             self::addCssClass('disabled', $htmlOptions);
         }
         $content = self::link($label, $url, $linkOptions);
@@ -3425,6 +3420,7 @@ EOD;
             self::addCssClass('pager', $htmlOptions);
             $output = self::openTag('ul', $htmlOptions);
             foreach ($links as $itemOptions) {
+                // todo: consider removing the support for htmlOptions.
                 $options = TbArray::popValue('htmlOptions', $itemOptions, array());
                 if (!empty($options)) {
                     $itemOptions = TbArray::merge($options, $itemOptions);
@@ -3560,6 +3556,7 @@ EOD;
                 if (isset($thumbnailOptions['visible']) && $thumbnailOptions['visible'] === false) {
                     continue;
                 }
+                // todo: consider removing the support for htmlOptions.
                 $options = TbArray::popValue('htmlOptions', $thumbnailOptions, array());
                 if (!empty($options)) {
                     $thumbnailOptions = TbArray::merge($options, $thumbnailOptions);
@@ -3764,7 +3761,7 @@ EOD;
      * @param array $htmlOptions additional HTML attributes.
      * @return string the generated bar.
      */
-    public static function bar($width = 0, $htmlOptions = array())
+    protected static function bar($width = 0, $htmlOptions = array())
     {
         self::addCssClass('bar', $htmlOptions);
         $color = TbArray::popValue('color', $htmlOptions);
@@ -3791,23 +3788,47 @@ EOD;
 
     /**
      * Generates a list of media objects.
-     * @param array $mediaObjects media object configurations.
+     * @param array $items item configurations.
+     * @param array $htmlOptions additional HTML attributes.
      * @return string generated list.
      */
-    public static function mediaObjects(array $mediaObjects)
+    public static function mediaList(array $items, $htmlOptions = array())
     {
-        if (!empty($mediaObjects)) {
+        if (!empty($items)) {
+            self::addCssClass('media-list', $htmlOptions);
             $output = '';
-            foreach ($mediaObjects as $mediaObjectOptions) {
-                if (isset($mediaObjectOptions['visible']) && $mediaObjectOptions['visible'] === false) {
+            $output .= self::openTag('ul', $htmlOptions);
+            $output .= self::medias($items, 'li');
+            $output .= '</ul>';
+            return $output;
+        }
+        return '';
+    }
+
+    /**
+     * Generates multiple media objects.
+     * @param array $items item configurations.
+     * @param string $tag the item tag name.
+     * @return string generated objects.
+     */
+    public static function medias(array $items, $tag = 'div')
+    {
+        if (!empty($items)) {
+            $output = '';
+            foreach ($items as $itemOptions) {
+                if (isset($itemOptions['visible']) && $itemOptions['visible'] === false) {
                     continue;
                 }
-                $image = TbArray::getValue('image', $mediaObjectOptions);
-                $heading = TbArray::getValue('heading', $mediaObjectOptions, '');
-                $content = TbArray::getValue('content', $mediaObjectOptions, '');
-                $itemOptions = TbArray::getValue('htmlOptions', $mediaObjectOptions, array());
-                $itemOptions['items'] = TbArray::popValue('items', $mediaObjectOptions, array());
-                $output .= self::mediaObject($image, $heading, $content, $itemOptions);
+                // todo: consider removing the support for htmlOptions.
+                $options = TbArray::popValue('htmlOptions', $itemOptions, array());
+                if (!empty($options)) {
+                    $itemOptions = TbArray::merge($options, $itemOptions);
+                }
+                $image = TbArray::popValue('image', $itemOptions);
+                $heading = TbArray::popValue('heading', $itemOptions, '');
+                $content = TbArray::popValue('content', $itemOptions, '');
+                TbArray::defaultValue('tag', $tag, $itemOptions);
+                $output .= self::media($image, $heading, $content, $itemOptions);
             }
             return $output;
         }
@@ -3822,8 +3843,9 @@ EOD;
      * @param array $htmlOptions additional HTML attributes.
      * @return string the media object.
      */
-    public static function mediaObject($image, $heading, $content, $htmlOptions = array())
+    public static function media($image, $heading, $content, $htmlOptions = array())
     {
+        $tag = TbArray::popValue('tag', $htmlOptions, 'div');
         self::addCssClass('media', $htmlOptions);
         $linkOptions = TbArray::popValue('linkOptions', $htmlOptions, array());
         TbArray::defaultValue('pull', self::PULL_LEFT, $linkOptions);
@@ -3835,7 +3857,7 @@ EOD;
         self::addCssClass('media-heading', $headingOptions);
         $items = TbArray::popValue('items', $htmlOptions);
 
-        $output = self::openTag('div', $htmlOptions);
+        $output = self::openTag($tag, $htmlOptions);
         $alt = TbArray::popValue('alt', $imageOptions, '');
         $href = TbArray::popValue('href', $linkOptions, '#');
         if (!empty($image)) {
@@ -3845,9 +3867,10 @@ EOD;
         $output .= self::tag('h4', $headingOptions, $heading);
         $output .= $content;
         if (!empty($items)) {
-            $output .= self::mediaObjects($items);
+            $output .= self::medias($items);
         }
-        $output .= '</div></div>';
+        $output .= '</div>';
+        $output .= self::closeTag($tag);
         return $output;
     }
 
@@ -3981,19 +4004,19 @@ EOD;
      */
     protected static function tooltipPopover($label, $url, $title, $htmlOptions)
     {
-        TbArray::defaultValue('title', $title, $htmlOptions);
+        $htmlOptions['title'] = $title;
         if (TbArray::popValue('animation', $htmlOptions)) {
             $htmlOptions['data-animation'] = true;
         }
         if (TbArray::popValue('html', $htmlOptions)) {
             $htmlOptions['data-html'] = true;
         }
+        if (TbArray::popValue('selector', $htmlOptions)) {
+            $htmlOptions['data-selector'] = true;
+        }
         $placement = TbArray::popValue('placement', $htmlOptions);
         if (!empty($placement)) {
             $htmlOptions['data-placement'] = $placement;
-        }
-        if (TbArray::popValue('selector', $htmlOptions)) {
-            $htmlOptions['data-selector'] = true;
         }
         $trigger = TbArray::popValue('trigger', $htmlOptions);
         if (!empty($trigger)) {
@@ -4053,8 +4076,8 @@ EOD;
                 }
                 $content = TbArray::popValue('content', $itemOptions, '');
                 $image = TbArray::popValue('image', $itemOptions, '');
-                $imageAlt = TbArray::popValue('alt', $itemOptions, '');
                 $imageOptions = TbArray::popValue('imageOptions', $itemOptions, array());
+                $imageAlt = TbArray::popValue('alt', $imageOptions, '');
                 if (!empty($image)) {
                     $content = parent::image($image, $imageAlt, $imageOptions);
                 }
@@ -4191,8 +4214,9 @@ EOD;
     public static function addCssStyle($style, &$htmlOptions)
     {
         if (is_array($style)) {
-            $style = implode(' ', $style);
+            $style = implode('; ', $style);
         }
+        $style = rtrim($style, ';');
         $htmlOptions['style'] = isset($htmlOptions['style'])
             ? rtrim($htmlOptions['style'], ';') . '; ' . $style
             : $style;
