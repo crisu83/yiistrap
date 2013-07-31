@@ -2338,7 +2338,7 @@ EOD;
     {
         self::addCssClass('form-actions', $htmlOptions);
         if (is_array($actions)) {
-            $actions = implode('', $actions);
+            $actions = implode(' ', $actions);
         }
         return self::tag('div', $htmlOptions, $actions);
     }
