@@ -118,12 +118,32 @@ class CodeHelper extends \Codeception\Module
 
     /**
      * @param \Symfony\Component\DomCrawler\Crawler $node
+     * @param array $name
+     */
+    public function dontSeeNodeAttribute($node, $name)
+    {
+        $this->assertEquals('', $node->attr($name));
+    }
+
+    /**
+     * @param \Symfony\Component\DomCrawler\Crawler $node
      * @param array $attributes
      */
     public function seeNodeAttributes($node, array $attributes)
     {
         foreach ($attributes as $name => $value) {
             $this->seeNodeAttribute($node, $name, $value);
+        }
+    }
+
+    /**
+     * @param \Symfony\Component\DomCrawler\Crawler $node
+     * @param array $attributes
+     */
+    public function dontSeeNodeAttributes($node, array $attributes)
+    {
+        foreach ($attributes as $name) {
+            $this->dontSeeNodeAttribute($node, $name);
         }
     }
 

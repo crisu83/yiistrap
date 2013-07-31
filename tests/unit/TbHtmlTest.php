@@ -2,7 +2,32 @@
 use Codeception\Util\Stub;
 
 require(__DIR__ . '/../../helpers/TbHtml.php');
-require(__DIR__ . '/Dummy.php');
+
+class Dummy extends CModel
+{
+    public $text = 'text';
+    public $password = 'secret';
+    public $url = 'http://www.getyiistrap.com';
+    public $email = 'christoffer.niska@gmail.com';
+    public $number = 42;
+    public $range = 3.33;
+    public $date = '2013-07-27';
+    public $file = '';
+    public $radio = true;
+    public $checkbox = false;
+    public $uneditable = 'Uneditable text';
+    public $search = 'Search query';
+    public $textarea = 'Textarea text';
+    public $dropdown = '1';
+    public $listbox = '1';
+    public $radioList = '0';
+    public $checkboxList = array('0', '2');
+
+    public function attributeNames()
+    {
+        return array();
+    }
+}
 
 class TbHtmlTest extends TbTestCase
 {
@@ -206,12 +231,19 @@ class TbHtmlTest extends TbTestCase
     public function testForm()
     {
         $I = $this->codeGuy;
-        $html = TbHtml::beginFormTb(TbHtml::FORM_LAYOUT_VERTICAL, '#');
-        $form = $I->createNode($html, 'form');
+        $html = TbHtml::formTb(
+            TbHtml::FORM_LAYOUT_VERTICAL,
+            '#',
+            'post',
+            array(
+                'class' => 'form',
+            )
+        );
+        $form = $I->createNode($html, 'form.form-vertical');
+        $I->seeNodeCssClass($form, 'form');
         $I->seeNodeAttributes(
             $form,
             array(
-                'class' => 'form-vertical',
                 'action' => '#',
                 'method' => 'post'
             )
@@ -220,12 +252,29 @@ class TbHtmlTest extends TbTestCase
 
     public function testBeginForm()
     {
-        // todo: write this.
+        $I = $this->codeGuy;
+        $html = TbHtml::beginFormTb(TbHtml::FORM_LAYOUT_VERTICAL, '#');
+        $form = $I->createNode($html, 'form');
+        $I->seeNodeCssClass($form, 'form-vertical');
     }
 
     public function testStatefulForm()
     {
-        // todo: write this.
+        $I = $this->codeGuy;
+        $html = TbHtml::statefulFormTb(TbHtml::FORM_LAYOUT_VERTICAL, '#');
+        $body = $I->createNode($html);
+        $form = $body->filter('form');
+        $I->seeNodeCssClass($form, 'form-vertical');
+        $div = $body->filter('div');
+        $I->seeNodeCssStyle($div, 'display: none');
+        $input = $div->filter('input[type=hidden]');
+        $I->seeNodeAttributes(
+            $input,
+            array(
+                'name' => 'YII_PAGE_STATE',
+                'value' => '',
+            )
+        );
     }
 
     public function testTextField()
@@ -287,6 +336,16 @@ class TbHtmlTest extends TbTestCase
         $div = $I->createNode($html, 'div');
         $I->seeNodeCssClass($div, 'input-prepend input-append');
         $I->seeNodeChildren($div, array('span', 'input', 'span'));
+
+        $html = TbHtml::textField(
+            'text',
+            'text',
+            array(
+                'block' => true,
+            )
+        );
+        $input = $I->createNode($html, 'input');
+        $I->seeNodeCssClass($input, 'input-block-level');
     }
 
     public function testPasswordField()
@@ -421,11 +480,33 @@ class TbHtmlTest extends TbTestCase
         );
     }
 
+    public function testFileField()
+    {
+        $I = $this->codeGuy;
+        $html = TbHtml::fileField(
+            'file',
+            '',
+            array(
+                'class' => 'input',
+            )
+        );
+        $input = $I->createNode($html, 'input[type=file]');
+        $I->seeNodeAttributes(
+            $input,
+            array(
+                'class' => 'input',
+                'id' => 'file',
+                'name' => 'file',
+                'value' => '',
+            )
+        );
+    }
+
     public function testTextArea()
     {
         $I = $this->codeGuy;
         $html = TbHtml::textArea(
-            'textArea',
+            'textarea',
             'Textarea text',
             array(
                 'class' => 'textarea',
@@ -436,8 +517,8 @@ class TbHtmlTest extends TbTestCase
             $textarea,
             array(
                 'class' => 'textarea',
-                'id' => 'textArea',
-                'name' => 'textArea',
+                'id' => 'textarea',
+                'name' => 'textarea',
             )
         );
         $I->seeNodeText($textarea, 'Textarea text');
@@ -446,6 +527,7 @@ class TbHtmlTest extends TbTestCase
     public function testRadioButton()
     {
         $I = $this->codeGuy;
+
         $html = TbHtml::radioButton(
             'radio',
             false,
@@ -456,9 +538,10 @@ class TbHtmlTest extends TbTestCase
         );
         $label = $I->createNode($html, 'label');
         $I->seeNodeCssClass($label, 'radio');
-        $radio = $label->filter('input[type=radio]');
+        $I->seeNodePattern($label, '/> Label text$/');
+        $input = $label->filter('input[type=radio]');
         $I->seeNodeAttributes(
-            $radio,
+            $input,
             array(
                 'class' => 'input',
                 'id' => 'radio',
@@ -466,7 +549,11 @@ class TbHtmlTest extends TbTestCase
                 'value' => '1',
             )
         );
-        $I->seeNodePattern($label, '/> Label text$/');
+        $I->dontSeeNodeAttribute($input, 'checked');
+
+        $html = TbHtml::radioButton('radio', true);
+        $input = $I->createNode($html, 'input[type=radio]');
+        $I->seeNodeAttribute($input, 'checked', 'checked');
     }
 
     public function testCheckBox()
@@ -482,9 +569,10 @@ class TbHtmlTest extends TbTestCase
         );
         $label = $I->createNode($html, 'label');
         $I->seeNodeCssClass($label, 'checkbox');
-        $checkbox = $label->filter('input[type=checkbox]');
+        $I->seeNodePattern($label, '/> Label text$/');
+        $input = $label->filter('input[type=checkbox]');
         $I->seeNodeAttributes(
-            $checkbox,
+            $input,
             array(
                 'class' => 'input',
                 'id' => 'checkbox',
@@ -492,7 +580,11 @@ class TbHtmlTest extends TbTestCase
                 'value' => '1',
             )
         );
-        $I->seeNodePattern($label, '/> Label text$/');
+        $I->dontSeeNodeAttribute($input, 'checked');
+
+        $html = TbHtml::checkBox('checkbox', true);
+        $input = $I->createNode($html, 'input[type=checkbox]');
+        $I->seeNodeAttribute($input, 'checked', 'checked');
     }
 
     public function testDropDownList()
@@ -515,7 +607,40 @@ class TbHtmlTest extends TbTestCase
 
     public function testListBox()
     {
-        // todo: write this.
+        $I = $this->codeGuy;
+
+        $html = TbHtml::listBox(
+            'listbox',
+            null,
+            array('1', '2', '3', '4', '5'),
+            array(
+                'class' => 'list',
+                'empty' => 'Empty text',
+                'size' => TbHtml::INPUT_SIZE_LARGE,
+                'textAlign' => TbHtml::TEXT_ALIGN_CENTER,
+            )
+        );
+        $select = $I->createNode($html, 'select');
+        $I->seeNodeCssClass($select, 'input-large text-center list');
+        $I->seeNodeAttributes(
+            $select,
+            array(
+                'name' => 'listbox',
+                'id' => 'listbox',
+                'size' => 4,
+            )
+        );
+
+        $html = TbHtml::listBox(
+            'listbox',
+            null,
+            array('1', '2', '3', '4', '5'),
+            array(
+                'multiple' => true,
+            )
+        );
+        $select = $I->createNode($html, 'select');
+        $I->seeNodeAttribute($select, 'name', 'listbox[]');
     }
 
     public function testRadioButtonList()
@@ -554,13 +679,15 @@ class TbHtmlTest extends TbTestCase
             null,
             array('Option 1', 'Option 2', 'Option 3')
         );
-        $container = $I->createNode($html);
+        $container = $I->createNode($html, 'body');
+        $I->seeNodeNumChildren($container, 3);
         $I->seeNodeChildren($container, array('label.radio.inline', 'label.radio.inline', 'label.radio.inline'));
     }
 
     public function testCheckboxList()
     {
         $I = $this->codeGuy;
+
         $html = TbHtml::checkBoxList(
             'checkboxList',
             null,
@@ -584,6 +711,24 @@ class TbHtmlTest extends TbTestCase
                 'value' => '0',
             )
         );
+
+        $html = TbHtml::checkBoxList(
+            'checkboxList',
+            null,
+            array('Option 1', 'Option 2', 'Option 3'),
+            array(
+                'checkAll' => true,
+            )
+        );
+        $span = $I->createNode($html, 'span');
+        $I->seeNodeChildren(
+            $span,
+            array('input[type=checkbox]', 'label.checkbox', 'label.checkbox', 'label.checkbox', 'label.checkbox')
+        );
+        $first = $span->filter('label')->first();
+        $I->seeNodeAttribute($first, 'for', 'checkboxList_all');
+
+        // todo: add test case where the checkAllLast is true.
     }
 
     public function testInlineCheckBoxList()
@@ -594,9 +739,10 @@ class TbHtmlTest extends TbTestCase
             null,
             array('Option 1', 'Option 2', 'Option 3')
         );
-        $container = $I->createNode($html);
+        $span = $I->createNode($html, 'span');
+        $I->seeNodeNumChildren($span, 3);
         $I->seeNodeChildren(
-            $container,
+            $span,
             array('label.checkbox.inline', 'label.checkbox.inline', 'label.checkbox.inline')
         );
     }
@@ -639,92 +785,212 @@ class TbHtmlTest extends TbTestCase
 
     public function testTextFieldControlGroup()
     {
-        // todo: write this.
+        $I = $this->codeGuy;
+        $html = TbHtml::textFieldControlGroup('text', 'text');
+        $group = $I->createNode($html, 'div.control-group');
+        $label = $group->filter('label.control-label');
+        $I->seeNodeChildren($label, array('input[type=text]'));
     }
 
     public function testPasswordFieldControlGroup()
     {
-        // todo: write this.
+        $I = $this->codeGuy;
+        $html = TbHtml::passwordFieldControlGroup('password', 'secret');
+        $group = $I->createNode($html, 'div.control-group');
+        $label = $group->filter('label.control-label');
+        $I->seeNodeChildren($label, array('input[type=password]'));
     }
 
     public function testUrlFieldControlGroup()
     {
-        // todo: write this.
+        $I = $this->codeGuy;
+        $html = TbHtml::urlFieldControlGroup('url', 'url');
+        $group = $I->createNode($html, 'div.control-group');
+        $label = $group->filter('label.control-label');
+        $I->seeNodeChildren($label, array('input[type=url]'));
     }
 
     public function testEmailFieldControlGroup()
     {
-        // todo: write this.
+        $I = $this->codeGuy;
+        $html = TbHtml::emailFieldControlGroup('email', 'email');
+        $group = $I->createNode($html, 'div.control-group');
+        $label = $group->filter('label.control-label');
+        $I->seeNodeChildren($label, array('input[type=email]'));
     }
 
     public function testNumberFieldControlGroup()
     {
-        // todo: write this.
+        $I = $this->codeGuy;
+        $html = TbHtml::numberFieldControlGroup('number', 'number');
+        $group = $I->createNode($html, 'div.control-group');
+        $label = $group->filter('label.control-label');
+        $I->seeNodeChildren($label, array('input[type=number]'));
     }
 
     public function testRangeFieldControlGroup()
     {
-        // todo: write this.
+        $I = $this->codeGuy;
+        $html = TbHtml::rangeFieldControlGroup('range', 'range');
+        $group = $I->createNode($html, 'div.control-group');
+        $label = $group->filter('label.control-label');
+        $I->seeNodeChildren($label, array('input[type=range]'));
     }
 
     public function testDateFieldControlGroup()
     {
-        // todo: write this.
+        $I = $this->codeGuy;
+        $html = TbHtml::dateFieldControlGroup('date', 'date');
+        $group = $I->createNode($html, 'div.control-group');
+        $label = $group->filter('label.control-label');
+        $I->seeNodeChildren($label, array('input[type=date]'));
     }
 
     public function testFileFieldControlGroup()
     {
-        // todo: write this.
+        $I = $this->codeGuy;
+        $html = TbHtml::fileFieldControlGroup('file', 'file');
+        $group = $I->createNode($html, 'div.control-group');
+        $label = $group->filter('label.control-label');
+        $I->seeNodeChildren($label, array('input[type=file]'));
+    }
+
+    public function testTextAreaControlGroup()
+    {
+        $I = $this->codeGuy;
+        $html = TbHtml::textAreaControlGroup('textarea', 'Textarea text');
+        $group = $I->createNode($html, 'div.control-group');
+        $label = $group->filter('label.control-label');
+        $I->seeNodeChildren($label, array('textarea'));
     }
 
     public function testRadioButtonControlGroup()
     {
-        // todo: write this.
+        $I = $this->codeGuy;
+        $html = TbHtml::radioButtonControlGroup(
+            'radio',
+            false,
+            array(
+                'label' => 'Label text',
+            )
+        );
+        $group = $I->createNode($html, 'div.control-group');
+        $label = $group->filter('label.radio');
+        $I->seeNodeChildren($label, array('input[type=radio]'));
     }
 
     public function testCheckBoxControlGroup()
     {
-        // todo: write this.
+        $I = $this->codeGuy;
+        $html = TbHtml::checkBoxControlGroup(
+            'checkbox',
+            false,
+            array(
+                'label' => 'Label text',
+            )
+        );
+        $group = $I->createNode($html, 'div.control-group');
+        $label = $group->filter('label.checkbox');
+        $I->seeNodeChildren($label, array('input[type=checkbox]'));
     }
 
     public function testDropDownListControlGroup()
     {
-        // todo: write this.
+        $I = $this->codeGuy;
+        $html = TbHtml::dropDownListControlGroup(
+            'dropdown',
+            '',
+            array('1', '2', '3', '4', '5')
+        );
+        $group = $I->createNode($html, 'div.control-group');
+        $controls = $group->filter('div.controls');
+        $I->seeNodeChildren($controls, array('select'));
     }
 
     public function testListBoxControlGroup()
     {
-        // todo: write this.
+        $I = $this->codeGuy;
+        $html = TbHtml::listBoxControlGroup(
+            'listbox',
+            '',
+            array('1', '2', '3', '4', '5')
+        );
+        $group = $I->createNode($html, 'div.control-group');
+        $controls = $group->filter('div.controls');
+        $I->seeNodeChildren($controls, array('select'));
     }
 
     public function testRadioButtonListControlGroup()
     {
-        // todo: write this.
+        $I = $this->codeGuy;
+        $html = TbHtml::radioButtonListControlGroup(
+            'radioList',
+            '1',
+            array('Option 1', 'Option 2', 'Option 3')
+        );
+        $group = $I->createNode($html, 'div.control-group');
+        $controls = $group->filter('div.controls');
+        $I->seeNodeChildren($controls, array('label.radio', 'label.radio', 'label.radio'));
     }
 
     public function testInlineRadioButtonListControlGroup()
     {
-        // todo: write this.
+        $I = $this->codeGuy;
+        $html = TbHtml::inlineRadioButtonListControlGroup(
+            'radioList',
+            '1',
+            array('Option 1', 'Option 2', 'Option 3')
+        );
+        $group = $I->createNode($html, 'div.control-group');
+        $controls = $group->filter('div.controls');
+        $I->seeNodeChildren($controls, array('label.radio.inline', 'label.radio.inline', 'label.radio.inline'));
     }
 
     public function testCheckBoxListControlGroup()
     {
-        // todo: write this.
+        $I = $this->codeGuy;
+        $html = TbHtml::checkBoxListControlGroup(
+            'checkboxList',
+            array('0', '2'),
+            array('Option 1', 'Option 2', 'Option 3')
+        );
+        $group = $I->createNode($html, 'div.control-group');
+        $controls = $group->filter('div.controls');
+        $I->seeNodeChildren($controls, array('label.checkbox', 'label.checkbox', 'label.checkbox'));
     }
 
     public function testInlineCheckBoxListControlGroup()
     {
-        // todo: write this.
+        $I = $this->codeGuy;
+        $html = TbHtml::inlineCheckBoxListControlGroup(
+            'checkboxList',
+            array('0', '2'),
+            array('Option 1', 'Option 2', 'Option 3')
+        );
+        $group = $I->createNode($html, 'div.control-group');
+        $controls = $group->filter('div.controls');
+        $I->seeNodeChildren(
+            $controls,
+            array('label.checkbox.inline', 'label.checkbox.inline', 'label.checkbox.inline')
+        );
     }
 
     public function testUneditableFieldControlGroup()
     {
-        // todo: write this.
+        $I = $this->codeGuy;
+        $html = TbHtml::uneditableFieldControlGroup('Uneditable text');
+        $group = $I->createNode($html, 'div.control-group');
+        $controls = $group->filter('div.controls');
+        $I->seeNodeChildren($controls, array('span.uneditable-input'));
     }
 
     public function testSearchQueryControlGroup()
     {
-        // todo: write this.
+        $I = $this->codeGuy;
+        $html = TbHtml::searchQueryControlGroup('Search query');
+        $group = $I->createNode($html, 'div.control-group');
+        $controls = $group->filter('div.controls');
+        $I->seeNodeChildren($controls, array('input[type=text].search-query'));
     }
 
     public function testControlGroup()
@@ -1114,12 +1380,46 @@ class TbHtmlTest extends TbTestCase
 
     public function testActiveListBox()
     {
-        // todo: write this.
+        $I = $this->codeGuy;
+
+        $html = TbHtml::activeListBox(
+            new Dummy,
+            'listbox',
+            array('1', '2', '3', '4', '5'),
+            array(
+                'class' => 'list',
+                'empty' => 'Empty text',
+                'size' => TbHtml::INPUT_SIZE_LARGE,
+                'textAlign' => TbHtml::TEXT_ALIGN_CENTER,
+            )
+        );
+        $select = $I->createNode($html, 'select');
+        $I->seeNodeCssClass($select, 'input-large text-center list');
+        $I->seeNodeAttributes(
+            $select,
+            array(
+                'name' => 'Dummy[listbox]',
+                'id' => 'Dummy_listbox',
+                'size' => 4,
+            )
+        );
+
+        $html = TbHtml::activeListBox(
+            new Dummy,
+            'listbox',
+            array('1', '2', '3', '4', '5'),
+            array(
+                'multiple' => true,
+            )
+        );
+        $select = $I->createNode($html, 'select');
+        $I->seeNodeAttribute($select, 'name', 'Dummy[listbox][]');
     }
 
     public function testActiveRadioButtonList()
     {
         // todo: ensure that this test is actually correct.
+
         $I = $this->codeGuy;
         $html = TbHtml::activeRadioButtonList(
             new Dummy,
@@ -1159,6 +1459,7 @@ class TbHtmlTest extends TbTestCase
     public function testActiveCheckBoxList()
     {
         // todo: ensure that this test is actually correct.
+
         $I = $this->codeGuy;
         $html = TbHtml::activeCheckBoxList(
             new Dummy,
@@ -1238,92 +1539,208 @@ class TbHtmlTest extends TbTestCase
 
     public function testActiveTextFieldControlGroup()
     {
-        // todo: write this.
+        $I = $this->codeGuy;
+        $html = TbHtml::activeTextFieldControlGroup(new Dummy, 'text');
+        $group = $I->createNode($html, 'div.control-group');
+        $label = $group->filter('label.control-label');
+        $I->seeNodeChildren($label, array('input[type=text]'));
     }
 
     public function testActivePasswordFieldControlGroup()
     {
-        // todo: write this.
+        $I = $this->codeGuy;
+        $html = TbHtml::activePasswordFieldControlGroup(new Dummy, 'password');
+        $group = $I->createNode($html, 'div.control-group');
+        $label = $group->filter('label.control-label');
+        $I->seeNodeChildren($label, array('input[type=password]'));
     }
 
     public function testActiveUrlFieldControlGroup()
     {
-        // todo: write this.
+        $I = $this->codeGuy;
+        $html = TbHtml::activeUrlFieldControlGroup(new Dummy, 'url');
+        $group = $I->createNode($html, 'div.control-group');
+        $label = $group->filter('label.control-label');
+        $I->seeNodeChildren($label, array('input[type=url]'));
     }
 
     public function testActiveEmailFieldControlGroup()
     {
-        // todo: write this.
+        $I = $this->codeGuy;
+        $html = TbHtml::activeEmailFieldControlGroup(new Dummy, 'email');
+        $group = $I->createNode($html, 'div.control-group');
+        $label = $group->filter('label.control-label');
+        $I->seeNodeChildren($label, array('input[type=email]'));
     }
 
     public function testActiveNumberFieldControlGroup()
     {
-        // todo: write this.
+        $I = $this->codeGuy;
+        $html = TbHtml::activeNumberFieldControlGroup(new Dummy, 'number');
+        $group = $I->createNode($html, 'div.control-group');
+        $label = $group->filter('label.control-label');
+        $I->seeNodeChildren($label, array('input[type=number]'));
     }
 
     public function testActiveRangeFieldControlGroup()
     {
-        // todo: write this.
+        $I = $this->codeGuy;
+        $html = TbHtml::activeRangeFieldControlGroup(new Dummy, 'range');
+        $group = $I->createNode($html, 'div.control-group');
+        $label = $group->filter('label.control-label');
+        $I->seeNodeChildren($label, array('input[type=range]'));
     }
 
     public function testActiveDateFieldControlGroup()
     {
-        // todo: write this.
+        $I = $this->codeGuy;
+        $html = TbHtml::activeDateFieldControlGroup(new Dummy, 'date');
+        $group = $I->createNode($html, 'div.control-group');
+        $label = $group->filter('label.control-label');
+        $I->seeNodeChildren($label, array('input[type=date]'));
     }
 
     public function testActiveFileFieldControlGroup()
     {
-        // todo: write this.
+        $I = $this->codeGuy;
+        $html = TbHtml::activeFileFieldControlGroup(new Dummy, 'file');
+        $group = $I->createNode($html, 'div.control-group');
+        $label = $group->filter('label.control-label');
+        $I->seeNodeChildren($label, array('input[type=file]'));
+    }
+
+    public function testActiveTextAreaControlGroup()
+    {
+        $I = $this->codeGuy;
+        $html = TbHtml::activeTextAreaControlGroup(new Dummy, 'textarea');
+        $group = $I->createNode($html, 'div.control-group');
+        $label = $group->filter('label.control-label');
+        $I->seeNodeChildren($label, array('textarea'));
     }
 
     public function testActiveRadioButtonControlGroup()
     {
-        // todo: write this.
+        $I = $this->codeGuy;
+        $html = TbHtml::activeRadioButtonControlGroup(new Dummy, 'radio');
+        $group = $I->createNode($html, 'div.control-group');
+        $label = $group->filter('label.radio');
+        $I->seeNodeChildren($label, array('input[type=hidden]', 'input[type=radio]'));
     }
 
     public function testActiveCheckBoxControlGroup()
     {
-        // todo: write this.
+        $I = $this->codeGuy;
+        $html = TbHtml::activeCheckBoxControlGroup(new Dummy, 'checkbox');
+        $group = $I->createNode($html, 'div.control-group');
+        $label = $group->filter('label.checkbox');
+        $I->seeNodeChildren($label, array('input[type=hidden]', 'input[type=checkbox]'));
     }
 
     public function testActiveDropDownListControlGroup()
     {
-        // todo: write this.
+        $I = $this->codeGuy;
+        $html = TbHtml::activeDropDownListControlGroup(
+            new Dummy,
+            'dropdown',
+            array('1', '2', '3', '4', '5')
+        );
+        $group = $I->createNode($html, 'div.control-group');
+        $controls = $group->filter('div.controls');
+        $I->seeNodeChildren($controls, array('select'));
     }
 
     public function testActiveListBoxControlGroup()
     {
-        // todo: write this.
+        $I = $this->codeGuy;
+        $html = TbHtml::activeListBoxControlGroup(
+            new Dummy,
+            'listbox',
+            array('1', '2', '3', '4', '5')
+        );
+        $group = $I->createNode($html, 'div.control-group');
+        $controls = $group->filter('div.controls');
+        $I->seeNodeChildren($controls, array('select'));
     }
 
     public function testActiveRadioButtonListControlGroup()
     {
-        // todo: write this.
+        $I = $this->codeGuy;
+        $html = TbHtml::activeRadioButtonListControlGroup(
+            new Dummy,
+            'radioList',
+            array('Option 1', 'Option 2', 'Option 3')
+        );
+        $group = $I->createNode($html, 'div.control-group');
+        $controls = $group->filter('div.controls');
+        $I->seeNodeChildren($controls, array('input[type=hidden]', 'label.radio', 'label.radio', 'label.radio'));
     }
 
     public function testActiveInlineRadioButtonListControlGroup()
     {
-        // todo: write this.
+        $I = $this->codeGuy;
+        $html = TbHtml::activeInlineRadioButtonListControlGroup(
+            new Dummy,
+            'radioList',
+            array('Option 1', 'Option 2', 'Option 3')
+        );
+        $group = $I->createNode($html, 'div.control-group');
+        $controls = $group->filter('div.controls');
+        $I->seeNodeChildren(
+            $controls,
+            array('input[type=hidden]', 'label.radio.inline', 'label.radio.inline', 'label.radio.inline')
+        );
     }
 
     public function testActiveCheckBoxListControlGroup()
     {
-        // todo: write this.
+        $I = $this->codeGuy;
+        $html = TbHtml::activeCheckBoxListControlGroup(
+            new Dummy,
+            'checkboxList',
+            array('0', '2'),
+            array('Option 1', 'Option 2', 'Option 3')
+        );
+        $group = $I->createNode($html, 'div.control-group');
+        $controls = $group->filter('div.controls');
+        $I->seeNodeChildren(
+            $controls,
+            array('input[type=hidden]', 'label.checkbox', 'label.checkbox', 'label.checkbox')
+        );
     }
 
     public function testActiveInlineCheckBoxListControlGroup()
     {
-        // todo: write this.
+        $I = $this->codeGuy;
+        $html = TbHtml::activeInlineCheckBoxListControlGroup(
+            new Dummy,
+            'checkboxList',
+            array('0', '2'),
+            array('Option 1', 'Option 2', 'Option 3')
+        );
+        $group = $I->createNode($html, 'div.control-group');
+        $controls = $group->filter('div.controls');
+        $I->seeNodeChildren(
+            $controls,
+            array('input[type=hidden]', 'label.checkbox.inline', 'label.checkbox.inline', 'label.checkbox.inline')
+        );
     }
 
     public function testActiveUneditableFieldControlGroup()
     {
-        // todo: write this.
+        $I = $this->codeGuy;
+        $html = TbHtml::activeUneditableFieldControlGroup(new Dummy, 'uneditable');
+        $group = $I->createNode($html, 'div.control-group');
+        $controls = $group->filter('div.controls');
+        $I->seeNodeChildren($controls, array('span.uneditable-input'));
     }
 
     public function testActiveSearchQueryControlGroup()
     {
-        // todo: write this.
+        $I = $this->codeGuy;
+        $html = TbHtml::activeSearchQueryControlGroup(new Dummy, 'search');
+        $group = $I->createNode($html, 'div.control-group');
+        $controls = $group->filter('div.controls');
+        $I->seeNodeChildren($controls, array('input[type=text].search-query'));
     }
 
     public function testActiveControlGroup()
@@ -1801,6 +2218,9 @@ class TbHtmlTest extends TbTestCase
         $i = $I->createNode($html, 'i.icon-pencil');
         $I->seeNodeCssClass($i, 'icon-white');
         $I->seeNodeEmpty($i);
+
+        $html = TbHtml::icon(array());
+        $this->assertEquals('', $html);
     }
 
     public function testDropdownToggleLink()
@@ -1877,8 +2297,14 @@ class TbHtmlTest extends TbTestCase
 
         $buttons = array(
             array('label' => 'Left'),
-            array('label' => 'Middle'),
-            array('label' => 'Right', 'color' => TbHtml::BUTTON_COLOR_INVERSE),
+            array(
+                'label' => 'Middle',
+                'items' => array(
+                    array('label' => 'Action', 'url' => '#'),
+                ),
+                'htmlOptions' => array('color' => TbHtml::BUTTON_COLOR_INVERSE),
+            ),
+            array('label' => 'Right', 'visible' => false),
         );
 
         $html = TbHtml::buttonGroup(
@@ -1886,21 +2312,26 @@ class TbHtmlTest extends TbTestCase
             array(
                 'class' => 'div',
                 'color' => TbHtml::BUTTON_COLOR_PRIMARY,
+                'toggle' => TbHtml::BUTTON_TOGGLE_CHECKBOX,
             )
         );
         $group = $I->createNode($html, 'div.btn-group');
         $I->seeNodeCssClass($group, 'div');
+        $I->seeNodeAttribute($group, 'data-toggle', 'buttons-checkbox');
+        $I->seeNodeNumChildren($group, 2);
         foreach ($group->children() as $i => $btnElement) {
             $btn = $I->createNode($btnElement);
-            $I->seeNodeCssClass($btn, 'btn');
-            $I->seeNodeAttributes(
-                $btn,
-                array(
-                    'href' => '#',
-                )
-            );
-            $I->seeNodeCssClass($btn, ($i === 2 ? 'btn-inverse' : 'btn-primary'));
-            $I->seeNodeText($btn, $buttons[$i]['label']);
+            if ($i === 1) {
+                $I->seeNodeChildren($btn, array('a.dropdown-toggle', 'ul.dropdown-menu'));
+                $a = $btn->filter('a.dropdown-toggle');
+                $I->seeNodeCssClass($a, 'btn-inverse');
+                $I->seeNodeText($a, 'Middle');
+            } else {
+                $I->seeNodeCssClass($btn, 'btn');
+                $I->seeNodeAttribute($btn, 'href', '#');
+                $I->seeNodeCssClass($btn, 'btn-primary');
+                $I->seeNodeText($btn, $buttons[$i]['label']);
+            }
         }
 
         $html = TbHtml::buttonGroup(array());
@@ -1909,7 +2340,17 @@ class TbHtmlTest extends TbTestCase
 
     public function testVerticalButtonGroup()
     {
-        // todo: write this.
+        $I = $this->codeGuy;
+        $html = TbHtml::verticalButtonGroup(
+            array(
+                array('icon' => TbHtml::ICON_ALIGN_LEFT),
+                array('icon' => TbHtml::ICON_ALIGN_CENTER),
+                array('icon' => TbHtml::ICON_ALIGN_RIGHT),
+                array('icon' => TbHtml::ICON_ALIGN_JUSTIFY),
+            )
+        );
+        $group = $I->createNode($html, 'div.btn-group');
+        $I->seeNodeCssClass($group, 'btn-group-vertical');
     }
 
     public function testButtonToolbar()
@@ -1992,12 +2433,13 @@ class TbHtmlTest extends TbTestCase
             $items,
             array(
                 'class' => 'link',
+                'dropup' => true,
                 'groupOptions' => array('class' => 'group'),
                 'menuOptions' => array('class' => 'menu'),
             )
         );
         $group = $I->createNode($html, 'div.btn-group');
-        $I->seeNodeCssClass($group, 'group');
+        $I->seeNodeCssClass($group, 'dropup group');
         $I->seeNodeChildren($group, array('a.dropdown-toggle', 'ul.dropdown-menu'));
         $a = $group->filter('a.dropdown-toggle');
         $I->seeNodeCssClass($a, 'link');
@@ -2055,7 +2497,6 @@ class TbHtmlTest extends TbTestCase
     public function testTabs()
     {
         $I = $this->codeGuy;
-
         $html = TbHtml::tabs(
             array(
                 array('label' => 'Link', 'url' => '#'),
@@ -2068,7 +2509,6 @@ class TbHtmlTest extends TbTestCase
     public function testStackedTabs()
     {
         $I = $this->codeGuy;
-
         $html = TbHtml::stackedTabs(
             array(
                 array('label' => 'Link', 'url' => '#'),
@@ -2081,7 +2521,6 @@ class TbHtmlTest extends TbTestCase
     public function testPills()
     {
         $I = $this->codeGuy;
-
         $html = TbHtml::pills(
             array(
                 array('label' => 'Link', 'url' => '#'),
@@ -2199,6 +2638,14 @@ class TbHtmlTest extends TbTestCase
                 $I->seeNodeText($a, $items[$i]['label']);
             }
         }
+
+        // todo: add a test for when one item is disabled.
+        // todo: add a test for when an item is active.
+        // todo: add a test for when an item has an icon.
+        // todo: add a test for when an item has htmlOptions set.
+
+        $html = TbHtml::menu(array());
+        $this->assertEquals('', $html);
     }
 
     public function testMenuLink()
@@ -2470,6 +2917,11 @@ class TbHtmlTest extends TbTestCase
         );
         $div = $I->createNode($html, 'div.pagination');
         $I->seeNodeCssClass($div, 'pagination-centered');
+
+        // todo: add a test for when an item has htmlOptions set.
+
+        $html = TbHtml::pagination(array());
+        $this->assertEquals('', $html);
     }
 
     public function testPaginationLink()
@@ -2488,6 +2940,9 @@ class TbHtmlTest extends TbTestCase
         $a = $li->filter('a');
         $I->seeNodeCssClass($a, 'link');
         $I->seeNodeAttribute($a, 'href', '#');
+
+        // todo: add a test for when an item is active.
+        // todo: add a test for when an item is disabled.
     }
 
     public function testPager()
@@ -2523,6 +2978,11 @@ class TbHtmlTest extends TbTestCase
         $a = $next->filter('a');
         $I->seeNodeAttribute($a, 'href', '#');
         $I->seeNodeText($a, 'Next');
+
+        // todo: add a test for when an item has htmlOptions set.
+
+        $html = TbHtml::pager(array());
+        $this->assertEquals('', $html);
     }
 
     public function testPagerLink()
@@ -3028,6 +3488,8 @@ class TbHtmlTest extends TbTestCase
         $caption = $overlay->filter('p');
         $I->seeNodeCssClass($caption, 'caption');
         $I->seeNodeText($caption, 'Caption text');
+
+        // todo: add a test for when an item has an url defined that is not false.
     }
 
     public function testCarouselPrevLink()

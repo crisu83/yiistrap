@@ -344,6 +344,45 @@ class CodeGuy extends \Codeception\AbstractGuy
      * ----------------------------------------------
      *
      * @param \Symfony\Component\DomCrawler\Crawler $node
+     * @param array $name
+    * Conditional Assertion: Test won't be stopped on fail
+     * @see Codeception\Module\CodeHelper::dontSeeNodeAttribute()
+     * @return \Codeception\Maybe
+     */
+    public function cantSeeNodeAttribute($node, $name) {
+        $this->scenario->addStep(new \Codeception\Step\ConditionalAssertion('dontSeeNodeAttribute', func_get_args()));
+        if ($this->scenario->running()) {
+            $result = $this->scenario->runStep();
+            return new Maybe($result);
+        }
+        return new Maybe();
+    }
+    /**
+     * This method is generated.
+     * Documentation taken from corresponding module.
+     * ----------------------------------------------
+     *
+     * @param \Symfony\Component\DomCrawler\Crawler $node
+     * @param array $name
+     * @see Codeception\Module\CodeHelper::dontSeeNodeAttribute()
+     * @return \Codeception\Maybe
+     */
+    public function dontSeeNodeAttribute($node, $name) {
+        $this->scenario->addStep(new \Codeception\Step\Assertion('dontSeeNodeAttribute', func_get_args()));
+        if ($this->scenario->running()) {
+            $result = $this->scenario->runStep();
+            return new Maybe($result);
+        }
+        return new Maybe();
+    }
+
+ 
+    /**
+     * This method is generated.
+     * Documentation taken from corresponding module.
+     * ----------------------------------------------
+     *
+     * @param \Symfony\Component\DomCrawler\Crawler $node
      * @param array $attributes
     * Conditional Assertion: Test won't be stopped on fail
      * @see Codeception\Module\CodeHelper::seeNodeAttributes()
@@ -369,6 +408,45 @@ class CodeGuy extends \Codeception\AbstractGuy
      */
     public function seeNodeAttributes($node, $attributes) {
         $this->scenario->addStep(new \Codeception\Step\Assertion('seeNodeAttributes', func_get_args()));
+        if ($this->scenario->running()) {
+            $result = $this->scenario->runStep();
+            return new Maybe($result);
+        }
+        return new Maybe();
+    }
+
+ 
+    /**
+     * This method is generated.
+     * Documentation taken from corresponding module.
+     * ----------------------------------------------
+     *
+     * @param \Symfony\Component\DomCrawler\Crawler $node
+     * @param array $attributes
+    * Conditional Assertion: Test won't be stopped on fail
+     * @see Codeception\Module\CodeHelper::dontSeeNodeAttributes()
+     * @return \Codeception\Maybe
+     */
+    public function cantSeeNodeAttributes($node, $attributes) {
+        $this->scenario->addStep(new \Codeception\Step\ConditionalAssertion('dontSeeNodeAttributes', func_get_args()));
+        if ($this->scenario->running()) {
+            $result = $this->scenario->runStep();
+            return new Maybe($result);
+        }
+        return new Maybe();
+    }
+    /**
+     * This method is generated.
+     * Documentation taken from corresponding module.
+     * ----------------------------------------------
+     *
+     * @param \Symfony\Component\DomCrawler\Crawler $node
+     * @param array $attributes
+     * @see Codeception\Module\CodeHelper::dontSeeNodeAttributes()
+     * @return \Codeception\Maybe
+     */
+    public function dontSeeNodeAttributes($node, $attributes) {
+        $this->scenario->addStep(new \Codeception\Step\Assertion('dontSeeNodeAttributes', func_get_args()));
         if ($this->scenario->running()) {
             $result = $this->scenario->runStep();
             return new Maybe($result);
