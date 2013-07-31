@@ -218,6 +218,16 @@ class TbHtmlTest extends TbTestCase
         );
     }
 
+    public function testBeginForm()
+    {
+        // todo: write this.
+    }
+
+    public function testStatefulForm()
+    {
+        // todo: write this.
+    }
+
     public function testTextField()
     {
         $I = $this->codeGuy;
@@ -625,6 +635,96 @@ class TbHtmlTest extends TbTestCase
                 'value' => 'Search query',
             )
         );
+    }
+
+    public function testTextFieldControlGroup()
+    {
+        // todo: write this.
+    }
+
+    public function testPasswordFieldControlGroup()
+    {
+        // todo: write this.
+    }
+
+    public function testUrlFieldControlGroup()
+    {
+        // todo: write this.
+    }
+
+    public function testEmailFieldControlGroup()
+    {
+        // todo: write this.
+    }
+
+    public function testNumberFieldControlGroup()
+    {
+        // todo: write this.
+    }
+
+    public function testRangeFieldControlGroup()
+    {
+        // todo: write this.
+    }
+
+    public function testDateFieldControlGroup()
+    {
+        // todo: write this.
+    }
+
+    public function testFileFieldControlGroup()
+    {
+        // todo: write this.
+    }
+
+    public function testRadioButtonControlGroup()
+    {
+        // todo: write this.
+    }
+
+    public function testCheckBoxControlGroup()
+    {
+        // todo: write this.
+    }
+
+    public function testDropDownListControlGroup()
+    {
+        // todo: write this.
+    }
+
+    public function testListBoxControlGroup()
+    {
+        // todo: write this.
+    }
+
+    public function testRadioButtonListControlGroup()
+    {
+        // todo: write this.
+    }
+
+    public function testInlineRadioButtonListControlGroup()
+    {
+        // todo: write this.
+    }
+
+    public function testCheckBoxListControlGroup()
+    {
+        // todo: write this.
+    }
+
+    public function testInlineCheckBoxListControlGroup()
+    {
+        // todo: write this.
+    }
+
+    public function testUneditableFieldControlGroup()
+    {
+        // todo: write this.
+    }
+
+    public function testSearchQueryControlGroup()
+    {
+        // todo: write this.
     }
 
     public function testControlGroup()
@@ -1136,6 +1236,96 @@ class TbHtmlTest extends TbTestCase
         );
     }
 
+    public function testActiveTextFieldControlGroup()
+    {
+        // todo: write this.
+    }
+
+    public function testActivePasswordFieldControlGroup()
+    {
+        // todo: write this.
+    }
+
+    public function testActiveUrlFieldControlGroup()
+    {
+        // todo: write this.
+    }
+
+    public function testActiveEmailFieldControlGroup()
+    {
+        // todo: write this.
+    }
+
+    public function testActiveNumberFieldControlGroup()
+    {
+        // todo: write this.
+    }
+
+    public function testActiveRangeFieldControlGroup()
+    {
+        // todo: write this.
+    }
+
+    public function testActiveDateFieldControlGroup()
+    {
+        // todo: write this.
+    }
+
+    public function testActiveFileFieldControlGroup()
+    {
+        // todo: write this.
+    }
+
+    public function testActiveRadioButtonControlGroup()
+    {
+        // todo: write this.
+    }
+
+    public function testActiveCheckBoxControlGroup()
+    {
+        // todo: write this.
+    }
+
+    public function testActiveDropDownListControlGroup()
+    {
+        // todo: write this.
+    }
+
+    public function testActiveListBoxControlGroup()
+    {
+        // todo: write this.
+    }
+
+    public function testActiveRadioButtonListControlGroup()
+    {
+        // todo: write this.
+    }
+
+    public function testActiveInlineRadioButtonListControlGroup()
+    {
+        // todo: write this.
+    }
+
+    public function testActiveCheckBoxListControlGroup()
+    {
+        // todo: write this.
+    }
+
+    public function testActiveInlineCheckBoxListControlGroup()
+    {
+        // todo: write this.
+    }
+
+    public function testActiveUneditableFieldControlGroup()
+    {
+        // todo: write this.
+    }
+
+    public function testActiveSearchQueryControlGroup()
+    {
+        // todo: write this.
+    }
+
     public function testActiveControlGroup()
     {
         $I = $this->codeGuy;
@@ -1273,6 +1463,7 @@ class TbHtmlTest extends TbTestCase
             )
         );
         $controls = $I->createNode($html, 'div.controls');
+        $I->seeNodeCssClass($controls, 'controls-row');
         $I->seeNodeChildren($controls, array('div.control', 'div.control'));
     }
 
@@ -1319,20 +1510,6 @@ class TbHtmlTest extends TbTestCase
         );
         $input = $form->filter('input[type=text]');
         $I->seeNodeCssClass($input, 'search-query');
-    }
-
-    public function testNavbarForm()
-    {
-        $I = $this->codeGuy;
-        $html = TbHtml::navbarForm('#');
-        $I->createNode($html, 'form.navbar-form');
-    }
-
-    public function testNavbarSearchForm()
-    {
-        $I = $this->codeGuy;
-        $html = TbHtml::navbarSearchForm('#');
-        $I->createNode($html, 'form.navbar-search');
     }
 
     public function testLink()
@@ -1626,20 +1803,6 @@ class TbHtmlTest extends TbTestCase
         $I->seeNodeEmpty($i);
     }
 
-    public function testDropdown()
-    {
-        $I = $this->codeGuy;
-        $html = TbHtml::dropdown(
-            array(
-                array('label' => 'Link', 'url' => '#'),
-            )
-        );
-        $I->createNode($html, 'ul.dropdown-menu');
-
-        $html = TbHtml::dropdown(array());
-        $this->assertEquals('', $html);
-    }
-
     public function testDropdownToggleLink()
     {
         $I = $this->codeGuy;
@@ -1742,6 +1905,11 @@ class TbHtmlTest extends TbTestCase
 
         $html = TbHtml::buttonGroup(array());
         $this->assertEquals('', $html);
+    }
+
+    public function testVerticalButtonGroup()
+    {
+        // todo: write this.
     }
 
     public function testButtonToolbar()
@@ -2079,11 +2247,6 @@ class TbHtmlTest extends TbTestCase
         $I->seeNodeEmpty($li);
     }
 
-    public function testTabbable()
-    {
-        // todo: write this.
-    }
-
     public function testTabbableTabs()
     {
         // todo: write this.
@@ -2188,6 +2351,25 @@ class TbHtmlTest extends TbTestCase
         $li = $I->createNode($html, 'li.divider-vertical');
         $I->seeNodeCssClass($li, 'item');
         $I->seeNodeEmpty($li);
+    }
+
+    public function testNavbarForm()
+    {
+        $I = $this->codeGuy;
+        $html = TbHtml::navbarForm('#');
+        $I->createNode($html, 'form.navbar-form');
+    }
+
+    public function testNavbarSearchForm()
+    {
+        $I = $this->codeGuy;
+        $html = TbHtml::navbarSearchForm('#');
+        $I->createNode($html, 'form.navbar-search');
+    }
+
+    public function testNavbarCollapseLink()
+    {
+        // todo: write this.
     }
 
     public function testBreadcrumbs()
@@ -2659,6 +2841,14 @@ class TbHtmlTest extends TbTestCase
         $progress = $I->createNode($html, 'div.progress');
         $last = $progress->filter('div.bar')->last();
         $I->seeNodeCssStyle($last, 'width: 20%');
+
+        $html = TbHtml::stackedProgressBar(array());
+        $this->assertEquals('', $html);
+    }
+
+    public function testBar()
+    {
+        // todo: write this.
     }
 
     public function testMediaObjects()
@@ -2684,6 +2874,8 @@ class TbHtmlTest extends TbTestCase
             ),
             array('heading' => 'Media heading', 'content' => 'Content text'),
         );
+
+        // todo: write this.
     }
 
     public function testMediaObject()
@@ -2906,5 +3098,15 @@ class TbHtmlTest extends TbTestCase
             );
             $I->seeNodeEmpty($node);
         }
+    }
+
+    public function testAddCssClass()
+    {
+        // todo: write this.
+    }
+
+    public function testAddCssStyle()
+    {
+        // todo: write this.
     }
 }

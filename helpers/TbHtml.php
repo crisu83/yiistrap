@@ -2138,17 +2138,6 @@ EOD;
     }
 
     /**
-     * Displays an error text.
-     * @param string $text the error text.
-     * @param array $htmlOptions additional HTML attributes.
-     * @return string the rendered error.
-     */
-    public static function errorTb($text, $htmlOptions = array())
-    {
-        return self::help($text, $htmlOptions);
-    }
-
-    /**
      * Displays the first validation error for a model attribute.
      * @param CModel $model the data model.
      * @param string $attribute the attribute name.
@@ -2159,7 +2148,7 @@ EOD;
     {
         CHtml::resolveName($model, $attribute); // turn [a][b]attr into attr
         $error = $model->getError($attribute);
-        return !empty($error) ? self::errorTb($error, $htmlOptions) : '';
+        return !empty($error) ? self::help($error, $htmlOptions) : '';
     }
 
     /**
@@ -2280,8 +2269,7 @@ EOD;
     public static function controls($controls, $htmlOptions = array())
     {
         self::addCssClass('controls', $htmlOptions);
-        $row = TbArray::popValue('row', $htmlOptions, false);
-        if ($row) {
+        if (TbArray::popValue('row', $htmlOptions, false)) {
             self::addCssClass('controls-row', $htmlOptions);
         }
         $before = TbArray::popValue('before', $htmlOptions, '');
@@ -2338,47 +2326,6 @@ EOD;
         $output .= self::searchQueryField($name, $value, $inputOptions);
         $output .= CHtml::endForm();
         return $output;
-    }
-
-    /**
-     * Generates a navbar form.
-     * @param mixed $action the form action URL.
-     * @param string $method form method (e.g. post, get).
-     * @param array $htmlOptions additional HTML attributes
-     * @return string the generated form.
-     */
-    public static function navbarForm($action, $method = 'post', $htmlOptions = array())
-    {
-        self::addCssClass('navbar-form', $htmlOptions);
-        return self::form($action, $method, $htmlOptions);
-    }
-
-    /**
-     * Generates a navbar search form.
-     * @param mixed $action the form action URL.
-     * @param string $method form method (e.g. post, get).
-     * @param array $htmlOptions additional HTML attributes
-     * @return string the generated form.
-     */
-    public static function navbarSearchForm($action, $method = 'post', $htmlOptions = array())
-    {
-        self::addCssClass('navbar-search', $htmlOptions);
-        return self::searchForm($action, $method, $htmlOptions);
-    }
-
-    /**
-     * Generates a collapse element.
-     * @param string $target the CSS selector for the target element.
-     * @param array $htmlOptions additional HTML attributes.
-     * @return string the generated icon.
-     */
-    public static function navbarCollapseLink($target, $htmlOptions = array())
-    {
-        self::addCssClass('btn btn-navbar', $htmlOptions);
-        $htmlOptions['data-toggle'] = 'collapse';
-        $htmlOptions['data-target'] = $target;
-        $content = '<span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span>';
-        return self::tag('a', $htmlOptions, $content);
     }
 
     // Buttons
@@ -2512,6 +2459,8 @@ EOD;
         return self::ajaxButton($label, $url, $ajaxOptions, $htmlOptions);
     }
 
+    // todo: add methods for input button and input submit.
+
     /**
      * Generates a button.
      * @param string $type the button type.
@@ -2519,7 +2468,7 @@ EOD;
      * @param array $htmlOptions additional HTML attributes.
      * @return string the generated button.
      */
-    public static function btn($type, $label, $htmlOptions = array())
+    protected static function btn($type, $label, $htmlOptions = array())
     {
         self::addCssClass('btn', $htmlOptions);
         $color = TbArray::popValue('color', $htmlOptions);
@@ -2740,7 +2689,7 @@ EOD;
      * @param array $htmlOptions additional HTML attributes.
      * @return string the generated menu.
      */
-    public static function dropdown($items, $htmlOptions = array())
+    protected static function dropdown($items, $htmlOptions = array())
     {
         self::addCssClass('dropdown-menu', $htmlOptions);
         return self::menu($items, $htmlOptions);
@@ -2775,7 +2724,7 @@ EOD;
      * @param array $htmlOptions additional HTML attributes.
      * @return string the generated element.
      */
-    public static function dropdownToggle($type, $label, $htmlOptions)
+    protected static function dropdownToggle($type, $label, $htmlOptions)
     {
         self::addCssClass('dropdown-toggle', $htmlOptions);
         $label .= ' <b class="caret"></b>';
@@ -2849,6 +2798,18 @@ EOD;
             return $output;
         }
         return '';
+    }
+
+    /**
+     * Generates a vertical button group.
+     * @param array $buttons the button configurations.
+     * @param array $htmlOptions additional HTML options.
+     * @return string the generated button group.
+     */
+    public static function verticalButtonGroup(array $buttons, $htmlOptions = array())
+    {
+        $htmlOptions['vertical'] = true;
+        return self::buttonGroup($buttons, $htmlOptions);
     }
 
     /**
@@ -2993,7 +2954,7 @@ EOD;
      * @param array $htmlOptions additional HTML attributes.
      * @return string the generated menu.
      */
-    public static function nav($type, $items, $htmlOptions = array())
+    protected static function nav($type, $items, $htmlOptions = array())
     {
         self::addCssClass('nav', $htmlOptions);
         if (!empty($type)) {
@@ -3014,6 +2975,7 @@ EOD;
      */
     public static function menu(array $items, $htmlOptions = array(), $depth = 0)
     {
+        // todo: consider making this method protected.
         if (!empty($items)) {
             $htmlOptions['role'] = 'menu';
             $output = self::openTag('ul', $htmlOptions);
@@ -3134,7 +3096,7 @@ EOD;
      * @param array $htmlOptions additional HTML attributes.
      * @return string the generated menu.
      */
-    public static function tabbable($type, $tabs, $htmlOptions = array())
+    protected static function tabbable($type, $tabs, $htmlOptions = array())
     {
         self::addCssClass('tabbable', $htmlOptions);
         $placement = TbArray::popValue('placement', $htmlOptions);
@@ -3284,6 +3246,47 @@ EOD;
     {
         self::addCssClass('divider-vertical', $htmlOptions);
         return self::tag('li', $htmlOptions);
+    }
+
+    /**
+     * Generates a navbar form.
+     * @param mixed $action the form action URL.
+     * @param string $method form method (e.g. post, get).
+     * @param array $htmlOptions additional HTML attributes
+     * @return string the generated form.
+     */
+    public static function navbarForm($action, $method = 'post', $htmlOptions = array())
+    {
+        self::addCssClass('navbar-form', $htmlOptions);
+        return self::form($action, $method, $htmlOptions);
+    }
+
+    /**
+     * Generates a navbar search form.
+     * @param mixed $action the form action URL.
+     * @param string $method form method (e.g. post, get).
+     * @param array $htmlOptions additional HTML attributes
+     * @return string the generated form.
+     */
+    public static function navbarSearchForm($action, $method = 'post', $htmlOptions = array())
+    {
+        self::addCssClass('navbar-search', $htmlOptions);
+        return self::searchForm($action, $method, $htmlOptions);
+    }
+
+    /**
+     * Generates a collapse element.
+     * @param string $target the CSS selector for the target element.
+     * @param array $htmlOptions additional HTML attributes.
+     * @return string the generated icon.
+     */
+    public static function navbarCollapseLink($target, $htmlOptions = array())
+    {
+        self::addCssClass('btn btn-navbar', $htmlOptions);
+        $htmlOptions['data-toggle'] = 'collapse';
+        $htmlOptions['data-target'] = $target;
+        $content = '<span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span>';
+        return self::tag('a', $htmlOptions, $content);
     }
 
     // Breadcrumbs
@@ -3864,7 +3867,7 @@ EOD;
      * @param array $htmlOptions additional HTML attributes.
      * @return string the generated element.
      */
-    public static function close($tag, $label, $htmlOptions = array())
+    protected static function close($tag, $label, $htmlOptions = array())
     {
         self::addCssClass('close', $htmlOptions);
         $dismiss = TbArray::popValue('dismiss', $htmlOptions);
