@@ -2985,7 +2985,7 @@ EOD;
      * @param array $htmlOptions additional HTML attributes.
      * @return string the generated menu.
      */
-    protected static function nav($type, $items, $htmlOptions = array())
+    public static function nav($type, $items, $htmlOptions = array())
     {
         self::addCssClass('nav', $htmlOptions);
         if (!empty($type)) {
