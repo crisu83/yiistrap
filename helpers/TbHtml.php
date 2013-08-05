@@ -2991,7 +2991,8 @@ EOD;
         if (!empty($type)) {
             self::addCssClass('nav-' . $type, $htmlOptions);
         }
-        if ($type !== self::NAV_TYPE_LIST && TbArray::popValue('stacked', $htmlOptions, false)) {
+        $stacked = TbArray::popValue('stacked', $htmlOptions, false);
+        if ($type !== self::NAV_TYPE_LIST && $stacked) {
             self::addCssClass('nav-stacked', $htmlOptions);
         }
         return self::menu($items, $htmlOptions);
@@ -3119,32 +3120,6 @@ EOD;
     }
 
     /**
-     * Generates a tabbable menu.
-     * @param string $type the menu type.
-     * @param array $tabs the tab configurations.
-     * @param array $htmlOptions additional HTML attributes.
-     * @return string the generated menu.
-     */
-    protected static function tabbable($type, $tabs, $htmlOptions = array())
-    {
-        self::addCssClass('tabbable', $htmlOptions);
-        $placement = TbArray::popValue('placement', $htmlOptions);
-        if (!empty($placement)) {
-            self::addCssClass('tabs-' . $placement, $htmlOptions);
-        }
-        $menuOptions = TbArray::popValue('menuOptions', $htmlOptions, array());
-        $contentOptions = TbArray::popValue('contentOptions', $htmlOptions, array());
-        self::addCssClass('tab-content', $contentOptions);
-        $panes = array();
-        $menu = self::nav($type, self::normalizeTabs($tabs, $panes), $menuOptions);
-        $content = self::tag('div', $contentOptions, implode('', $panes));
-        $output = self::openTag('div', $htmlOptions);
-        $output .= $placement === self::TABS_PLACEMENT_BELOW ? $content . $menu : $menu . $content;
-        $output .= '</div>';
-        return $output;
-    }
-
-    /**
      * Generates a tabbable tabs menu.
      * @param array $tabs the tab configurations.
      * @param array $htmlOptions additional HTML attributes.
@@ -3167,6 +3142,33 @@ EOD;
     }
 
     /**
+     * Generates a tabbable menu.
+     * @param string $type the menu type.
+     * @param array $tabs the tab configurations.
+     * @param array $htmlOptions additional HTML attributes.
+     * @return string the generated menu.
+     */
+    public static function tabbable($type, $tabs, $htmlOptions = array())
+    {
+        self::addCssClass('tabbable', $htmlOptions);
+        $placement = TbArray::popValue('placement', $htmlOptions);
+        if (!empty($placement)) {
+            self::addCssClass('tabs-' . $placement, $htmlOptions);
+        }
+        $menuOptions = TbArray::popValue('menuOptions', $htmlOptions, array());
+        $contentOptions = TbArray::popValue('contentOptions', $htmlOptions, array());
+        self::addCssClass('tab-content', $contentOptions);
+        $panes = array();
+        $items = self::normalizeTabs($tabs, $panes);
+        $menu = self::nav($type, $items, $menuOptions);
+        $content = self::tag('div', $contentOptions, implode('', $panes));
+        $output = self::openTag('div', $htmlOptions);
+        $output .= $placement === self::TABS_PLACEMENT_BELOW ? $content . $menu : $menu . $content;
+        $output .= '</div>';
+        return $output;
+    }
+
+    /**
      * Normalizes the tab configuration.
      * @param array $tabs the tab configuration.
      * @param array $panes a reference to the panes array.
@@ -3185,7 +3187,6 @@ EOD;
             $menuItem['label'] = TbArray::popValue('label', $tabOptions, '');
             $menuItem['active'] = TbArray::getValue('active', $tabOptions, false);
             $menuItem['disabled'] = TbArray::popValue('disabled', $tabOptions, false);
-            $menuItem['itemOptions'] = TbArray::popValue('itemOptions', $tabOptions, array());
             $menuItem['linkOptions'] = TbArray::popValue('linkOptions', $tabOptions, array());
             $items = TbArray::popValue('items', $tabOptions, array());
             if (!empty($items)) {
