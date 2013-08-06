@@ -59,7 +59,8 @@
 .grid-view .table .filters > td .filter-container {
   padding: 0 16px 0 0;
 }
-.grid-view .table .filters > td .filter-container input[type="text"] {
+.grid-view .table .filters > td .filter-container input[type="text"], 
+.grid-view .table .filters > td .filter-container select {
   margin-bottom: 0;
   width: 100%;
 }
