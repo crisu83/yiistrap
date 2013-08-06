@@ -158,7 +158,15 @@ class TbNav extends CWidget
      */
     protected function isItemActive($item, $route)
     {
-        if (isset($item['url']) && is_array($item['url']) && !strcasecmp(trim($item['url'][0], '/'), $route)) {
+        $itemRoute = trim($item['url'][0], '/');
+        
+        // Prepend the current module to the item route if it is not present
+        if (Yii::app()->controller->module !== null && substr_count($itemRoute, '/') === 1) {
+            $moduleId = Yii::app()->controller->module->id;
+            $itemRoute = implode('/', array($moduleId, $itemRoute));
+        }
+        
+        if (isset($item['url']) && is_array($item['url']) && !strcasecmp($itemRoute, $route)) {
             unset($item['url']['#']);
             if (count($item['url']) > 1) {
                 foreach (array_splice($item['url'], 1) as $name => $value) {
