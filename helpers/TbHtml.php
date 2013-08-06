@@ -4195,7 +4195,7 @@ EOD;
     {
         // Always operate on arrays
         if (is_string($className)) {
-            $className = array($className);
+            $className = explode(' ', $className);
         }
         if (isset($htmlOptions['class'])) {
             $classes = array_filter(explode(' ', $htmlOptions['class']));
