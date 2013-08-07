@@ -4193,17 +4193,22 @@ EOD;
      */
     public static function addCssClass($className, &$htmlOptions)
     {
-        if (is_array($className)) {
-            $className = implode(' ', $className);
+        // Always operate on arrays
+        if (is_string($className)) {
+            $className = explode(' ', $className);
         }
         if (isset($htmlOptions['class'])) {
-            // todo: consider throwing an exception if the class exists instead of skipping the class.
-            if (preg_match("/\b{$className}\b/", $htmlOptions['class']) === 0) {
-                $htmlOptions['class'] .= ' ' . $className;
+            $classes = array_filter(explode(' ', $htmlOptions['class']));
+            foreach ($className as $class) {
+                $class = trim($class);
+                // Don't add the class if it already exists
+                if (array_search($class, $classes) === false) {
+                    $classes[] = $class;
+                }
             }
-        } else {
-            $htmlOptions['class'] = $className;
+            $className = $classes;
         }
+        $htmlOptions['class'] = implode(' ', $className);
     }
 
     /**
