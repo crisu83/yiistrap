@@ -603,6 +603,7 @@ class TbHtmlTest extends TbTestCase
         );
         $select = $I->createNode($html, 'select');
         $I->seeNodeCssClass($select, 'input-large text-center list');
+        $I->dontSeeNodeAttribute($select, 'size');
     }
 
     public function testListBox()
@@ -1391,6 +1392,7 @@ class TbHtmlTest extends TbTestCase
         );
         $select = $I->createNode($html, 'select');
         $I->seeNodeCssClass($select, 'input-large text-center list');
+        $I->dontSeeNodeAttribute($select, 'size');
     }
 
     public function testActiveListBox()
