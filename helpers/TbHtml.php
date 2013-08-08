@@ -2370,9 +2370,7 @@ EOD;
      */
     public static function link($text, $url = '#', $htmlOptions = array())
     {
-        if ($url !== false) {
-            $htmlOptions['href'] = parent::normalizeUrl($url);
-        }
+        $htmlOptions['href'] = parent::normalizeUrl($url);
         self::clientChange('click', $htmlOptions);
         return self::tag('a', $htmlOptions, $text);
     }
