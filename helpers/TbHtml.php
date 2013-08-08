@@ -2720,6 +2720,7 @@ EOD;
      */
     protected static function dropdown($items, $htmlOptions = array())
     {
+        TbArray::defaultValue('role', 'menu', $htmlOptions);
         self::addCssClass('dropdown-menu', $htmlOptions);
         return self::menu($items, $htmlOptions);
     }
@@ -3063,6 +3064,7 @@ EOD;
      */
     public static function menuLink($label, $url, $htmlOptions = array())
     {
+        TbArray::defaultValue('role', 'menuitem', $htmlOptions);
         $linkOptions = TbArray::popValue('linkOptions', $htmlOptions, array());
         $content = self::link($label, $url, $linkOptions);
         return self::tag('li', $htmlOptions, $content);
@@ -3080,6 +3082,7 @@ EOD;
     protected static function menuDropdown($label, $url, $items, $htmlOptions, $depth = 0)
     {
         self::addCssClass($depth === 0 ? 'dropdown' : 'dropdown-submenu', $htmlOptions);
+        TbArray::defaultValue('role', 'menuitem', $htmlOptions);
         $linkOptions = TbArray::popValue('linkOptions', $htmlOptions, array());
         $menuOptions = TbArray::popValue('menuOptions', $htmlOptions, array());
         self::addCssClass('dropdown-menu', $menuOptions);
