@@ -65,7 +65,7 @@ class TbButtonColumn extends CButtonColumn
         }
 
         $url = TbArray::popValue('url', $button, '#');
-        if (strcmp($url, '#') !== 0) {
+        if ($url !== '#') {
             $url = $this->evaluateExpression($url, array('data' => $data, 'row' => $row));
         }
 
