@@ -3040,8 +3040,12 @@ EOD;
                     $items = TbArray::popValue('items', $itemOptions, array());
                     $url = TbArray::popValue('url', $itemOptions, false);
                     if (empty($items)) {
-                        $itemOptions['linkOptions']['tabindex'] = -1;
-                        $output .= self::menuLink($label, $url, $itemOptions);
+                        if (!$url) {
+                            $output .= self::menuHeader($label);
+                        } else {
+                            $itemOptions['linkOptions']['tabindex'] = -1;
+                            $output .= self::menuLink($label, $url, $itemOptions);
+                        }
                     } else {
                         $output .= self::menuDropdown($label, $url, $items, $itemOptions, $depth);
                     }
