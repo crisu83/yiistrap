@@ -48,10 +48,10 @@ class TbAlert extends CWidget
         $this->attachBehavior('TbWidget', new TbWidget);
         $this->copyId();
         if (is_string($this->alerts)) {
-            $styles = explode(' ', $this->alerts);
+            $colors = explode(' ', $this->alerts);
         } else {
             if (!isset($this->alerts)) {
-                $styles = array(
+                $colors = array(
                     TbHtml::ALERT_COLOR_SUCCESS,
                     TbHtml::ALERT_COLOR_WARNING,
                     TbHtml::ALERT_COLOR_INFO,
@@ -59,10 +59,10 @@ class TbAlert extends CWidget
                 ); // render all styles by default
             }
         }
-        if (isset($styles)) {
+        if (isset($colors)) {
             $this->alerts = array();
-            foreach ($styles as $style) {
-                $this->alerts[$style] = array();
+            foreach ($colors as $color) {
+                $this->alerts[$color] = array();
             }
         }
     }
@@ -78,17 +78,17 @@ class TbAlert extends CWidget
             return;
         }
         echo TbHtml::openTag('div', $this->htmlOptions);
-        foreach ($this->alerts as $style => $alert) {
+        foreach ($this->alerts as $color => $alert) {
             if (isset($alert['visible']) && !$alert['visible']) {
                 continue;
             }
 
-            if ($user->hasFlash($style)) {
+            if ($user->hasFlash($color)) {
                 $htmlOptions = TbArray::popValue('htmlOptions', $alert, array());
                 TbArray::defaultValue('closeText', $this->closeText, $htmlOptions);
                 TbArray::defaultValue('block', $this->block, $htmlOptions);
                 TbArray::defaultValue('fade', $this->fade, $htmlOptions);
-                echo TbHtml::alert($style, $user->getFlash($style), $htmlOptions);
+                echo TbHtml::alert($color, $user->getFlash($color), $htmlOptions);
             }
         }
         echo '</div>';
