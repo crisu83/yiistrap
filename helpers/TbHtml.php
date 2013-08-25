@@ -2969,7 +2969,7 @@ EOD;
     public static function navList($items, $htmlOptions = array())
     {
         foreach ($items as $i => $itemOptions) {
-            if (!isset($itemOptions['url']) && !isset($itemOptions['items'])) {
+            if (!isset($itemOptions['url']) && !isset($itemOptions['items']) && is_array($itemOptions)) {
                 $label = TbArray::popValue('label', $itemOptions, '');
                 $items[$i] = self::menuHeader($label, $itemOptions);
             }

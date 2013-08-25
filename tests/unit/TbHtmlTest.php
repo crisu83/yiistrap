@@ -2584,6 +2584,7 @@ class TbHtmlTest extends TbTestCase
         $items = array(
             array('label' => 'Header text'),
             array('label' => 'Link', 'url' => '#'),
+            '<li class="divider"></li>'
         );
 
         $html = TbHtml::navList(
@@ -2600,9 +2601,11 @@ class TbHtmlTest extends TbTestCase
             if ($i === 0) {
                 $I->seeNodeCssClass($li, 'nav-header');
                 $I->seeNodeText($li, 'Header text');
-            } else {
+            } elseif($i === 1) {
                 $a = $li->filter('a');
                 $I->seeNodeText($a, $items[$i]['label']);
+            } elseif($i === 2) {
+                $I->seeNodeCssClass($li, 'divider');
             }
         }
     }
