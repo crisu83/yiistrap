@@ -1678,7 +1678,7 @@ EOD;
         $selection = parent::resolveValue($model, $attribute);
         $name = TbArray::popValue('name', $htmlOptions);
         $unCheck = TbArray::popValue('uncheckValue', $htmlOptions, '');
-        $hiddenOptions = isset($htmlOptions['id']) ? array('id' => parent::ID_PREFIX . $htmlOptions['id']) : array('id' => false);
+        $hiddenOptions = isset($htmlOptions['id']) ? array('id' => $htmlOptions['id']) : array('id' => false);
         $hidden = $unCheck !== null ? parent::hiddenField($name, $unCheck, $hiddenOptions) : '';
         return $hidden . self::radioButtonList($name, $selection, $data, $htmlOptions);
     }
@@ -1714,7 +1714,7 @@ EOD;
         }
         $name = TbArray::popValue('name', $htmlOptions);
         $unCheck = TbArray::popValue('uncheckValue', $htmlOptions, '');
-        $hiddenOptions = isset($htmlOptions['id']) ? array('id' => parent::ID_PREFIX . $htmlOptions['id']) : array('id' => false);
+        $hiddenOptions = isset($htmlOptions['id']) ? array('id' => $htmlOptions['id']) : array('id' => false);
         $hidden = $unCheck !== null ? parent::hiddenField($name, $unCheck, $hiddenOptions) : '';
         return $hidden . self::checkBoxList($name, $selection, $data, $htmlOptions);
     }
