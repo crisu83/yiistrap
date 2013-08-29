@@ -1343,6 +1343,10 @@ EOD;
         $label = TbArray::popValue('label', $htmlOptions);
         $labelOptions = TbArray::popValue('labelOptions', $htmlOptions, array());
 
+        if (empty($label)) {
+            $label = parent::label($label, $name, $labelOptions);
+        }
+
         if (in_array($type, array(self::INPUT_TYPE_CHECKBOX, self::INPUT_TYPE_RADIOBUTTON))) {
             $htmlOptions['label'] = $label;
             $htmlOptions['labelOptions'] = $labelOptions;
@@ -1366,7 +1370,7 @@ EOD;
         self::addCssClass('control-label', $labelOptions);
         $output = self::openTag('div', $groupOptions);
         if ($label !== false) {
-            $output .= parent::label($label, $name, $labelOptions);
+            $output .= $label;
         }
         $output .= self::controls($input . $help, $controlOptions);
         $output .= '</div>';
@@ -2049,8 +2053,12 @@ EOD;
         $label = TbArray::popValue('label', $htmlOptions);
         $labelOptions = TbArray::popValue('labelOptions', $htmlOptions, array());
 
+        if (empty($label)) {
+            $label = parent::activeLabelEx($model, $attribute, $labelOptions);
+        }
+
         if (in_array($type, array(self::INPUT_TYPE_CHECKBOX, self::INPUT_TYPE_RADIOBUTTON))) {
-            $htmlOptions['label'] = $model->getAttributeLabel($attribute);
+            $htmlOptions['label'] = $label;
             $htmlOptions['labelOptions'] = $labelOptions;
             $label = false;
         }
@@ -2073,8 +2081,7 @@ EOD;
         self::addCssClass('control-label', $labelOptions);
         $output = self::openTag('div', $groupOptions);
         if ($label !== false) {
-            // todo: consider adding support for overriding the label with plain text.
-            $output .= parent::activeLabelEx($model, $attribute, $labelOptions);
+            $output .= $label;
         }
         $output .= self::controls($input . $error . $help, $controlOptions);
         $output .= '</div>';
