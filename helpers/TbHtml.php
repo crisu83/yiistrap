@@ -1343,7 +1343,7 @@ EOD;
         $label = TbArray::popValue('label', $htmlOptions);
         $labelOptions = TbArray::popValue('labelOptions', $htmlOptions, array());
 
-        if (empty($label)) {
+        if (!isset($label)) {
             $label = parent::label($label, $name, $labelOptions);
         }
 
@@ -2053,7 +2053,7 @@ EOD;
         $label = TbArray::popValue('label', $htmlOptions);
         $labelOptions = TbArray::popValue('labelOptions', $htmlOptions, array());
 
-        if (empty($label)) {
+        if (!isset($label)) {
             $label = parent::activeLabelEx($model, $attribute, $labelOptions);
         }
 
