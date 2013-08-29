@@ -1349,8 +1349,7 @@ EOD;
         }
 
         if (in_array($type, array(self::INPUT_TYPE_CHECKBOX, self::INPUT_TYPE_RADIOBUTTON))) {
-            $htmlOptions['label'] = $label;
-            $htmlOptions['labelOptions'] = $labelOptions;
+            $htmlOptions['label'] = parent::label($label, $name);
             $label = false;
         }
 
@@ -2059,8 +2058,7 @@ EOD;
         }
 
         if (in_array($type, array(self::INPUT_TYPE_CHECKBOX, self::INPUT_TYPE_RADIOBUTTON))) {
-            $htmlOptions['label'] = $label;
-            $htmlOptions['labelOptions'] = $labelOptions;
+            $htmlOptions['label'] = parent::activeLabelEx($model, $attribute);
             $label = false;
         }
 
