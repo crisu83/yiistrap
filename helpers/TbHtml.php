@@ -1342,14 +1342,14 @@ EOD;
         $controlOptions = TbArray::popValue('controlOptions', $htmlOptions, array());
         $label = TbArray::popValue('label', $htmlOptions);
         $labelOptions = TbArray::popValue('labelOptions', $htmlOptions, array());
+        self::addCssClass('control-label', $labelOptions);
 
         if (!isset($label)) {
             $label = parent::label($label, $name, $labelOptions);
         }
 
         if (in_array($type, array(self::INPUT_TYPE_CHECKBOX, self::INPUT_TYPE_RADIOBUTTON))) {
-            $htmlOptions['label'] = $label;
-            $htmlOptions['labelOptions'] = $labelOptions;
+            $htmlOptions['label'] = parent::label($label, $name);
             $label = false;
         }
 
@@ -1367,7 +1367,6 @@ EOD;
         if (!empty($color)) {
             self::addCssClass($color, $groupOptions);
         }
-        self::addCssClass('control-label', $labelOptions);
         $output = self::openTag('div', $groupOptions);
         if ($label !== false) {
             $output .= $label;
@@ -2052,14 +2051,14 @@ EOD;
         $controlOptions = TbArray::popValue('controlOptions', $htmlOptions, array());
         $label = TbArray::popValue('label', $htmlOptions);
         $labelOptions = TbArray::popValue('labelOptions', $htmlOptions, array());
+        self::addCssClass('control-label', $labelOptions);
 
         if (!isset($label)) {
             $label = parent::activeLabelEx($model, $attribute, $labelOptions);
         }
 
         if (in_array($type, array(self::INPUT_TYPE_CHECKBOX, self::INPUT_TYPE_RADIOBUTTON))) {
-            $htmlOptions['label'] = $label;
-            $htmlOptions['labelOptions'] = $labelOptions;
+            $htmlOptions['label'] = parent::activeLabelEx($model, $attribute);
             $label = false;
         }
 
@@ -2078,7 +2077,6 @@ EOD;
         if (!empty($color)) {
             self::addCssClass($color, $groupOptions);
         }
-        self::addCssClass('control-label', $labelOptions);
         $output = self::openTag('div', $groupOptions);
         if ($label !== false) {
             $output .= $label;
