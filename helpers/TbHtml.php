@@ -2458,9 +2458,13 @@ EOD;
      */
     public static function ajaxLink($text, $url, $ajaxOptions = array(), $htmlOptions = array())
     {
-        $htmlOptions['url'] = $url;
-        $htmlOptions['ajaxOptions'] = $ajaxOptions;
-        return self::btn(self::BUTTON_TYPE_AJAXLINK, $text, $htmlOptions);
+        if (!isset($htmlOptions['href'])) {
+            $htmlOptions['href'] = '#';
+        }
+        $ajaxOptions['url'] = $url;
+        $htmlOptions['ajax'] = $ajaxOptions;
+        parent::clientChange('click', $htmlOptions);
+        return self::tag('a', $htmlOptions, $text);
     }
 
     /**
