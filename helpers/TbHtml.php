@@ -1342,10 +1342,10 @@ EOD;
         $controlOptions = TbArray::popValue('controlOptions', $htmlOptions, array());
         $label = TbArray::popValue('label', $htmlOptions);
         $labelOptions = TbArray::popValue('labelOptions', $htmlOptions, array());
-        self::addCssClass('control-label', $labelOptions);
 
         if (in_array($type, array(self::INPUT_TYPE_CHECKBOX, self::INPUT_TYPE_RADIOBUTTON))) {
-            $htmlOptions['label'] = parent::label($label, $name);
+            $htmlOptions['label'] = $label;
+            $htmlOptions['labelOptions'] = $labelOptions;
             $label = false;
         }
 
@@ -1363,6 +1363,7 @@ EOD;
         if (!empty($color)) {
             self::addCssClass($color, $groupOptions);
         }
+        self::addCssClass('control-label', $labelOptions);
         $output = self::openTag('div', $groupOptions);
         if ($label !== false) {
             $output .= parent::label($label, $name, $labelOptions);
@@ -2047,15 +2048,14 @@ EOD;
         $controlOptions = TbArray::popValue('controlOptions', $htmlOptions, array());
         $label = TbArray::popValue('label', $htmlOptions);
         $labelOptions = TbArray::popValue('labelOptions', $htmlOptions, array());
-        self::addCssClass('control-label', $labelOptions);
 
         if (in_array($type, array(self::INPUT_TYPE_CHECKBOX, self::INPUT_TYPE_RADIOBUTTON))) {
-            $htmlOptions['label'] = parent::activeLabelEx($model, $attribute);
+            $htmlOptions['label'] = isset($label) ? $label : $model->getAttributeLabel($attribute);
+            $htmlOptions['labelOptions'] = $labelOptions;
             $label = false;
         }
-        self::addCssClass('control-label', $labelOptions);
-        if (!isset($label)) {
-            $label = parent::activeLabelEx($model, $attribute, $labelOptions);
+        if (isset($label) && $label !== false) {
+            $labelOptions['label'] = $label;
         }
 
         $help = TbArray::popValue('help', $htmlOptions, '');
@@ -2073,9 +2073,10 @@ EOD;
         if (!empty($color)) {
             self::addCssClass($color, $groupOptions);
         }
+        self::addCssClass('control-label', $labelOptions);
         $output = self::openTag('div', $groupOptions);
         if ($label !== false) {
-            $output .= $label;
+            $output .= parent::activeLabelEx($model, $attribute, $labelOptions);
         }
         $output .= self::controls($input . $error . $help, $controlOptions);
         $output .= '</div>';
