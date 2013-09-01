@@ -1342,13 +1342,6 @@ EOD;
         $controlOptions = TbArray::popValue('controlOptions', $htmlOptions, array());
         $label = TbArray::popValue('label', $htmlOptions);
         $labelOptions = TbArray::popValue('labelOptions', $htmlOptions, array());
-<<<<<<< Updated upstream
-
-        if (!isset($label)) {
-            $label = parent::label($label, $name, $labelOptions);
-        }
-=======
->>>>>>> Stashed changes
 
         if (in_array($type, array(self::INPUT_TYPE_CHECKBOX, self::INPUT_TYPE_RADIOBUTTON))) {
             $htmlOptions['label'] = $label;
