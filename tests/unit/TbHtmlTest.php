@@ -2103,7 +2103,7 @@ class TbHtmlTest extends TbTestCase
                 'class' => 'button',
             )
         );
-        $a = $I->createNode($html, 'a.btn');
+        $a = $I->createNode($html, 'a');
         $I->seeNodeCssClass($a, 'button');
         $I->seeNodeAttributes(
             $a,
