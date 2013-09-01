@@ -909,7 +909,7 @@ class TbHtml extends CHtml // required in order to access the protected methods 
     {
         $inline = TbArray::popValue('inline', $htmlOptions, false);
         $separator = TbArray::popValue('separator', $htmlOptions, ' ');
-        $container = TbArray::popValue('container', $htmlOptions);
+        $container = TbArray::popValue('container', $htmlOptions, 'span');
         $containerOptions = TbArray::popValue('containerOptions', $htmlOptions, array());
         $labelOptions = TbArray::popValue('labelOptions', $htmlOptions, array());
 
