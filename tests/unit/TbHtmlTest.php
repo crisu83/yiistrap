@@ -680,9 +680,9 @@ class TbHtmlTest extends TbTestCase
             null,
             array('Option 1', 'Option 2', 'Option 3')
         );
-        $container = $I->createNode($html, 'body');
-        $I->seeNodeNumChildren($container, 3);
-        $I->seeNodeChildren($container, array('label.radio.inline', 'label.radio.inline', 'label.radio.inline'));
+        $span = $I->createNode($html, 'span');
+        $I->seeNodeNumChildren($span, 3);
+        $I->seeNodeChildren($span, array('label.radio.inline', 'label.radio.inline', 'label.radio.inline'));
     }
 
     public function testCheckboxList()
