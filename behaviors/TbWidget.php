@@ -21,25 +21,43 @@ class TbWidget extends CBehavior
     private $_clientScript;
 
     /**
+     * Returns the widget id and copies it to HTML attributes or vice versa.
+     * @param string $id the widget id.
+     * @return string the widget id.
+     */
+    public function resolveId($id = null)
+    {
+        if ($id === null) {
+            $id = $this->owner->getId();
+        }
+        if (isset($this->owner->htmlOptions['id'])) {
+            $id = $this->owner->htmlOptions['id'];
+        } else {
+            $this->owner->htmlOptions['id'] = $id;
+        }
+        return $id;
+    }
+
+    /**
      * Copies the id to the widget HTML attributes or vise versa.
-     * @return string the id.
+     * @deprecated by TbWidget::resolveId
      */
     public function copyId()
     {
+        // todo: remove this when it's safe to do so.
         if (!isset($this->owner->htmlOptions['id'])) {
             $this->owner->htmlOptions['id'] = $this->owner->id;
         } else {
             $this->owner->id = $this->owner->htmlOptions['id'];
         }
-        return $this->owner->id;
     }
 
     /**
-     * Publishes the extension assets.
-     * @param string $path assets path.
-     * @param boolean $forceCopy whether we should copy the asset file or directory even if it is already
-     * published before.
+     * Publishes an asset path.
+     * @param string $path the assets path.
+     * @param boolean $forceCopy whether we should copy the asset files even if they are already published before.
      * @return string the url.
+     * @throws CException if the asset manager cannot be located.
      */
     public function publishAssets($path, $forceCopy = false)
     {
