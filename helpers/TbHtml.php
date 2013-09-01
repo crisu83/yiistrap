@@ -1344,10 +1344,6 @@ EOD;
         $labelOptions = TbArray::popValue('labelOptions', $htmlOptions, array());
         self::addCssClass('control-label', $labelOptions);
 
-        if (!isset($label)) {
-            $label = parent::label($label, $name, $labelOptions);
-        }
-
         if (in_array($type, array(self::INPUT_TYPE_CHECKBOX, self::INPUT_TYPE_RADIOBUTTON))) {
             $htmlOptions['label'] = parent::label($label, $name);
             $label = false;
@@ -1369,7 +1365,7 @@ EOD;
         }
         $output = self::openTag('div', $groupOptions);
         if ($label !== false) {
-            $output .= $label;
+            $output .= parent::label($label, $name, $labelOptions);
         }
         $output .= self::controls($input . $help, $controlOptions);
         $output .= '</div>';
@@ -2053,13 +2049,13 @@ EOD;
         $labelOptions = TbArray::popValue('labelOptions', $htmlOptions, array());
         self::addCssClass('control-label', $labelOptions);
 
-        if (!isset($label)) {
-            $label = parent::activeLabelEx($model, $attribute, $labelOptions);
-        }
-
         if (in_array($type, array(self::INPUT_TYPE_CHECKBOX, self::INPUT_TYPE_RADIOBUTTON))) {
             $htmlOptions['label'] = parent::activeLabelEx($model, $attribute);
             $label = false;
+        }
+        self::addCssClass('control-label', $labelOptions);
+        if (!isset($label)) {
+            $label = parent::activeLabelEx($model, $attribute, $labelOptions);
         }
 
         $help = TbArray::popValue('help', $htmlOptions, '');
@@ -3975,7 +3971,47 @@ EOD;
     // http://twitter.github.io/bootstrap/2.3.2/javascript.html#modals
     // --------------------------------------------------
 
-    // todo: create modal methods here.
+    /**
+     * Generates a modal header.
+     * @param string $content the header content.
+     * @param array $htmlOptions additional HTML attributes.
+     * @return string the generated header.
+     */
+    public static function modalHeader($content, $htmlOptions = array())
+    {
+        self::addCssClass('modal-header', $htmlOptions);
+        $closeOptions = TbArray::popValue('closeOptions', $htmlOptions, array());
+        $closeOptions['dismiss'] = 'modal';
+        $headingOptions = TbArray::popValue('headingOptions', $htmlOptions, array());
+        $closeLabel = TbArray::popValue('closeLabel', $htmlOptions, self::CLOSE_TEXT);
+        $closeButton = self::closeButton($closeLabel, $closeOptions);
+        $header = self::tag('h3', $headingOptions, $content);
+        return self::tag('div', $htmlOptions, $closeButton . $header);
+    }
+
+    /**
+     * Generates a modal body.
+     * @param string $content the body content.
+     * @param array $htmlOptions additional HTML attributes.
+     * @return string the generated body.
+     */
+    public static function modalBody($content, $htmlOptions = array())
+    {
+        self::addCssClass('modal-body', $htmlOptions);
+        return self::tag('div', $htmlOptions, $content);
+    }
+
+    /**
+     * Generates a modal footer.
+     * @param string $content the footer content.
+     * @param array $htmlOptions additional HTML attributes.
+     * @return string the generated footer.
+     */
+    public static function modalFooter($content, $htmlOptions = array())
+    {
+        self::addCssClass('modal-footer', $htmlOptions);
+        return self::tag('div', $htmlOptions, $content);
+    }
 
     // Tooltips and Popovers
     // http://twitter.github.io/bootstrap/2.3.2/javascript.html#tooltips
