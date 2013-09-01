@@ -2050,13 +2050,12 @@ EOD;
         $labelOptions = TbArray::popValue('labelOptions', $htmlOptions, array());
 
         if (in_array($type, array(self::INPUT_TYPE_CHECKBOX, self::INPUT_TYPE_RADIOBUTTON))) {
-            $htmlOptions['label'] = $label;
+            $htmlOptions['label'] = isset($label) ? $label : $model->getAttributeLabel($attribute);
             $htmlOptions['labelOptions'] = $labelOptions;
             $label = false;
         }
-        self::addCssClass('control-label', $labelOptions);
-        if (!isset($label)) {
-            $label = parent::activeLabelEx($model, $attribute, $labelOptions);
+        if (isset($label) && $label !== false) {
+            $labelOptions['label'] = $label;
         }
 
         $help = TbArray::popValue('help', $htmlOptions, '');
@@ -2077,7 +2076,7 @@ EOD;
         self::addCssClass('control-label', $labelOptions);
         $output = self::openTag('div', $groupOptions);
         if ($label !== false) {
-            $output .= $label;
+            $output .= parent::activeLabelEx($model, $attribute, $labelOptions);
         }
         $output .= self::controls($input . $error . $help, $controlOptions);
         $output .= '</div>';
