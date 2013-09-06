@@ -5,3 +5,6 @@ Yiistrap
 [![Build Status](https://travis-ci.org/Crisu83/yiistrap.png)](https://travis-ci.org/Crisu83/yiistrap)
 
 Twitter Bootstrap for Yii.
+
+Documentation can be found here:
+[http://www.getyiistrap.com](http://www.getyiistrap.com)
