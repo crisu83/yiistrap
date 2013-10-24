@@ -7,25 +7,40 @@
  * @package bootstrap.form
  */
 
+Yii::import('bootstrap.form.*');
+
 /**
  * Bootstrap form object that contains form input specifications.
  */
 class TbForm extends CForm
 {
     /**
-     * @var string the name of the class for representing a form input element. Defaults to 'CFormInputElement'.
+     * @var string the form layout.
+     */
+    public $layout = TbHtml::FORM_LAYOUT_VERTICAL;
+
+    /**
+     * @var string the name of the class for representing a form input element.
      */
     public $inputElementClass = 'TbFormInputElement';
 
     /**
-     * @var string the name of the class for representing a form button element. Defaults to 'CFormButtonElement'.
+     * @var string the name of the class for representing a form button element.
      */
-    public $buttonElementClass = 'TbButtonElement';
+    public $buttonElementClass = 'TbFormButtonElement';
 
     /**
      * @var array the configuration used to create the active form widget.
      */
-    public $activeForm = 'TbActiveForm';
+    public $activeForm = array('class' => 'TbActiveForm');
+
+    /**
+     * Initializes this form.
+     */
+    public function init()
+    {
+        TbArray::defaultValue('layout', $this->layout, $this->activeForm);
+    }
 
     /**
      * Renders a single element which could be an input element, a sub-form, a string, or a button.
