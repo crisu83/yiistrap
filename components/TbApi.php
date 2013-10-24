@@ -5,7 +5,7 @@
  * @copyright Copyright &copy; Christoffer Niska 2013-
  * @license http://www.opensource.org/licenses/bsd-license.php New BSD License
  * @package bootstrap.components
- * @version 1.0.0
+ * @version 1.2.0
  */
 
 /**

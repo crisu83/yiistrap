@@ -1,5 +1,4 @@
 <?php
-use Codeception\Util\Stub;
 
 require(__DIR__ . '/../../helpers/TbHtml.php');
 
@@ -11,7 +10,7 @@ class Dummy extends CModel
     public $email = 'christoffer.niska@gmail.com';
     public $number = 42;
     public $range = 3.33;
-    public $date = '2013-07-27';
+    public $date = '2013-08-28';
     public $file = '';
     public $radio = true;
     public $checkbox = false;
@@ -463,7 +462,7 @@ class TbHtmlTest extends TbTestCase
         $I = $this->codeGuy;
         $html = TbHtml::dateField(
             'date',
-            '2013-07-27',
+            '2013-08-28',
             array(
                 'class' => 'input',
             )
@@ -475,7 +474,7 @@ class TbHtmlTest extends TbTestCase
                 'class' => 'input',
                 'id' => 'date',
                 'name' => 'date',
-                'value' => '2013-07-27',
+                'value' => '2013-08-28',
             )
         );
     }
@@ -1276,7 +1275,7 @@ class TbHtmlTest extends TbTestCase
                 'class' => 'input',
                 'id' => 'Dummy_date',
                 'name' => 'Dummy[date]',
-                'value' => '2013-07-27',
+                'value' => '2013-08-28',
             )
         );
     }
@@ -2071,7 +2070,6 @@ class TbHtmlTest extends TbTestCase
             array(
                 'name' => 'button',
                 'src' => 'image.png',
-                'value' => 'submit',
             )
         );
     }
