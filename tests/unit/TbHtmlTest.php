@@ -462,7 +462,7 @@ class TbHtmlTest extends TbTestCase
         $I = $this->codeGuy;
         $html = TbHtml::dateField(
             'date',
-            '2013-07-27',
+            '2013-08-28',
             array(
                 'class' => 'input',
             )
@@ -474,7 +474,7 @@ class TbHtmlTest extends TbTestCase
                 'class' => 'input',
                 'id' => 'date',
                 'name' => 'date',
-                'value' => '2013-07-27',
+                'value' => '2013-08-28',
             )
         );
     }
@@ -1275,7 +1275,7 @@ class TbHtmlTest extends TbTestCase
                 'class' => 'input',
                 'id' => 'Dummy_date',
                 'name' => 'Dummy[date]',
-                'value' => '2013-07-27',
+                'value' => '2013-08-28',
             )
         );
     }
