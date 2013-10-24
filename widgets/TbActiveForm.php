@@ -717,8 +717,10 @@ class TbActiveForm extends CActiveForm
     protected function processControlGroupOptions($model, $attribute, $options)
     {
         $errorOptions = TbArray::popValue('errorOptions', $options, array());
+        $enableAjaxValidation = TbArray::popValue('enableAjaxValidation', $errorOptions, true);
+        $enableClientValidation = TbArray::popValue('enableClientValidation', $errorOptions, true);
         $errorOptions['type'] = $this->helpType;
-        $error = $this->error($model, $attribute, $errorOptions);
+        $error = $this->error($model, $attribute, $errorOptions, $enableAjaxValidation, $enableClientValidation);
         // kind of a hack for ajax forms but this works for now.
         if (!empty($error) && strpos($error, 'display:none') === false) {
             $options['color'] = TbHtml::INPUT_COLOR_ERROR;
