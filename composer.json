@@ -25,10 +25,9 @@
     "require-dev": {
         "php": ">=5.3.0",
         "codeception/codeception": "@stable",
-        "crisu83/yii-composer": "dev-master",
-        "yiisoft/yii": "1.1.13"
+        "crisu83/yii-composer": ">=1.0.0",
+        "yiisoft/yii": ">=1.1.13"
     },
-    "minimum-stability": "dev",
     "scripts": {
         "post-install-cmd": [
             "Crisu83\\YiiComposer\\InstallHandler::setPermissions"

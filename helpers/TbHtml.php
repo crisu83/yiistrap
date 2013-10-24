@@ -1396,7 +1396,7 @@ EOD;
      * @return string the input.
      * @throws CException if the input type is invalid.
      */
-    protected static function createInput($type, $name, $value, $htmlOptions = array(), $data = array())
+    public static function createInput($type, $name, $value, $htmlOptions = array(), $data = array())
     {
         switch ($type) {
             case self::INPUT_TYPE_TEXT:
@@ -2107,7 +2107,7 @@ EOD;
      * @return string the input.
      * @throws CException if the input type is invalid.
      */
-    protected static function createActiveInput($type, $model, $attribute, $htmlOptions = array(), $data = array())
+    public static function createActiveInput($type, $model, $attribute, $htmlOptions = array(), $data = array())
     {
         switch ($type) {
             case self::INPUT_TYPE_TEXT:
@@ -2501,7 +2501,7 @@ EOD;
      * @param array $htmlOptions additional HTML attributes.
      * @return string the generated button.
      */
-    protected static function btn($type, $label, $htmlOptions = array())
+    public static function btn($type, $label, $htmlOptions = array())
     {
         self::addCssClass('btn', $htmlOptions);
         $color = TbArray::popValue('color', $htmlOptions);
