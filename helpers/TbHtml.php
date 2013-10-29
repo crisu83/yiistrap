@@ -4091,13 +4091,14 @@ EOD;
     {
         $htmlOptions['title'] = $title;
         if (TbArray::popValue('animation', $htmlOptions)) {
-            $htmlOptions['data-animation'] = true;
+            $htmlOptions['data-animation'] = 'true';
         }
         if (TbArray::popValue('html', $htmlOptions)) {
-            $htmlOptions['data-html'] = true;
+            $htmlOptions['data-html'] = 'true';
         }
-        if (TbArray::popValue('selector', $htmlOptions)) {
-            $htmlOptions['data-selector'] = true;
+        $selector = TbArray::popValue('selector', $htmlOptions);
+        if (!empty($selector)) {
+            $htmlOptions['data-selector'] = $selector;
         }
         $placement = TbArray::popValue('placement', $htmlOptions);
         if (!empty($placement)) {
