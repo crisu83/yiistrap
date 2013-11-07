@@ -75,7 +75,7 @@ class TbForm extends CForm
     {
         $buttons = array();
         foreach ($this->getButtons() as $button) {
-            $buttons[] = $this->rendeRelement($button);
+            $buttons[] = $this->renderElement($button);
         }
         return !empty($buttons) ? TbHtml::tag('div', array('class' => 'form-actions'), implode("\n", $buttons)) : '';
     }
