@@ -1313,10 +1313,8 @@ class TbHtmlTest extends TbTestCase
                 'label' => 'Label text',
             )
         );
-        $label = $I->createNode($html, 'label');
-        $I->seeNodeCssClass($label, 'radio');
-        $I->seeNodeChildren($label, array('input[type=hidden]', 'input[type=radio]'));
-        $hidden = $label->filter('input[type=hidden]');
+        $body = $I->createNode($html, 'body');
+        $hidden = $body->filter('input[type=hidden]');
         $I->seeNodeAttributes(
             $hidden,
             array(
@@ -1325,6 +1323,8 @@ class TbHtmlTest extends TbTestCase
                 'value' => '0',
             )
         );
+        $label = $body->filter('label');
+        $I->seeNodeCssClass($label, 'radio');
         $radio = $label->filter('input[type=radio]');
         $I->seeNodeAttributes(
             $radio,
@@ -1350,10 +1350,8 @@ class TbHtmlTest extends TbTestCase
                 'label' => 'Label text',
             )
         );
-        $label = $I->createNode($html, 'label');
-        $I->seeNodeCssClass($label, 'checkbox');
-        $I->seeNodeChildren($label, array('input[type=hidden]', 'input[type=checkbox]'));
-        $hidden = $label->filter('input[type=hidden]');
+        $body = $I->createNode($html, 'body');
+        $hidden = $body->filter('input[type=hidden]');
         $I->seeNodeAttributes(
             $hidden,
             array(
@@ -1362,6 +1360,8 @@ class TbHtmlTest extends TbTestCase
                 'value' => '0',
             )
         );
+        $label = $body->filter('label');
+        $I->seeNodeCssClass($label, 'checkbox');
         $checkbox = $label->filter('input[type=checkbox]');
         $I->seeNodeAttributes(
             $checkbox,
@@ -1637,8 +1637,9 @@ class TbHtmlTest extends TbTestCase
         $I = $this->codeGuy;
         $html = TbHtml::activeRadioButtonControlGroup(new Dummy, 'radio');
         $group = $I->createNode($html, 'div.control-group');
+        $I->seeNodeChildren($group, array('input[type=hidden]', 'label.radio'));
         $label = $group->filter('label.radio');
-        $I->seeNodeChildren($label, array('input[type=hidden]', 'input[type=radio]'));
+        $I->seeNodeChildren($label, array('input[type=radio]'));
     }
 
     public function testActiveCheckBoxControlGroup()
@@ -1646,8 +1647,9 @@ class TbHtmlTest extends TbTestCase
         $I = $this->codeGuy;
         $html = TbHtml::activeCheckBoxControlGroup(new Dummy, 'checkbox');
         $group = $I->createNode($html, 'div.control-group');
+        $I->seeNodeChildren($group, array('input[type=hidden]', 'label.checkbox'));
         $label = $group->filter('label.checkbox');
-        $I->seeNodeChildren($label, array('input[type=hidden]', 'input[type=checkbox]'));
+        $I->seeNodeChildren($label, array('input[type=checkbox]'));
     }
 
     public function testActiveDropDownListControlGroup()
@@ -1806,10 +1808,8 @@ class TbHtmlTest extends TbTestCase
         $group = $I->createNode($html, 'div.control-group');
         $I->seeNodeChildren($group, array('div.controls'));
         $controls = $group->filter('div.controls');
-        $label = $controls->filter('label.radio');
-        $I->seeNodePattern($label, '/> Radio$/');
-        $I->seeNodeChildren($label, array('input[type=hidden]', 'input[type=radio]'));
-        $hidden = $label->filter('input[type=hidden]');
+        $I->seeNodeChildren($controls, array('input[type=hidden]', 'label.radio'));
+        $hidden = $controls->filter('input[type=hidden]');
         $I->seeNodeAttributes(
             $hidden,
             array(
@@ -1818,6 +1818,8 @@ class TbHtmlTest extends TbTestCase
                 'value' => '0',
             )
         );
+        $label = $controls->filter('label.radio');
+        $I->seeNodePattern($label, '/> Radio$/');
         $radio = $label->filter('input[type=radio]');
         $I->seeNodeAttributes(
             $radio,
@@ -3701,7 +3703,7 @@ class TbHtmlTest extends TbTestCase
                 'class' => 'link',
                 'animation' => true,
                 'html' => true,
-                'selector' => true,
+                'selector' => '.selector',
                 'placement' => TbHtml::TOOLTIP_PLACEMENT_RIGHT,
                 'trigger' => TbHtml::TOOLTIP_TRIGGER_CLICK,
                 'delay' => 350,
@@ -3713,9 +3715,9 @@ class TbHtmlTest extends TbTestCase
             $a,
             array(
                 'title' => 'Tooltip text',
-                'data-animation' => '1',
-                'data-html' => '1',
-                'data-selector' => '1',
+                'data-animation' => 'true',
+                'data-html' => 'true',
+                'data-selector' => '.selector',
                 'data-placement' => 'right',
                 'data-trigger' => 'click',
                 'data-delay' => '350',
