@@ -1640,7 +1640,7 @@ EOD;
      * @param array $htmlOptions additional HTML attributes.
      * @return string the generated label.
      */
-    protected function createCheckBoxAndRadioButtonLabel($label, $input, $htmlOptions)
+    protected static function createCheckBoxAndRadioButtonLabel($label, $input, $htmlOptions)
     {
         list ($hidden, $input) = self::normalizeCheckBoxAndRadio($input);
         return $hidden . ($label !== false
