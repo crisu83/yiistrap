@@ -37,6 +37,10 @@ class TbApi extends CApplicationComponent
      * @var bool whether we should copy the asset file or directory even if it is already published before.
      */
     public $forceCopyAssets = false;
+    /**
+     * @var string url to the reponsive fix inserted between bootstrap.css and bootstrap-responsive.css, null defaults to the included file
+     */
+    public $responsiveCssFixUrl = null;
 
     private $_assetsUrl;
 
@@ -48,6 +52,19 @@ class TbApi extends CApplicationComponent
     {
         if ($url === null) {
             $fileName = YII_DEBUG ? 'bootstrap.css' : 'bootstrap.min.css';
+            $url = $this->getAssetsUrl() . '/css/' . $fileName;
+        }
+        Yii::app()->clientScript->registerCssFile($url);
+    }
+
+    /**
+     * Registers the responsive Bootstrap CSS fix. It adds a 60px top padding to the body
+     * to offset any top navigation
+     * @param string $url the URL to the CSS file to register.
+     */
+    public function registerResponsiveFixCss($url = null) {
+        if ($url === null) {
+            $fileName = YII_DEBUG ? 'bootstrap-responsive.fix.css' : 'bootstrap-responsive.fix.min.css';
             $url = $this->getAssetsUrl() . '/css/' . $fileName;
         }
         Yii::app()->clientScript->registerCssFile($url);
@@ -90,6 +107,7 @@ class TbApi extends CApplicationComponent
     public function registerAllCss()
     {
         $this->registerCoreCss();
+        $this->registerResponsiveFixCss($this->responsiveCssFixUrl);
         $this->registerResponsiveCss();
         $this->registerYiistrapCss();
     }
