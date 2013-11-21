@@ -2376,11 +2376,11 @@ EOD;
      * @param array $htmlOptions additional HTML options.
      * @return string the generated form.
      */
-    public static function searchForm($action, $method = 'post', $htmlOptions = array())
+    public static function searchForm($action, $method = 'post', $htmlOptions = array(), $placeholder)
     {
         self::addCssClass('form-search', $htmlOptions);
         $inputOptions = TbArray::popValue('inputOptions', $htmlOptions, array());
-        $inputOptions = TbArray::merge(array('type' => 'text', 'placeholder' => 'Search'), $inputOptions);
+        $inputOptions = TbArray::merge(array('type' => 'text', 'placeholder' => $placeholder), $inputOptions);
         $name = TbArray::popValue('name', $inputOptions, 'search');
         $value = TbArray::popValue('value', $inputOptions, '');
         $output = self::beginFormTb(self::FORM_LAYOUT_SEARCH, $action, $method, $htmlOptions);
@@ -3342,10 +3342,10 @@ EOD;
      * @param array $htmlOptions additional HTML attributes
      * @return string the generated form.
      */
-    public static function navbarSearchForm($action, $method = 'post', $htmlOptions = array())
+    public static function navbarSearchForm($action, $method = 'post', $htmlOptions = array(), $placeholder = 'Search')
     {
         self::addCssClass('navbar-search', $htmlOptions);
-        return self::searchForm($action, $method, $htmlOptions);
+        return self::searchForm($action, $method, $htmlOptions, $placeholder);
     }
 
     /**
