@@ -38,9 +38,9 @@ class TbApi extends CApplicationComponent
      */
     public $forceCopyAssets = false;
     /**
-     * @var string url to the reponsive fix inserted between bootstrap.css and bootstrap-responsive.css, null defaults to the included file
+     * @var string url to the css file adding the necessary padding for >=980px displays and fixed-top navbars. null uses the default file
      */
-    public $responsiveCssFixUrl = null;
+    public $paddingCssUrl = null;
 
     private $_assetsUrl;
 
@@ -58,13 +58,13 @@ class TbApi extends CApplicationComponent
     }
 
     /**
-     * Registers the responsive Bootstrap CSS fix. It adds a 60px top padding to the body
-     * to offset any top navigation
+     * Registers the fix for >=980px displays so that content is rendered properly even with
+     * fixed-top navbars
      * @param string $url the URL to the CSS file to register.
      */
-    public function registerResponsiveFixCss($url = null) {
+    public function registerPaddingCss($url = null) {
         if ($url === null) {
-            $fileName = YII_DEBUG ? 'bootstrap-responsive.fix.css' : 'bootstrap-responsive.fix.min.css';
+            $fileName = YII_DEBUG ? 'bootstrap-padding.css' : 'bootstrap-padding.min.css';
             $url = $this->getAssetsUrl() . '/css/' . $fileName;
         }
         Yii::app()->clientScript->registerCssFile($url);
@@ -107,7 +107,7 @@ class TbApi extends CApplicationComponent
     public function registerAllCss()
     {
         $this->registerCoreCss();
-        $this->registerResponsiveFixCss($this->responsiveCssFixUrl);
+        $this->registerPaddingCss($this->paddingCssUrl);
         $this->registerResponsiveCss();
         $this->registerYiistrapCss();
     }
