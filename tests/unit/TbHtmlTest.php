@@ -1994,7 +1994,7 @@ class TbHtmlTest extends TbTestCase
             )
         );
         $button = $I->createNode($html, 'button[type=button].btn');
-        $I->seeNodeCssClass($button, 'btn-primary btn-large btn-block disabled button');
+        $I->seeNodeCssClass($button, 'btn-primary btn-lg btn-block disabled button');
         $I->seeNodeAttributes(
             $button,
             array(

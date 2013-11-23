@@ -100,10 +100,14 @@ class TbHtml extends CHtml // required in order to access the protected methods 
     const BUTTON_COLOR_INVERSE = 'inverse';
     const BUTTON_COLOR_LINK = 'link';
 
-    const BUTTON_SIZE_MINI = 'mini';
-    const BUTTON_SIZE_SMALL = 'small';
-    const BUTTON_SIZE_DEFAULT = '';
-    const BUTTON_SIZE_LARGE = 'large';
+    const BUTTON_SIZE_MINI = 'xs'; // BS2 compatibility
+    const BUTTON_SIZE_XS = 'xs';
+    const BUTTON_SIZE_SMALL = 'sm'; // BS2 compatibility
+    const BUTTON_SIZE_SM = 'sm';
+    const BUTTON_SIZE_DEFAULT = 'default';
+    const BUTTON_SIZE_LARGE = 'lg'; // BS2 compatibility
+    const BUTTON_SIZE_LG = 'lg';
+
 
     const BUTTON_TOGGLE_CHECKBOX = 'checkbox';
     const BUTTON_TOGGLE_RADIO = 'radio';
@@ -2480,7 +2484,7 @@ EOD;
 
     /**
      * Generates an image submit button.
-     * @param string $src the image URL
+     * @param string $label
      * @param array $htmlOptions additional HTML attributes.
      * @return string the generated button.
      */
