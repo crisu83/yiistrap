@@ -2003,7 +2003,7 @@ class TbHtmlTest extends TbTestCase
                 'data-toggle' => 'button',
             )
         );
-        $I->seeNodeChildren($button, array('i.icon-check'));
+        $I->seeNodeChildren($button, array('i.glyphicon-check'));
         $I->seeNodePattern($button, '/> Button$/');
     }
 
@@ -2231,7 +2231,7 @@ class TbHtmlTest extends TbTestCase
                 'class' => 'icon',
             )
         );
-        $i = $I->createNode($html, 'i.icon-check');
+        $i = $I->createNode($html, 'i.glyphicon-check');
         $I->seeNodeEmpty($i);
 
         $html = TbHtml::icon(
@@ -2240,13 +2240,13 @@ class TbHtmlTest extends TbTestCase
                 'color' => TbHtml::ICON_COLOR_WHITE,
             )
         );
-        $i = $I->createNode($html, 'i.icon-remove');
-        $I->seeNodeCssClass($i, 'icon-white');
+        $i = $I->createNode($html, 'i.glyphicon-remove');
+        $I->seeNodeCssClass($i, 'glyphicon-white');
         $I->seeNodeEmpty($i);
 
         $html = TbHtml::icon('pencil white');
-        $i = $I->createNode($html, 'i.icon-pencil');
-        $I->seeNodeCssClass($i, 'icon-white');
+        $i = $I->createNode($html, 'i.glyphicon-pencil');
+        $I->seeNodeCssClass($i, 'glyphicon-white');
         $I->seeNodeEmpty($i);
 
         $html = TbHtml::icon(array());
@@ -2679,7 +2679,7 @@ class TbHtmlTest extends TbTestCase
                 }
             } else {
                 if ($i === 0) {
-                    $I->seeNodeChildren($li, array('i.icon-home', 'a'));
+                    $I->seeNodeChildren($li, array('i.glyphicon-home', 'a'));
                 }
                 if ($i === 2) {
                     $I->seeNodeCssClass($li, 'disabled');
