@@ -1524,9 +1524,9 @@ EOD;
         $htmlOptions = self::normalizeInputOptions($htmlOptions);
         self::addCssClass('form-control', $htmlOptions);
 
-        $addonClass = self::getAddOnClasses($htmlOptions);
+        $addOnClass = self::getAddOnClasses($htmlOptions);
         $addOnOptions = TbArray::popValue('addOnOptions', $htmlOptions, array());
-        self::addCssClass($addonClass, $addOnOptions);
+        self::addCssClass($addOnClass, $addOnOptions);
 
         $prepend = TbArray::popValue('prepend', $htmlOptions, '');
         $prependOptions = TbArray::popValue('prependOptions', $htmlOptions, array());
@@ -1541,11 +1541,11 @@ EOD;
         }
 
         $output = '';
-        if (!empty($addonClass)) {
+        if (!empty($addOnClass)) {
             $output .= self::openTag('div', $addOnOptions);
         }
         $output .= $prepend . parent::inputField($type, $name, $value, $htmlOptions) . $append;
-        if (!empty($addonClass)) {
+        if (!empty($addOnClass)) {
             $output .= '</div>';
         }
         return $output;
@@ -1665,6 +1665,7 @@ EOD;
     public static function activeTextArea($model, $attribute, $htmlOptions = array())
     {
         $htmlOptions = self::normalizeInputOptions($htmlOptions);
+        self::addCssClass('form-control', $htmlOptions);
         return parent::activeTextArea($model, $attribute, $htmlOptions);
     }
 
@@ -2295,10 +2296,11 @@ EOD;
         parent::clientChange('change', $htmlOptions);
 
         $htmlOptions = self::normalizeInputOptions($htmlOptions);
+        self::addCssClass('form-control', $htmlOptions);
 
-        $addOnClasses = self::getAddOnClasses($htmlOptions);
+        $addOnClass = self::getAddOnClasses($htmlOptions);
         $addOnOptions = TbArray::popValue('addOnOptions', $htmlOptions, array());
-        self::addCssClass($addOnClasses, $addOnOptions);
+        self::addCssClass($addOnClass, $addOnOptions);
 
         $prepend = TbArray::popValue('prepend', $htmlOptions, '');
         $prependOptions = TbArray::popValue('prependOptions', $htmlOptions, array());
@@ -2313,11 +2315,11 @@ EOD;
         }
 
         $output = '';
-        if (!empty($addOnClasses)) {
+        if (!empty($addOnClass)) {
             $output .= self::openTag('div', $addOnOptions);
         }
         $output .= $prepend . parent::activeInputField($type, $model, $attribute, $htmlOptions) . $append;
-        if (!empty($addOnClasses)) {
+        if (!empty($addOnClass)) {
             $output .= '</div>';
         }
         return $output;

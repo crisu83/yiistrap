@@ -1191,11 +1191,11 @@ class TbHtmlTest extends TbTestCase
                 'class' => 'input'
             )
         );
-        $input = $I->createNode($html, 'input[type=text]');
+        $input = $I->createNode($html, 'input[type=text].form-control');
         $I->seeNodeAttributes(
             $input,
             array(
-                'class' => 'input',
+                'class' => 'input form-control',
                 'id' => 'Dummy_text',
                 'name' => 'Dummy[text]',
                 'value' => 'text',
@@ -1210,9 +1210,9 @@ class TbHtmlTest extends TbTestCase
             )
         );
         $div = $I->createNode($html, 'div');
-        $I->seeNodeCssClass($div, 'input-prepend');
-        $I->seeNodeChildren($div, array('span.add-on', 'input'));
-        $span = $div->filter('span.add-on');
+        $I->seeNodeCssClass($div, 'input-group');
+        $I->seeNodeChildren($div, array('span', 'input'));
+        $span = $div->filter('span.input-group-addon');
         $I->seeNodeText($span, 'Prepend text');
 
         $html = TbHtml::activeTextField(
@@ -1223,9 +1223,9 @@ class TbHtmlTest extends TbTestCase
             )
         );
         $div = $I->createNode($html, 'div');
-        $I->seeNodeCssClass($div, 'input-append');
+        $I->seeNodeCssClass($div, 'input-group');
         $I->seeNodeChildren($div, array('input', 'span'));
-        $span = $div->filter('span.add-on');
+        $span = $div->filter('span.input-group-addon');
         $I->seeNodeText($span, 'Append text');
 
         $html = TbHtml::activeTextField(
@@ -1237,8 +1237,8 @@ class TbHtmlTest extends TbTestCase
             )
         );
         $div = $I->createNode($html, 'div');
-        $I->seeNodeCssClass($div, 'input-prepend input-append');
-        $I->seeNodeChildren($div, array('span.add-on', 'input', 'span.add-on'));
+        $I->seeNodeCssClass($div, 'input-group');
+        $I->seeNodeChildren($div, array('span.input-group-addon', 'input', 'span.input-group-addon'));
     }
 
     public function testActivePasswordField()
@@ -1251,11 +1251,11 @@ class TbHtmlTest extends TbTestCase
                 'class' => 'input'
             )
         );
-        $input = $I->createNode($html, 'input[type=password]');
+        $input = $I->createNode($html, 'input[type=password].form-control');
         $I->seeNodeAttributes(
             $input,
             array(
-                'class' => 'input',
+                'class' => 'input form-control',
                 'id' => 'Dummy_password',
                 'name' => 'Dummy[password]',
                 'value' => 'secret',
@@ -1273,11 +1273,11 @@ class TbHtmlTest extends TbTestCase
                 'class' => 'input'
             )
         );
-        $input = $I->createNode($html, 'input[type=url]');
+        $input = $I->createNode($html, 'input[type=url].form-control');
         $I->seeNodeAttributes(
             $input,
             array(
-                'class' => 'input',
+                'class' => 'input form-control',
                 'id' => 'Dummy_url',
                 'name' => 'Dummy[url]',
                 'value' => 'http://www.getyiistrap.com',
@@ -1295,11 +1295,11 @@ class TbHtmlTest extends TbTestCase
                 'class' => 'input'
             )
         );
-        $input = $I->createNode($html, 'input[type=email]');
+        $input = $I->createNode($html, 'input[type=email].form-control');
         $I->seeNodeAttributes(
             $input,
             array(
-                'class' => 'input',
+                'class' => 'input form-control',
                 'id' => 'Dummy_email',
                 'name' => 'Dummy[email]',
                 'value' => 'christoffer.niska@gmail.com',
@@ -1317,11 +1317,11 @@ class TbHtmlTest extends TbTestCase
                 'class' => 'input'
             )
         );
-        $input = $I->createNode($html, 'input[type=number]');
+        $input = $I->createNode($html, 'input[type=number].form-control');
         $I->seeNodeAttributes(
             $input,
             array(
-                'class' => 'input',
+                'class' => 'input form-control',
                 'id' => 'Dummy_number',
                 'name' => 'Dummy[number]',
                 'value' => '42',
@@ -1339,11 +1339,11 @@ class TbHtmlTest extends TbTestCase
                 'class' => 'input'
             )
         );
-        $input = $I->createNode($html, 'input[type=range]');
+        $input = $I->createNode($html, 'input[type=range].form-control');
         $I->seeNodeAttributes(
             $input,
             array(
-                'class' => 'input',
+                'class' => 'input form-control',
                 'id' => 'Dummy_range',
                 'name' => 'Dummy[range]',
                 'value' => '3.33',
@@ -1361,11 +1361,11 @@ class TbHtmlTest extends TbTestCase
                 'class' => 'input'
             )
         );
-        $input = $I->createNode($html, 'input[type=date]');
+        $input = $I->createNode($html, 'input[type=date].form-control');
         $I->seeNodeAttributes(
             $input,
             array(
-                'class' => 'input',
+                'class' => 'input form-control',
                 'id' => 'Dummy_date',
                 'name' => 'Dummy[date]',
                 'value' => '2013-08-28',
@@ -1383,11 +1383,11 @@ class TbHtmlTest extends TbTestCase
                 'class' => 'textarea',
             )
         );
-        $textarea = $I->createNode($html, 'textarea');
+        $textarea = $I->createNode($html, 'textarea.form-control');
         $I->seeNodeAttributes(
             $textarea,
             array(
-                'class' => 'textarea',
+                'class' => 'textarea form-control',
                 'id' => 'Dummy_textarea',
                 'name' => 'Dummy[textarea]',
             )
