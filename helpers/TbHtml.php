@@ -696,7 +696,7 @@ class TbHtml extends CHtml // required in order to access the protected methods 
     public static function tag($tag, $htmlOptions = array(), $content = false, $closeTag = true)
     {
         self::addSpanClass($htmlOptions);
-        self::addGridClass($htmlOptions);
+        self::addColClass($htmlOptions);
         self::addPullClass($htmlOptions);
         self::addTextAlignClass($htmlOptions);
         return parent::tag($tag, $htmlOptions, $content, $closeTag);
@@ -4392,9 +4392,9 @@ EOD;
     }
 
     /**
-     * Adds the appropriate grid class to the given options applicable. The available grids are 'xs', 'sm', 'md', 'lg'
-     * for extra small, small, medium, and large grids to the appropriate screen sizes. It is also possible to prevent
-     * your columns from stacking on smaller devices by combining a small grid and a larger grid:
+     * Adds the appropriate column class to the given options applicable. The available columns are 'xs', 'sm', 'md',
+     * 'lg' for extra small, small, medium, and large to be used for the appropriate screen sizes. It is also possible
+     * to prevent your columns from stacking on smaller devices by combining a small column with a larger column:
      * <code>
      *  $htmlOptions = array(
      *      'xs' => 12,
@@ -4404,15 +4404,15 @@ EOD;
      * Both classes will be applied.
      * @param $htmlOptions
      */
-    protected static function addGridClass(&$htmlOptions)
+    protected static function addColClass(&$htmlOptions)
     {
-        $gridSizes = array('xs', 'sm', 'md', 'lg');
+        $colSizes = array('xs', 'sm', 'md', 'lg');
 
         // It's possible to stack an xs and md grid together
-        foreach ($gridSizes as $gridSize) {
-            $span = TbArray::popValue($gridSize, $htmlOptions);
+        foreach ($colSizes as $colSize) {
+            $span = TbArray::popValue($colSize, $htmlOptions);
             if (!empty($span)) {
-                self::addCssClass('col-' . $gridSize . '-' . $span, $htmlOptions);
+                self::addCssClass('col-' . $colSize . '-' . $span, $htmlOptions);
             }
         }
     }

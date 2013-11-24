@@ -246,7 +246,7 @@ class TbHtmlTest extends TbTestCase
         $I->seeNodeCssClass($p, 'tag');
     }
 
-    public function testXsGrid()
+    public function testXsCol()
     {
         $I = $this->codeGuy;
         $html = TbHtml::tag(
@@ -260,7 +260,7 @@ class TbHtmlTest extends TbTestCase
         $I->seeNodeCssClass($div, 'col-xs-3');
     }
 
-    public function testSmGrid()
+    public function testSmCol()
     {
         $I = $this->codeGuy;
         $html = TbHtml::tag(
@@ -274,7 +274,7 @@ class TbHtmlTest extends TbTestCase
         $I->seeNodeCssClass($div, 'col-sm-3');
     }
 
-    public function testMdGrid()
+    public function testMdCol()
     {
         $I = $this->codeGuy;
         $html = TbHtml::tag(
@@ -288,7 +288,7 @@ class TbHtmlTest extends TbTestCase
         $I->seeNodeCssClass($div, 'col-md-3');
     }
 
-    public function testLgGrid()
+    public function testLgCol()
     {
         $I = $this->codeGuy;
         $html = TbHtml::tag(
@@ -302,7 +302,7 @@ class TbHtmlTest extends TbTestCase
         $I->seeNodeCssClass($div, 'col-lg-3');
     }
 
-    public function testHybridGrid()
+    public function testHybridCol()
     {
         $I = $this->codeGuy;
         $html = TbHtml::tag(
