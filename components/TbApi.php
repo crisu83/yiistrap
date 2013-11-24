@@ -50,19 +50,6 @@ class TbApi extends CApplicationComponent
             $fileName = YII_DEBUG ? 'bootstrap.css' : 'bootstrap.min.css';
             $url = $this->getAssetsUrl() . '/css/' . $fileName;
         }
-        Yii::app()->clientScript->registerCssFile($url);
-    }
-
-    /**
-     * Registers the responsive Bootstrap CSS.
-     * @param string $url the URL to the CSS file to register.
-     */
-    public function registerResponsiveCss($url = null)
-    {
-        if ($url === null) {
-            $fileName = YII_DEBUG ? 'bootstrap-responsive.css' : 'bootstrap-responsive.min.css';
-            $url = $this->getAssetsUrl() . '/css/' . $fileName;
-        }
         /** @var CClientScript $cs */
         $cs = Yii::app()->getClientScript();
         $cs->registerMetaTag('width=device-width, initial-scale=1.0', 'viewport');
@@ -90,7 +77,6 @@ class TbApi extends CApplicationComponent
     public function registerAllCss()
     {
         $this->registerCoreCss();
-        $this->registerResponsiveCss();
         $this->registerYiistrapCss();
     }
 
