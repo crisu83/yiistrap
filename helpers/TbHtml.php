@@ -481,7 +481,7 @@ class TbHtml extends CHtml // required in order to access the protected methods 
     // --------------------------------------------------
 
     // Typography
-    // http://twitter.github.io/bootstrap/2.3.2/base-css.html#typography
+    // http://getbootstrap.com/css/#type
     // --------------------------------------------------
 
     /**
@@ -531,7 +531,6 @@ class TbHtml extends CHtml // required in order to access the protected methods 
 
     /**
      * Generates an emphasized text.
-     * @param string $style the text style.
      * @param string $text the text to emphasize.
      * @param array $htmlOptions additional HTML attributes.
      * @param string $tag the HTML tag.
@@ -567,7 +566,6 @@ class TbHtml extends CHtml // required in order to access the protected methods 
      * Generates a muted span.
      * @param string $text the text.
      * @param array $htmlOptions additional HTML attributes.
-     * @param string $tag the HTML tag.
      * @return string the generated span.
      */
     public static function mutedSpan($text, $htmlOptions = array())
@@ -606,7 +604,7 @@ class TbHtml extends CHtml // required in order to access the protected methods 
 
     /**
      * Generates an address block.
-     * @param string $quote the address text.
+     * @param $text
      * @param array $htmlOptions additional HTML attributes.
      * @return string the generated block.
      */
@@ -642,13 +640,15 @@ class TbHtml extends CHtml // required in order to access the protected methods 
      */
     public static function help($text, $htmlOptions = array())
     {
-        $type = TbArray::popValue('type', $htmlOptions, self::HELP_TYPE_INLINE);
-        self::addCssClass('help-' . $type, $htmlOptions);
+        $type = TbArray::popValue('type', $htmlOptions, self::HELP_TYPE_BLOCK);
+        self::addCssClass('help-' . self::HELP_TYPE_BLOCK, $htmlOptions);
         return self::tag($type === self::HELP_TYPE_INLINE ? 'span' : 'p', $htmlOptions, $text);
     }
 
     /**
      * Generates a help block.
+     * @todo Remove or keep compatibility for BS2. There is only help-block and no help-inline
+     * @deprecated
      * @param string $text the help text.
      * @param array $htmlOptions additional HTML attributes.
      * @return string the generated block.
@@ -1367,7 +1367,7 @@ EOD;
 
     /**
      * Generates a control group with an uneditable field.
-     * @param string $select the input value.
+     * @param string $value
      * @param array $htmlOptions additional HTML attributes.
      * @return string the generated control group.
      * @see self::controlGroup
@@ -1380,7 +1380,7 @@ EOD;
     /**
      * Generates a control group with a search field.
      * @param string $name the input name.
-     * @param string $select the input value.
+     * @param string $value
      * @param array $htmlOptions additional HTML attributes.
      * @return string the generated control group.
      * @see self::controlGroup
@@ -2273,6 +2273,7 @@ EOD;
     {
         parent::resolveName($model, $attribute); // turn [a][b]attr into attr
         $error = $model->getError($attribute);
+        $htmlOptions['type'] = self::HELP_TYPE_INLINE;
         return !empty($error) ? self::help($error, $htmlOptions) : '';
     }
 
@@ -2360,9 +2361,7 @@ EOD;
     protected static function inputHelp($help, $htmlOptions)
     {
         $type = TbArray::popValue('type', $htmlOptions, self::HELP_TYPE_INLINE);
-        return $type === self::HELP_TYPE_INLINE
-            ? self::help($help, $htmlOptions)
-            : self::helpBlock($help, $htmlOptions);
+        return self::help($help, $htmlOptions);
     }
 
     /**

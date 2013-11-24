@@ -163,21 +163,40 @@ class TbHtmlTest extends TbTestCase
         $cite = $small->filter('small > cite');
         $I->seeNodeCssClass($cite, 'cite');
         $I->seeNodeText($cite, 'Cited text');
-        // todo: consider writing a test including the pull-right quote as well.
+    }
+
+    public function testQuotePullRight()
+    {
+        $I = $this->codeGuy;
+        $html = TbHtml::quote(
+            'Quote text',
+            array(
+                'paragraphOptions' => array('class' => 'paragraph'),
+                'source' => 'Source text',
+                'sourceOptions' => array('class' => 'source'),
+                'cite' => 'Cited text',
+                'citeOptions' => array('class' => 'cite'),
+                'class' => 'pull-right',
+            )
+        );
+        $blockquote = $I->createNode($html, 'blockquote');
+        $I->seeNodeChildren($blockquote, array('p', 'small'));
+        $I->seeNodeCssClass($blockquote, 'pull-right');
+        $p = $blockquote->filter('p');
+        $I->seeNodeCssClass($p, 'paragraph');
+        $I->seeNodeText($p, 'Quote text');
+        $small = $blockquote->filter('blockquote > small');
+        $I->seeNodeCssClass($small, 'source');
+        $I->seeNodeText($small, 'Source text');
+        $cite = $small->filter('small > cite');
+        $I->seeNodeCssClass($cite, 'cite');
+        $I->seeNodeText($cite, 'Cited text');
     }
 
     public function testHelp()
     {
         $I = $this->codeGuy;
         $html = TbHtml::help('Help text');
-        $span = $I->createNode($html, 'span.help-inline');
-        $I->seeNodeText($span, 'Help text');
-    }
-
-    public function testHelpBlock()
-    {
-        $I = $this->codeGuy;
-        $html = TbHtml::helpBlock('Help text');
         $p = $I->createNode($html, 'p.help-block');
         $I->seeNodeText($p, 'Help text');
     }
@@ -1043,7 +1062,7 @@ class TbHtmlTest extends TbTestCase
                 'value' => '',
             )
         );
-        $help = $controls->filter('span.help-inline');
+        $help = $controls->filter('span.help-block');
         $I->seeNodeCssClass($help, 'help');
         $I->seeNodeText($help, 'Help text');
 
@@ -1881,7 +1900,7 @@ class TbHtmlTest extends TbTestCase
                 'class' => 'error',
             )
         );
-        $span = $I->createNode($html, 'span.help-inline');
+        $span = $I->createNode($html, 'span.help-block');
         $I->seeNodeCssClass($span, 'error');
         $I->seeNodeText($span, 'Error text');
     }
