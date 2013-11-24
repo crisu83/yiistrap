@@ -230,7 +230,7 @@ class TbHtmlTest extends TbTestCase
             'Content'
         );
         $div = $I->createNode($html, 'div');
-        $I->seeNodeCssClass($div, 'pull-right span3 text-right');
+        $I->seeNodeCssClass($div, 'pull-right col-md-3 text-right');
     }
 
     public function testOpenTag()
@@ -244,6 +244,77 @@ class TbHtmlTest extends TbTestCase
         );
         $p = $I->createNode($html, 'p');
         $I->seeNodeCssClass($p, 'tag');
+    }
+
+    public function testXsGrid()
+    {
+        $I = $this->codeGuy;
+        $html = TbHtml::tag(
+            'div',
+            array(
+                'xs' => 3,
+            ),
+            'Content'
+        );
+        $div = $I->createNode($html, 'div');
+        $I->seeNodeCssClass($div, 'col-xs-3');
+    }
+
+    public function testSmGrid()
+    {
+        $I = $this->codeGuy;
+        $html = TbHtml::tag(
+            'div',
+            array(
+                'sm' => 3,
+            ),
+            'Content'
+        );
+        $div = $I->createNode($html, 'div');
+        $I->seeNodeCssClass($div, 'col-sm-3');
+    }
+
+    public function testMdGrid()
+    {
+        $I = $this->codeGuy;
+        $html = TbHtml::tag(
+            'div',
+            array(
+                'md' => 3,
+            ),
+            'Content'
+        );
+        $div = $I->createNode($html, 'div');
+        $I->seeNodeCssClass($div, 'col-md-3');
+    }
+
+    public function testLgGrid()
+    {
+        $I = $this->codeGuy;
+        $html = TbHtml::tag(
+            'div',
+            array(
+                'lg' => 3,
+            ),
+            'Content'
+        );
+        $div = $I->createNode($html, 'div');
+        $I->seeNodeCssClass($div, 'col-lg-3');
+    }
+
+    public function testHybridGrid()
+    {
+        $I = $this->codeGuy;
+        $html = TbHtml::tag(
+            'div',
+            array(
+                'xs' => 12,
+                'md' => 8,
+            ),
+            'Content'
+        );
+        $div = $I->createNode($html, 'div');
+        $I->seeNodeCssClass($div, array('col-xs-12', 'col-md-8'));
     }
 
     public function testForm()
@@ -3308,7 +3379,7 @@ class TbHtmlTest extends TbTestCase
         $thumbnails = $I->createNode($html, 'ul.thumbnails');
         $I->seeNodeCssClass($thumbnails, 'list');
         $I->seeNodeNumChildren($thumbnails, 3);
-        $I->seeNodeChildren($thumbnails, array('li.span6', 'li.span3', 'li.span3'));
+        $I->seeNodeChildren($thumbnails, array('li.col-md-6', 'li.col-md-3', 'li.col-md-3'));
         foreach ($thumbnails->children() as $i => $liElement) {
             $li = $I->createNode($liElement);
             $thumbnail = $li->filter('div.thumbnail');

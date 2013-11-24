@@ -696,6 +696,7 @@ class TbHtml extends CHtml // required in order to access the protected methods 
     public static function tag($tag, $htmlOptions = array(), $content = false, $closeTag = true)
     {
         self::addSpanClass($htmlOptions);
+        self::addGridClass($htmlOptions);
         self::addPullClass($htmlOptions);
         self::addTextAlignClass($htmlOptions);
         return parent::tag($tag, $htmlOptions, $content, $closeTag);
@@ -4377,14 +4378,42 @@ EOD;
     }
 
     /**
-     * Adds the grid span class to the given options is applicable.
+     * Adds the grid span class to the given options is applicable. BS3 no longer use span classes. During the BS3
+     * transition, this will use the col-md-* CSS class.
+     * @deprecated
      * @param array $htmlOptions the HTML attributes.
      */
     protected static function addSpanClass(&$htmlOptions)
     {
         $span = TbArray::popValue('span', $htmlOptions);
         if (!empty($span)) {
-            self::addCssClass('span' . $span, $htmlOptions);
+            self::addCssClass('col-md-' . $span, $htmlOptions);
+        }
+    }
+
+    /**
+     * Adds the appropriate grid class to the given options applicable. The available grids are 'xs', 'sm', 'md', 'lg'
+     * for extra small, small, medium, and large grids to the appropriate screen sizes. It is also possible to prevent
+     * your columns from stacking on smaller devices by combining a small grid and a larger grid:
+     * <code>
+     *  $htmlOptions = array(
+     *      'xs' => 12,
+     *      'md' => 8,
+     * )
+     * </code>
+     * Both classes will be applied.
+     * @param $htmlOptions
+     */
+    protected static function addGridClass(&$htmlOptions)
+    {
+        $gridSizes = array('xs', 'sm', 'md', 'lg');
+
+        // It's possible to stack an xs and md grid together
+        foreach ($gridSizes as $gridSize) {
+            $span = TbArray::popValue($gridSize, $htmlOptions);
+            if (!empty($span)) {
+                self::addCssClass('col-' . $gridSize . '-' . $span, $htmlOptions);
+            }
         }
     }
 
