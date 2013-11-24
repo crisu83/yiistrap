@@ -377,11 +377,11 @@ class TbHtmlTest extends TbTestCase
                 'class' => 'input',
             )
         );
-        $input = $I->createNode($html, 'input[type=text]');
+        $input = $I->createNode($html, 'input[type=text].form-control');
         $I->seeNodeAttributes(
             $input,
             array(
-                'class' => 'input',
+                'class' => 'input form-control',
                 'id' => 'text',
                 'name' => 'text',
                 'value' => 'text',
@@ -395,10 +395,10 @@ class TbHtmlTest extends TbTestCase
                 'prepend' => 'Prepend text',
             )
         );
-        $div = $I->createNode($html, 'div');
-        $I->seeNodeCssClass($div, 'input-prepend');
+        $div = $I->createNode($html, 'div.input-group');
+        $I->seeNodeCssClass($div, 'input-group');
         $I->seeNodeChildren($div, array('span', 'input'));
-        $span = $div->filter('span.add-on');
+        $span = $div->filter('span.input-group-addon');
         $I->seeNodeText($span, 'Prepend text');
 
         $html = TbHtml::textField(
@@ -408,10 +408,10 @@ class TbHtmlTest extends TbTestCase
                 'append' => 'Append text',
             )
         );
-        $div = $I->createNode($html, 'div');
-        $I->seeNodeCssClass($div, 'input-append');
+        $div = $I->createNode($html, 'div.input-group');
+        $I->seeNodeCssClass($div, 'input-group');
         $I->seeNodeChildren($div, array('input', 'span'));
-        $span = $div->filter('span.add-on');
+        $span = $div->filter('span.input-group-addon');
         $I->seeNodeText($span, 'Append text');
 
         $html = TbHtml::textField(
@@ -422,10 +422,13 @@ class TbHtmlTest extends TbTestCase
                 'append' => 'Append text',
             )
         );
-        $div = $I->createNode($html, 'div');
-        $I->seeNodeCssClass($div, 'input-prepend input-append');
+        $div = $I->createNode($html, 'div.input-group');
+        $I->seeNodeCssClass($div, 'input-group');
         $I->seeNodeChildren($div, array('span', 'input', 'span'));
+//        $span = $div->filter('span.input-group-addon');
+//        $I->seeNodeText($span, array('Prepend text', 'Append text'));
 
+        // @todo Deprecated in BS3?
         $html = TbHtml::textField(
             'text',
             'text',
@@ -447,11 +450,11 @@ class TbHtmlTest extends TbTestCase
                 'class' => 'input',
             )
         );
-        $input = $I->createNode($html, 'input[type=password]');
+        $input = $I->createNode($html, 'input[type=password].form-control');
         $I->seeNodeAttributes(
             $input,
             array(
-                'class' => 'input',
+                'class' => 'input form-control',
                 'id' => 'password',
                 'name' => 'password',
                 'value' => 'secret',
@@ -469,11 +472,11 @@ class TbHtmlTest extends TbTestCase
                 'class' => 'input',
             )
         );
-        $input = $I->createNode($html, 'input[type=url]');
+        $input = $I->createNode($html, 'input[type=url].form-control');
         $I->seeNodeAttributes(
             $input,
             array(
-                'class' => 'input',
+                'class' => 'input form-control',
                 'id' => 'url',
                 'name' => 'url',
                 'value' => 'http://www.getyiistrap.com',
@@ -491,11 +494,11 @@ class TbHtmlTest extends TbTestCase
                 'class' => 'input',
             )
         );
-        $input = $I->createNode($html, 'input[type=email]');
+        $input = $I->createNode($html, 'input[type=email].form-control');
         $I->seeNodeAttributes(
             $input,
             array(
-                'class' => 'input',
+                'class' => 'input form-control',
                 'id' => 'email',
                 'name' => 'email',
                 'value' => 'christoffer.niska@gmail.com',
@@ -513,11 +516,11 @@ class TbHtmlTest extends TbTestCase
                 'class' => 'input',
             )
         );
-        $input = $I->createNode($html, 'input[type=number]');
+        $input = $I->createNode($html, 'input[type=number].form-control');
         $I->seeNodeAttributes(
             $input,
             array(
-                'class' => 'input',
+                'class' => 'input form-control',
                 'id' => 'number',
                 'name' => 'number',
                 'value' => '42',
@@ -535,11 +538,11 @@ class TbHtmlTest extends TbTestCase
                 'class' => 'input',
             )
         );
-        $input = $I->createNode($html, 'input[type=range]');
+        $input = $I->createNode($html, 'input[type=range].form-control');
         $I->seeNodeAttributes(
             $input,
             array(
-                'class' => 'input',
+                'class' => 'input form-control',
                 'id' => 'range',
                 'name' => 'range',
                 'value' => '3.33',
@@ -557,11 +560,11 @@ class TbHtmlTest extends TbTestCase
                 'class' => 'input',
             )
         );
-        $input = $I->createNode($html, 'input[type=date]');
+        $input = $I->createNode($html, 'input[type=date].form-control');
         $I->seeNodeAttributes(
             $input,
             array(
-                'class' => 'input',
+                'class' => 'input form-control',
                 'id' => 'date',
                 'name' => 'date',
                 'value' => '2013-08-28',
@@ -601,11 +604,11 @@ class TbHtmlTest extends TbTestCase
                 'class' => 'textarea',
             )
         );
-        $textarea = $I->createNode($html, 'textarea');
+        $textarea = $I->createNode($html, 'textarea.form-control');
         $I->seeNodeAttributes(
             $textarea,
             array(
-                'class' => 'textarea',
+                'class' => 'textarea form-control',
                 'id' => 'textarea',
                 'name' => 'textarea',
             )
@@ -1102,7 +1105,7 @@ class TbHtmlTest extends TbTestCase
     {
         $I = $this->codeGuy;
 
-        $html = TbHtml::controlGroup(
+        $html = TbHtml::formGroup(
             TbHtml::INPUT_TYPE_TEXT,
             'text',
             '',
@@ -1137,7 +1140,7 @@ class TbHtmlTest extends TbTestCase
         $I->seeNodeCssClass($help, 'help');
         $I->seeNodeText($help, 'Help text');
 
-        $html = TbHtml::controlGroup(
+        $html = TbHtml::formGroup(
             TbHtml::INPUT_TYPE_RADIOBUTTON,
             'radio',
             true,
