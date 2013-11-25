@@ -1099,11 +1099,11 @@ class TbHtmlTest extends TbTestCase
         $I->seeNodeChildren($controls, array('input[type=text].search-query'));
     }
 
-    public function testFormGroup()
+    public function testControlGroup()
     {
         $I = $this->codeGuy;
 
-        $html = TbHtml::formGroup(
+        $html = TbHtml::controlGroup(
             TbHtml::INPUT_TYPE_TEXT,
             'text',
             '',
@@ -1138,7 +1138,7 @@ class TbHtmlTest extends TbTestCase
         $I->seeNodeCssClass($help, 'help');
         $I->seeNodeText($help, 'Help text');
 
-        $html = TbHtml::formGroup(
+        $html = TbHtml::controlGroup(
             TbHtml::INPUT_TYPE_RADIOBUTTON,
             'radio',
             true,

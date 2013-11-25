@@ -1150,7 +1150,7 @@ EOD;
      */
     public static function textFieldControlGroup($name, $value = '', $htmlOptions = array())
     {
-        return self::formGroup(self::INPUT_TYPE_TEXT, $name, $value, $htmlOptions);
+        return self::controlGroup(self::INPUT_TYPE_TEXT, $name, $value, $htmlOptions);
     }
 
     /**
@@ -1163,7 +1163,7 @@ EOD;
      */
     public static function passwordFieldControlGroup($name, $value = '', $htmlOptions = array())
     {
-        return self::formGroup(self::INPUT_TYPE_PASSWORD, $name, $value, $htmlOptions);
+        return self::controlGroup(self::INPUT_TYPE_PASSWORD, $name, $value, $htmlOptions);
     }
 
     /**
@@ -1176,7 +1176,7 @@ EOD;
      */
     public static function urlFieldControlGroup($name, $value = '', $htmlOptions = array())
     {
-        return self::formGroup(self::INPUT_TYPE_URL, $name, $value, $htmlOptions);
+        return self::controlGroup(self::INPUT_TYPE_URL, $name, $value, $htmlOptions);
     }
 
     /**
@@ -1189,7 +1189,7 @@ EOD;
      */
     public static function emailFieldControlGroup($name, $value = '', $htmlOptions = array())
     {
-        return self::formGroup(self::INPUT_TYPE_EMAIL, $name, $value, $htmlOptions);
+        return self::controlGroup(self::INPUT_TYPE_EMAIL, $name, $value, $htmlOptions);
     }
 
     /**
@@ -1202,7 +1202,7 @@ EOD;
      */
     public static function numberFieldControlGroup($name, $value = '', $htmlOptions = array())
     {
-        return self::formGroup(self::INPUT_TYPE_NUMBER, $name, $value, $htmlOptions);
+        return self::controlGroup(self::INPUT_TYPE_NUMBER, $name, $value, $htmlOptions);
     }
 
     /**
@@ -1215,7 +1215,7 @@ EOD;
      */
     public static function rangeFieldControlGroup($name, $value = '', $htmlOptions = array())
     {
-        return self::formGroup(self::INPUT_TYPE_RANGE, $name, $value, $htmlOptions);
+        return self::controlGroup(self::INPUT_TYPE_RANGE, $name, $value, $htmlOptions);
     }
 
     /**
@@ -1228,7 +1228,7 @@ EOD;
      */
     public static function dateFieldControlGroup($name, $value = '', $htmlOptions = array())
     {
-        return self::formGroup(self::INPUT_TYPE_DATE, $name, $value, $htmlOptions);
+        return self::controlGroup(self::INPUT_TYPE_DATE, $name, $value, $htmlOptions);
     }
 
     /**
@@ -1241,7 +1241,7 @@ EOD;
      */
     public static function textAreaControlGroup($name, $value = '', $htmlOptions = array())
     {
-        return self::formGroup(self::INPUT_TYPE_TEXTAREA, $name, $value, $htmlOptions);
+        return self::controlGroup(self::INPUT_TYPE_TEXTAREA, $name, $value, $htmlOptions);
     }
 
     /**
@@ -1254,7 +1254,7 @@ EOD;
      */
     public static function fileFieldControlGroup($name, $value = '', $htmlOptions = array())
     {
-        return self::formGroup(self::INPUT_TYPE_FILE, $name, $value, $htmlOptions);
+        return self::controlGroup(self::INPUT_TYPE_FILE, $name, $value, $htmlOptions);
     }
 
     /**
@@ -1267,7 +1267,7 @@ EOD;
      */
     public static function radioButtonControlGroup($name, $checked = false, $htmlOptions = array())
     {
-        return self::formGroup(self::INPUT_TYPE_RADIOBUTTON, $name, $checked, $htmlOptions);
+        return self::controlGroup(self::INPUT_TYPE_RADIOBUTTON, $name, $checked, $htmlOptions);
     }
 
     /**
@@ -1280,7 +1280,7 @@ EOD;
      */
     public static function checkBoxControlGroup($name, $checked = false, $htmlOptions = array())
     {
-        return self::formGroup(self::INPUT_TYPE_CHECKBOX, $name, $checked, $htmlOptions);
+        return self::controlGroup(self::INPUT_TYPE_CHECKBOX, $name, $checked, $htmlOptions);
     }
 
     /**
@@ -1294,7 +1294,7 @@ EOD;
      */
     public static function dropDownListControlGroup($name, $select = '', $data = array(), $htmlOptions = array())
     {
-        return self::formGroup(self::INPUT_TYPE_DROPDOWNLIST, $name, $select, $htmlOptions, $data);
+        return self::controlGroup(self::INPUT_TYPE_DROPDOWNLIST, $name, $select, $htmlOptions, $data);
     }
 
     /**
@@ -1308,7 +1308,7 @@ EOD;
      */
     public static function listBoxControlGroup($name, $select = '', $data = array(), $htmlOptions = array())
     {
-        return self::formGroup(self::INPUT_TYPE_LISTBOX, $name, $select, $htmlOptions, $data);
+        return self::controlGroup(self::INPUT_TYPE_LISTBOX, $name, $select, $htmlOptions, $data);
     }
 
     /**
@@ -1322,7 +1322,7 @@ EOD;
      */
     public static function radioButtonListControlGroup($name, $select = '', $data = array(), $htmlOptions = array())
     {
-        return self::formGroup(self::INPUT_TYPE_RADIOBUTTONLIST, $name, $select, $htmlOptions, $data);
+        return self::controlGroup(self::INPUT_TYPE_RADIOBUTTONLIST, $name, $select, $htmlOptions, $data);
     }
 
     /**
@@ -1340,7 +1340,7 @@ EOD;
         $data = array(),
         $htmlOptions = array()
     ) {
-        return self::formGroup(self::INPUT_TYPE_INLINERADIOBUTTONLIST, $name, $select, $htmlOptions, $data);
+        return self::controlGroup(self::INPUT_TYPE_INLINERADIOBUTTONLIST, $name, $select, $htmlOptions, $data);
     }
 
     /**
@@ -1354,7 +1354,7 @@ EOD;
      */
     public static function checkBoxListControlGroup($name, $select = '', $data = array(), $htmlOptions = array())
     {
-        return self::formGroup(self::INPUT_TYPE_CHECKBOXLIST, $name, $select, $htmlOptions, $data);
+        return self::controlGroup(self::INPUT_TYPE_CHECKBOXLIST, $name, $select, $htmlOptions, $data);
     }
 
     /**
@@ -1368,7 +1368,7 @@ EOD;
      */
     public static function inlineCheckBoxListControlGroup($name, $select = '', $data = array(), $htmlOptions = array())
     {
-        return self::formGroup(self::INPUT_TYPE_INLINECHECKBOXLIST, $name, $select, $htmlOptions, $data);
+        return self::controlGroup(self::INPUT_TYPE_INLINECHECKBOXLIST, $name, $select, $htmlOptions, $data);
     }
 
     /**
@@ -1380,7 +1380,7 @@ EOD;
      */
     public static function uneditableFieldControlGroup($value = '', $htmlOptions = array())
     {
-        return self::formGroup(self::INPUT_TYPE_UNEDITABLE, '', $value, $htmlOptions);
+        return self::controlGroup(self::INPUT_TYPE_UNEDITABLE, '', $value, $htmlOptions);
     }
 
     /**
@@ -1393,7 +1393,7 @@ EOD;
      */
     public static function searchQueryControlGroup($name, $value = '', $htmlOptions = array())
     {
-        return self::formGroup(self::INPUT_TYPE_SEARCH, $name, $value, $htmlOptions);
+        return self::controlGroup(self::INPUT_TYPE_SEARCH, $name, $value, $htmlOptions);
     }
 
     /**
@@ -1405,7 +1405,7 @@ EOD;
      * @param array $data data for multiple select inputs.
      * @return string the generated control group.
      */
-    public static function formGroup($type, $name, $value = '', $htmlOptions = array(), $data = array())
+    public static function controlGroup($type, $name, $value = '', $htmlOptions = array(), $data = array())
     {
         $color = TbArray::popValue('color', $htmlOptions);
         $groupOptions = TbArray::popValue('groupOptions', $htmlOptions, array());
@@ -1453,7 +1453,7 @@ EOD;
     public static function customControlGroup($input, $name, $htmlOptions = array())
     {
         $htmlOptions['input'] = $input;
-        return self::formGroup(self::INPUT_TYPE_CUSTOM, $name, '', $htmlOptions);
+        return self::controlGroup(self::INPUT_TYPE_CUSTOM, $name, '', $htmlOptions);
     }
 
     /**
