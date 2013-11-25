@@ -629,7 +629,6 @@ class TbHtmlTest extends TbTestCase
             )
         );
         $label = $I->createNode($html, 'label');
-        $I->seeNodeCssClass($label, 'radio');
         $I->seeNodePattern($label, '/> Label text$/');
         $input = $label->filter('input[type=radio]');
         $I->seeNodeAttributes(
@@ -660,7 +659,6 @@ class TbHtmlTest extends TbTestCase
             )
         );
         $label = $I->createNode($html, 'label');
-        $I->seeNodeCssClass($label, 'checkbox');
         $I->seeNodePattern($label, '/> Label text$/');
         $input = $label->filter('input[type=checkbox]');
         $I->seeNodeAttributes(
@@ -693,7 +691,7 @@ class TbHtmlTest extends TbTestCase
                 'textAlign' => TbHtml::TEXT_ALIGN_CENTER,
             )
         );
-        $select = $I->createNode($html, 'select');
+        $select = $I->createNode($html, 'select.form-control');
         $I->seeNodeCssClass($select, 'input-large text-center list');
         $I->dontSeeNodeAttribute($select, 'size');
     }
@@ -713,7 +711,7 @@ class TbHtmlTest extends TbTestCase
                 'textAlign' => TbHtml::TEXT_ALIGN_CENTER,
             )
         );
-        $select = $I->createNode($html, 'select');
+        $select = $I->createNode($html, 'select.form-control');
         $I->seeNodeCssClass($select, 'input-large text-center list');
         $I->seeNodeAttributes(
             $select,
@@ -749,8 +747,8 @@ class TbHtmlTest extends TbTestCase
                 'containerOptions' => array('class' => 'container'),
             )
         );
-        $container = $I->createNode($html, 'div.container');
-        $I->seeNodeChildren($container, array('label.radio', 'br', 'label.radio', 'br', 'label.radio'));
+        $container = $I->createNode($html, 'div.radio.container');
+        $I->seeNodeChildren($container, array('label', 'br', 'label', 'br', 'label'));
         $label = $container->filter('label')->first();
         $I->seeNodePattern($label, '/> Option 1$/');
         $input = $label->filter('input[type=radio]');
@@ -772,9 +770,9 @@ class TbHtmlTest extends TbTestCase
             null,
             array('Option 1', 'Option 2', 'Option 3')
         );
-        $span = $I->createNode($html, 'span');
-        $I->seeNodeNumChildren($span, 3);
-        $I->seeNodeChildren($span, array('label.radio.inline', 'label.radio.inline', 'label.radio.inline'));
+        $div = $I->createNode($html, 'div');
+        $I->seeNodeNumChildren($div, 3);
+        $I->seeNodeChildren($div, array('label.radio-inline', 'label.radio-inline', 'label.radio-inline'));
     }
 
     public function testCheckboxList()
@@ -791,8 +789,8 @@ class TbHtmlTest extends TbTestCase
                 'containerOptions' => array('class' => 'container'),
             )
         );
-        $container = $I->createNode($html, 'div.container');
-        $I->seeNodeChildren($container, array('label.checkbox', 'br', 'label.checkbox', 'br', 'label.checkbox'));
+        $container = $I->createNode($html, 'div.checkbox.container');
+        $I->seeNodeChildren($container, array('label', 'br', 'label', 'br', 'label'));
         $label = $container->filter('label')->first();
         $I->seeNodePattern($label, '/> Option 1$/');
         $input = $label->filter('input[type=checkbox]');
@@ -813,12 +811,12 @@ class TbHtmlTest extends TbTestCase
                 'checkAll' => true,
             )
         );
-        $span = $I->createNode($html, 'span');
+        $div = $I->createNode($html, 'div.checkbox');
         $I->seeNodeChildren(
-            $span,
-            array('input[type=checkbox]', 'label.checkbox', 'label.checkbox', 'label.checkbox', 'label.checkbox')
+            $div,
+            array('input[type=checkbox]', 'label', 'label', 'label', 'label')
         );
-        $first = $span->filter('label')->first();
+        $first = $div->filter('label')->first();
         $I->seeNodeAttribute($first, 'for', 'checkboxList_all');
 
         $html = TbHtml::checkBoxList(
@@ -830,12 +828,12 @@ class TbHtmlTest extends TbTestCase
                 'checkAllLast' => true,
             )
         );
-        $span = $I->createNode($html, 'span');
+        $div = $I->createNode($html, 'div');
         $I->seeNodeChildren(
-            $span,
-            array('label.checkbox', 'label.checkbox', 'label.checkbox', 'label.checkbox', 'input[type=checkbox]')
+            $div,
+            array('label', 'label', 'label', 'label', 'input[type=checkbox]')
         );
-        $last = $span->filter('label')->last();
+        $last = $div->filter('label')->last();
         $I->seeNodeAttribute($last, 'for', 'checkboxList_all');
     }
 
@@ -847,11 +845,11 @@ class TbHtmlTest extends TbTestCase
             null,
             array('Option 1', 'Option 2', 'Option 3')
         );
-        $span = $I->createNode($html, 'span');
-        $I->seeNodeNumChildren($span, 3);
+        $div = $I->createNode($html, 'div');
+        $I->seeNodeNumChildren($div, 3);
         $I->seeNodeChildren(
-            $span,
-            array('label.checkbox.inline', 'label.checkbox.inline', 'label.checkbox.inline')
+            $div,
+            array('label.checkbox-inline', 'label.checkbox-inline', 'label.checkbox-inline')
         );
     }
 
@@ -895,70 +893,70 @@ class TbHtmlTest extends TbTestCase
     {
         $I = $this->codeGuy;
         $html = TbHtml::textFieldControlGroup('text', 'text');
-        $group = $I->createNode($html, 'div.control-group');
+        $group = $I->createNode($html, 'div.form-group');
         $label = $group->filter('label.control-label');
-        $I->seeNodeChildren($label, array('input[type=text]'));
+        $I->seeNodeChildren($label, array('input[type=text].form-control'));
     }
 
     public function testPasswordFieldControlGroup()
     {
         $I = $this->codeGuy;
         $html = TbHtml::passwordFieldControlGroup('password', 'secret');
-        $group = $I->createNode($html, 'div.control-group');
+        $group = $I->createNode($html, 'div.form-group');
         $label = $group->filter('label.control-label');
-        $I->seeNodeChildren($label, array('input[type=password]'));
+        $I->seeNodeChildren($label, array('input[type=password].form-control'));
     }
 
     public function testUrlFieldControlGroup()
     {
         $I = $this->codeGuy;
         $html = TbHtml::urlFieldControlGroup('url', 'url');
-        $group = $I->createNode($html, 'div.control-group');
+        $group = $I->createNode($html, 'div.form-group');
         $label = $group->filter('label.control-label');
-        $I->seeNodeChildren($label, array('input[type=url]'));
+        $I->seeNodeChildren($label, array('input[type=url].form-control'));
     }
 
     public function testEmailFieldControlGroup()
     {
         $I = $this->codeGuy;
         $html = TbHtml::emailFieldControlGroup('email', 'email');
-        $group = $I->createNode($html, 'div.control-group');
+        $group = $I->createNode($html, 'div.form-group');
         $label = $group->filter('label.control-label');
-        $I->seeNodeChildren($label, array('input[type=email]'));
+        $I->seeNodeChildren($label, array('input[type=email].form-control'));
     }
 
     public function testNumberFieldControlGroup()
     {
         $I = $this->codeGuy;
         $html = TbHtml::numberFieldControlGroup('number', 'number');
-        $group = $I->createNode($html, 'div.control-group');
+        $group = $I->createNode($html, 'div.form-group');
         $label = $group->filter('label.control-label');
-        $I->seeNodeChildren($label, array('input[type=number]'));
+        $I->seeNodeChildren($label, array('input[type=number].form-control'));
     }
 
     public function testRangeFieldControlGroup()
     {
         $I = $this->codeGuy;
         $html = TbHtml::rangeFieldControlGroup('range', 'range');
-        $group = $I->createNode($html, 'div.control-group');
+        $group = $I->createNode($html, 'div.form-group');
         $label = $group->filter('label.control-label');
-        $I->seeNodeChildren($label, array('input[type=range]'));
+        $I->seeNodeChildren($label, array('input[type=range].form-control'));
     }
 
     public function testDateFieldControlGroup()
     {
         $I = $this->codeGuy;
         $html = TbHtml::dateFieldControlGroup('date', 'date');
-        $group = $I->createNode($html, 'div.control-group');
+        $group = $I->createNode($html, 'div.form-group');
         $label = $group->filter('label.control-label');
-        $I->seeNodeChildren($label, array('input[type=date]'));
+        $I->seeNodeChildren($label, array('input[type=date].form-control'));
     }
 
     public function testFileFieldControlGroup()
     {
         $I = $this->codeGuy;
         $html = TbHtml::fileFieldControlGroup('file', 'file');
-        $group = $I->createNode($html, 'div.control-group');
+        $group = $I->createNode($html, 'div.form-group');
         $label = $group->filter('label.control-label');
         $I->seeNodeChildren($label, array('input[type=file]'));
     }
@@ -967,9 +965,9 @@ class TbHtmlTest extends TbTestCase
     {
         $I = $this->codeGuy;
         $html = TbHtml::textAreaControlGroup('textarea', 'Textarea text');
-        $group = $I->createNode($html, 'div.control-group');
+        $group = $I->createNode($html, 'div.form-group');
         $label = $group->filter('label.control-label');
-        $I->seeNodeChildren($label, array('textarea'));
+        $I->seeNodeChildren($label, array('textarea.form-control'));
     }
 
     public function testRadioButtonControlGroup()
@@ -982,7 +980,7 @@ class TbHtmlTest extends TbTestCase
                 'label' => 'Label text',
             )
         );
-        $group = $I->createNode($html, 'div.control-group');
+        $group = $I->createNode($html, 'div.form-group');
         $label = $group->filter('label.radio');
         $I->seeNodeChildren($label, array('input[type=radio]'));
     }
@@ -997,7 +995,7 @@ class TbHtmlTest extends TbTestCase
                 'label' => 'Label text',
             )
         );
-        $group = $I->createNode($html, 'div.control-group');
+        $group = $I->createNode($html, 'div.form-group');
         $label = $group->filter('label.checkbox');
         $I->seeNodeChildren($label, array('input[type=checkbox]'));
     }
@@ -1010,9 +1008,9 @@ class TbHtmlTest extends TbTestCase
             '',
             array('1', '2', '3', '4', '5')
         );
-        $group = $I->createNode($html, 'div.control-group');
-        $controls = $group->filter('div.controls');
-        $I->seeNodeChildren($controls, array('select'));
+        $group = $I->createNode($html, 'div.form-group');
+        $controls = $group->filter('div');
+        $I->seeNodeChildren($controls, array('select.form-control'));
     }
 
     public function testListBoxControlGroup()
@@ -1023,9 +1021,9 @@ class TbHtmlTest extends TbTestCase
             '',
             array('1', '2', '3', '4', '5')
         );
-        $group = $I->createNode($html, 'div.control-group');
-        $controls = $group->filter('div.controls');
-        $I->seeNodeChildren($controls, array('select'));
+        $group = $I->createNode($html, 'div.form-group');
+        $controls = $group->filter('div');
+        $I->seeNodeChildren($controls, array('select.form-control'));
     }
 
     public function testRadioButtonListControlGroup()
@@ -1036,8 +1034,8 @@ class TbHtmlTest extends TbTestCase
             '1',
             array('Option 1', 'Option 2', 'Option 3')
         );
-        $group = $I->createNode($html, 'div.control-group');
-        $controls = $group->filter('div.controls');
+        $group = $I->createNode($html, 'div.form-group');
+        $controls = $group->filter('div');
         $I->seeNodeChildren($controls, array('label.radio', 'label.radio', 'label.radio'));
     }
 
@@ -1101,7 +1099,7 @@ class TbHtmlTest extends TbTestCase
         $I->seeNodeChildren($controls, array('input[type=text].search-query'));
     }
 
-    public function testControlGroup()
+    public function testFormGroup()
     {
         $I = $this->codeGuy;
 
@@ -1118,16 +1116,16 @@ class TbHtmlTest extends TbTestCase
                 'helpOptions' => array('class' => 'help'),
             )
         );
-        $group = $I->createNode($html, 'div.control-group');
+        $group = $I->createNode($html, 'div.form-group');
         $I->seeNodeCssClass($group, 'success group');
-        $I->seeNodeChildren($group, array('label.control-label', 'div.controls'));
+        $I->seeNodeChildren($group, array('label.control-label', 'div'));
         $label = $group->filter('label.control-label');
         $I->seeNodeCssClass($label, 'label');
         $I->seeNodeAttribute($label, 'for', 'text');
         $I->seeNodeText($label, 'Label text');
-        $controls = $group->filter('div.controls');
+        $controls = $group->filter('div');
         $I->seeNodeChildren($controls, array('input', 'span'));
-        $input = $controls->filter('input[type=text]');
+        $input = $controls->filter('input[type=text].form-control');
         $I->seeNodeAttributes(
             $input,
             array(
@@ -1148,10 +1146,9 @@ class TbHtmlTest extends TbTestCase
                 'label' => 'Label text',
             )
         );
-        $group = $I->createNode($html, 'div.control-group');
-        $I->seeNodeChildren($group, array('div.controls'));
-        $controls = $group->filter('div.controls');
-        $label = $controls->filter('label.radio');
+        $group = $I->createNode($html, 'div.form-group');
+        $I->seeNodeChildren($group, array('div'));
+        $label = $group->filter('label');
         $I->seeNodePattern($label, '/> Label text$/');
         $radio = $label->filter('input[type=radio]');
         $I->seeNodeAttributes(
@@ -1502,7 +1499,7 @@ class TbHtmlTest extends TbTestCase
                 'textAlign' => TbHtml::TEXT_ALIGN_CENTER,
             )
         );
-        $select = $I->createNode($html, 'select');
+        $select = $I->createNode($html, 'select.form-control');
         $I->seeNodeCssClass($select, 'input-large text-center list');
         $I->seeNodeAttributes(
             $select,
@@ -1521,7 +1518,7 @@ class TbHtmlTest extends TbTestCase
                 'multiple' => true,
             )
         );
-        $select = $I->createNode($html, 'select');
+        $select = $I->createNode($html, 'select.form-control');
         $I->seeNodeAttribute($select, 'name', 'Dummy[listbox][]');
     }
 
@@ -1983,14 +1980,14 @@ class TbHtmlTest extends TbTestCase
     {
         $I = $this->codeGuy;
         $html = TbHtml::controls(
-            '<div class="control"></div><div class="control"></div>',
+            '<div class="row"></div><div class="row"></div>',
             array(
                 'before' => 'Before text',
                 'after' => 'After text',
             )
         );
-        $controls = $I->createNode($html, 'div.controls');
-        $I->seeNodeChildren($controls, array('div.control', 'div.control'));
+        $controls = $I->createNode($html, 'div');
+        $I->seeNodeChildren($controls, array('div.row', 'div.row'));
         $I->seeNodePattern($controls, '/^Before text</');
         $I->seeNodePattern($controls, '/>After text$/');
     }
@@ -2000,13 +1997,13 @@ class TbHtmlTest extends TbTestCase
         $I = $this->codeGuy;
         $html = TbHtml::controlsRow(
             array(
-                '<div class="control"></div>',
-                '<div class="control"></div>',
+                '<div class="row"></div>',
+                '<div class="row"></div>',
             )
         );
-        $controls = $I->createNode($html, 'div.controls');
-        $I->seeNodeCssClass($controls, 'controls-row');
-        $I->seeNodeChildren($controls, array('div.control', 'div.control'));
+        $controls = $I->createNode($html, 'div');
+        $I->seeNodeCssClass($controls, 'row');
+        $I->seeNodeChildren($controls, array('div.row', 'div.row'));
     }
 
     public function testFormActions()

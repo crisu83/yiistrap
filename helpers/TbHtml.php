@@ -906,7 +906,6 @@ class TbHtml extends CHtml // required in order to access the protected methods 
     {
         $label = TbArray::popValue('label', $htmlOptions, false);
         $labelOptions = TbArray::popValue('labelOptions', $htmlOptions, array());
-        self::addCssClass('radio', $labelOptions);
         $input = parent::radioButton($name, $checked, $htmlOptions);
         return self::createCheckBoxAndRadioButtonLabel($label, $input, $labelOptions);
     }
@@ -922,7 +921,6 @@ class TbHtml extends CHtml // required in order to access the protected methods 
     {
         $label = TbArray::popValue('label', $htmlOptions, false);
         $labelOptions = TbArray::popValue('labelOptions', $htmlOptions, array());
-        self::addCssClass('checkbox', $labelOptions);
         $input = parent::checkBox($name, $checked, $htmlOptions);
         return self::createCheckBoxAndRadioButtonLabel($label, $input, $labelOptions);
     }
@@ -932,12 +930,14 @@ class TbHtml extends CHtml // required in order to access the protected methods 
      * @param string $name the input name.
      * @param string $select the selected value.
      * @param array $data data for generating the list options (value=>display).
+     * @param array $htmlOptions
      * @return string the generated drop down list.
      */
     public static function dropDownList($name, $select, $data, $htmlOptions = array())
     {
         $displaySize = TbArray::popValue('displaySize', $htmlOptions);
         $htmlOptions = self::normalizeInputOptions($htmlOptions);
+        self::addCssClass('form-control', $htmlOptions);
         if (!empty($displaySize)) {
             $htmlOptions['size'] = $displaySize;
         }
@@ -975,8 +975,11 @@ class TbHtml extends CHtml // required in order to access the protected methods 
     {
         $inline = TbArray::popValue('inline', $htmlOptions, false);
         $separator = TbArray::popValue('separator', $htmlOptions, ' ');
-        $container = TbArray::popValue('container', $htmlOptions, 'span');
+        $container = TbArray::popValue('container', $htmlOptions, 'div');
         $containerOptions = TbArray::popValue('containerOptions', $htmlOptions, array());
+        if (!$inline) {
+            self::addCssClass('radio', $containerOptions);
+        }
         $labelOptions = TbArray::popValue('labelOptions', $htmlOptions, array());
 
         $items = array();
@@ -989,12 +992,11 @@ class TbHtml extends CHtml // required in order to access the protected methods 
             $htmlOptions['id'] = $baseID . '_' . $id++;
             if ($inline) {
                 $htmlOptions['label'] = $label;
-                self::addCssClass('inline', $labelOptions);
+                self::addCssClass('radio-inline', $labelOptions);
                 $htmlOptions['labelOptions'] = $labelOptions;
                 $items[] = self::radioButton($name, $checked, $htmlOptions);
             } else {
                 $option = self::radioButton($name, $checked, $htmlOptions);
-                self::addCssClass('radio', $labelOptions);
                 $items[] = self::label($option . ' ' . $label, false, $labelOptions);
             }
         }
@@ -1029,8 +1031,11 @@ class TbHtml extends CHtml // required in order to access the protected methods 
     {
         $inline = TbArray::popValue('inline', $htmlOptions, false);
         $separator = TbArray::popValue('separator', $htmlOptions, ' ');
-        $container = TbArray::popValue('container', $htmlOptions, 'span');
+        $container = TbArray::popValue('container', $htmlOptions, 'div');
         $containerOptions = TbArray::popValue('containerOptions', $htmlOptions, array());
+        if (!$inline) {
+            self::addCssClass('checkbox', $containerOptions);
+        }
         $labelOptions = TbArray::popValue('labelOptions', $htmlOptions, array());
 
         if (substr($name, -2) !== '[]') {
@@ -1056,11 +1061,10 @@ class TbHtml extends CHtml // required in order to access the protected methods 
             $htmlOptions['id'] = $baseID . '_' . $id++;
             if ($inline) {
                 $htmlOptions['label'] = $label;
-                self::addCssClass('inline', $labelOptions);
+                self::addCssClass('checkbox-inline', $labelOptions);
                 $htmlOptions['labelOptions'] = $labelOptions;
                 $items[] = self::checkBox($name, $checked, $htmlOptions);
             } else {
-                self::addCssClass('checkbox', $labelOptions);
                 $option = self::checkBox($name, $checked, $htmlOptions);
                 $items[] = self::label($option . ' ' . $label, false, $labelOptions);
             }
@@ -1079,10 +1083,10 @@ class TbHtml extends CHtml // required in order to access the protected methods 
             }
             $name = strtr($name, array('[' => '\\[', ']' => '\\]'));
             $js = <<<EOD
-jQuery('#$id').click(function() {
+jQuery('#$id').on('click', function() {
 	jQuery("input[name='$name']").prop('checked', this.checked);
 });
-jQuery("input[name='$name']").click(function() {
+jQuery("input[name='$name']").on('click', function() {
 	jQuery('#$id').prop('checked', !jQuery("input[name='$name']:not(:checked)").length);
 });
 jQuery('#$id').prop('checked', !jQuery("input[name='$name']:not(:checked)").length);
@@ -1425,7 +1429,7 @@ EOD;
             ? $htmlOptions['input']
             : self::createInput($type, $name, $value, $htmlOptions, $data);
 
-        self::addCssClass('control-group', $groupOptions);
+        self::addCssClass('form-group', $groupOptions);
         if (!empty($color)) {
             self::addCssClass($color, $groupOptions);
         }
@@ -2363,7 +2367,7 @@ EOD;
      */
     protected static function inputHelp($help, $htmlOptions)
     {
-        $type = TbArray::popValue('type', $htmlOptions, self::HELP_TYPE_INLINE);
+        $htmlOptions['type'] = self::HELP_TYPE_INLINE;
         return self::help($help, $htmlOptions);
     }
 
@@ -2395,9 +2399,8 @@ EOD;
      */
     public static function controls($controls, $htmlOptions = array())
     {
-        self::addCssClass('controls', $htmlOptions);
         if (TbArray::popValue('row', $htmlOptions, false)) {
-            self::addCssClass('controls-row', $htmlOptions);
+            self::addCssClass('row', $htmlOptions);
         }
         $before = TbArray::popValue('before', $htmlOptions, '');
         $after = TbArray::popValue('after', $htmlOptions, '');
