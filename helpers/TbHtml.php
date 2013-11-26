@@ -70,11 +70,14 @@ class TbHtml extends CHtml // required in order to access the protected methods 
     const INPUT_SIZE_XLARGE = 'xlarge';
     const INPUT_SIZE_XXLARGE = 'xxlarge';
 
+    const INPUT_HEIGHT_SMALL = 'sm';
+    const INPUT_HEIGHT_DEFAULT = '';
+    const INPUT_HEIGHT_LARGE = 'lg';
+
     const INPUT_COLOR_DEFAULT = '';
-    const INPUT_COLOR_WARNING = 'warning';
-    const INPUT_COLOR_ERROR = 'error';
-    const INPUT_COLOR_INFO = 'info';
-    const INPUT_COLOR_SUCCESS = 'success';
+    const INPUT_COLOR_WARNING = 'has-warning';
+    const INPUT_COLOR_ERROR = 'has-error';
+    const INPUT_COLOR_SUCCESS = 'has-success';
 
     //
     // BUTTONS
@@ -1136,8 +1139,7 @@ EOD;
      */
     public static function searchQueryField($name, $value = '', $htmlOptions = array())
     {
-        self::addCssClass('search-query', $htmlOptions);
-        return self::textField($name, $value, $htmlOptions);
+        return self::textInputField('search', $name, $value, $htmlOptions);
     }
 
     /**
@@ -1740,12 +1742,14 @@ EOD;
      * @param CModel $model the data model.
      * @param string $attribute the attribute.
      * @param array $data data for generating the list options (value=>display).
+     * @param array $htmlOptions additional HTML attributes
      * @return string the generated drop down list.
      */
     public static function activeDropDownList($model, $attribute, $data, $htmlOptions = array())
     {
         $displaySize = TbArray::popValue('displaySize', $htmlOptions);
         $htmlOptions = self::normalizeInputOptions($htmlOptions);
+        self::addCssClass('form-control', $htmlOptions);
         if (!empty($displaySize)) {
             $htmlOptions['size'] = $displaySize;
         }
@@ -1763,6 +1767,7 @@ EOD;
     public static function activeListBox($model, $attribute, $data, $htmlOptions = array())
     {
         TbArray::defaultValue('displaySize', 4, $htmlOptions);
+        self::addCssClass('form-control', $htmlOptions);
         return self::activeDropDownList($model, $attribute, $data, $htmlOptions);
     }
 
@@ -1859,8 +1864,7 @@ EOD;
      */
     public static function activeSearchQueryField($model, $attribute, $htmlOptions = array())
     {
-        self::addCssClass('search-query', $htmlOptions);
-        return self::activeTextField($model, $attribute, $htmlOptions);
+        return self::activeTextInputField('search', $model, $attribute, $htmlOptions);
     }
 
     /**
@@ -2171,7 +2175,7 @@ EOD;
             ? $htmlOptions['input']
             : self::createActiveInput($type, $model, $attribute, $htmlOptions, $data);
 
-        self::addCssClass('control-group', $groupOptions);
+        self::addCssClass('form-group', $groupOptions);
         if (!empty($color)) {
             self::addCssClass($color, $groupOptions);
         }
