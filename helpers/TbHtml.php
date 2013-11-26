@@ -121,7 +121,8 @@ class TbHtml extends CHtml // required in order to access the protected methods 
 
     const IMAGE_TYPE_ROUNDED = 'rounded';
     const IMAGE_TYPE_CIRCLE = 'circle';
-    const IMAGE_TYPE_POLAROID = 'polaroid';
+    const IMAGE_TYPE_POLAROID = 'thumbnail'; // @todo no longer exists in BS3, it is now thumbnail
+    const IMAGE_TYPE_THUMBNAIL = 'thumbnail';
 
     //
     // NAV
@@ -717,13 +718,13 @@ class TbHtml extends CHtml // required in order to access the protected methods 
     }
 
     // Tables
-    // http://twitter.github.io/bootstrap/2.3.2/base-css.html#forms
+    // http://getbootstrap.com/css/#tables
     // --------------------------------------------------
 
     // todo: create table methods here.
 
     // Forms
-    // http://twitter.github.io/bootstrap/2.3.2/base-css.html#tables
+    // http://getbootstrap.com/css/#forms
     // --------------------------------------------------
 
     /**
@@ -2780,6 +2781,9 @@ EOD;
         $type = TbArray::popValue('type', $htmlOptions);
         if (!empty($type)) {
             self::addCssClass('img-' . $type, $htmlOptions);
+        }
+        if (TbArray::popValue('responsive', $htmlOptions, false)) {
+            self::addCssClass('img-responsive', $htmlOptions);
         }
         return parent::image($src, $alt, $htmlOptions);
     }

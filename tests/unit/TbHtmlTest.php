@@ -2314,8 +2314,31 @@ class TbHtmlTest extends TbTestCase
                 'class' => 'image',
             )
         );
-        $img = $I->createNode($html, 'img.img-polaroid');
+        $img = $I->createNode($html, 'img.img-thumbnail');
         $I->seeNodeCssClass($img, 'image');
+        $I->seeNodeAttributes(
+            $img,
+            array(
+                'src' => 'image.png',
+                'alt' => 'Alternative text',
+            )
+        );
+    }
+
+    public function testImageThumbnailResponsive()
+    {
+        $I = $this->codeGuy;
+        $html = TbHtml::imagePolaroid(
+            'image.png',
+            'Alternative text',
+            array(
+                'class' => 'image',
+                'responsive' => true,
+            )
+        );
+        $img = $I->createNode($html, 'img.img-thumbnail');
+        $I->seeNodeCssClass($img, 'image');
+        $I->seeNodeCssClass($img, 'img-responsive');
         $I->seeNodeAttributes(
             $img,
             array(
