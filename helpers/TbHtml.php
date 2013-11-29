@@ -94,7 +94,7 @@ class TbHtml extends CHtml // required in order to access the protected methods 
     const BUTTON_TYPE_INPUTBUTTON = 'inputButton';
     const BUTTON_TYPE_INPUTSUBMIT = 'inputSubmit';
 
-    const BUTTON_COLOR_DEFAULT = '';
+    const BUTTON_COLOR_DEFAULT = 'default';
     const BUTTON_COLOR_PRIMARY = 'primary';
     const BUTTON_COLOR_INFO = 'info';
     const BUTTON_COLOR_SUCCESS = 'success';
@@ -2608,7 +2608,7 @@ EOD;
     public static function btn($type, $label, $htmlOptions = array())
     {
         self::addCssClass('btn', $htmlOptions);
-        $color = TbArray::popValue('color', $htmlOptions);
+        $color = TbArray::popValue('color', $htmlOptions, self::BUTTON_COLOR_DEFAULT);
         if (!empty($color)) {
             self::addCssClass('btn-' . $color, $htmlOptions);
         }
@@ -2908,6 +2908,7 @@ EOD;
             if (TbArray::popValue('vertical', $htmlOptions, false)) {
                 self::addCssClass('btn-group-vertical', $htmlOptions);
             }
+            // @todo toggle is now just checkboxes or radios...
             $toggle = TbArray::popValue('toggle', $htmlOptions);
             if (!empty($toggle)) {
                 $htmlOptions['data-toggle'] = 'buttons-' . $toggle;
