@@ -2572,7 +2572,7 @@ class TbHtmlTest extends TbTestCase
                     array('label' => '4'),
                 ),
                 'htmlOptions' => array(
-                    'color' => TbHtml::BUTTON_COLOR_INVERSE,
+                    'color' => TbHtml::BUTTON_COLOR_DEFAULT,
                 ),
             ),
             array(
@@ -2609,7 +2609,7 @@ class TbHtmlTest extends TbTestCase
                 $btn = $I->createNode($btnElement);
                 $I->seeNodeCssClass($btn, 'btn');
                 if ($i === 0) {
-                    $I->seeNodeCssClass($btn, $j === 0 ? 'btn-danger' : 'btn-inverse');
+                    $I->seeNodeCssClass($btn, $j === 0 ? 'btn-danger' : 'btn-default');
                 } else {
                     $I->seeNodeCssClass($btn, 'btn-primary');
                 }

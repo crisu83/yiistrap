@@ -100,7 +100,7 @@ class TbHtml extends CHtml // required in order to access the protected methods 
     const BUTTON_COLOR_SUCCESS = 'success';
     const BUTTON_COLOR_WARNING = 'warning';
     const BUTTON_COLOR_DANGER = 'danger';
-    const BUTTON_COLOR_INVERSE = 'inverse';
+    const BUTTON_COLOR_INVERSE = 'inverse'; // @todo REMOVE: Does not exist in BS3
     const BUTTON_COLOR_LINK = 'link';
 
     const BUTTON_SIZE_MINI = 'xs'; // BS2 compatibility
@@ -2942,6 +2942,7 @@ EOD;
                 }
                 $buttonLabel = TbArray::popValue('label', $buttonOptions, '');
                 $buttonOptions = TbArray::copyValues(array('color', 'size', 'disabled'), $parentOptions, $buttonOptions);
+                TbArray::defaultValue('color', 'default', $buttonOptions);
                 $items = TbArray::popValue('items', $buttonOptions, array());
                 if (!empty($items)) {
                     $output .= self::buttonDropdown($buttonLabel, $items, $buttonOptions);
@@ -2951,7 +2952,7 @@ EOD;
                         // Put the "button" label back into its options and add a few label options as well
                         $buttonOptions['label'] = $buttonLabel;
                         self::addCssClass(
-                            array('btn', 'btn-' . TbArray::getValue('color', $buttonOptions, 'default')),
+                            array('btn', 'btn-' . TbArray::getValue('color', $buttonOptions)),
                             $buttonOptions['labelOptions']
                         );
                         if ($toggle === self::BUTTON_TOGGLE_CHECKBOX) { // BS3 toggle uses checkbox...
@@ -2992,6 +2993,7 @@ EOD;
     {
         if (!empty($groups)) {
             self::addCssClass('btn-toolbar', $htmlOptions);
+            TbArray::defaultValue('role', 'toolbar', $htmlOptions);
             $parentOptions = array(
                 'color' => TbArray::popValue('color', $htmlOptions),
                 'size' => TbArray::popValue('size', $htmlOptions),
