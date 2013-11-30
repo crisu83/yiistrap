@@ -2474,7 +2474,7 @@ class TbHtmlTest extends TbTestCase
         );
         $group = $I->createNode($html, 'div.btn-group');
         $I->seeNodeCssClass($group, 'div');
-        $I->seeNodeAttribute($group, 'data-toggle', 'buttons-checkbox');
+        $I->seeNodeAttribute($group, 'data-toggle', 'buttons');
         $I->seeNodeNumChildren($group, 2);
         foreach ($group->children() as $i => $btnElement) {
             $btn = $I->createNode($btnElement);
@@ -2485,9 +2485,58 @@ class TbHtmlTest extends TbTestCase
                 $I->seeNodeText($a, 'Middle');
             } else {
                 $I->seeNodeCssClass($btn, 'btn');
-                $I->seeNodeAttribute($btn, 'href', '#');
                 $I->seeNodeCssClass($btn, 'btn-primary');
-                $I->seeNodeText($btn, $buttons[$i]['label']);
+                $I->seeNodeText($btn, ' '.$buttons[$i]['label']);
+                $input = $btn->filter('input[type="checkbox"]');
+                $I->seeNodeAttribute($input, 'name', 'checkbox[]');
+            }
+        }
+
+        $html = TbHtml::buttonGroup(array());
+        $this->assertEquals('', $html);
+    }
+
+    public function testButtonGroupWithRadioToggle()
+    {
+        $I = $this->codeGuy;
+
+        $buttons = array(
+            array('label' => 'Left'),
+            array(
+                'label' => 'Middle',
+                'items' => array(
+                    array('label' => 'Action', 'url' => '#'),
+                ),
+                'htmlOptions' => array('color' => TbHtml::BUTTON_COLOR_INVERSE),
+            ),
+            array('label' => 'Right', 'visible' => false),
+        );
+
+        $html = TbHtml::buttonGroup(
+            $buttons,
+            array(
+                'class' => 'div',
+                'color' => TbHtml::BUTTON_COLOR_PRIMARY,
+                'toggle' => TbHtml::BUTTON_TOGGLE_RADIO,
+            )
+        );
+        $group = $I->createNode($html, 'div.btn-group');
+        $I->seeNodeCssClass($group, 'div');
+        $I->seeNodeAttribute($group, 'data-toggle', 'buttons');
+        $I->seeNodeNumChildren($group, 2);
+        foreach ($group->children() as $i => $btnElement) {
+            $btn = $I->createNode($btnElement);
+            if ($i === 1) {
+                $I->seeNodeChildren($btn, array('a.dropdown-toggle', 'ul.dropdown-menu'));
+                $a = $btn->filter('a.dropdown-toggle');
+                $I->seeNodeCssClass($a, 'btn-inverse');
+                $I->seeNodeText($a, 'Middle');
+            } else {
+                $I->seeNodeCssClass($btn, 'btn');
+                $I->seeNodeCssClass($btn, 'btn-primary');
+                $I->seeNodeText($btn, ' '.$buttons[$i]['label']);
+                $input = $btn->filter('input[type="radio"]');
+                $I->seeNodeAttribute($input, 'name', 'radio[]');
             }
         }
 

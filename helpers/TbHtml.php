@@ -2908,10 +2908,22 @@ EOD;
             if (TbArray::popValue('vertical', $htmlOptions, false)) {
                 self::addCssClass('btn-group-vertical', $htmlOptions);
             }
-            // @todo toggle is now just checkboxes or radios...
             $toggle = TbArray::popValue('toggle', $htmlOptions);
-            if (!empty($toggle)) {
-                $htmlOptions['data-toggle'] = 'buttons-' . $toggle;
+            $name = TbArray::popValue('name', $htmlOptions);
+            if (!empty($name) && substr($name, -2) !== '[]') {
+                $name .= '[]';
+            }
+            if (in_array($toggle, array(self::BUTTON_TOGGLE_CHECKBOX, self::BUTTON_TOGGLE_RADIO))) {
+                $htmlOptions['data-toggle'] = 'buttons';
+                if (empty($name)) {
+                    if ($toggle === self::BUTTON_TOGGLE_CHECKBOX) {
+                        $name = 'checkbox[]';
+                    } elseif ($toggle === self::BUTTON_TOGGLE_RADIO) {
+                        $name = 'radio[]';
+                    }
+                }
+            } else {
+                $htmlOptions['data-toggle'] = $toggle;
             }
             $parentOptions = array(
                 'color' => TbArray::popValue('color', $htmlOptions),
@@ -2934,7 +2946,22 @@ EOD;
                 if (!empty($items)) {
                     $output .= self::buttonDropdown($buttonLabel, $items, $buttonOptions);
                 } else {
-                    $output .= self::linkButton($buttonLabel, $buttonOptions);
+                    $checked = TbArray::popValue('checked', $buttonOptions, false);
+                    if (in_array($toggle, array(self::BUTTON_TOGGLE_CHECKBOX, self::BUTTON_TOGGLE_RADIO))) {
+                        // Put the "button" label back into its options and add a few label options as well
+                        $buttonOptions['label'] = $buttonLabel;
+                        self::addCssClass(
+                            array('btn', 'btn-' . TbArray::getValue('color', $buttonOptions, 'default')),
+                            $buttonOptions['labelOptions']
+                        );
+                        if ($toggle === self::BUTTON_TOGGLE_CHECKBOX) { // BS3 toggle uses checkbox...
+                            $output .= self::checkBox($name, $checked, $buttonOptions);
+                        } elseif ($toggle === self::BUTTON_TOGGLE_RADIO) { // ...or BS3 toggle uses radio
+                            $output .= self::radioButton($name, $checked, $buttonOptions);
+                        }
+                    } else {
+                        $output .= self::linkButton($buttonLabel, $buttonOptions);
+                    }
                 }
             }
             $output .= '</div>';
