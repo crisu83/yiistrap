@@ -3657,9 +3657,9 @@ EOD;
      * @param array $htmlOptions additional HTML attributes.
      * @return string the generated hero unit.
      */
-    public static function heroUnit($heading, $content, $htmlOptions = array())
+    public static function jumbotron($heading, $content, $htmlOptions = array())
     {
-        self::addCssClass('hero-unit', $htmlOptions);
+        self::addCssClass('jumbotron', $htmlOptions);
         $headingOptions = TbArray::popValue('headingOptions', $htmlOptions, array());
         $output = self::openTag('div', $htmlOptions);
         $output .= self::tag('h1', $headingOptions, $heading);

@@ -3396,10 +3396,10 @@ class TbHtmlTest extends TbTestCase
         $I->seeNodeText($span, 'Badge text');
     }
 
-    public function testHeroUnit()
+    public function testJumbotron()
     {
         $I = $this->codeGuy;
-        $html = TbHtml::heroUnit(
+        $html = TbHtml::jumbotron(
             'Heading text',
             'Content text',
             array(
@@ -3407,7 +3407,7 @@ class TbHtmlTest extends TbTestCase
                 'headingOptions' => array('class' => 'heading'),
             )
         );
-        $hero = $I->createNode($html, 'div.hero-unit');
+        $hero = $I->createNode($html, 'div.jumbotron');
         $I->seeNodeCssClass($hero, 'div');
         $I->seeNodeText($hero, 'Content text');
         $h1 = $hero->filter('h1');

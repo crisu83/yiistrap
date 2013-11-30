@@ -13,7 +13,7 @@ Yii::import('bootstrap.helpers.TbHtml');
  * Bootstrap hero unit widget.
  * @see http://twitter.github.com/bootstrap/javascript.html#affix
  */
-class TbHeroUnit extends CWidget
+class TbJumbotron extends CWidget
 {
     /**
      * @var string the heading text.
@@ -59,6 +59,6 @@ class TbHeroUnit extends CWidget
      */
     public function run()
     {
-        echo TbHtml::heroUnit($this->heading, $this->content, $this->htmlOptions);
+        echo TbHtml::jumbotron($this->heading, $this->content, $this->htmlOptions);
     }
 }
