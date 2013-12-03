@@ -479,6 +479,18 @@ class TbHtml extends CHtml // required in order to access the protected methods 
      * @var string the CSS class for displaying error summaries.
      */
     public static $errorSummaryCss = 'alert alert-block alert-error';
+    /**
+     * @var string the CSS class that generally sets the width of the label portion of a horizontal form.
+     */
+    public static $formLabelWidth = 'col-sm-2';
+    /**
+     * @var string the CSS class that generally sets the width of a form control for horizontal form
+     */
+    public static $formControlWidth = 'col-sm-10';
+    /**
+     * @var bool
+     */
+    public static $isHorizontalForm = false;
 
     //
     // BASE CSS
@@ -760,12 +772,26 @@ class TbHtml extends CHtml // required in order to access the protected methods 
     ) {
         if (!empty($layout)) {
             self::addCssClass('form-' . $layout, $htmlOptions);
+            if ($layout === self::FORM_LAYOUT_HORIZONTAL) {
+                self::$isHorizontalForm = true;
+            }
         }
         return parent::beginForm($action, $method, $htmlOptions);
     }
 
     /**
+     * Generates a closing form tag
+     * @return string
+     */
+    public static function endFormTb()
+    {
+        self::$isHorizontalForm = false;
+        return parent::endForm();
+    }
+
+    /**
      * Generates a stateful form tag.
+     * @param string string $layout
      * @param mixed $action the form action URL.
      * @param string $method form method (e.g. post, get).
      * @param array $htmlOptions additional HTML attributes.
@@ -981,9 +1007,6 @@ class TbHtml extends CHtml // required in order to access the protected methods 
         $separator = TbArray::popValue('separator', $htmlOptions, ' ');
         $container = TbArray::popValue('container', $htmlOptions, 'div');
         $containerOptions = TbArray::popValue('containerOptions', $htmlOptions, array());
-        if (!$inline) {
-            self::addCssClass('radio', $containerOptions);
-        }
         $labelOptions = TbArray::popValue('labelOptions', $htmlOptions, array());
 
         $items = array();
@@ -1001,7 +1024,11 @@ class TbHtml extends CHtml // required in order to access the protected methods 
                 $items[] = self::radioButton($name, $checked, $htmlOptions);
             } else {
                 $option = self::radioButton($name, $checked, $htmlOptions);
-                $items[] = self::label($option . ' ' . $label, false, $labelOptions);
+                $items[] = self::tag(
+                    'div',
+                    array('class' => 'radio'),
+                    self::label($option . ' ' . $label, false, $labelOptions)
+                );
             }
         }
 
@@ -1037,9 +1064,7 @@ class TbHtml extends CHtml // required in order to access the protected methods 
         $separator = TbArray::popValue('separator', $htmlOptions, ' ');
         $container = TbArray::popValue('container', $htmlOptions, 'div');
         $containerOptions = TbArray::popValue('containerOptions', $htmlOptions, array());
-        if (!$inline) {
-            self::addCssClass('checkbox', $containerOptions);
-        }
+
         $labelOptions = TbArray::popValue('labelOptions', $htmlOptions, array());
 
         if (substr($name, -2) !== '[]') {
@@ -1070,16 +1095,31 @@ class TbHtml extends CHtml // required in order to access the protected methods 
                 $items[] = self::checkBox($name, $checked, $htmlOptions);
             } else {
                 $option = self::checkBox($name, $checked, $htmlOptions);
-                $items[] = self::label($option . ' ' . $label, false, $labelOptions);
+                $items[] = self::tag(
+                    'div',
+                    array('class' => 'checkbox'),
+                    self::label($option . ' ' . $label, false, $labelOptions)
+                );
             }
         }
 
         if (isset($checkAllLabel)) {
             $htmlOptions['value'] = 1;
             $htmlOptions['id'] = $id = $baseID . '_all';
-            $option = self::checkBox($id, $checkAll, $htmlOptions);
             $label = self::label($checkAllLabel, $id, $labelOptions);
-            $item = $option . ' ' . $label;
+            if ($inline) {
+                $htmlOptions['label'] = $checkAllLabel;
+                self::addCssClass('checkbox-inline', $labelOptions);
+                $htmlOptions['labelOptions'] = $labelOptions;
+                $item = self::checkBox($id, $checkAll, $htmlOptions);
+            } else {
+                $option = self::checkBox($id, $checkAll, $htmlOptions);
+                $item = self::tag(
+                    'div',
+                    array('class' => 'checkbox'),
+                    self::label($option . ' ' . $label, false, $labelOptions)
+                );
+            }
             if ($checkAllLast) {
                 $items[] = $item;
             } else {
@@ -1420,6 +1460,11 @@ EOD;
             $htmlOptions['label'] = $label;
             $htmlOptions['labelOptions'] = $labelOptions;
             $label = false;
+        } else {  // Normal form-groups that have labels preceding it
+            if (self::$isHorizontalForm) {
+                self::addCssClass(self::switchOffsetToCol(self::$formLabelWidth), $labelOptions);
+                self::addCssClass(self::switchOffsetToCol(self::$formControlWidth), $controlOptions);
+            }
         }
 
         $help = TbArray::popValue('help', $htmlOptions, '');
@@ -2860,7 +2905,7 @@ EOD;
 
     /**
      * Generates a dropdown toggle element.
-     * @param string $tag the HTML tag.
+     * @param string $type the type of dropdown.
      * @param string $label the element text.
      * @param array $htmlOptions additional HTML attributes.
      * @return string the generated element.
@@ -4482,5 +4527,97 @@ EOD;
         if (!empty($align)) {
             self::addCssClass('text-' . $align, $htmlOptions);
         }
+    }
+
+    /**
+     * Switches the column class to and from the col width itself to its offset counterpart. For example, passing in
+     * col-md-2 would be switched to col-md-offset-2
+     * @param string $class
+     * @return string
+     */
+    protected static function switchOffsetCol($class)
+    {
+        if (strpos($class, 'offset') !== false) {
+            return str_replace('-offset', '', $class);
+        } else {
+            preg_match('/^(col-.*-)([0-9]*)$/', $class, $matches);
+            return $matches[1] . 'offset-' . $matches[2];
+        }
+    }
+
+    /**
+     * Nearly identical to {@link switchOffsetCol()} except it forces the class to be returned as its offset
+     * counterpart. It is also safe to pass in a class that is already an offset and it will just re-return it. For
+     * example, passing in col-md-2 will return col-md-offset-2. Passing in col-md-offset-4 will still return
+     * col-md-offset-4.
+     * @param string $class
+     * @return string
+     */
+    protected static function switchColToOffset($class)
+    {
+        if ((strpos($class, 'offset') === false) && (preg_match('/^(col-.*-)([0-9]*)$/', $class, $matches) > 0)) {
+            return $matches[1] . 'offset-' . $matches[2];
+        } else {
+            return $class;
+        }
+    }
+
+    /**
+     * Nearly identical to {@link switchOffsetCol()} except it forces teh class to be returned as its column
+     * (e.g. "span") width counterpart. It is also safe to pass in a class that is already the column width and it will
+     * re-return it. For example, passing in col-md-offset-2 will return col-md-2. Passing in col-md-4 will still
+     * return col-md-4.
+     * @param string $class
+     * @return string
+     */
+    protected static function switchOffsetToCol($class)
+    {
+        if (strpos($class, 'offset') !== false) {
+            return str_replace('-offset', '', $class);
+        } else {
+            return $class;
+        }
+    }
+
+    /**
+     * Returns the col-* classes
+     * @param array $htmlOptions with "class" set
+     * @return string
+     */
+    protected static function getColClasses($htmlOptions)
+    {
+        $colClasses = array();
+        if (isset($htmlOptions['class']) && !empty($htmlOptions['class'])) {
+            $classes = explode(' ', $htmlOptions['class']);
+            foreach ($classes as $class) {
+                if (substr($class, 0, 4) == 'col-') {
+                    $colClasses[] = $class;
+                }
+            }
+        }
+        return implode(' ', $colClasses);
+    }
+
+    /**
+     * Returns the col-* classes and removes the classes from $htmlOptions['class']
+     * @param string $htmlOptions with class set
+     * @return string
+     */
+    protected static function popColClasses(&$htmlOptions)
+    {
+        $colClasses = array();
+        $returnClasses = array();
+        if (isset($htmlOptions['class']) && !empty($htmlOptions['class'])) {
+            $classes = explode(' ', $htmlOptions['class']);
+            foreach ($classes as $class) {
+                if (substr($class, 0, 4) == 'col-') {
+                    $colClasses[] = $class;
+                } elseif (!empty($class)) {
+                    $returnClasses[] = $class;
+                }
+            }
+            $htmlOptions['class'] = implode(' ', $returnClasses);
+        }
+        return implode(' ', $colClasses);
     }
 }

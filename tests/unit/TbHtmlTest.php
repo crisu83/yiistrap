@@ -747,7 +747,7 @@ class TbHtmlTest extends TbTestCase
                 'containerOptions' => array('class' => 'container'),
             )
         );
-        $container = $I->createNode($html, 'div.radio.container');
+        $container = $I->createNode($html, 'div.container');
         $I->seeNodeChildren($container, array('label', 'br', 'label', 'br', 'label'));
         $label = $container->filter('label')->first();
         $I->seeNodePattern($label, '/> Option 1$/');
@@ -789,7 +789,8 @@ class TbHtmlTest extends TbTestCase
                 'containerOptions' => array('class' => 'container'),
             )
         );
-        $container = $I->createNode($html, 'div.checkbox.container');
+        $container = $I->createNode($html, 'div.container');
+        $I->seeNodeChildren($container, array('div.checkbox', 'div.checkbox', 'div.checkbox'));
         $I->seeNodeChildren($container, array('label', 'br', 'label', 'br', 'label'));
         $label = $container->filter('label')->first();
         $I->seeNodePattern($label, '/> Option 1$/');
@@ -811,13 +812,13 @@ class TbHtmlTest extends TbTestCase
                 'checkAll' => true,
             )
         );
-        $div = $I->createNode($html, 'div.checkbox');
+        $div = $I->createNode($html, 'div');
         $I->seeNodeChildren(
             $div,
             array('input[type=checkbox]', 'label', 'label', 'label', 'label')
         );
         $first = $div->filter('label')->first();
-        $I->seeNodeAttribute($first, 'for', 'checkboxList_all');
+        $I->seeNodeChildren($first, array('input#checkboxList_all'));
 
         $html = TbHtml::checkBoxList(
             'checkboxList',
