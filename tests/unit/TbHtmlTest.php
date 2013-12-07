@@ -982,6 +982,7 @@ class TbHtmlTest extends TbTestCase
             )
         );
         $group = $I->createNode($html, 'div.form-group');
+        $I->seeNodeAttribute($group, 'div.radio');
         $label = $group->filter('label');
         $I->seeNodeChildren($label, array('input[type=radio]'));
     }
@@ -997,6 +998,7 @@ class TbHtmlTest extends TbTestCase
             )
         );
         $group = $I->createNode($html, 'div.form-group');
+        $I->seeNodeAttribute($group, 'div.checkbox');
         $label = $group->filter('label');
         $I->seeNodeChildren($label, array('input[type=checkbox]'));
     }

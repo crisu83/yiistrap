@@ -935,9 +935,18 @@ class TbHtml extends CHtml // required in order to access the protected methods 
     public static function radioButton($name, $checked = false, $htmlOptions = array())
     {
         $label = TbArray::popValue('label', $htmlOptions, false);
+        $inFormGroup = TbArray::popValue('inFormGroup', $htmlOptions, false);
         $labelOptions = TbArray::popValue('labelOptions', $htmlOptions, array());
         $input = parent::radioButton($name, $checked, $htmlOptions);
-        return self::createCheckBoxAndRadioButtonLabel($label, $input, $labelOptions);
+        if ($inFormGroup) {
+            return self::tag(
+                'div',
+                array('class' => 'radio'),
+                self::createCheckBoxAndRadioButtonLabel($label, $input, $labelOptions)
+            );
+        } else {
+            return self::createCheckBoxAndRadioButtonLabel($label, $input, $labelOptions);
+        }
     }
 
     /**
@@ -950,9 +959,18 @@ class TbHtml extends CHtml // required in order to access the protected methods 
     public static function checkBox($name, $checked = false, $htmlOptions = array())
     {
         $label = TbArray::popValue('label', $htmlOptions, false);
+        $inFormGroup = TbArray::popValue('inFormGroup', $htmlOptions, false);
         $labelOptions = TbArray::popValue('labelOptions', $htmlOptions, array());
         $input = parent::checkBox($name, $checked, $htmlOptions);
-        return self::createCheckBoxAndRadioButtonLabel($label, $input, $labelOptions);
+        if ($inFormGroup) {
+            return self::tag(
+                'div',
+                array('class' => 'checkbox'),
+                self::createCheckBoxAndRadioButtonLabel($label, $input, $labelOptions)
+            );
+        } else {
+            return self::createCheckBoxAndRadioButtonLabel($label, $input, $labelOptions);
+        }
     }
 
     /**
@@ -1459,7 +1477,12 @@ EOD;
         if (in_array($type, array(self::INPUT_TYPE_CHECKBOX, self::INPUT_TYPE_RADIOBUTTON))) {
             $htmlOptions['label'] = $label;
             $htmlOptions['labelOptions'] = $labelOptions;
+            $htmlOptions['inFormGroup'] = true;
             $label = false;
+            if (self::$isHorizontalForm) {
+                self::addCssClass(self::switchColToOffset(self::$formLabelWidth), $controlOptions);
+                self::addCssClass(self::switchOffsetToCol(self::$formControlWidth), $controlOptions);
+            }
         } else {  // Normal form-groups that have labels preceding it
             if (self::$isHorizontalForm) {
                 self::addCssClass(self::switchOffsetToCol(self::$formLabelWidth), $labelOptions);
