@@ -495,6 +495,14 @@ class TbHtml extends CHtml // required in order to access the protected methods 
      * @var bool whether or not the current form is inline
      */
     public static $isInlineForm = false;
+    /**
+     * @var string default form label width
+     */
+    protected static $defaultFormLabelWidth = 'col-sm-2';
+    /**
+     * @var string default form control width
+     */
+    protected static $defaultFormControlWidth = 'col-sm-10';
 
     //
     // BASE CSS
@@ -775,16 +783,22 @@ class TbHtml extends CHtml // required in order to access the protected methods 
         $htmlOptions = array()
     ) {
         if (!empty($layout)) {
-            self::addCssClass('form-' . $layout, $htmlOptions);
             switch ($layout) {
                 case self::FORM_LAYOUT_HORIZONTAL:
                     self::$isHorizontalForm = true;
+                    self::addCssClass('form-' . self::FORM_LAYOUT_HORIZONTAL, $htmlOptions);
                     break;
                 case self::FORM_LAYOUT_INLINE:
+                case self::FORM_LAYOUT_SEARCH:
                     self::$isInlineForm = true;
+                    self::addCssClass('form-' . self::FORM_LAYOUT_INLINE, $htmlOptions);
                     break;
+                default:
+                    self::addCssClass('form-' . $layout, $htmlOptions);
             }
         }
+        self::$formLabelWidth = TbArray::popValue('labelWidth', $htmlOptions, self::$defaultFormLabelWidth);
+        self::$formControlWidth = TbArray::popValue('controlWidth', $htmlOptions, self::$defaultFormControlWidth);
         return parent::beginForm($action, $method, $htmlOptions);
     }
 
@@ -1484,6 +1498,7 @@ EOD;
         $label = TbArray::popValue('label', $htmlOptions);
         $labelOptions = TbArray::popValue('labelOptions', $htmlOptions, array());
         $useFormGroup = true;
+        $useControls = true;
         $output = '';
         // Special label case case for individual checkboxes and radios
         if ($type == self::INPUT_TYPE_CHECKBOX || $type == self::INPUT_TYPE_RADIOBUTTON) {
@@ -1516,7 +1531,15 @@ EOD;
                 case self::INPUT_TYPE_RANGE:
                 case self::INPUT_TYPE_DATE:
                 case self::INPUT_TYPE_FILE:
+                case self::INPUT_TYPE_SEARCH:
                     self::addCssClass('sr-only', $labelOptions);
+                    if (!empty($label) && !TbArray::getValue('placeholder', $htmlOptions, false)) {
+                        $htmlOptions['placeholder'] = $label;
+                    }
+                    break;
+                case self::INPUT_TYPE_CHECKBOX:
+                case self::INPUT_TYPE_RADIOBUTTON:
+                    $useControls = false;
                     break;
             }
         }
@@ -1537,7 +1560,11 @@ EOD;
         if ($label !== false) {
             $output .= parent::label($label, $name, $labelOptions);
         }
-        $output .= self::controls($input . $help, $controlOptions);
+        if ($useControls) {
+            $output .= self::controls($input . $help, $controlOptions);
+        } else {
+            $output .= $input;
+        }
 
         if ($useFormGroup) {
             self::addCssClass('form-group', $groupOptions);
@@ -2534,7 +2561,9 @@ EOD;
     }
 
     /**
-     * Generates form actions.
+     * Generates form actions div. This is no longer necessary in Bootstrap 3, but it is still useful to use for
+     * horizontal forms. When used with a horizontal form, it will appropriately align the actions below other form
+     * controls.
      * @param mixed $actions the actions.
      * @param array $htmlOptions additional HTML attributes.
      * @return string the generated actions.
@@ -2545,7 +2574,18 @@ EOD;
         if (is_array($actions)) {
             $actions = implode(' ', $actions);
         }
-        return self::tag('div', $htmlOptions, $actions);
+        if (self::$isHorizontalForm) {
+            self::addCssClass(self::switchColToOffset(self::$formLabelWidth), $htmlOptions);
+            self::addCssClass(self::switchOffsetToCol(self::$formControlWidth), $htmlOptions);
+
+            return self::tag(
+                'div',
+                array('class' => 'form-group'),
+                self::tag('div', $htmlOptions, $actions)
+            );
+        } else {
+            return self::tag('div', $htmlOptions, $actions);
+        }
     }
 
     /**
@@ -2564,7 +2604,7 @@ EOD;
         $value = TbArray::popValue('value', $inputOptions, '');
         $output = self::beginFormTb(self::FORM_LAYOUT_SEARCH, $action, $method, $htmlOptions);
         $output .= self::searchQueryField($name, $value, $inputOptions);
-        $output .= parent::endForm();
+        $output .= self::endFormTb();
         return $output;
     }
 
