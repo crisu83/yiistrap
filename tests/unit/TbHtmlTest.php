@@ -981,8 +981,7 @@ class TbHtmlTest extends TbTestCase
                 'label' => 'Label text',
             )
         );
-        $group = $I->createNode($html, 'div.form-group');
-        $I->seeNodeAttribute($group, 'div.radio');
+        $group = $I->createNode($html, 'div.radio');
         $label = $group->filter('label');
         $I->seeNodeChildren($label, array('input[type=radio]'));
     }
@@ -997,8 +996,7 @@ class TbHtmlTest extends TbTestCase
                 'label' => 'Label text',
             )
         );
-        $group = $I->createNode($html, 'div.form-group');
-        $I->seeNodeAttribute($group, 'div.checkbox');
+        $group = $I->createNode($html, 'div.checkbox');
         $label = $group->filter('label');
         $I->seeNodeChildren($label, array('input[type=checkbox]'));
     }
@@ -1150,8 +1148,7 @@ class TbHtmlTest extends TbTestCase
                 'label' => 'Label text',
             )
         );
-        $group = $I->createNode($html, 'div.form-group');
-        $I->seeNodeChildren($group, array('div'));
+        $group = $I->createNode($html, 'div.radio');
         $label = $group->filter('label');
         $I->seeNodePattern($label, '/> Label text$/');
         $radio = $label->filter('input[type=radio]');

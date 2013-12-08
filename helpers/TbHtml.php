@@ -488,9 +488,13 @@ class TbHtml extends CHtml // required in order to access the protected methods 
      */
     public static $formControlWidth = 'col-sm-10';
     /**
-     * @var bool
+     * @var bool whether or not the current form is horizontal
      */
     public static $isHorizontalForm = false;
+    /**
+     * @var bool whether or not the current form is inline
+     */
+    public static $isInlineForm = false;
 
     //
     // BASE CSS
@@ -772,8 +776,13 @@ class TbHtml extends CHtml // required in order to access the protected methods 
     ) {
         if (!empty($layout)) {
             self::addCssClass('form-' . $layout, $htmlOptions);
-            if ($layout === self::FORM_LAYOUT_HORIZONTAL) {
-                self::$isHorizontalForm = true;
+            switch ($layout) {
+                case self::FORM_LAYOUT_HORIZONTAL:
+                    self::$isHorizontalForm = true;
+                    break;
+                case self::FORM_LAYOUT_INLINE:
+                    self::$isInlineForm = true;
+                    break;
             }
         }
         return parent::beginForm($action, $method, $htmlOptions);
@@ -786,6 +795,7 @@ class TbHtml extends CHtml // required in order to access the protected methods 
     public static function endFormTb()
     {
         self::$isHorizontalForm = false;
+        self::$isInlineForm = false;
         return parent::endForm();
     }
 
@@ -935,10 +945,10 @@ class TbHtml extends CHtml // required in order to access the protected methods 
     public static function radioButton($name, $checked = false, $htmlOptions = array())
     {
         $label = TbArray::popValue('label', $htmlOptions, false);
-        $inFormGroup = TbArray::popValue('inFormGroup', $htmlOptions, false);
+        $useContainer = TbArray::popValue('useContainer', $htmlOptions, false);
         $labelOptions = TbArray::popValue('labelOptions', $htmlOptions, array());
         $input = parent::radioButton($name, $checked, $htmlOptions);
-        if ($inFormGroup) {
+        if ($useContainer) {
             return self::tag(
                 'div',
                 array('class' => 'radio'),
@@ -959,10 +969,10 @@ class TbHtml extends CHtml // required in order to access the protected methods 
     public static function checkBox($name, $checked = false, $htmlOptions = array())
     {
         $label = TbArray::popValue('label', $htmlOptions, false);
-        $inFormGroup = TbArray::popValue('inFormGroup', $htmlOptions, false);
+        $useContainer = TbArray::popValue('useContainer', $htmlOptions, false);
         $labelOptions = TbArray::popValue('labelOptions', $htmlOptions, array());
         $input = parent::checkBox($name, $checked, $htmlOptions);
-        if ($inFormGroup) {
+        if ($useContainer) {
             return self::tag(
                 'div',
                 array('class' => 'checkbox'),
@@ -1473,23 +1483,43 @@ EOD;
         $controlOptions = TbArray::popValue('controlOptions', $htmlOptions, array());
         $label = TbArray::popValue('label', $htmlOptions);
         $labelOptions = TbArray::popValue('labelOptions', $htmlOptions, array());
-
-        if (in_array($type, array(self::INPUT_TYPE_CHECKBOX, self::INPUT_TYPE_RADIOBUTTON))) {
+        $useFormGroup = true;
+        $output = '';
+        // Special label case case for individual checkboxes and radios
+        if ($type == self::INPUT_TYPE_CHECKBOX || $type == self::INPUT_TYPE_RADIOBUTTON) {
             $htmlOptions['label'] = $label;
             $htmlOptions['labelOptions'] = $labelOptions;
-            $htmlOptions['inFormGroup'] = true;
+            $htmlOptions['useContainer'] = true;
             $label = false;
-            if (self::$isHorizontalForm) {
-                self::addCssClass(self::switchColToOffset(self::$formLabelWidth), $controlOptions);
-                self::addCssClass(self::switchOffsetToCol(self::$formControlWidth), $controlOptions);
+            $useFormGroup = false;
+        }
+        // Special conditions depending on the form type
+        if (self::$isHorizontalForm) {
+            switch ($type) {
+                case self::INPUT_TYPE_CHECKBOX:
+                case self::INPUT_TYPE_RADIOBUTTON:
+                    self::addCssClass(self::switchColToOffset(self::$formLabelWidth), $controlOptions);
+                    self::addCssClass(self::switchOffsetToCol(self::$formControlWidth), $controlOptions);
+                    $useFormGroup = true;
+                    break;
+                default:
+                    self::addCssClass(self::switchOffsetToCol(self::$formLabelWidth), $labelOptions);
+                    self::addCssClass(self::switchOffsetToCol(self::$formControlWidth), $controlOptions);
             }
-        } else {  // Normal form-groups that have labels preceding it
-            if (self::$isHorizontalForm) {
-                self::addCssClass(self::switchOffsetToCol(self::$formLabelWidth), $labelOptions);
-                self::addCssClass(self::switchOffsetToCol(self::$formControlWidth), $controlOptions);
+        } elseif (self::$isInlineForm) {
+            switch ($type) {
+                case self::INPUT_TYPE_TEXT:
+                case self::INPUT_TYPE_PASSWORD:
+                case self::INPUT_TYPE_URL:
+                case self::INPUT_TYPE_EMAIL:
+                case self::INPUT_TYPE_NUMBER:
+                case self::INPUT_TYPE_RANGE:
+                case self::INPUT_TYPE_DATE:
+                case self::INPUT_TYPE_FILE:
+                    self::addCssClass('sr-only', $labelOptions);
+                    break;
             }
         }
-
         $help = TbArray::popValue('help', $htmlOptions, '');
         $helpOptions = TbArray::popValue('helpOptions', $htmlOptions, array());
         if (!empty($help)) {
@@ -1500,18 +1530,25 @@ EOD;
             ? $htmlOptions['input']
             : self::createInput($type, $name, $value, $htmlOptions, $data);
 
-        self::addCssClass('form-group', $groupOptions);
         if (!empty($color)) {
             self::addCssClass($color, $groupOptions);
         }
         self::addCssClass('control-label', $labelOptions);
-        $output = self::openTag('div', $groupOptions);
         if ($label !== false) {
             $output .= parent::label($label, $name, $labelOptions);
         }
         $output .= self::controls($input . $help, $controlOptions);
-        $output .= '</div>';
-        return $output;
+
+        if ($useFormGroup) {
+            self::addCssClass('form-group', $groupOptions);
+            return self::tag(
+                'div',
+                $groupOptions,
+                $output
+            );
+        } else {
+            return $output;
+        }
     }
 
     /**
