@@ -480,29 +480,13 @@ class TbHtml extends CHtml // required in order to access the protected methods 
      */
     public static $errorSummaryCss = 'alert alert-block alert-error';
     /**
-     * @var string the CSS class that generally sets the width of the label portion of a horizontal form.
-     */
-    public static $formLabelWidth = 'col-sm-2';
-    /**
-     * @var string the CSS class that generally sets the width of a form control for horizontal form
-     */
-    public static $formControlWidth = 'col-sm-10';
-    /**
-     * @var bool whether or not the current form is horizontal
-     */
-    public static $isHorizontalForm = false;
-    /**
-     * @var bool whether or not the current form is inline
-     */
-    public static $isInlineForm = false;
-    /**
      * @var string default form label width
      */
-    protected static $defaultFormLabelWidth = 'col-sm-2';
+    protected static $defaultFormLabelWidthClass = 'col-sm-2';
     /**
      * @var string default form control width
      */
-    protected static $defaultFormControlWidth = 'col-sm-10';
+    protected static $defaultFormControlWidthClass = 'col-sm-10';
 
     //
     // BASE CSS
@@ -688,7 +672,7 @@ class TbHtml extends CHtml // required in order to access the protected methods 
     }
 
     // Code
-    // http://twitter.github.io/bootstrap/2.3.2/base-css.html#code
+    // http://getbootstrap.com/css/#code
     // --------------------------------------------------
 
     /**
@@ -785,32 +769,17 @@ class TbHtml extends CHtml // required in order to access the protected methods 
         if (!empty($layout)) {
             switch ($layout) {
                 case self::FORM_LAYOUT_HORIZONTAL:
-                    self::$isHorizontalForm = true;
                     self::addCssClass('form-' . self::FORM_LAYOUT_HORIZONTAL, $htmlOptions);
                     break;
                 case self::FORM_LAYOUT_INLINE:
                 case self::FORM_LAYOUT_SEARCH:
-                    self::$isInlineForm = true;
                     self::addCssClass('form-' . self::FORM_LAYOUT_INLINE, $htmlOptions);
                     break;
                 default:
                     self::addCssClass('form-' . $layout, $htmlOptions);
             }
         }
-        self::$formLabelWidth = TbArray::popValue('labelWidth', $htmlOptions, self::$defaultFormLabelWidth);
-        self::$formControlWidth = TbArray::popValue('controlWidth', $htmlOptions, self::$defaultFormControlWidth);
         return parent::beginForm($action, $method, $htmlOptions);
-    }
-
-    /**
-     * Generates a closing form tag
-     * @return string
-     */
-    public static function endFormTb()
-    {
-        self::$isHorizontalForm = false;
-        self::$isInlineForm = false;
-        return parent::endForm();
     }
 
     /**
@@ -1345,7 +1314,7 @@ EOD;
     /**
      * Generates a control group with a radio button.
      * @param string $name the input name.
-     * @param string $checked whether the radio button is checked.
+     * @param bool|string $checked whether the radio button is checked.
      * @param array $htmlOptions additional HTML attributes.
      * @return string the generated control group.
      * @see self::controlGroup
@@ -1358,7 +1327,7 @@ EOD;
     /**
      * Generates a control group with a check box.
      * @param string $name the input name.
-     * @param string $checked whether the check box is checked.
+     * @param bool|string $checked whether the check box is checked.
      * @param array $htmlOptions additional HTML attributes.
      * @return string the generated control group.
      * @see self::controlGroup
@@ -1497,6 +1466,9 @@ EOD;
         $controlOptions = TbArray::popValue('controlOptions', $htmlOptions, array());
         $label = TbArray::popValue('label', $htmlOptions);
         $labelOptions = TbArray::popValue('labelOptions', $htmlOptions, array());
+        $formLayout = TbArray::popValue('formLayout', $htmlOptions, self::FORM_LAYOUT_VERTICAL);
+        $labelWidthClass = TbArray::popValue('labelWidthClass', $htmlOptions, self::$defaultFormLabelWidthClass);
+        $controlWidthClass = TbArray::popValue('controlWidthClass', $htmlOptions, self::$defaultFormControlWidthClass);
         $useFormGroup = true;
         $useControls = true;
         $output = '';
@@ -1509,19 +1481,19 @@ EOD;
             $useFormGroup = false;
         }
         // Special conditions depending on the form type
-        if (self::$isHorizontalForm) {
+        if ($formLayout == self::FORM_LAYOUT_HORIZONTAL) {
             switch ($type) {
                 case self::INPUT_TYPE_CHECKBOX:
                 case self::INPUT_TYPE_RADIOBUTTON:
-                    self::addCssClass(self::switchColToOffset(self::$formLabelWidth), $controlOptions);
-                    self::addCssClass(self::switchOffsetToCol(self::$formControlWidth), $controlOptions);
+                    self::addCssClass(self::switchColToOffset($labelWidthClass), $controlOptions);
+                    self::addCssClass(self::switchOffsetToCol($controlWidthClass), $controlOptions);
                     $useFormGroup = true;
                     break;
                 default:
-                    self::addCssClass(self::switchOffsetToCol(self::$formLabelWidth), $labelOptions);
-                    self::addCssClass(self::switchOffsetToCol(self::$formControlWidth), $controlOptions);
+                    self::addCssClass(self::switchOffsetToCol($labelWidthClass), $labelOptions);
+                    self::addCssClass(self::switchOffsetToCol($controlWidthClass), $controlOptions);
             }
-        } elseif (self::$isInlineForm) {
+        } elseif ($formLayout == self::FORM_LAYOUT_INLINE || $formLayout == self::FORM_LAYOUT_SEARCH) {
             switch ($type) {
                 case self::INPUT_TYPE_TEXT:
                 case self::INPUT_TYPE_PASSWORD:
@@ -1533,7 +1505,7 @@ EOD;
                 case self::INPUT_TYPE_FILE:
                 case self::INPUT_TYPE_SEARCH:
                     self::addCssClass('sr-only', $labelOptions);
-                    if (!empty($label) && !TbArray::getValue('placeholder', $htmlOptions, false)) {
+                    if (($label !== null) && (TbArray::getValue('placeholder', $htmlOptions) !== null)) {
                         $htmlOptions['placeholder'] = $label;
                     }
                     break;
@@ -2132,8 +2104,8 @@ EOD;
 
     /**
      * Generates a control group with a check box for a model attribute.
-     * @param string $name the input name.
-     * @param string $checked whether the check box is checked.
+     * @param CModel $model the data model
+     * @param string $attribute the attribute.
      * @param array $htmlOptions additional HTML attributes.
      * @return string the generated control group.
      * @see self::activeControlGroup
@@ -2159,8 +2131,8 @@ EOD;
 
     /**
      * Generates a control group with a list box for a model attribute.
-     * @param string $name the input name.
-     * @param string $select the selected value.
+     * @param CModel $model the data model.
+     * @param string $attribute the attribute.
      * @param array $data data for generating the list options (value=>display).
      * @param array $htmlOptions additional HTML attributes.
      * @return string the generated control group.
@@ -2191,8 +2163,8 @@ EOD;
 
     /**
      * Generates a control group with an inline radio button list for a model attribute.
-     * @param string $name the input name.
-     * @param string $select the selected value.
+     * @param CModel $model the data model.
+     * @param string $attribute the attribute.
      * @param array $data data for generating the list options (value=>display).
      * @param array $htmlOptions additional HTML attributes.
      * @return string the generated control group.
@@ -2574,9 +2546,12 @@ EOD;
         if (is_array($actions)) {
             $actions = implode(' ', $actions);
         }
-        if (self::$isHorizontalForm) {
-            self::addCssClass(self::switchColToOffset(self::$formLabelWidth), $htmlOptions);
-            self::addCssClass(self::switchOffsetToCol(self::$formControlWidth), $htmlOptions);
+        $labelWidthClass = TbArray::popValue('labelWidthClass', $htmlOptions, self::$defaultFormLabelWidthClass);
+        $controlWidthClass = TbArray::popValue('controlWidthClass', $htmlOptions, self::$defaultFormControlWidthClass);
+
+        if (TbArray::popValue('formLayout', $htmlOptions, self::FORM_LAYOUT_VERTICAL) == self::FORM_LAYOUT_HORIZONTAL) {
+            self::addCssClass(self::switchColToOffset($labelWidthClass), $htmlOptions);
+            self::addCssClass(self::switchOffsetToCol($controlWidthClass), $htmlOptions);
 
             return self::tag(
                 'div',
@@ -2604,12 +2579,12 @@ EOD;
         $value = TbArray::popValue('value', $inputOptions, '');
         $output = self::beginFormTb(self::FORM_LAYOUT_SEARCH, $action, $method, $htmlOptions);
         $output .= self::searchQueryField($name, $value, $inputOptions);
-        $output .= self::endFormTb();
+        $output .= parent::endForm();
         return $output;
     }
 
     // Buttons
-    // http://twitter.github.io/bootstrap/2.3.2/base-css.html#buttons
+    // http://getbootstrap.com/css/#buttons
     // --------------------------------------------------
 
     /**
@@ -2872,7 +2847,7 @@ EOD;
     }
 
     // Images
-    // http://twitter.github.io/bootstrap/2.3.2/base-css.html#images
+    // http://getbootstrap.com/css/#images
     // --------------------------------------------------
 
     /**
@@ -2902,7 +2877,22 @@ EOD;
     }
 
     /**
+     * Generates an image tag within thumbnail frame.
+     * @deprecated See {@link imageThumbnail()}
+     * @param string $src the image URL.
+     * @param string $alt the alternative text display.
+     * @param array $htmlOptions additional HTML attributes.
+     * @return string the generated image tag.
+     */
+    public static function imageThumbnail($src, $alt = '', $htmlOptions = array())
+    {
+        $htmlOptions['type'] = self::IMAGE_TYPE_THUMBNAIL;
+        return self::image($src, $alt, $htmlOptions);
+    }
+
+    /**
      * Generates an image tag within polaroid frame.
+     * @deprecated See {@link imageThumbnail()}
      * @param string $src the image URL.
      * @param string $alt the alternative text display.
      * @param array $htmlOptions additional HTML attributes.
@@ -2965,7 +2955,7 @@ EOD;
     // --------------------------------------------------
 
     // Dropdowns
-    // http://twitter.github.io/bootstrap/2.3.2/components.html#dropdowns
+    // http://getbootstrap.com/components/#dropdowns
     // --------------------------------------------------
 
     /**
@@ -3037,7 +3027,7 @@ EOD;
     }
 
     // Button groups
-    // http://twitter.github.io/bootstrap/2.3.2/components.html#buttonGroups
+    // http://getbootstrap.com/components/#btn-groups
     // --------------------------------------------------
 
     /**
@@ -3168,7 +3158,7 @@ EOD;
     }
 
     // Button dropdowns
-    // http://twitter.github.io/bootstrap/2.3.2/components.html#buttonDropdowns
+    // http://getbootstrap.com/components/#btn-dropdowns
     // --------------------------------------------------
 
     /**
@@ -3199,7 +3189,7 @@ EOD;
     }
 
     // Navs
-    // http://twitter.github.io/bootstrap/2.3.2/components.html#navs
+    // http://getbootstrap.com/components/#nav
     // --------------------------------------------------
 
     /**
@@ -3428,8 +3418,9 @@ EOD;
 
     /**
      * Generates a tabbable pills menu.
-     * @param array $tabs the tab configurations.
+     * @param array $pills the pills.
      * @param array $htmlOptions additional HTML attributes.
+     * @internal param array $tabs the tab configurations.
      * @return string the generated menu.
      */
     public static function tabbablePills($pills, $htmlOptions = array())
@@ -3509,7 +3500,7 @@ EOD;
     }
 
     // Navbar
-    // http://twitter.github.io/bootstrap/2.3.2/components.html#navbar
+    // http://getbootstrap.com/components/#navbar
     // --------------------------------------------------
 
     /**
@@ -3616,7 +3607,7 @@ EOD;
     }
 
     // Breadcrumbs
-    // http://twitter.github.io/bootstrap/2.3.2/components.html#breadcrumbs
+    // http://getbootstrap.com/components/#breadcrumbs
     // --------------------------------------------------
 
     /**
@@ -3645,7 +3636,7 @@ EOD;
     }
 
     // Pagination
-    // http://twitter.github.io/bootstrap/2.3.2/components.html#pagination
+    // http://getbootstrap.com/components/#pagination
     // --------------------------------------------------
 
     /**
@@ -3756,7 +3747,7 @@ EOD;
     }
 
     // Labels and badges
-    // http://twitter.github.io/bootstrap/2.3.2/components.html#labels-badges
+    // http://getbootstrap.com/components/#labels
     // --------------------------------------------------
 
     /**
@@ -3792,11 +3783,12 @@ EOD;
     }
 
     // Typography
-    // http://twitter.github.io/bootstrap/2.3.2/components.html#typography
+    // http://getbootstrap.com/components/#jumbotron
+    // http://getbootstrap.com/components/#page-header
     // --------------------------------------------------
 
     /**
-     * Generates a hero unit.
+     * Generates a jumbotron unit.
      * @param string $heading the heading text.
      * @param string $content the content text.
      * @param array $htmlOptions additional HTML attributes.
@@ -3834,7 +3826,7 @@ EOD;
     }
 
     // Thumbnails
-    // http://twitter.github.io/bootstrap/2.3.2/components.html#thumbnails
+    // http://getbootstrap.com/components/#thumbnails
     // --------------------------------------------------
 
     /**
@@ -3918,7 +3910,7 @@ EOD;
     }
 
     // Alerts
-    // http://twitter.github.io/bootstrap/2.3.2/components.html#alerts
+    // http://getbootstrap.com/components/#alerts
     // --------------------------------------------------
 
     /**
@@ -3967,7 +3959,7 @@ EOD;
     }
 
     // Progress bars
-    // http://twitter.github.io/bootstrap/2.3.2/components.html#progress
+    // http://getbootstrap.com/components/#progress
     // --------------------------------------------------
 
     /**
@@ -4080,7 +4072,7 @@ EOD;
     }
 
     // Media objects
-    // http://twitter.github.io/bootstrap/2.3.2/components.html#media
+    // http://getbootstrap.com/components/#media
     // --------------------------------------------------
 
     /**
@@ -4172,7 +4164,7 @@ EOD;
     }
 
     // Misc
-    // http://twitter.github.io/bootstrap/2.3.2/components.html#misc
+    // http://getbootstrap.com/components/#wells
     // --------------------------------------------------
 
     /**
@@ -4251,7 +4243,7 @@ EOD;
     // --------------------------------------------------
 
     // Modals
-    // http://twitter.github.io/bootstrap/2.3.2/javascript.html#modals
+    // http://getbootstrap.com/javascript/#modals
     // --------------------------------------------------
 
     /**
@@ -4268,7 +4260,7 @@ EOD;
         $headingOptions = TbArray::popValue('headingOptions', $htmlOptions, array());
         $closeLabel = TbArray::popValue('closeLabel', $htmlOptions, self::CLOSE_TEXT);
         $closeButton = self::closeButton($closeLabel, $closeOptions);
-        $header = self::tag('h3', $headingOptions, $content);
+        $header = self::tag('h4', $headingOptions, $content);
         return self::tag('div', $htmlOptions, $closeButton . $header);
     }
 
@@ -4297,8 +4289,8 @@ EOD;
     }
 
     // Tooltips and Popovers
-    // http://twitter.github.io/bootstrap/2.3.2/javascript.html#tooltips
-    // http://twitter.github.io/bootstrap/2.3.2/javascript.html#popovers
+    // http://getbootstrap.com/javascript/#tooltips
+    // http://getbootstrap.com/javascript/#popovers
     // --------------------------------------------------
 
     /**
@@ -4367,7 +4359,7 @@ EOD;
     }
 
     // Carousel
-    // http://twitter.github.io/bootstrap/2.3.2/javascript.html#carousel
+    // http://getbootstrap.com/javascript/#carousel
     // --------------------------------------------------
 
     /**
