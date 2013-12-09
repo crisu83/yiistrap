@@ -928,10 +928,9 @@ class TbHtml extends CHtml // required in order to access the protected methods 
     public static function radioButton($name, $checked = false, $htmlOptions = array())
     {
         $label = TbArray::popValue('label', $htmlOptions, false);
-        $useContainer = TbArray::popValue('useContainer', $htmlOptions, false);
         $labelOptions = TbArray::popValue('labelOptions', $htmlOptions, array());
         $input = parent::radioButton($name, $checked, $htmlOptions);
-        if ($useContainer) {
+        if (TbArray::popValue('useContainer', $htmlOptions, false)) {
             return self::tag(
                 'div',
                 array('class' => 'radio'),
@@ -952,10 +951,9 @@ class TbHtml extends CHtml // required in order to access the protected methods 
     public static function checkBox($name, $checked = false, $htmlOptions = array())
     {
         $label = TbArray::popValue('label', $htmlOptions, false);
-        $useContainer = TbArray::popValue('useContainer', $htmlOptions, false);
         $labelOptions = TbArray::popValue('labelOptions', $htmlOptions, array());
         $input = parent::checkBox($name, $checked, $htmlOptions);
-        if ($useContainer) {
+        if (TbArray::popValue('useContainer', $htmlOptions, false)) {
             return self::tag(
                 'div',
                 array('class' => 'checkbox'),
@@ -1472,6 +1470,7 @@ EOD;
         $useFormGroup = true;
         $useControls = true;
         $output = '';
+
         // Special label case case for individual checkboxes and radios
         if ($type == self::INPUT_TYPE_CHECKBOX || $type == self::INPUT_TYPE_RADIOBUTTON) {
             $htmlOptions['label'] = $label;
@@ -1480,6 +1479,7 @@ EOD;
             $label = false;
             $useFormGroup = false;
         }
+
         // Special conditions depending on the form type
         if ($formLayout == self::FORM_LAYOUT_HORIZONTAL) {
             switch ($type) {
@@ -1791,9 +1791,17 @@ EOD;
     {
         $label = TbArray::popValue('label', $htmlOptions, false);
         $labelOptions = TbArray::popValue('labelOptions', $htmlOptions, array());
-        self::addCssClass('radio', $labelOptions);
         $input = parent::activeRadioButton($model, $attribute, $htmlOptions);
-        return self::createCheckBoxAndRadioButtonLabel($label, $input, $labelOptions);
+        if (TbArray::popValue('useContainer', $htmlOptions, false)) {
+            return self::tag(
+                'div',
+                array('class' => 'radio'),
+                self::createCheckBoxAndRadioButtonLabel($label, $input, $labelOptions)
+            );
+        } else {
+            return self::createCheckBoxAndRadioButtonLabel($label, $input, $labelOptions);
+        }
+
     }
 
     /**
@@ -1807,9 +1815,16 @@ EOD;
     {
         $label = TbArray::popValue('label', $htmlOptions, false);
         $labelOptions = TbArray::popValue('labelOptions', $htmlOptions, array());
-        self::addCssClass('checkbox', $labelOptions);
         $input = parent::activeCheckBox($model, $attribute, $htmlOptions);
-        return self::createCheckBoxAndRadioButtonLabel($label, $input, $labelOptions);
+        if (TbArray::popValue('useContainer', $htmlOptions, false)) {
+            return self::tag(
+                'div',
+                array('class' => 'radio'),
+                self::createCheckBoxAndRadioButtonLabel($label, $input, $labelOptions)
+            );
+        } else {
+            return self::createCheckBoxAndRadioButtonLabel($label, $input, $labelOptions);
+        }
     }
 
     /**
@@ -2259,16 +2274,60 @@ EOD;
         $controlOptions = TbArray::popValue('controlOptions', $htmlOptions, array());
         $label = TbArray::popValue('label', $htmlOptions);
         $labelOptions = TbArray::popValue('labelOptions', $htmlOptions, array());
+        $formLayout = TbArray::popValue('formLayout', $htmlOptions, self::FORM_LAYOUT_VERTICAL);
+        $labelWidthClass = TbArray::popValue('labelWidthClass', $htmlOptions, self::$defaultFormLabelWidthClass);
+        $controlWidthClass = TbArray::popValue('controlWidthClass', $htmlOptions, self::$defaultFormControlWidthClass);
+        $useFormGroup = true;
+        $useControls = true;
+        $output = '';
 
-        if (in_array($type, array(self::INPUT_TYPE_CHECKBOX, self::INPUT_TYPE_RADIOBUTTON))) {
+        // Special label case case for individual checkboxes and radios
+        if ($type == self::INPUT_TYPE_CHECKBOX || $type == self::INPUT_TYPE_RADIOBUTTON) {
             $htmlOptions['label'] = isset($label) ? $label : $model->getAttributeLabel($attribute);
             $htmlOptions['labelOptions'] = $labelOptions;
+            $htmlOptions['useContainer'] = true;
             $label = false;
+            $useFormGroup = false;
+        }
+
+        // Special conditions depending on the form type
+        if ($formLayout == self::FORM_LAYOUT_HORIZONTAL) {
+            switch ($type) {
+                case self::INPUT_TYPE_CHECKBOX:
+                case self::INPUT_TYPE_RADIOBUTTON:
+                    self::addCssClass(self::switchColToOffset($labelWidthClass), $controlOptions);
+                    self::addCssClass(self::switchOffsetToCol($controlWidthClass), $controlOptions);
+                    $useFormGroup = true;
+                    break;
+                default:
+                    self::addCssClass(self::switchOffsetToCol($labelWidthClass), $labelOptions);
+                    self::addCssClass(self::switchOffsetToCol($controlWidthClass), $controlOptions);
+            }
+        } elseif ($formLayout == self::FORM_LAYOUT_INLINE || $formLayout == self::FORM_LAYOUT_SEARCH) {
+            switch ($type) {
+                case self::INPUT_TYPE_TEXT:
+                case self::INPUT_TYPE_PASSWORD:
+                case self::INPUT_TYPE_URL:
+                case self::INPUT_TYPE_EMAIL:
+                case self::INPUT_TYPE_NUMBER:
+                case self::INPUT_TYPE_RANGE:
+                case self::INPUT_TYPE_DATE:
+                case self::INPUT_TYPE_FILE:
+                case self::INPUT_TYPE_SEARCH:
+                    self::addCssClass('sr-only', $labelOptions);
+                    if (($label !== null) && (TbArray::getValue('placeholder', $htmlOptions) !== null)) {
+                        $htmlOptions['placeholder'] = $label;
+                    }
+                    break;
+                case self::INPUT_TYPE_CHECKBOX:
+                case self::INPUT_TYPE_RADIOBUTTON:
+                    $useControls = false;
+                    break;
+            }
         }
         if (isset($label) && $label !== false) {
             $labelOptions['label'] = $label;
         }
-
         $help = TbArray::popValue('help', $htmlOptions, '');
         $helpOptions = TbArray::popValue('helpOptions', $htmlOptions, array());
         if (!empty($help)) {
@@ -2285,13 +2344,22 @@ EOD;
             self::addCssClass($color, $groupOptions);
         }
         self::addCssClass('control-label', $labelOptions);
-        $output = self::openTag('div', $groupOptions);
+
         if ($label !== false) {
             $output .= parent::activeLabelEx($model, $attribute, $labelOptions);
         }
         $output .= self::controls($input . $error . $help, $controlOptions);
-        $output .= '</div>';
-        return $output;
+
+        if ($useFormGroup) {
+            self::addCssClass('form-group', $groupOptions);
+            return self::tag(
+                'div',
+                $groupOptions,
+                $output
+            );
+        } else {
+            return $output;
+        }
     }
 
     /**

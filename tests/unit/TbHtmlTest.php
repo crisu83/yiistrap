@@ -1415,7 +1415,6 @@ class TbHtmlTest extends TbTestCase
             )
         );
         $label = $body->filter('label');
-        $I->seeNodeCssClass($label, 'radio');
         $radio = $label->filter('input[type=radio]');
         $I->seeNodeAttributes(
             $radio,
@@ -1452,7 +1451,6 @@ class TbHtmlTest extends TbTestCase
             )
         );
         $label = $body->filter('label');
-        $I->seeNodeCssClass($label, 'checkbox');
         $checkbox = $label->filter('input[type=checkbox]');
         $I->seeNodeAttributes(
             $checkbox,
@@ -1728,9 +1726,9 @@ class TbHtmlTest extends TbTestCase
     {
         $I = $this->codeGuy;
         $html = TbHtml::activeRadioButtonControlGroup(new Dummy, 'radio');
-        $group = $I->createNode($html, 'div.form-group');
-        $I->seeNodeChildren($group, array('input[type=hidden]', 'label.radio'));
-        $label = $group->filter('label.radio');
+        $group = $I->createNode($html, 'div');
+        $I->seeNodeChildren($group, array('div.radio', 'input[type=hidden]', 'label'));
+        $label = $group->filter('label');
         $I->seeNodeChildren($label, array('input[type=radio]'));
     }
 
@@ -1738,7 +1736,7 @@ class TbHtmlTest extends TbTestCase
     {
         $I = $this->codeGuy;
         $html = TbHtml::activeCheckBoxControlGroup(new Dummy, 'checkbox');
-        $group = $I->createNode($html, 'div.form-group');
+        $group = $I->createNode($html, 'div');
         $I->seeNodeChildren($group, array('input[type=hidden]', 'label'));
         $label = $group->filter('label');
         $I->seeNodeChildren($label, array('input[type=checkbox]'));
@@ -1907,8 +1905,8 @@ class TbHtmlTest extends TbTestCase
                 'labelOptions' => array('class' => 'label'),
             )
         );
-        $group = $I->createNode($html, 'div.form-group');
-        $I->seeNodeChildren($group, array('div'));
+        $group = $I->createNode($html, 'div');
+        $I->seeNodeChildren($group, array('div.radio'));
         $controls = $group->filter('div');
         $I->dontSeeNodeCssClass($controls, 'controls');
         $I->seeNodeChildren($controls, array('input[type=hidden]', 'label'));
