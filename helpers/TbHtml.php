@@ -2339,16 +2339,18 @@ EOD;
             ? $htmlOptions['input']
             : self::createActiveInput($type, $model, $attribute, $htmlOptions, $data);
 
-        self::addCssClass('form-group', $groupOptions);
         if (!empty($color)) {
             self::addCssClass($color, $groupOptions);
         }
         self::addCssClass('control-label', $labelOptions);
-
         if ($label !== false) {
             $output .= parent::activeLabelEx($model, $attribute, $labelOptions);
         }
-        $output .= self::controls($input . $error . $help, $controlOptions);
+        if ($useControls) {
+            $output .= self::controls($input . $error . $help, $controlOptions);
+        } else {
+            $output .= $input;
+        }
 
         if ($useFormGroup) {
             self::addCssClass('form-group', $groupOptions);
