@@ -41,6 +41,7 @@ class TbNavbar extends CWidget
     public $fluid = false;
     /**
      * @var boolean whether to enable collapsing of the navbar on narrow screens.
+     * @deprecated Bootstrap 3 is built to always be responsive
      */
     public $collapse = false;
     /**
@@ -100,7 +101,7 @@ class TbNavbar extends CWidget
         $items = ob_get_clean();
         ob_start();
         if ($this->collapse !== false) {
-            TbHtml::addCssClass('nav-collapse', $this->collapseOptions);
+            TbHtml::addCssClass('navbar-collapse', $this->collapseOptions);
             ob_start();
             /* @var TbCollapse $collapseWidget */
             $collapseWidget = $this->controller->widget(
@@ -112,11 +113,15 @@ class TbNavbar extends CWidget
                 )
             );
             $collapseContent = ob_get_clean();
-            echo TbHtml::navbarCollapseLink('#' . $collapseWidget->getId());
-            echo $brand . $collapseContent;
+            echo TbHtml::tag(
+                'div', array('class' => 'navbar-header'),
+                TbHtml::navbarCollapseLink('#' . $collapseWidget->getId()) . $brand
+            );
+            echo $collapseContent;
 
         } else {
-            echo $brand . $items;
+            echo TbHtml::tag('div', array('class' => 'navbar-header'), $brand);
+            echo $items;
         }
         $containerContent = ob_get_clean();
         $containerOptions = TbArray::popValue('containerOptions', $this->htmlOptions, array());

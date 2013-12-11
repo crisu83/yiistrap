@@ -12,7 +12,7 @@ Yii::import('bootstrap.helpers.TbHtml');
 
 /**
  * Bootstrap navigation menu widget.
- * @see http://twitter.github.com/bootstrap/components.html#navbar
+ * @see http://getbootstrap.com/components/#nav
  */
 class TbNav extends CWidget
 {

@@ -12,7 +12,7 @@ Yii::import('bootstrap.helpers.TbHtml');
 
 /**
  * Bootstrap collapse widget.
- * @see http://twitter.github.com/bootstrap/javascript.html#collapse
+ * @see http://getbootstrap.com/javascript/#collapse
  */
 class TbCollapse extends CWidget
 {

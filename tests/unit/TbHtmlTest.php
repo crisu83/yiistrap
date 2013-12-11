@@ -3033,13 +3033,11 @@ class TbHtmlTest extends TbTestCase
             'Navbar content',
             array(
                 'class' => 'nav',
-                'innerOptions' => array('class' => 'inner'),
             )
         );
-        $navbar = $I->createNode($html, 'div.navbar');
+        $navbar = $I->createNode($html, 'nav.navbar');
         $I->seeNodeCssClass($navbar, 'nav');
-        $inner = $navbar->filter('div.navbar-inner');
-        $I->seeNodeText($inner, 'Navbar content');
+        $I->seeNodeText($navbar, 'Navbar content');
 
         $html = TbHtml::navbar(
             '',
@@ -3047,7 +3045,7 @@ class TbHtmlTest extends TbTestCase
                 'display' => TbHtml::NAVBAR_DISPLAY_STATICTOP,
             )
         );
-        $navbar = $I->createNode($html, 'div.navbar');
+        $navbar = $I->createNode($html, 'nav.navbar');
         $I->seeNodeCssClass($navbar, 'navbar-static-top');
 
         $html = TbHtml::navbar(
@@ -3056,7 +3054,7 @@ class TbHtmlTest extends TbTestCase
                 'display' => TbHtml::NAVBAR_DISPLAY_FIXEDTOP,
             )
         );
-        $navbar = $I->createNode($html, 'div.navbar');
+        $navbar = $I->createNode($html, 'nav.navbar');
         $I->seeNodeCssClass($navbar, 'navbar-fixed-top');
 
         $html = TbHtml::navbar(
@@ -3065,7 +3063,7 @@ class TbHtmlTest extends TbTestCase
                 'display' => TbHtml::NAVBAR_DISPLAY_FIXEDBOTTOM,
             )
         );
-        $navbar = $I->createNode($html, 'div.navbar');
+        $navbar = $I->createNode($html, 'nav.navbar');
         $I->seeNodeCssClass($navbar, 'navbar-fixed-bottom');
 
         $html = TbHtml::navbar(
@@ -3074,7 +3072,7 @@ class TbHtmlTest extends TbTestCase
                 'color' => TbHtml::NAVBAR_COLOR_INVERSE,
             )
         );
-        $navbar = $I->createNode($html, 'div.navbar');
+        $navbar = $I->createNode($html, 'nav.navbar');
         $I->seeNodeCssClass($navbar, 'navbar-inverse');
     }
 
@@ -3088,7 +3086,7 @@ class TbHtmlTest extends TbTestCase
                 'class' => 'link',
             )
         );
-        $a = $I->createNode($html, 'a.brand');
+        $a = $I->createNode($html, 'a.navbar-brand');
         $I->seeNodeCssClass($a, 'link');
         $I->seeNodeAttribute($a, 'href', '#');
         $I->seeNodeText($a, 'Brand text');
@@ -3144,7 +3142,7 @@ class TbHtmlTest extends TbTestCase
                 'class' => 'link',
             )
         );
-        $a = $I->createNode($html, 'a.btn.btn-navbar');
+        $a = $I->createNode($html, 'button.btn.btn-navbar');
         $I->seeNodeCssClass($a, 'link');
         $I->seeNodeAttributes(
             $a,

@@ -3337,7 +3337,7 @@ EOD;
      */
     public static function nav($type, $items, $htmlOptions = array())
     {
-        self::addCssClass('nav', $htmlOptions);
+        self::addCssClass(array('nav', 'navbar-nav'), $htmlOptions);
         if (!empty($type)) {
             self::addCssClass('nav-' . $type, $htmlOptions);
         }
@@ -3365,7 +3365,7 @@ EOD;
                 if (is_string($itemOptions)) {
                     $output .= $itemOptions;
                 } else {
-                    if (isset($itemOptions['visible']) && $itemOptions['visible'] === false) {
+                    if (TbArray::popValue('visible', $itemOptions, true)  === false) {
                         continue;
                     }
                     // todo: consider removing the support for htmlOptions.
@@ -3586,15 +3586,14 @@ EOD;
         if (!empty($display)) {
             self::addCssClass('navbar-' . $display, $htmlOptions);
         }
-        $color = TbArray::popValue('color', $htmlOptions);
+        $color = TbArray::popValue('color', $htmlOptions, 'default');
         if (!empty($color)) {
             self::addCssClass('navbar-' . $color, $htmlOptions);
         }
-        $innerOptions = TbArray::popValue('innerOptions', $htmlOptions, array());
-        self::addCssClass('navbar-inner', $innerOptions);
-        $output = self::openTag('div', $htmlOptions);
-        $output .= self::tag('div', $innerOptions, $content);
-        $output .= '</div>';
+        $htmlOptions['role'] = 'navigation';
+        $output = self::openTag('nav', $htmlOptions);
+        $output .= $content;
+        $output .= '</nav>';
         return $output;
     }
 
@@ -3607,7 +3606,7 @@ EOD;
      */
     public static function navbarBrandLink($label, $url, $htmlOptions = array())
     {
-        self::addCssClass('brand', $htmlOptions);
+        self::addCssClass('navbar-brand', $htmlOptions);
         return self::link($label, $url, $htmlOptions);
     }
 
@@ -3670,10 +3669,13 @@ EOD;
     public static function navbarCollapseLink($target, $htmlOptions = array())
     {
         self::addCssClass('btn btn-navbar', $htmlOptions);
+        $htmlOptions['type'] = 'button';
         $htmlOptions['data-toggle'] = 'collapse';
         $htmlOptions['data-target'] = $target;
-        $content = '<span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span>';
-        return self::tag('a', $htmlOptions, $content);
+        self::addCssClass('navbar-toggle', $htmlOptions);
+        $content = self::tag('span', array('class' => 'sr-only'), 'Toggle navigation');
+        $content .= '<span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span>';
+        return self::tag('button', $htmlOptions, $content);
     }
 
     // Breadcrumbs
