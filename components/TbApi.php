@@ -8,6 +8,8 @@
  * @version 1.2.0
  */
 
+Yii::import('bootstrap.helpers.TbHtml');
+
 /**
  * Bootstrap API component.
  */
@@ -38,7 +40,18 @@ class TbApi extends CApplicationComponent
      */
     public $forceCopyAssets = false;
 
+    /**
+     * @var string the default icon vendor
+     */
+    public $defaultIconVendor = 'glyphicon';
+
     private $_assetsUrl;
+
+    public function init()
+    {
+        TbHtml::$iconVendor = $this->defaultIconVendor;
+        parent::init();
+    }
 
     /**
      * Registers the Bootstrap CSS.

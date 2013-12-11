@@ -480,6 +480,10 @@ class TbHtml extends CHtml // required in order to access the protected methods 
      */
     public static $errorSummaryCss = 'alert alert-block alert-error';
     /**
+     * @var string the icon vendor
+     */
+    public static $iconVendor = 'glyphicon';
+    /**
      * @var string default form label width
      */
     protected static $defaultFormLabelWidthClass = 'col-sm-2';
@@ -2998,22 +3002,34 @@ EOD;
     // --------------------------------------------------
 
     /**
-     * Generates an icon.
+     * Generates an icon. By default, Glyphicons are used. Font Awesome is also supported by using 'fa' for the $vendor
+     * parameter.
      * @param string $icon the icon type.
      * @param array $htmlOptions additional HTML attributes.
      * @param string $tagName the icon HTML tag.
+     * @param string $vendor the icon vendor.
      * @return string the generated icon.
      */
-    public static function icon($icon, $htmlOptions = array(), $tagName = 'i')
+    public static function icon($icon, $htmlOptions = array(), $tagName = 'i', $vendor = null)
     {
         if (is_string($icon)) {
-            if (strpos($icon, 'glyphicon') === false) {
-                $icon = 'glyphicon-' . implode(' glyphicon-', explode(' ', $icon));
+            if ($vendor === null) {
+                // Determine whether the icon is Glyphicon or Font Awesome
+                if (preg_match('/^(glyphicon|fa)-(.*)$/', $icon, $matches) > 0) {
+                    $vendor = $matches[1];
+                    $icon = $matches[2];
+                } else {
+                    $vendor = self::$iconVendor;
+                }
             }
-            self::addCssClass($icon, $htmlOptions);
+            if (strpos($icon, $vendor . '-') === false) {
+                $icon = "{$vendor}-" . implode(" {$vendor}-", explode(' ', $icon));
+            }
+            self::addCssClass(array($vendor, $icon), $htmlOptions);
+            // Color is specifically for glyphicon
             $color = TbArray::popValue('color', $htmlOptions);
             if (!empty($color) && $color === self::ICON_COLOR_WHITE) {
-                self::addCssClass('glyphicon-white', $htmlOptions);
+                self::addCssClass("glyphicon-white", $htmlOptions);
             }
             return self::openTag($tagName, $htmlOptions) . parent::closeTag($tagName); // tag won't work in this case
         }
