@@ -2773,7 +2773,7 @@ class TbHtmlTest extends TbTestCase
         foreach ($nav->children() as $i => $liElement) {
             $li = $I->createNode($liElement);
             if ($i === 0) {
-                $I->seeNodeCssClass($li, 'nav-header');
+                $I->seeNodeCssClass($li, 'dropdown-header');
                 $I->seeNodeText($li, 'Header text');
             } else if ($i === 1) {
                 $a = $li->filter('a');
@@ -2902,7 +2902,7 @@ class TbHtmlTest extends TbTestCase
                 'class' => 'item',
             )
         );
-        $li = $I->createNode($html, 'li.nav-header');
+        $li = $I->createNode($html, 'li.dropdown-header');
         $I->seeNodeCssClass($li, 'item');
         $I->seeNodeText($li, 'Header text');
     }

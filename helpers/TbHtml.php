@@ -3379,7 +3379,11 @@ EOD;
             $output = self::openTag('ul', $htmlOptions);
             foreach ($items as $itemOptions) {
                 if (is_string($itemOptions)) {
-                    $output .= $itemOptions;
+                    if ($itemOptions == '---') {
+                        $output .= self::menuDivider();
+                    } else {
+                        $output .= $itemOptions;
+                    }
                 } else {
                     if (TbArray::popValue('visible', $itemOptions, true)  === false) {
                         continue;
@@ -3476,7 +3480,7 @@ EOD;
      */
     public static function menuHeader($label, $htmlOptions = array())
     {
-        self::addCssClass('nav-header', $htmlOptions);
+        self::addCssClass('dropdown-header', $htmlOptions);
         return self::tag('li', $htmlOptions, $label);
     }
 
@@ -3672,7 +3676,7 @@ EOD;
      */
     public static function navbarSearchForm($action, $method = 'post', $htmlOptions = array())
     {
-        self::addCssClass('navbar-search', $htmlOptions);
+        self::addCssClass('navbar-form', $htmlOptions);
         return self::searchForm($action, $method, $htmlOptions);
     }
 
