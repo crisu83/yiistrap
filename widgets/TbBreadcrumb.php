@@ -61,7 +61,7 @@ class TbBreadcrumb extends CWidget
                 $links[$label] = $this->homeUrl !== null ? $this->homeUrl : array(Yii::app()->homeUrl);
             }
             foreach ($this->links as $label => $url) {
-                if (is_array($url)) {
+                if (is_array($url) || $url === '#') {
                     if ($this->encodeLabel) {
                         $label = CHtml::encode($label);
                     }

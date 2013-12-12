@@ -3381,7 +3381,7 @@ EOD;
         $lastIndex = count($links) - 1;
         $i = 0;
         foreach ($links as $label => $url) {
-            if (is_array($url)) {
+            if (is_array($url) || $url === '#') {
                 $output .= self::openTag('li');
                 $output .= self::link($label, $url);
             } else {
