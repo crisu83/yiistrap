@@ -3378,15 +3378,19 @@ EOD;
         $divider = TbArray::popValue('divider', $htmlOptions, '/');
         self::addCssClass('breadcrumb', $htmlOptions);
         $output = self::openTag('ul', $htmlOptions);
+        $lastIndex = count($links) - 1;
+        $i = 0;
         foreach ($links as $label => $url) {
-            if (is_string($label)) {
+            if (is_array($url)) {
                 $output .= self::openTag('li');
                 $output .= self::link($label, $url);
-                $output .= self::tag('span', array('class' => 'divider'), $divider);
-                $output .= '</li>';
             } else {
-                $output .= self::tag('li', array('class' => 'active'), $url);
+            	$output .= self::openTag('li', array('class' => 'active'));
+            	$output .= $url;
             }
+            $output .= ($i !== $lastIndex) ? self::tag('span', array('class' => 'divider'), $divider) : '';
+            $output .= self::closeTag('li');
+            $i++;
         }
         $output .= '</ul>';
         return $output;
