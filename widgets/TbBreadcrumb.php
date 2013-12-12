@@ -58,10 +58,10 @@ class TbBreadcrumb extends CWidget
             $links = array();
             if ($this->homeLabel !== false) {
                 $label = $this->homeLabel !== null ? $this->homeLabel : TbHtml::icon('home');
-                $links[$label] = $this->homeUrl !== null ? $this->homeUrl : Yii::app()->homeUrl;
+                $links[$label] = $this->homeUrl !== null ? $this->homeUrl : array(Yii::app()->homeUrl);
             }
             foreach ($this->links as $label => $url) {
-                if (is_string($label)) {
+                if (is_array($url)) {
                     if ($this->encodeLabel) {
                         $label = CHtml::encode($label);
                     }
