@@ -121,7 +121,10 @@ class TbModal extends CWidget
         TbArray::defaultValue('role', 'dialog', $this->htmlOptions);
         TbArray::defaultValue('tabindex', '-1', $this->htmlOptions);
 
-        TbHtml::addCssClass('modal hide', $this->htmlOptions);
+        TbHtml::addCssClass('modal', $this->htmlOptions);
+        if (!$this->show) {
+            TbHtml::addCssClass('hide', $this->htmlOptions);
+        }
         if ($this->fade) {
             TbHtml::addCssClass('fade', $this->htmlOptions);
         }
@@ -202,11 +205,13 @@ class TbModal extends CWidget
     public function renderModal()
     {
         echo TbHtml::openTag('div', $this->htmlOptions) . PHP_EOL;
-
+        echo TbHtml::openTag('div', array('class' => 'modal-dialog')) . PHP_EOL;
+        echo TbHtml::openTag('div', array('class' => 'modal-content')) . PHP_EOL;
         $this->renderModalHeader();
         $this->renderModalBody();
         $this->renderModalFooter();
-
+        echo '</div>' . PHP_EOL;
+        echo '</div>' . PHP_EOL;
         echo '</div>' . PHP_EOL;
     }
 
@@ -219,7 +224,7 @@ class TbModal extends CWidget
         if ($this->closeText) {
             echo TbHtml::closeButton($this->closeText, array('data-dismiss' => 'modal'));
         }
-        echo TbHtml::tag('h3', array(), $this->header);
+        echo TbHtml::tag('h4', array(), $this->header);
         echo '</div>' . PHP_EOL;
     }
 
