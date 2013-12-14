@@ -3710,20 +3710,18 @@ EOD;
      */
     public static function breadcrumbs($links, $htmlOptions = array())
     {
-        $divider = TbArray::popValue('divider', $htmlOptions, '/');
         self::addCssClass('breadcrumb', $htmlOptions);
-        $output = self::openTag('ul', $htmlOptions);
+        $output = self::openTag('ol', $htmlOptions);
         foreach ($links as $label => $url) {
             if (is_string($label)) {
                 $output .= self::openTag('li');
                 $output .= self::link($label, $url);
-                $output .= self::tag('span', array('class' => 'divider'), $divider);
                 $output .= '</li>';
             } else {
                 $output .= self::tag('li', array('class' => 'active'), $url);
             }
         }
-        $output .= '</ul>';
+        $output .= '</ol>';
         return $output;
     }
 

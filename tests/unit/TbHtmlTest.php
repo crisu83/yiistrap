@@ -3167,13 +3167,13 @@ class TbHtmlTest extends TbTestCase
         $html = TbHtml::breadcrumbs(
             $links,
             array(
-                'class' => 'ul',
+                'class' => 'ol',
             )
         );
-        $ul = $I->createNode($html, 'ul.breadcrumb');
-        $I->seeNodeCssClass($ul, 'ul');
-        $I->seeNodeNumChildren($ul, 3);
-        foreach ($ul->children() as $i => $liElement) {
+        $ol = $I->createNode($html, 'ol.breadcrumb');
+        $I->seeNodeCssClass($ol, 'ol');
+        $I->seeNodeNumChildren($ol, 3);
+        foreach ($ol->children() as $i => $liElement) {
             $li = $I->createNode($liElement);
             switch ($i) {
                 case 0:

@@ -10,15 +10,11 @@ Yii::import('bootstrap.helpers.TbHtml');
 
 /**
  * Bootstrap breadcrumb widget.
- * @see http://twitter.github.com/bootstrap/components.html#breadcrumbs
+ * @see http://getbootstrap.com/components/#breadcrumbs
  * @package bootstrap.widgets
  */
 class TbBreadcrumb extends CWidget
 {
-    /**
-     * @var string the divider between links in the breadcrumbs.
-     */
-    public $divider = '/';
     /**
      * @var boolean whether to HTML encode the link labels.
      */
@@ -39,14 +35,6 @@ class TbBreadcrumb extends CWidget
      * @var array list of links to appear in the breadcrumbs.
      */
     public $links = array();
-
-    /**
-     * Initializes the widget.
-     */
-    public function init()
-    {
-        $this->htmlOptions['divider'] = $this->divider;
-    }
 
     /**
      * Runs the widget.
