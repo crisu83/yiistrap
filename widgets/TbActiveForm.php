@@ -715,6 +715,18 @@ class TbActiveForm extends CActiveForm
     }
 
     /**
+     * Generates the form actions container (i.e. submit button, etc).
+     * @param mixed $actions the actions.
+     * @param array $htmlOptions additional HTML attributes.
+     * @return string
+     */
+    public function createFormActions($actions, $htmlOptions = array())
+    {
+        $htmlOptions['formLayout'] = $this->layout;
+        return TbHtml::formActions($actions, $htmlOptions);
+    }
+
+    /**
      * Processes the options for a input row.
      * @param CModel $model the data model.
      * @param string $attribute the attribute name.
