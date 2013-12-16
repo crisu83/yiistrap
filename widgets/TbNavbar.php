@@ -36,6 +36,7 @@ class TbNavbar extends CWidget
      */
     public $display = TbHtml::NAVBAR_DISPLAY_FIXEDTOP;
     /**
+     * @deprecated All containers are fluid in BS3
      * @var boolean whether the navbar spans over the whole page.
      */
     public $fluid = false;
@@ -125,7 +126,7 @@ class TbNavbar extends CWidget
         }
         $containerContent = ob_get_clean();
         $containerOptions = TbArray::popValue('containerOptions', $this->htmlOptions, array());
-        TbHtml::addCssClass($this->fluid ? 'container-fluid' : 'container', $containerOptions);
+        TbHtml::addCssClass('container', $containerOptions);
         ob_start();
         echo TbHtml::openTag('div', $containerOptions);
         echo $containerContent;
