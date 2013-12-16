@@ -31,11 +31,18 @@ class TbActiveForm extends CActiveForm
      * @var string the CSS class name for success messages.
      */
     public $successMessageCssClass = 'success';
-
     /**
      * @var boolean whether to hide inline errors. Defaults to false.
      */
     public $hideInlineErrors = false;
+    /**
+     * @var string class width label for horizontal forms.
+     */
+    public $labelWidthClass = 'col-sm-2';
+    /**
+     * @var string class width control for horizontal forms.
+     */
+    public $controlWidthClass = 'col-sm-10';
 
     /**
      * Initializes the widget.
@@ -708,6 +715,18 @@ class TbActiveForm extends CActiveForm
     }
 
     /**
+     * Generates the form actions container (i.e. submit button, etc).
+     * @param mixed $actions the actions.
+     * @param array $htmlOptions additional HTML attributes.
+     * @return string
+     */
+    public function createFormActions($actions, $htmlOptions = array())
+    {
+        $htmlOptions['formLayout'] = $this->layout;
+        return TbHtml::formActions($actions, $htmlOptions);
+    }
+
+    /**
      * Processes the options for a input row.
      * @param CModel $model the data model.
      * @param string $attribute the attribute name.
@@ -731,6 +750,9 @@ class TbActiveForm extends CActiveForm
         $helpOptions = TbArray::popValue('helpOptions', $options, array());
         $helpOptions['type'] = $this->helpType;
         $options['helpOptions'] = $helpOptions;
+        if (!TbArray::getValue('formLayout', $options, false)) {
+            $options['formLayout'] = $this->layout;
+        }
         return $options;
     }
 }

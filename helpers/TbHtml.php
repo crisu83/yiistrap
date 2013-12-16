@@ -70,11 +70,14 @@ class TbHtml extends CHtml // required in order to access the protected methods 
     const INPUT_SIZE_XLARGE = 'xlarge';
     const INPUT_SIZE_XXLARGE = 'xxlarge';
 
+    const INPUT_HEIGHT_SMALL = 'sm';
+    const INPUT_HEIGHT_DEFAULT = '';
+    const INPUT_HEIGHT_LARGE = 'lg';
+
     const INPUT_COLOR_DEFAULT = '';
-    const INPUT_COLOR_WARNING = 'warning';
-    const INPUT_COLOR_ERROR = 'error';
-    const INPUT_COLOR_INFO = 'info';
-    const INPUT_COLOR_SUCCESS = 'success';
+    const INPUT_COLOR_WARNING = 'has-warning';
+    const INPUT_COLOR_ERROR = 'has-error';
+    const INPUT_COLOR_SUCCESS = 'has-success';
 
     //
     // BUTTONS
@@ -91,19 +94,23 @@ class TbHtml extends CHtml // required in order to access the protected methods 
     const BUTTON_TYPE_INPUTBUTTON = 'inputButton';
     const BUTTON_TYPE_INPUTSUBMIT = 'inputSubmit';
 
-    const BUTTON_COLOR_DEFAULT = '';
+    const BUTTON_COLOR_DEFAULT = 'default';
     const BUTTON_COLOR_PRIMARY = 'primary';
     const BUTTON_COLOR_INFO = 'info';
     const BUTTON_COLOR_SUCCESS = 'success';
     const BUTTON_COLOR_WARNING = 'warning';
     const BUTTON_COLOR_DANGER = 'danger';
-    const BUTTON_COLOR_INVERSE = 'inverse';
+    const BUTTON_COLOR_INVERSE = 'inverse'; // @todo REMOVE: Does not exist in BS3
     const BUTTON_COLOR_LINK = 'link';
 
-    const BUTTON_SIZE_MINI = 'mini';
-    const BUTTON_SIZE_SMALL = 'small';
-    const BUTTON_SIZE_DEFAULT = '';
-    const BUTTON_SIZE_LARGE = 'large';
+    const BUTTON_SIZE_MINI = 'xs'; // BS2 compatibility
+    const BUTTON_SIZE_XS = 'xs';
+    const BUTTON_SIZE_SMALL = 'sm'; // BS2 compatibility
+    const BUTTON_SIZE_SM = 'sm';
+    const BUTTON_SIZE_DEFAULT = 'default';
+    const BUTTON_SIZE_LARGE = 'lg'; // BS2 compatibility
+    const BUTTON_SIZE_LG = 'lg';
+
 
     const BUTTON_TOGGLE_CHECKBOX = 'checkbox';
     const BUTTON_TOGGLE_RADIO = 'radio';
@@ -114,7 +121,8 @@ class TbHtml extends CHtml // required in order to access the protected methods 
 
     const IMAGE_TYPE_ROUNDED = 'rounded';
     const IMAGE_TYPE_CIRCLE = 'circle';
-    const IMAGE_TYPE_POLAROID = 'polaroid';
+    const IMAGE_TYPE_POLAROID = 'thumbnail'; // @todo no longer exists in BS3, it is now thumbnail
+    const IMAGE_TYPE_THUMBNAIL = 'thumbnail';
 
     //
     // NAV
@@ -261,148 +269,208 @@ class TbHtml extends CHtml // required in order to access the protected methods 
     // --------------------------------------------------
 
     const ICON_COLOR_DEFAULT = '';
-    const ICON_COLOR_WHITE = 'white';
+    const ICON_COLOR_WHITE = 'glyphicon-white';
 
-    const ICON_GLASS = 'icon-glass';
-    const ICON_MUSIC = 'icon-music';
-    const ICON_SEARCH = 'icon-search';
-    const ICON_ENVELOPE = 'icon-envelope';
-    const ICON_HEART = 'icon-heart';
-    const ICON_STAR = 'icon-star';
-    const ICON_STAR_EMPTY = 'icon-star-empty';
-    const ICON_USER = 'icon-user';
-    const ICON_FILM = 'icon-film';
-    const ICON_TH_LARGE = 'icon-th-large';
-    const ICON_TH = 'icon-th';
-    const ICON_TH_LIST = 'icon-th-list';
-    const ICON_OK = 'icon-ok';
-    const ICON_REMOVE = 'icon-remove';
-    const ICON_ZOOM_IN = 'icon-zoom-in';
-    const ICON_ZOOM_OUT = 'icon-zoom-out';
-    const ICON_OFF = 'icon-off';
-    const ICON_SIGNAL = 'icon-signal';
-    const ICON_COG = 'icon-cog';
-    const ICON_TRASH = 'icon-trash';
-    const ICON_HOME = 'icon-home';
-    const ICON_FILE = 'icon-file';
-    const ICON_TIME = 'icon-time';
-    const ICON_ROAD = 'icon-road';
-    const ICON_DOWNLOAD_ALT = 'icon-download-alt';
-    const ICON_DOWNLOAD = 'icon-download';
-    const ICON_UPLOAD = 'icon-upload';
-    const ICON_INBOX = 'icon-inbox';
-    const ICON_PLAY_CIRCLE = 'icon-play-circle';
-    const ICON_REPEAT = 'icon-repeat';
-    const ICON_REFRESH = 'icon-refresh';
-    const ICON_LIST_ALT = 'icon-list-alt';
-    const ICON_LOCK = 'icon-lock';
-    const ICON_FLAG = 'icon-flag';
-    const ICON_HEADPHONES = 'icon-headphones';
-    const ICON_VOLUME_OFF = 'icon-volume-off';
-    const ICON_VOLUME_DOWN = 'icon-volume-down';
-    const ICON_VOLUME_UP = 'icon-volume-up';
-    const ICON_QRCODE = 'icon-qrcode';
-    const ICON_BARCODE = 'icon-barcode';
-    const ICON_TAG = 'icon-tag';
-    const ICON_TAGS = 'icon-tags';
-    const ICON_BOOK = 'icon-book';
-    const ICON_BOOKMARK = 'icon-bookmark';
-    const ICON_PRINT = 'icon-print';
-    const ICON_CAMERA = 'icon-camera';
-    const ICON_FONT = 'icon-font';
-    const ICON_BOLD = 'icon-bold';
-    const ICON_ITALIC = 'icon-italic';
-    const ICON_TEXT_HEIGHT = 'icon-text-height';
-    const ICON_TEXT_WIDTH = 'icon-text-width';
-    const ICON_ALIGN_LEFT = 'icon-align-left';
-    const ICON_ALIGN_CENTER = 'icon-align-center';
-    const ICON_ALIGN_RIGHT = 'icon-align-right';
-    const ICON_ALIGN_JUSTIFY = 'icon-align-justify';
-    const ICON_LIST = 'icon-list';
-    const ICON_INDENT_LEFT = 'icon-indent-left';
-    const ICON_INDENT_RIGHT = 'icon-indent-right';
-    const ICON_FACETIME_VIDEO = 'icon-facetime-video';
-    const ICON_PICTURE = 'icon-picture';
-    const ICON_PENCIL = 'icon-pencil';
-    const ICON_MAP_MARKER = 'icon-map-marker';
-    const ICON_ADJUST = 'icon-adjust';
-    const ICON_TINT = 'icon-tint';
-    const ICON_EDIT = 'icon-edit';
-    const ICON_SHARE = 'icon-share';
-    const ICON_CHECK = 'icon-check';
-    const ICON_MOVE = 'icon-move';
-    const ICON_STEP_BACKWARD = 'icon-step-backward';
-    const ICON_FAST_BACKWARD = 'icon-fast-backward';
-    const ICON_BACKWARD = 'icon-backward';
-    const ICON_PLAY = 'icon-play';
-    const ICON_PAUSE = 'icon-pause';
-    const ICON_STOP = 'icon-pause';
-    const ICON_FORWARD = 'icon-forward';
-    const ICON_FAST_FORWARD = 'icon-fast-forward';
-    const ICON_STEP_FORWARD = 'icon-step-forward';
-    const ICON_EJECT = 'icon-eject';
-    const ICON_CHEVRON_LEFT = 'icon-chevron-left';
-    const ICON_CHEVRON_RIGHT = 'icon-chevron-right';
-    const ICON_PLUS_SIGN = 'icon-plus-sign';
-    const ICON_MINUS_SIGN = 'icon-minus-sign';
-    const ICON_REMOVE_SIGN = 'icon-remove-sign';
-    const ICON_OK_SIGN = 'icon-ok-sign';
-    const ICON_QUESTION_SIGN = 'icon-question-sign';
-    const ICON_INFO_SIGN = 'icon-info-sign';
-    const ICON_SCREENSHOT = 'icon-screenshot';
-    const ICON_REMOVE_CIRCLE = 'icon-remove-circle';
-    const ICON_OK_CIRCLE = 'icon-ok-circle';
-    const ICON_BAN_CIRCLE = 'icon-ban-circle';
-    const ICON_ARROW_LEFT = 'icon-arrow-left';
-    const ICON_ARROW_RIGHT = 'icon-arrow-right';
-    const ICON_ARROW_UP = 'icon-arrow-up';
-    const ICON_ARROW_DOWN = 'icon-arrow-down';
-    const ICON_SHARE_ALT = 'icon-share-alt';
-    const ICON_RESIZE_FULL = 'icon-resize-full';
-    const ICON_RESIZE_SMALL = 'icon-resize-small';
-    const ICON_PLUS = 'icon-plus';
-    const ICON_MINUS = 'icon-minus';
-    const ICON_ASTERISK = 'icon-asterisk';
-    const ICON_EXCLAMATION_SIGN = 'icon-exclamation-sign';
-    const ICON_GIFT = 'icon-gift';
-    const ICON_LEAF = 'icon-leaf';
-    const ICON_FIRE = 'icon-fire';
-    const ICON_EYE_OPEN = 'icon-eye-open';
-    const ICON_EYE_CLOSE = 'icon-eye-close';
-    const ICON_WARNING_SIGN = 'icon-warning-sign';
-    const ICON_PLANE = 'icon-plane';
-    const ICON_CALENDAR = 'icon-calendar';
-    const ICON_RANDOM = 'icon-random';
-    const ICON_COMMENT = 'icon-comment';
-    const ICON_MAGNET = 'icon-magnet';
-    const ICON_CHEVRON_UP = 'icon-chevron-up';
-    const ICON_CHEVRON_DOWN = 'icon-chevron-down';
-    const ICON_RETWEET = 'icon-retweet';
-    const ICON_SHOPPING_CART = 'icon-shopping-cart';
-    const ICON_FOLDER_CLOSE = 'icon-folder-close';
-    const ICON_FOLDER_OPEN = 'icon-folder-open';
-    const ICON_RESIZE_VERTICAL = 'icon-resize-vertical';
-    const ICON_RESIZE_HORIZONTAL = 'icon-resize-horizontal';
-    const ICON_HDD = 'icon-hdd';
-    const ICON_BULLHORN = 'icon-bullhorn';
-    const ICON_BELL = 'icon-bell';
-    const ICON_CERTFICATE = 'icon-certificate';
-    const ICON_THUMBS_UP = 'icon-thumbs-up';
-    const ICON_THUMBS_DOWN = 'icon-thumbs-down';
-    const ICON_HAND_RIGHT = 'icon-hand-right';
-    const ICON_HAND_LEFT = 'icon-hand-left';
-    const ICON_HAND_UP = 'icon-hand-up';
-    const ICON_HAND_DOWN = 'icon-hand-down';
-    const ICON_CIRCLE_ARROW_RIGHT = 'icon-circle-arrow-right';
-    const ICON_CIRCLE_ARROW_LEFT = 'icon-circle-arrow-left';
-    const ICON_CIRCLE_ARROW_UP = 'icon-circle-arrow-up';
-    const ICON_CIRCLE_ARROW_DOWN = 'icon-circle-arrow-down';
-    const ICON_GLOBE = 'icon-globe';
-    const ICON_WRENCH = 'icon-wrench';
-    const ICON_TASKS = 'icon-tasks';
-    const ICON_FILTER = 'icon-filter';
-    const ICON_BRIEFCASE = 'icon-briefcase';
-    const ICON_FULLSCREEN = 'icon-fullscreen';
+    const ICON_ADJUST = 'glyphicon-adjust';
+    const ICON_ALIGN_CENTER = 'glyphicon-align-center';
+    const ICON_ALIGN_JUSTIFY = 'glyphicon-align-justify';
+    const ICON_ALIGN_LEFT = 'glyphicon-align-left';
+    const ICON_ALIGN_RIGHT = 'glyphicon-align-right';
+    const ICON_ARROW_DOWN = 'glyphicon-arrow-down';
+    const ICON_ARROW_LEFT = 'glyphicon-arrow-left';
+    const ICON_ARROW_RIGHT = 'glyphicon-arrow-right';
+    const ICON_ARROW_UP = 'glyphicon-arrow-up';
+    const ICON_ASTERISK = 'glyphicon-asterisk';
+    const ICON_BACKWARD = 'glyphicon-backward';
+    const ICON_BAN_CIRCLE = 'glyphicon-ban-circle';
+    const ICON_BARCODE = 'glyphicon-barcode';
+    const ICON_BELL = 'glyphicon-bell';
+    const ICON_BOLD = 'glyphicon-bold';
+    const ICON_BOOK = 'glyphicon-book';
+    const ICON_BOOKMARK = 'glyphicon-bookmark';
+    const ICON_BRIEFCASE = 'glyphicon-briefcase';
+    const ICON_BULLHORN = 'glyphicon-bullhorn';
+    const ICON_CALENDAR = 'glyphicon-calendar';
+    const ICON_CAMERA = 'glyphicon-camera';
+    const ICON_CERTIFICATE = 'glyphicon-certificate';
+    const ICON_CHECK = 'glyphicon-check';
+    const ICON_CHEVRON_DOWN = 'glyphicon-chevron-down';
+    const ICON_CHEVRON_LEFT = 'glyphicon-chevron-left';
+    const ICON_CHEVRON_RIGHT = 'glyphicon-chevron-right';
+    const ICON_CHEVRON_UP = 'glyphicon-chevron-up';
+    const ICON_CIRCLE_ARROW_DOWN = 'glyphicon-circle-arrow-down';
+    const ICON_CIRCLE_ARROW_LEFT = 'glyphicon-circle-arrow-left';
+    const ICON_CIRCLE_ARROW_RIGHT = 'glyphicon-circle-arrow-right';
+    const ICON_CIRCLE_ARROW_UP = 'glyphicon-circle-arrow-up';
+    const ICON_CLOUD = 'glyphicon-cloud';
+    const ICON_CLOUD_DOWNLOAD = 'glyphicon-cloud-download';
+    const ICON_CLOUD_UPLOAD = 'glyphicon-cloud-upload';
+    const ICON_COG = 'glyphicon-cog';
+    const ICON_COLLAPSE_DOWN = 'glyphicon-collapse-down';
+    const ICON_COLLAPSE_UP = 'glyphicon-collapse-up';
+    const ICON_COMMENT = 'glyphicon-comment';
+    const ICON_COMPRESSED = 'glyphicon-compressed';
+    const ICON_COPYRIGHT_MARK = 'glyphicon-copyright-mark';
+    const ICON_CREDIT_CARD = 'glyphicon-credit-card';
+    const ICON_CUTLERY = 'glyphicon-cutlery';
+    const ICON_DASHBOARD = 'glyphicon-dashboard';
+    const ICON_DOWNLOAD = 'glyphicon-download';
+    const ICON_DOWNLOAD_ALT = 'glyphicon-download-alt';
+    const ICON_EARPHONE = 'glyphicon-earphone';
+    const ICON_EDIT = 'glyphicon-edit';
+    const ICON_EJECT = 'glyphicon-eject';
+    const ICON_ENVELOPE = 'glyphicon-envelope';
+    const ICON_EURO = 'glyphicon-euro';
+    const ICON_EXCLAMATION_SIGN = 'glyphicon-exclamation-sign';
+    const ICON_EXPAND = 'glyphicon-expand';
+    const ICON_EXPORT = 'glyphicon-export';
+    const ICON_EYE_CLOSE = 'glyphicon-eye-close';
+    const ICON_EYE_OPEN = 'glyphicon-eye-open';
+    const ICON_FACETIME_VIDEO = 'glyphicon-facetime-video';
+    const ICON_FAST_BACKWARD = 'glyphicon-fast-backward';
+    const ICON_FAST_FORWARD = 'glyphicon-fast-forward';
+    const ICON_FILE = 'glyphicon-file';
+    const ICON_FILM = 'glyphicon-film';
+    const ICON_FILTER = 'glyphicon-filter';
+    const ICON_FIRE = 'glyphicon-fire';
+    const ICON_FLAG = 'glyphicon-flag';
+    const ICON_FLASH = 'glyphicon-flash';
+    const ICON_FLOPPY_DISK = 'glyphicon-floppy-disk';
+    const ICON_FLOPPY_OPEN = 'glyphicon-floppy-open';
+    const ICON_FLOPPY_REMOVE = 'glyphicon-floppy-remove';
+    const ICON_FLOPPY_SAVE = 'glyphicon-floppy-save';
+    const ICON_FLOPPY_SAVED = 'glyphicon-floppy-saved';
+    const ICON_FOLDER_CLOSE = 'glyphicon-folder-close';
+    const ICON_FOLDER_OPEN = 'glyphicon-folder-open';
+    const ICON_FONT = 'glyphicon-font';
+    const ICON_FORWARD = 'glyphicon-forward';
+    const ICON_FULLSCREEN = 'glyphicon-fullscreen';
+    const ICON_GBP = 'glyphicon-gbp';
+    const ICON_GIFT = 'glyphicon-gift';
+    const ICON_GLASS = 'glyphicon-glass';
+    const ICON_GLOBE = 'glyphicon-globe';
+    const ICON_HAND_DOWN = 'glyphicon-hand-down';
+    const ICON_HAND_LEFT = 'glyphicon-hand-left';
+    const ICON_HAND_RIGHT = 'glyphicon-hand-right';
+    const ICON_HAND_UP = 'glyphicon-hand-up';
+    const ICON_HD_VIDEO = 'glyphicon-hd-video';
+    const ICON_HDD = 'glyphicon-hdd';
+    const ICON_HEADER = 'glyphicon-header';
+    const ICON_HEADPHONES = 'glyphicon-headphones';
+    const ICON_HEART = 'glyphicon-heart';
+    const ICON_HEART_EMPTY = 'glyphicon-heart-empty';
+    const ICON_HOME = 'glyphicon-home';
+    const ICON_IMPORT = 'glyphicon-import';
+    const ICON_INBOX = 'glyphicon-inbox';
+    const ICON_INDENT_LEFT = 'glyphicon-indent-left';
+    const ICON_INDENT_RIGHT = 'glyphicon-indent-right';
+    const ICON_INFO_SIGN = 'glyphicon-info-sign';
+    const ICON_ITALIC = 'glyphicon-italic';
+    const ICON_LEAF = 'glyphicon-leaf';
+    const ICON_LINK = 'glyphicon-link';
+    const ICON_LIST = 'glyphicon-list';
+    const ICON_LIST_ALT = 'glyphicon-list-alt';
+    const ICON_LOCK = 'glyphicon-lock';
+    const ICON_LOG_IN = 'glyphicon-log-in';
+    const ICON_LOG_OUT = 'glyphicon-log-out';
+    const ICON_MAGNET = 'glyphicon-magnet';
+    const ICON_MAP_MARKER = 'glyphicon-map-marker';
+    const ICON_MINUS = 'glyphicon-minus';
+    const ICON_MINUS_SIGN = 'glyphicon-minus-sign';
+    const ICON_MOVE = 'glyphicon-move';
+    const ICON_MUSIC = 'glyphicon-music';
+    const ICON_NEW_WINDOW = 'glyphicon-new-window';
+    const ICON_OFF = 'glyphicon-off';
+    const ICON_OK = 'glyphicon-ok';
+    const ICON_OK_CIRCLE = 'glyphicon-ok-circle';
+    const ICON_OK_SIGN = 'glyphicon-ok-sign';
+    const ICON_OPEN = 'glyphicon-open';
+    const ICON_PAPERCLIP = 'glyphicon-paperclip';
+    const ICON_PAUSE = 'glyphicon-pause';
+    const ICON_PENCIL = 'glyphicon-pencil';
+    const ICON_PHONE = 'glyphicon-phone';
+    const ICON_PHONE_ALT = 'glyphicon-phone-alt';
+    const ICON_PICTURE = 'glyphicon-picture';
+    const ICON_PLANE = 'glyphicon-plane';
+    const ICON_PLAY = 'glyphicon-play';
+    const ICON_PLAY_CIRCLE = 'glyphicon-play-circle';
+    const ICON_PLUS = 'glyphicon-plus';
+    const ICON_PLUS_SIGN = 'glyphicon-plus-sign';
+    const ICON_PRINT = 'glyphicon-print';
+    const ICON_PUSHPIN = 'glyphicon-pushpin';
+    const ICON_QRCODE = 'glyphicon-qrcode';
+    const ICON_QUESTION_SIGN = 'glyphicon-question-sign';
+    const ICON_RANDOM = 'glyphicon-random';
+    const ICON_RECORD = 'glyphicon-record';
+    const ICON_REFRESH = 'glyphicon-refresh';
+    const ICON_REGISTRATION_MARK = 'glyphicon-registration-mark';
+    const ICON_REMOVE = 'glyphicon-remove';
+    const ICON_REMOVE_CIRCLE = 'glyphicon-remove-circle';
+    const ICON_REMOVE_SIGN = 'glyphicon-remove-sign';
+    const ICON_REPEAT = 'glyphicon-repeat';
+    const ICON_RESIZE_FULL = 'glyphicon-resize-full';
+    const ICON_RESIZE_HORIZONTAL = 'glyphicon-resize-horizontal';
+    const ICON_RESIZE_SMALL = 'glyphicon-resize-small';
+    const ICON_RESIZE_VERTICAL = 'glyphicon-resize-vertical';
+    const ICON_RETWEET = 'glyphicon-retweet';
+    const ICON_ROAD = 'glyphicon-road';
+    const ICON_SAVE = 'glyphicon-save';
+    const ICON_SAVED = 'glyphicon-saved';
+    const ICON_SCREENSHOT = 'glyphicon-screenshot';
+    const ICON_SD_VIDEO = 'glyphicon-sd-video';
+    const ICON_SEARCH = 'glyphicon-search';
+    const ICON_SEND = 'glyphicon-send';
+    const ICON_SHARE = 'glyphicon-share';
+    const ICON_SHARE_ALT = 'glyphicon-share-alt';
+    const ICON_SHOPPING_CART = 'glyphicon-shopping-cart';
+    const ICON_SIGNAL = 'glyphicon-signal';
+    const ICON_SORT = 'glyphicon-sort';
+    const ICON_SORT_BY_ALPHABET = 'glyphicon-sort-by-alphabet';
+    const ICON_SORT_BY_ALPHABET_ALT = 'glyphicon-sort-by-alphabet-alt';
+    const ICON_SORT_BY_ATTRIBUTES = 'glyphicon-sort-by-attributes';
+    const ICON_SORT_BY_ATTRIBUTES_ALT = 'glyphicon-sort-by-attributes-alt';
+    const ICON_SORT_BY_ORDER = 'glyphicon-sort-by-order';
+    const ICON_SORT_BY_ORDER_ALT = 'glyphicon-sort-by-order-alt';
+    const ICON_SOUND_5_1 = 'glyphicon-sound-5-1';
+    const ICON_SOUND_6_1 = 'glyphicon-sound-6-1';
+    const ICON_SOUND_7_1 = 'glyphicon-sound-7-1';
+    const ICON_SOUND_DOLBY = 'glyphicon-sound-dolby';
+    const ICON_SOUND_STEREO = 'glyphicon-sound-stereo';
+    const ICON_STAR = 'glyphicon-star';
+    const ICON_STAR_EMPTY = 'glyphicon-star-empty';
+    const ICON_STATS = 'glyphicon-stats';
+    const ICON_STEP_BACKWARD = 'glyphicon-step-backward';
+    const ICON_STEP_FORWARD = 'glyphicon-step-forward';
+    const ICON_STOP = 'glyphicon-stop';
+    const ICON_SUBTITLES = 'glyphicon-subtitles';
+    const ICON_TAG = 'glyphicon-tag';
+    const ICON_TAGS = 'glyphicon-tags';
+    const ICON_TASKS = 'glyphicon-tasks';
+    const ICON_TEXT_HEIGHT = 'glyphicon-text-height';
+    const ICON_TEXT_WIDTH = 'glyphicon-text-width';
+    const ICON_TH = 'glyphicon-th';
+    const ICON_TH_LARGE = 'glyphicon-th-large';
+    const ICON_TH_LIST = 'glyphicon-th-list';
+    const ICON_THUMBS_DOWN = 'glyphicon-thumbs-down';
+    const ICON_THUMBS_UP = 'glyphicon-thumbs-up';
+    const ICON_TIME = 'glyphicon-time';
+    const ICON_TINT = 'glyphicon-tint';
+    const ICON_TOWER = 'glyphicon-tower';
+    const ICON_TRANSFER = 'glyphicon-transfer';
+    const ICON_TRASH = 'glyphicon-trash';
+    const ICON_TREE_CONIFER = 'glyphicon-tree-conifer';
+    const ICON_TREE_DECIDUOUS = 'glyphicon-tree-deciduous';
+    const ICON_UNCHECKED = 'glyphicon-unchecked';
+    const ICON_UPLOAD = 'glyphicon-upload';
+    const ICON_USD = 'glyphicon-usd';
+    const ICON_USER = 'glyphicon-user';
+    const ICON_VOLUME_DOWN = 'glyphicon-volume-down';
+    const ICON_VOLUME_OFF = 'glyphicon-volume-off';
+    const ICON_VOLUME_UP = 'glyphicon-volume-up';
+    const ICON_WARNING_SIGN = 'glyphicon-warning-sign';
+    const ICON_WRENCH = 'glyphicon-wrench';
+    const ICON_ZOOM_IN = 'glyphicon-zoom-in';
+    const ICON_ZOOM_OUT = 'glyphicon-zoom-out';
 
     // Default close text.
     const CLOSE_TEXT = '&times;';
@@ -411,13 +479,25 @@ class TbHtml extends CHtml // required in order to access the protected methods 
      * @var string the CSS class for displaying error summaries.
      */
     public static $errorSummaryCss = 'alert alert-block alert-error';
+    /**
+     * @var string the icon vendor
+     */
+    public static $iconVendor = 'glyphicon';
+    /**
+     * @var string default form label width
+     */
+    protected static $defaultFormLabelWidthClass = 'col-sm-2';
+    /**
+     * @var string default form control width
+     */
+    protected static $defaultFormControlWidthClass = 'col-sm-10';
 
     //
     // BASE CSS
     // --------------------------------------------------
 
     // Typography
-    // http://twitter.github.io/bootstrap/2.3.2/base-css.html#typography
+    // http://getbootstrap.com/css/#type
     // --------------------------------------------------
 
     /**
@@ -467,7 +547,6 @@ class TbHtml extends CHtml // required in order to access the protected methods 
 
     /**
      * Generates an emphasized text.
-     * @param string $style the text style.
      * @param string $text the text to emphasize.
      * @param array $htmlOptions additional HTML attributes.
      * @param string $tag the HTML tag.
@@ -503,7 +582,6 @@ class TbHtml extends CHtml // required in order to access the protected methods 
      * Generates a muted span.
      * @param string $text the text.
      * @param array $htmlOptions additional HTML attributes.
-     * @param string $tag the HTML tag.
      * @return string the generated span.
      */
     public static function mutedSpan($text, $htmlOptions = array())
@@ -542,7 +620,7 @@ class TbHtml extends CHtml // required in order to access the protected methods 
 
     /**
      * Generates an address block.
-     * @param string $quote the address text.
+     * @param $text
      * @param array $htmlOptions additional HTML attributes.
      * @return string the generated block.
      */
@@ -578,13 +656,15 @@ class TbHtml extends CHtml // required in order to access the protected methods 
      */
     public static function help($text, $htmlOptions = array())
     {
-        $type = TbArray::popValue('type', $htmlOptions, self::HELP_TYPE_INLINE);
-        self::addCssClass('help-' . $type, $htmlOptions);
+        $type = TbArray::popValue('type', $htmlOptions, self::HELP_TYPE_BLOCK);
+        self::addCssClass('help-' . self::HELP_TYPE_BLOCK, $htmlOptions);
         return self::tag($type === self::HELP_TYPE_INLINE ? 'span' : 'p', $htmlOptions, $text);
     }
 
     /**
      * Generates a help block.
+     * @todo Remove or keep compatibility for BS2. There is only help-block and no help-inline
+     * @deprecated
      * @param string $text the help text.
      * @param array $htmlOptions additional HTML attributes.
      * @return string the generated block.
@@ -596,7 +676,7 @@ class TbHtml extends CHtml // required in order to access the protected methods 
     }
 
     // Code
-    // http://twitter.github.io/bootstrap/2.3.2/base-css.html#code
+    // http://getbootstrap.com/css/#code
     // --------------------------------------------------
 
     /**
@@ -632,6 +712,7 @@ class TbHtml extends CHtml // required in order to access the protected methods 
     public static function tag($tag, $htmlOptions = array(), $content = false, $closeTag = true)
     {
         self::addSpanClass($htmlOptions);
+        self::addColClass($htmlOptions);
         self::addPullClass($htmlOptions);
         self::addTextAlignClass($htmlOptions);
         return parent::tag($tag, $htmlOptions, $content, $closeTag);
@@ -649,13 +730,13 @@ class TbHtml extends CHtml // required in order to access the protected methods 
     }
 
     // Tables
-    // http://twitter.github.io/bootstrap/2.3.2/base-css.html#forms
+    // http://getbootstrap.com/css/#tables
     // --------------------------------------------------
 
     // todo: create table methods here.
 
     // Forms
-    // http://twitter.github.io/bootstrap/2.3.2/base-css.html#tables
+    // http://getbootstrap.com/css/#forms
     // --------------------------------------------------
 
     /**
@@ -690,13 +771,24 @@ class TbHtml extends CHtml // required in order to access the protected methods 
         $htmlOptions = array()
     ) {
         if (!empty($layout)) {
-            self::addCssClass('form-' . $layout, $htmlOptions);
+            switch ($layout) {
+                case self::FORM_LAYOUT_HORIZONTAL:
+                    self::addCssClass('form-' . self::FORM_LAYOUT_HORIZONTAL, $htmlOptions);
+                    break;
+                case self::FORM_LAYOUT_INLINE:
+                case self::FORM_LAYOUT_SEARCH:
+                    self::addCssClass('form-' . self::FORM_LAYOUT_INLINE, $htmlOptions);
+                    break;
+                default:
+                    self::addCssClass('form-' . $layout, $htmlOptions);
+            }
         }
         return parent::beginForm($action, $method, $htmlOptions);
     }
 
     /**
      * Generates a stateful form tag.
+     * @param string string $layout
      * @param mixed $action the form action URL.
      * @param string $method form method (e.g. post, get).
      * @param array $htmlOptions additional HTML attributes.
@@ -826,6 +918,7 @@ class TbHtml extends CHtml // required in order to access the protected methods 
     public static function textArea($name, $value = '', $htmlOptions = array())
     {
         $htmlOptions = self::normalizeInputOptions($htmlOptions);
+        self::addCssClass('form-control', $htmlOptions);
         return parent::textArea($name, $value, $htmlOptions);
     }
 
@@ -840,9 +933,16 @@ class TbHtml extends CHtml // required in order to access the protected methods 
     {
         $label = TbArray::popValue('label', $htmlOptions, false);
         $labelOptions = TbArray::popValue('labelOptions', $htmlOptions, array());
-        self::addCssClass('radio', $labelOptions);
         $input = parent::radioButton($name, $checked, $htmlOptions);
-        return self::createCheckBoxAndRadioButtonLabel($label, $input, $labelOptions);
+        if (TbArray::popValue('useContainer', $htmlOptions, false)) {
+            return self::tag(
+                'div',
+                array('class' => 'radio'),
+                self::createCheckBoxAndRadioButtonLabel($label, $input, $labelOptions)
+            );
+        } else {
+            return self::createCheckBoxAndRadioButtonLabel($label, $input, $labelOptions);
+        }
     }
 
     /**
@@ -856,9 +956,16 @@ class TbHtml extends CHtml // required in order to access the protected methods 
     {
         $label = TbArray::popValue('label', $htmlOptions, false);
         $labelOptions = TbArray::popValue('labelOptions', $htmlOptions, array());
-        self::addCssClass('checkbox', $labelOptions);
         $input = parent::checkBox($name, $checked, $htmlOptions);
-        return self::createCheckBoxAndRadioButtonLabel($label, $input, $labelOptions);
+        if (TbArray::popValue('useContainer', $htmlOptions, false)) {
+            return self::tag(
+                'div',
+                array('class' => 'checkbox'),
+                self::createCheckBoxAndRadioButtonLabel($label, $input, $labelOptions)
+            );
+        } else {
+            return self::createCheckBoxAndRadioButtonLabel($label, $input, $labelOptions);
+        }
     }
 
     /**
@@ -866,12 +973,14 @@ class TbHtml extends CHtml // required in order to access the protected methods 
      * @param string $name the input name.
      * @param string $select the selected value.
      * @param array $data data for generating the list options (value=>display).
+     * @param array $htmlOptions
      * @return string the generated drop down list.
      */
     public static function dropDownList($name, $select, $data, $htmlOptions = array())
     {
         $displaySize = TbArray::popValue('displaySize', $htmlOptions);
         $htmlOptions = self::normalizeInputOptions($htmlOptions);
+        self::addCssClass('form-control', $htmlOptions);
         if (!empty($displaySize)) {
             $htmlOptions['size'] = $displaySize;
         }
@@ -909,7 +1018,7 @@ class TbHtml extends CHtml // required in order to access the protected methods 
     {
         $inline = TbArray::popValue('inline', $htmlOptions, false);
         $separator = TbArray::popValue('separator', $htmlOptions, ' ');
-        $container = TbArray::popValue('container', $htmlOptions, 'span');
+        $container = TbArray::popValue('container', $htmlOptions, 'div');
         $containerOptions = TbArray::popValue('containerOptions', $htmlOptions, array());
         $labelOptions = TbArray::popValue('labelOptions', $htmlOptions, array());
 
@@ -923,13 +1032,16 @@ class TbHtml extends CHtml // required in order to access the protected methods 
             $htmlOptions['id'] = $baseID . '_' . $id++;
             if ($inline) {
                 $htmlOptions['label'] = $label;
-                self::addCssClass('inline', $labelOptions);
+                self::addCssClass('radio-inline', $labelOptions);
                 $htmlOptions['labelOptions'] = $labelOptions;
                 $items[] = self::radioButton($name, $checked, $htmlOptions);
             } else {
                 $option = self::radioButton($name, $checked, $htmlOptions);
-                self::addCssClass('radio', $labelOptions);
-                $items[] = self::label($option . ' ' . $label, false, $labelOptions);
+                $items[] = self::tag(
+                    'div',
+                    array('class' => 'radio'),
+                    self::label($option . ' ' . $label, false, $labelOptions)
+                );
             }
         }
 
@@ -963,8 +1075,9 @@ class TbHtml extends CHtml // required in order to access the protected methods 
     {
         $inline = TbArray::popValue('inline', $htmlOptions, false);
         $separator = TbArray::popValue('separator', $htmlOptions, ' ');
-        $container = TbArray::popValue('container', $htmlOptions, 'span');
+        $container = TbArray::popValue('container', $htmlOptions, 'div');
         $containerOptions = TbArray::popValue('containerOptions', $htmlOptions, array());
+
         $labelOptions = TbArray::popValue('labelOptions', $htmlOptions, array());
 
         if (substr($name, -2) !== '[]') {
@@ -990,22 +1103,36 @@ class TbHtml extends CHtml // required in order to access the protected methods 
             $htmlOptions['id'] = $baseID . '_' . $id++;
             if ($inline) {
                 $htmlOptions['label'] = $label;
-                self::addCssClass('inline', $labelOptions);
+                self::addCssClass('checkbox-inline', $labelOptions);
                 $htmlOptions['labelOptions'] = $labelOptions;
                 $items[] = self::checkBox($name, $checked, $htmlOptions);
             } else {
-                self::addCssClass('checkbox', $labelOptions);
                 $option = self::checkBox($name, $checked, $htmlOptions);
-                $items[] = self::label($option . ' ' . $label, false, $labelOptions);
+                $items[] = self::tag(
+                    'div',
+                    array('class' => 'checkbox'),
+                    self::label($option . ' ' . $label, false, $labelOptions)
+                );
             }
         }
 
         if (isset($checkAllLabel)) {
             $htmlOptions['value'] = 1;
             $htmlOptions['id'] = $id = $baseID . '_all';
-            $option = self::checkBox($id, $checkAll, $htmlOptions);
             $label = self::label($checkAllLabel, $id, $labelOptions);
-            $item = $option . ' ' . $label;
+            if ($inline) {
+                $htmlOptions['label'] = $checkAllLabel;
+                self::addCssClass('checkbox-inline', $labelOptions);
+                $htmlOptions['labelOptions'] = $labelOptions;
+                $item = self::checkBox($id, $checkAll, $htmlOptions);
+            } else {
+                $option = self::checkBox($id, $checkAll, $htmlOptions);
+                $item = self::tag(
+                    'div',
+                    array('class' => 'checkbox'),
+                    self::label($option . ' ' . $label, false, $labelOptions)
+                );
+            }
             if ($checkAllLast) {
                 $items[] = $item;
             } else {
@@ -1013,10 +1140,10 @@ class TbHtml extends CHtml // required in order to access the protected methods 
             }
             $name = strtr($name, array('[' => '\\[', ']' => '\\]'));
             $js = <<<EOD
-jQuery('#$id').click(function() {
+jQuery('#$id').on('click', function() {
 	jQuery("input[name='$name']").prop('checked', this.checked);
 });
-jQuery("input[name='$name']").click(function() {
+jQuery("input[name='$name']").on('click', function() {
 	jQuery('#$id').prop('checked', !jQuery("input[name='$name']:not(:checked)").length);
 });
 jQuery('#$id').prop('checked', !jQuery("input[name='$name']:not(:checked)").length);
@@ -1066,8 +1193,7 @@ EOD;
      */
     public static function searchQueryField($name, $value = '', $htmlOptions = array())
     {
-        self::addCssClass('search-query', $htmlOptions);
-        return self::textField($name, $value, $htmlOptions);
+        return self::textInputField('search', $name, $value, $htmlOptions);
     }
 
     /**
@@ -1190,7 +1316,7 @@ EOD;
     /**
      * Generates a control group with a radio button.
      * @param string $name the input name.
-     * @param string $checked whether the radio button is checked.
+     * @param bool|string $checked whether the radio button is checked.
      * @param array $htmlOptions additional HTML attributes.
      * @return string the generated control group.
      * @see self::controlGroup
@@ -1203,7 +1329,7 @@ EOD;
     /**
      * Generates a control group with a check box.
      * @param string $name the input name.
-     * @param string $checked whether the check box is checked.
+     * @param bool|string $checked whether the check box is checked.
      * @param array $htmlOptions additional HTML attributes.
      * @return string the generated control group.
      * @see self::controlGroup
@@ -1303,7 +1429,7 @@ EOD;
 
     /**
      * Generates a control group with an uneditable field.
-     * @param string $select the input value.
+     * @param string $value
      * @param array $htmlOptions additional HTML attributes.
      * @return string the generated control group.
      * @see self::controlGroup
@@ -1316,7 +1442,7 @@ EOD;
     /**
      * Generates a control group with a search field.
      * @param string $name the input name.
-     * @param string $select the input value.
+     * @param string $value
      * @param array $htmlOptions additional HTML attributes.
      * @return string the generated control group.
      * @see self::controlGroup
@@ -1327,7 +1453,7 @@ EOD;
     }
 
     /**
-     * Generates a form control group.
+     * Generates a form group.
      * @param string $type the input type.
      * @param string $name the input name.
      * @param string $value the input value.
@@ -1342,13 +1468,57 @@ EOD;
         $controlOptions = TbArray::popValue('controlOptions', $htmlOptions, array());
         $label = TbArray::popValue('label', $htmlOptions);
         $labelOptions = TbArray::popValue('labelOptions', $htmlOptions, array());
+        $formLayout = TbArray::popValue('formLayout', $htmlOptions, self::FORM_LAYOUT_VERTICAL);
+        $labelWidthClass = TbArray::popValue('labelWidthClass', $htmlOptions, self::$defaultFormLabelWidthClass);
+        $controlWidthClass = TbArray::popValue('controlWidthClass', $htmlOptions, self::$defaultFormControlWidthClass);
+        $useFormGroup = true;
+        $useControls = true;
+        $output = '';
 
-        if (in_array($type, array(self::INPUT_TYPE_CHECKBOX, self::INPUT_TYPE_RADIOBUTTON))) {
+        // Special label case case for individual checkboxes and radios
+        if ($type == self::INPUT_TYPE_CHECKBOX || $type == self::INPUT_TYPE_RADIOBUTTON) {
             $htmlOptions['label'] = $label;
             $htmlOptions['labelOptions'] = $labelOptions;
+            $htmlOptions['useContainer'] = true;
             $label = false;
+            $useFormGroup = false;
         }
 
+        // Special conditions depending on the form type
+        if ($formLayout == self::FORM_LAYOUT_HORIZONTAL) {
+            switch ($type) {
+                case self::INPUT_TYPE_CHECKBOX:
+                case self::INPUT_TYPE_RADIOBUTTON:
+                    self::addCssClass(self::switchColToOffset($labelWidthClass), $controlOptions);
+                    self::addCssClass(self::switchOffsetToCol($controlWidthClass), $controlOptions);
+                    $useFormGroup = true;
+                    break;
+                default:
+                    self::addCssClass(self::switchOffsetToCol($labelWidthClass), $labelOptions);
+                    self::addCssClass(self::switchOffsetToCol($controlWidthClass), $controlOptions);
+            }
+        } elseif ($formLayout == self::FORM_LAYOUT_INLINE || $formLayout == self::FORM_LAYOUT_SEARCH) {
+            switch ($type) {
+                case self::INPUT_TYPE_TEXT:
+                case self::INPUT_TYPE_PASSWORD:
+                case self::INPUT_TYPE_URL:
+                case self::INPUT_TYPE_EMAIL:
+                case self::INPUT_TYPE_NUMBER:
+                case self::INPUT_TYPE_RANGE:
+                case self::INPUT_TYPE_DATE:
+                case self::INPUT_TYPE_FILE:
+                case self::INPUT_TYPE_SEARCH:
+                    self::addCssClass('sr-only', $labelOptions);
+                    if (($label !== null) && (TbArray::getValue('placeholder', $htmlOptions) !== null)) {
+                        $htmlOptions['placeholder'] = $label;
+                    }
+                    break;
+                case self::INPUT_TYPE_CHECKBOX:
+                case self::INPUT_TYPE_RADIOBUTTON:
+                    $useControls = false;
+                    break;
+            }
+        }
         $help = TbArray::popValue('help', $htmlOptions, '');
         $helpOptions = TbArray::popValue('helpOptions', $htmlOptions, array());
         if (!empty($help)) {
@@ -1359,18 +1529,29 @@ EOD;
             ? $htmlOptions['input']
             : self::createInput($type, $name, $value, $htmlOptions, $data);
 
-        self::addCssClass('control-group', $groupOptions);
         if (!empty($color)) {
             self::addCssClass($color, $groupOptions);
         }
         self::addCssClass('control-label', $labelOptions);
-        $output = self::openTag('div', $groupOptions);
         if ($label !== false) {
             $output .= parent::label($label, $name, $labelOptions);
         }
-        $output .= self::controls($input . $help, $controlOptions);
-        $output .= '</div>';
-        return $output;
+        if ($useControls) {
+            $output .= self::controls($input . $help, $controlOptions);
+        } else {
+            $output .= $input;
+        }
+
+        if ($useFormGroup) {
+            self::addCssClass('form-group', $groupOptions);
+            return self::tag(
+                'div',
+                $groupOptions,
+                $output
+            );
+        } else {
+            return $output;
+        }
     }
 
     /**
@@ -1456,10 +1637,11 @@ EOD;
         parent::clientChange('change', $htmlOptions);
 
         $htmlOptions = self::normalizeInputOptions($htmlOptions);
+        self::addCssClass('form-control', $htmlOptions);
 
-        $addOnClasses = self::getAddOnClasses($htmlOptions);
+        $addOnClass = self::getAddOnClasses($htmlOptions);
         $addOnOptions = TbArray::popValue('addOnOptions', $htmlOptions, array());
-        self::addCssClass($addOnClasses, $addOnOptions);
+        self::addCssClass($addOnClass, $addOnOptions);
 
         $prepend = TbArray::popValue('prepend', $htmlOptions, '');
         $prependOptions = TbArray::popValue('prependOptions', $htmlOptions, array());
@@ -1474,11 +1656,11 @@ EOD;
         }
 
         $output = '';
-        if (!empty($addOnClasses)) {
+        if (!empty($addOnClass)) {
             $output .= self::openTag('div', $addOnOptions);
         }
         $output .= $prepend . parent::inputField($type, $name, $value, $htmlOptions) . $append;
-        if (!empty($addOnClasses)) {
+        if (!empty($addOnClass)) {
             $output .= '</div>';
         }
         return $output;
@@ -1598,6 +1780,7 @@ EOD;
     public static function activeTextArea($model, $attribute, $htmlOptions = array())
     {
         $htmlOptions = self::normalizeInputOptions($htmlOptions);
+        self::addCssClass('form-control', $htmlOptions);
         return parent::activeTextArea($model, $attribute, $htmlOptions);
     }
 
@@ -1612,9 +1795,17 @@ EOD;
     {
         $label = TbArray::popValue('label', $htmlOptions, false);
         $labelOptions = TbArray::popValue('labelOptions', $htmlOptions, array());
-        self::addCssClass('radio', $labelOptions);
         $input = parent::activeRadioButton($model, $attribute, $htmlOptions);
-        return self::createCheckBoxAndRadioButtonLabel($label, $input, $labelOptions);
+        if (TbArray::popValue('useContainer', $htmlOptions, false)) {
+            return self::tag(
+                'div',
+                array('class' => 'radio'),
+                self::createCheckBoxAndRadioButtonLabel($label, $input, $labelOptions)
+            );
+        } else {
+            return self::createCheckBoxAndRadioButtonLabel($label, $input, $labelOptions);
+        }
+
     }
 
     /**
@@ -1628,9 +1819,16 @@ EOD;
     {
         $label = TbArray::popValue('label', $htmlOptions, false);
         $labelOptions = TbArray::popValue('labelOptions', $htmlOptions, array());
-        self::addCssClass('checkbox', $labelOptions);
         $input = parent::activeCheckBox($model, $attribute, $htmlOptions);
-        return self::createCheckBoxAndRadioButtonLabel($label, $input, $labelOptions);
+        if (TbArray::popValue('useContainer', $htmlOptions, false)) {
+            return self::tag(
+                'div',
+                array('class' => 'radio'),
+                self::createCheckBoxAndRadioButtonLabel($label, $input, $labelOptions)
+            );
+        } else {
+            return self::createCheckBoxAndRadioButtonLabel($label, $input, $labelOptions);
+        }
     }
 
     /**
@@ -1668,12 +1866,14 @@ EOD;
      * @param CModel $model the data model.
      * @param string $attribute the attribute.
      * @param array $data data for generating the list options (value=>display).
+     * @param array $htmlOptions additional HTML attributes
      * @return string the generated drop down list.
      */
     public static function activeDropDownList($model, $attribute, $data, $htmlOptions = array())
     {
         $displaySize = TbArray::popValue('displaySize', $htmlOptions);
         $htmlOptions = self::normalizeInputOptions($htmlOptions);
+        self::addCssClass('form-control', $htmlOptions);
         if (!empty($displaySize)) {
             $htmlOptions['size'] = $displaySize;
         }
@@ -1691,6 +1891,7 @@ EOD;
     public static function activeListBox($model, $attribute, $data, $htmlOptions = array())
     {
         TbArray::defaultValue('displaySize', 4, $htmlOptions);
+        self::addCssClass('form-control', $htmlOptions);
         return self::activeDropDownList($model, $attribute, $data, $htmlOptions);
     }
 
@@ -1787,8 +1988,7 @@ EOD;
      */
     public static function activeSearchQueryField($model, $attribute, $htmlOptions = array())
     {
-        self::addCssClass('search-query', $htmlOptions);
-        return self::activeTextField($model, $attribute, $htmlOptions);
+        return self::activeTextInputField('search', $model, $attribute, $htmlOptions);
     }
 
     /**
@@ -1923,8 +2123,8 @@ EOD;
 
     /**
      * Generates a control group with a check box for a model attribute.
-     * @param string $name the input name.
-     * @param string $checked whether the check box is checked.
+     * @param CModel $model the data model
+     * @param string $attribute the attribute.
      * @param array $htmlOptions additional HTML attributes.
      * @return string the generated control group.
      * @see self::activeControlGroup
@@ -1950,8 +2150,8 @@ EOD;
 
     /**
      * Generates a control group with a list box for a model attribute.
-     * @param string $name the input name.
-     * @param string $select the selected value.
+     * @param CModel $model the data model.
+     * @param string $attribute the attribute.
      * @param array $data data for generating the list options (value=>display).
      * @param array $htmlOptions additional HTML attributes.
      * @return string the generated control group.
@@ -1982,8 +2182,8 @@ EOD;
 
     /**
      * Generates a control group with an inline radio button list for a model attribute.
-     * @param string $name the input name.
-     * @param string $select the selected value.
+     * @param CModel $model the data model.
+     * @param string $attribute the attribute.
      * @param array $data data for generating the list options (value=>display).
      * @param array $htmlOptions additional HTML attributes.
      * @return string the generated control group.
@@ -2078,16 +2278,60 @@ EOD;
         $controlOptions = TbArray::popValue('controlOptions', $htmlOptions, array());
         $label = TbArray::popValue('label', $htmlOptions);
         $labelOptions = TbArray::popValue('labelOptions', $htmlOptions, array());
+        $formLayout = TbArray::popValue('formLayout', $htmlOptions, self::FORM_LAYOUT_VERTICAL);
+        $labelWidthClass = TbArray::popValue('labelWidthClass', $htmlOptions, self::$defaultFormLabelWidthClass);
+        $controlWidthClass = TbArray::popValue('controlWidthClass', $htmlOptions, self::$defaultFormControlWidthClass);
+        $useFormGroup = true;
+        $useControls = true;
+        $output = '';
 
-        if (in_array($type, array(self::INPUT_TYPE_CHECKBOX, self::INPUT_TYPE_RADIOBUTTON))) {
+        // Special label case case for individual checkboxes and radios
+        if ($type == self::INPUT_TYPE_CHECKBOX || $type == self::INPUT_TYPE_RADIOBUTTON) {
             $htmlOptions['label'] = isset($label) ? $label : $model->getAttributeLabel($attribute);
             $htmlOptions['labelOptions'] = $labelOptions;
+            $htmlOptions['useContainer'] = true;
             $label = false;
+            $useFormGroup = false;
+        }
+
+        // Special conditions depending on the form type
+        if ($formLayout == self::FORM_LAYOUT_HORIZONTAL) {
+            switch ($type) {
+                case self::INPUT_TYPE_CHECKBOX:
+                case self::INPUT_TYPE_RADIOBUTTON:
+                    self::addCssClass(self::switchColToOffset($labelWidthClass), $controlOptions);
+                    self::addCssClass(self::switchOffsetToCol($controlWidthClass), $controlOptions);
+                    $useFormGroup = true;
+                    break;
+                default:
+                    self::addCssClass(self::switchOffsetToCol($labelWidthClass), $labelOptions);
+                    self::addCssClass(self::switchOffsetToCol($controlWidthClass), $controlOptions);
+            }
+        } elseif ($formLayout == self::FORM_LAYOUT_INLINE || $formLayout == self::FORM_LAYOUT_SEARCH) {
+            switch ($type) {
+                case self::INPUT_TYPE_TEXT:
+                case self::INPUT_TYPE_PASSWORD:
+                case self::INPUT_TYPE_URL:
+                case self::INPUT_TYPE_EMAIL:
+                case self::INPUT_TYPE_NUMBER:
+                case self::INPUT_TYPE_RANGE:
+                case self::INPUT_TYPE_DATE:
+                case self::INPUT_TYPE_FILE:
+                case self::INPUT_TYPE_SEARCH:
+                    self::addCssClass('sr-only', $labelOptions);
+                    if (($label !== null) && (TbArray::getValue('placeholder', $htmlOptions) !== null)) {
+                        $htmlOptions['placeholder'] = $label;
+                    }
+                    break;
+                case self::INPUT_TYPE_CHECKBOX:
+                case self::INPUT_TYPE_RADIOBUTTON:
+                    $useControls = false;
+                    break;
+            }
         }
         if (isset($label) && $label !== false) {
             $labelOptions['label'] = $label;
         }
-
         $help = TbArray::popValue('help', $htmlOptions, '');
         $helpOptions = TbArray::popValue('helpOptions', $htmlOptions, array());
         if (!empty($help)) {
@@ -2099,18 +2343,29 @@ EOD;
             ? $htmlOptions['input']
             : self::createActiveInput($type, $model, $attribute, $htmlOptions, $data);
 
-        self::addCssClass('control-group', $groupOptions);
         if (!empty($color)) {
             self::addCssClass($color, $groupOptions);
         }
         self::addCssClass('control-label', $labelOptions);
-        $output = self::openTag('div', $groupOptions);
         if ($label !== false) {
             $output .= parent::activeLabelEx($model, $attribute, $labelOptions);
         }
-        $output .= self::controls($input . $error . $help, $controlOptions);
-        $output .= '</div>';
-        return $output;
+        if ($useControls) {
+            $output .= self::controls($input . $error . $help, $controlOptions);
+        } else {
+            $output .= $input;
+        }
+
+        if ($useFormGroup) {
+            self::addCssClass('form-group', $groupOptions);
+            return self::tag(
+                'div',
+                $groupOptions,
+                $output
+            );
+        } else {
+            return $output;
+        }
     }
 
     /**
@@ -2209,6 +2464,7 @@ EOD;
     {
         parent::resolveName($model, $attribute); // turn [a][b]attr into attr
         $error = $model->getError($attribute);
+        $htmlOptions['type'] = self::HELP_TYPE_INLINE;
         return !empty($error) ? self::help($error, $htmlOptions) : '';
     }
 
@@ -2227,10 +2483,11 @@ EOD;
         parent::clientChange('change', $htmlOptions);
 
         $htmlOptions = self::normalizeInputOptions($htmlOptions);
+        self::addCssClass('form-control', $htmlOptions);
 
-        $addOnClasses = self::getAddOnClasses($htmlOptions);
+        $addOnClass = self::getAddOnClasses($htmlOptions);
         $addOnOptions = TbArray::popValue('addOnOptions', $htmlOptions, array());
-        self::addCssClass($addOnClasses, $addOnOptions);
+        self::addCssClass($addOnClass, $addOnOptions);
 
         $prepend = TbArray::popValue('prepend', $htmlOptions, '');
         $prependOptions = TbArray::popValue('prependOptions', $htmlOptions, array());
@@ -2245,11 +2502,11 @@ EOD;
         }
 
         $output = '';
-        if (!empty($addOnClasses)) {
+        if (!empty($addOnClass)) {
             $output .= self::openTag('div', $addOnOptions);
         }
         $output .= $prepend . parent::activeInputField($type, $model, $attribute, $htmlOptions) . $append;
-        if (!empty($addOnClasses)) {
+        if (!empty($addOnClass)) {
             $output .= '</div>';
         }
         return $output;
@@ -2262,14 +2519,9 @@ EOD;
      */
     protected static function getAddOnClasses($htmlOptions)
     {
-        $classes = array();
-        if (TbArray::getValue('append', $htmlOptions)) {
-            $classes[] = 'input-append';
-        }
-        if (TbArray::getValue('prepend', $htmlOptions)) {
-            $classes[] = 'input-prepend';
-        }
-        return !empty($classes) ? implode(' ', $classes) : $classes;
+        return (TbArray::getValue('append', $htmlOptions, false) || TbArray::getValue('prepend', $htmlOptions, false))
+            ? 'input-group'
+            : '';
     }
 
     /**
@@ -2281,10 +2533,13 @@ EOD;
     protected static function inputAddOn($addOn, $htmlOptions)
     {
         $addOnOptions = TbArray::popValue('addOnOptions', $htmlOptions, array());
-        self::addCssClass('add-on', $addOnOptions);
-        return strpos($addOn, 'btn') === false // buttons should not be wrapped in a span
-            ? self::tag('span', $addOnOptions, $addOn)
-            : $addOn;
+
+        if (strpos($addOn, 'btn') === false) {
+            self::addCssClass('input-group-addon', $addOnOptions);
+        } else { // buttons need a special class
+            self::addCssClass('input-group-btn', $addOnOptions);
+        }
+        return self::tag('span', $addOnOptions, $addOn);
     }
 
     /**
@@ -2295,10 +2550,8 @@ EOD;
      */
     protected static function inputHelp($help, $htmlOptions)
     {
-        $type = TbArray::popValue('type', $htmlOptions, self::HELP_TYPE_INLINE);
-        return $type === self::HELP_TYPE_INLINE
-            ? self::help($help, $htmlOptions)
-            : self::helpBlock($help, $htmlOptions);
+        $htmlOptions['type'] = self::HELP_TYPE_INLINE;
+        return self::help($help, $htmlOptions);
     }
 
     /**
@@ -2329,9 +2582,8 @@ EOD;
      */
     public static function controls($controls, $htmlOptions = array())
     {
-        self::addCssClass('controls', $htmlOptions);
         if (TbArray::popValue('row', $htmlOptions, false)) {
-            self::addCssClass('controls-row', $htmlOptions);
+            self::addCssClass('row', $htmlOptions);
         }
         $before = TbArray::popValue('before', $htmlOptions, '');
         $after = TbArray::popValue('after', $htmlOptions, '');
@@ -2355,7 +2607,9 @@ EOD;
     }
 
     /**
-     * Generates form actions.
+     * Generates form actions div. This is no longer necessary in Bootstrap 3, but it is still useful to use for
+     * horizontal forms. When used with a horizontal form, it will appropriately align the actions below other form
+     * controls.
      * @param mixed $actions the actions.
      * @param array $htmlOptions additional HTML attributes.
      * @return string the generated actions.
@@ -2366,7 +2620,21 @@ EOD;
         if (is_array($actions)) {
             $actions = implode(' ', $actions);
         }
-        return self::tag('div', $htmlOptions, $actions);
+        $labelWidthClass = TbArray::popValue('labelWidthClass', $htmlOptions, self::$defaultFormLabelWidthClass);
+        $controlWidthClass = TbArray::popValue('controlWidthClass', $htmlOptions, self::$defaultFormControlWidthClass);
+
+        if (TbArray::popValue('formLayout', $htmlOptions, self::FORM_LAYOUT_VERTICAL) == self::FORM_LAYOUT_HORIZONTAL) {
+            self::addCssClass(self::switchColToOffset($labelWidthClass), $htmlOptions);
+            self::addCssClass(self::switchOffsetToCol($controlWidthClass), $htmlOptions);
+
+            return self::tag(
+                'div',
+                array('class' => 'form-group'),
+                self::tag('div', $htmlOptions, $actions)
+            );
+        } else {
+            return self::tag('div', $htmlOptions, $actions);
+        }
     }
 
     /**
@@ -2390,7 +2658,7 @@ EOD;
     }
 
     // Buttons
-    // http://twitter.github.io/bootstrap/2.3.2/base-css.html#buttons
+    // http://getbootstrap.com/css/#buttons
     // --------------------------------------------------
 
     /**
@@ -2420,7 +2688,7 @@ EOD;
 
     /**
      * Generates an image submit button.
-     * @param string $src the image URL
+     * @param string $label
      * @param array $htmlOptions additional HTML attributes.
      * @return string the generated button.
      */
@@ -2534,7 +2802,7 @@ EOD;
     public static function btn($type, $label, $htmlOptions = array())
     {
         self::addCssClass('btn', $htmlOptions);
-        $color = TbArray::popValue('color', $htmlOptions);
+        $color = TbArray::popValue('color', $htmlOptions, self::BUTTON_COLOR_DEFAULT);
         if (!empty($color)) {
             self::addCssClass('btn-' . $color, $htmlOptions);
         }
@@ -2653,7 +2921,7 @@ EOD;
     }
 
     // Images
-    // http://twitter.github.io/bootstrap/2.3.2/base-css.html#images
+    // http://getbootstrap.com/css/#images
     // --------------------------------------------------
 
     /**
@@ -2683,7 +2951,22 @@ EOD;
     }
 
     /**
+     * Generates an image tag within thumbnail frame.
+     * @deprecated See {@link imageThumbnail()}
+     * @param string $src the image URL.
+     * @param string $alt the alternative text display.
+     * @param array $htmlOptions additional HTML attributes.
+     * @return string the generated image tag.
+     */
+    public static function imageThumbnail($src, $alt = '', $htmlOptions = array())
+    {
+        $htmlOptions['type'] = self::IMAGE_TYPE_THUMBNAIL;
+        return self::image($src, $alt, $htmlOptions);
+    }
+
+    /**
      * Generates an image tag within polaroid frame.
+     * @deprecated See {@link imageThumbnail()}
      * @param string $src the image URL.
      * @param string $alt the alternative text display.
      * @param array $htmlOptions additional HTML attributes.
@@ -2708,30 +2991,45 @@ EOD;
         if (!empty($type)) {
             self::addCssClass('img-' . $type, $htmlOptions);
         }
+        if (TbArray::popValue('responsive', $htmlOptions, false)) {
+            self::addCssClass('img-responsive', $htmlOptions);
+        }
         return parent::image($src, $alt, $htmlOptions);
     }
 
     // Icons by Glyphicons
-    // http://twitter.github.io/bootstrap/2.3.2/base-css.html#icons
+    // http://getbootstrap.com/components/#glyphicons
     // --------------------------------------------------
 
     /**
-     * Generates an icon.
+     * Generates an icon. By default, Glyphicons are used. Font Awesome is also supported by using 'fa' for the $vendor
+     * parameter.
      * @param string $icon the icon type.
      * @param array $htmlOptions additional HTML attributes.
      * @param string $tagName the icon HTML tag.
+     * @param string $vendor the icon vendor.
      * @return string the generated icon.
      */
-    public static function icon($icon, $htmlOptions = array(), $tagName = 'i')
+    public static function icon($icon, $htmlOptions = array(), $tagName = 'i', $vendor = null)
     {
         if (is_string($icon)) {
-            if (strpos($icon, 'icon') === false) {
-                $icon = 'icon-' . implode(' icon-', explode(' ', $icon));
+            if ($vendor === null) {
+                // Determine whether the icon is Glyphicon or Font Awesome
+                if (preg_match('/^(glyphicon|fa)-(.*)$/', $icon, $matches) > 0) {
+                    $vendor = $matches[1];
+                    $icon = $matches[2];
+                } else {
+                    $vendor = self::$iconVendor;
+                }
             }
-            self::addCssClass($icon, $htmlOptions);
+            if (strpos($icon, $vendor . '-') === false) {
+                $icon = "{$vendor}-" . implode(" {$vendor}-", explode(' ', $icon));
+            }
+            self::addCssClass(array($vendor, $icon), $htmlOptions);
+            // Color is specifically for glyphicon
             $color = TbArray::popValue('color', $htmlOptions);
             if (!empty($color) && $color === self::ICON_COLOR_WHITE) {
-                self::addCssClass('icon-white', $htmlOptions);
+                self::addCssClass("glyphicon-white", $htmlOptions);
             }
             return self::openTag($tagName, $htmlOptions) . parent::closeTag($tagName); // tag won't work in this case
         }
@@ -2743,7 +3041,7 @@ EOD;
     // --------------------------------------------------
 
     // Dropdowns
-    // http://twitter.github.io/bootstrap/2.3.2/components.html#dropdowns
+    // http://getbootstrap.com/components/#dropdowns
     // --------------------------------------------------
 
     /**
@@ -2783,7 +3081,7 @@ EOD;
 
     /**
      * Generates a dropdown toggle element.
-     * @param string $tag the HTML tag.
+     * @param string $type the type of dropdown.
      * @param string $label the element text.
      * @param array $htmlOptions additional HTML attributes.
      * @return string the generated element.
@@ -2815,7 +3113,7 @@ EOD;
     }
 
     // Button groups
-    // http://twitter.github.io/bootstrap/2.3.2/components.html#buttonGroups
+    // http://getbootstrap.com/components/#btn-groups
     // --------------------------------------------------
 
     /**
@@ -2832,8 +3130,21 @@ EOD;
                 self::addCssClass('btn-group-vertical', $htmlOptions);
             }
             $toggle = TbArray::popValue('toggle', $htmlOptions);
-            if (!empty($toggle)) {
-                $htmlOptions['data-toggle'] = 'buttons-' . $toggle;
+            $name = TbArray::popValue('name', $htmlOptions);
+            if (!empty($name) && substr($name, -2) !== '[]') {
+                $name .= '[]';
+            }
+            if (in_array($toggle, array(self::BUTTON_TOGGLE_CHECKBOX, self::BUTTON_TOGGLE_RADIO))) {
+                $htmlOptions['data-toggle'] = 'buttons';
+                if (empty($name)) {
+                    if ($toggle === self::BUTTON_TOGGLE_CHECKBOX) {
+                        $name = 'checkbox[]';
+                    } elseif ($toggle === self::BUTTON_TOGGLE_RADIO) {
+                        $name = 'radio[]';
+                    }
+                }
+            } else {
+                $htmlOptions['data-toggle'] = $toggle;
             }
             $parentOptions = array(
                 'color' => TbArray::popValue('color', $htmlOptions),
@@ -2852,11 +3163,27 @@ EOD;
                 }
                 $buttonLabel = TbArray::popValue('label', $buttonOptions, '');
                 $buttonOptions = TbArray::copyValues(array('color', 'size', 'disabled'), $parentOptions, $buttonOptions);
+                TbArray::defaultValue('color', 'default', $buttonOptions);
                 $items = TbArray::popValue('items', $buttonOptions, array());
                 if (!empty($items)) {
                     $output .= self::buttonDropdown($buttonLabel, $items, $buttonOptions);
                 } else {
-                    $output .= self::linkButton($buttonLabel, $buttonOptions);
+                    $checked = TbArray::popValue('checked', $buttonOptions, false);
+                    if (in_array($toggle, array(self::BUTTON_TOGGLE_CHECKBOX, self::BUTTON_TOGGLE_RADIO))) {
+                        // Put the "button" label back into its options and add a few label options as well
+                        $buttonOptions['label'] = $buttonLabel;
+                        self::addCssClass(
+                            array('btn', 'btn-' . TbArray::getValue('color', $buttonOptions)),
+                            $buttonOptions['labelOptions']
+                        );
+                        if ($toggle === self::BUTTON_TOGGLE_CHECKBOX) { // BS3 toggle uses checkbox...
+                            $output .= self::checkBox($name, $checked, $buttonOptions);
+                        } elseif ($toggle === self::BUTTON_TOGGLE_RADIO) { // ...or BS3 toggle uses radio
+                            $output .= self::radioButton($name, $checked, $buttonOptions);
+                        }
+                    } else {
+                        $output .= self::linkButton($buttonLabel, $buttonOptions);
+                    }
                 }
             }
             $output .= '</div>';
@@ -2887,6 +3214,7 @@ EOD;
     {
         if (!empty($groups)) {
             self::addCssClass('btn-toolbar', $htmlOptions);
+            TbArray::defaultValue('role', 'toolbar', $htmlOptions);
             $parentOptions = array(
                 'color' => TbArray::popValue('color', $htmlOptions),
                 'size' => TbArray::popValue('size', $htmlOptions),
@@ -2916,7 +3244,7 @@ EOD;
     }
 
     // Button dropdowns
-    // http://twitter.github.io/bootstrap/2.3.2/components.html#buttonDropdowns
+    // http://getbootstrap.com/components/#btn-dropdowns
     // --------------------------------------------------
 
     /**
@@ -2947,7 +3275,7 @@ EOD;
     }
 
     // Navs
-    // http://twitter.github.io/bootstrap/2.3.2/components.html#navs
+    // http://getbootstrap.com/components/#nav
     // --------------------------------------------------
 
     /**
@@ -3025,7 +3353,7 @@ EOD;
      */
     public static function nav($type, $items, $htmlOptions = array())
     {
-        self::addCssClass('nav', $htmlOptions);
+        self::addCssClass(array('nav', 'navbar-nav'), $htmlOptions);
         if (!empty($type)) {
             self::addCssClass('nav-' . $type, $htmlOptions);
         }
@@ -3051,9 +3379,13 @@ EOD;
             $output = self::openTag('ul', $htmlOptions);
             foreach ($items as $itemOptions) {
                 if (is_string($itemOptions)) {
-                    $output .= $itemOptions;
+                    if ($itemOptions == '---') {
+                        $output .= self::menuDivider();
+                    } else {
+                        $output .= $itemOptions;
+                    }
                 } else {
-                    if (isset($itemOptions['visible']) && $itemOptions['visible'] === false) {
+                    if (TbArray::popValue('visible', $itemOptions, true)  === false) {
                         continue;
                     }
                     // todo: consider removing the support for htmlOptions.
@@ -3148,7 +3480,7 @@ EOD;
      */
     public static function menuHeader($label, $htmlOptions = array())
     {
-        self::addCssClass('nav-header', $htmlOptions);
+        self::addCssClass('dropdown-header', $htmlOptions);
         return self::tag('li', $htmlOptions, $label);
     }
 
@@ -3176,8 +3508,9 @@ EOD;
 
     /**
      * Generates a tabbable pills menu.
-     * @param array $tabs the tab configurations.
+     * @param array $pills the pills.
      * @param array $htmlOptions additional HTML attributes.
+     * @internal param array $tabs the tab configurations.
      * @return string the generated menu.
      */
     public static function tabbablePills($pills, $htmlOptions = array())
@@ -3257,7 +3590,7 @@ EOD;
     }
 
     // Navbar
-    // http://twitter.github.io/bootstrap/2.3.2/components.html#navbar
+    // http://getbootstrap.com/components/#navbar
     // --------------------------------------------------
 
     /**
@@ -3273,15 +3606,14 @@ EOD;
         if (!empty($display)) {
             self::addCssClass('navbar-' . $display, $htmlOptions);
         }
-        $color = TbArray::popValue('color', $htmlOptions);
+        $color = TbArray::popValue('color', $htmlOptions, 'default');
         if (!empty($color)) {
             self::addCssClass('navbar-' . $color, $htmlOptions);
         }
-        $innerOptions = TbArray::popValue('innerOptions', $htmlOptions, array());
-        self::addCssClass('navbar-inner', $innerOptions);
-        $output = self::openTag('div', $htmlOptions);
-        $output .= self::tag('div', $innerOptions, $content);
-        $output .= '</div>';
+        $htmlOptions['role'] = 'navigation';
+        $output = self::openTag('nav', $htmlOptions);
+        $output .= $content;
+        $output .= '</nav>';
         return $output;
     }
 
@@ -3294,7 +3626,7 @@ EOD;
      */
     public static function navbarBrandLink($label, $url, $htmlOptions = array())
     {
-        self::addCssClass('brand', $htmlOptions);
+        self::addCssClass('navbar-brand', $htmlOptions);
         return self::link($label, $url, $htmlOptions);
     }
 
@@ -3344,7 +3676,7 @@ EOD;
      */
     public static function navbarSearchForm($action, $method = 'post', $htmlOptions = array())
     {
-        self::addCssClass('navbar-search', $htmlOptions);
+        self::addCssClass('navbar-form', $htmlOptions);
         return self::searchForm($action, $method, $htmlOptions);
     }
 
@@ -3357,14 +3689,17 @@ EOD;
     public static function navbarCollapseLink($target, $htmlOptions = array())
     {
         self::addCssClass('btn btn-navbar', $htmlOptions);
+        $htmlOptions['type'] = 'button';
         $htmlOptions['data-toggle'] = 'collapse';
         $htmlOptions['data-target'] = $target;
-        $content = '<span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span>';
-        return self::tag('a', $htmlOptions, $content);
+        self::addCssClass('navbar-toggle', $htmlOptions);
+        $content = self::tag('span', array('class' => 'sr-only'), 'Toggle navigation');
+        $content .= '<span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span>';
+        return self::tag('button', $htmlOptions, $content);
     }
 
     // Breadcrumbs
-    // http://twitter.github.io/bootstrap/2.3.2/components.html#breadcrumbs
+    // http://getbootstrap.com/components/#breadcrumbs
     // --------------------------------------------------
 
     /**
@@ -3375,25 +3710,23 @@ EOD;
      */
     public static function breadcrumbs($links, $htmlOptions = array())
     {
-        $divider = TbArray::popValue('divider', $htmlOptions, '/');
         self::addCssClass('breadcrumb', $htmlOptions);
-        $output = self::openTag('ul', $htmlOptions);
+        $output = self::openTag('ol', $htmlOptions);
         foreach ($links as $label => $url) {
             if (is_string($label)) {
                 $output .= self::openTag('li');
                 $output .= self::link($label, $url);
-                $output .= self::tag('span', array('class' => 'divider'), $divider);
                 $output .= '</li>';
             } else {
                 $output .= self::tag('li', array('class' => 'active'), $url);
             }
         }
-        $output .= '</ul>';
+        $output .= '</ol>';
         return $output;
     }
 
     // Pagination
-    // http://twitter.github.io/bootstrap/2.3.2/components.html#pagination
+    // http://getbootstrap.com/components/#pagination
     // --------------------------------------------------
 
     /**
@@ -3504,7 +3837,7 @@ EOD;
     }
 
     // Labels and badges
-    // http://twitter.github.io/bootstrap/2.3.2/components.html#labels-badges
+    // http://getbootstrap.com/components/#labels
     // --------------------------------------------------
 
     /**
@@ -3540,19 +3873,20 @@ EOD;
     }
 
     // Typography
-    // http://twitter.github.io/bootstrap/2.3.2/components.html#typography
+    // http://getbootstrap.com/components/#jumbotron
+    // http://getbootstrap.com/components/#page-header
     // --------------------------------------------------
 
     /**
-     * Generates a hero unit.
+     * Generates a jumbotron unit.
      * @param string $heading the heading text.
      * @param string $content the content text.
      * @param array $htmlOptions additional HTML attributes.
      * @return string the generated hero unit.
      */
-    public static function heroUnit($heading, $content, $htmlOptions = array())
+    public static function jumbotron($heading, $content, $htmlOptions = array())
     {
-        self::addCssClass('hero-unit', $htmlOptions);
+        self::addCssClass('jumbotron', $htmlOptions);
         $headingOptions = TbArray::popValue('headingOptions', $htmlOptions, array());
         $output = self::openTag('div', $htmlOptions);
         $output .= self::tag('h1', $headingOptions, $heading);
@@ -3582,7 +3916,7 @@ EOD;
     }
 
     // Thumbnails
-    // http://twitter.github.io/bootstrap/2.3.2/components.html#thumbnails
+    // http://getbootstrap.com/components/#thumbnails
     // --------------------------------------------------
 
     /**
@@ -3666,7 +4000,7 @@ EOD;
     }
 
     // Alerts
-    // http://twitter.github.io/bootstrap/2.3.2/components.html#alerts
+    // http://getbootstrap.com/components/#alerts
     // --------------------------------------------------
 
     /**
@@ -3715,7 +4049,7 @@ EOD;
     }
 
     // Progress bars
-    // http://twitter.github.io/bootstrap/2.3.2/components.html#progress
+    // http://getbootstrap.com/components/#progress
     // --------------------------------------------------
 
     /**
@@ -3828,7 +4162,7 @@ EOD;
     }
 
     // Media objects
-    // http://twitter.github.io/bootstrap/2.3.2/components.html#media
+    // http://getbootstrap.com/components/#media
     // --------------------------------------------------
 
     /**
@@ -3920,7 +4254,7 @@ EOD;
     }
 
     // Misc
-    // http://twitter.github.io/bootstrap/2.3.2/components.html#misc
+    // http://getbootstrap.com/components/#wells
     // --------------------------------------------------
 
     /**
@@ -3999,7 +4333,7 @@ EOD;
     // --------------------------------------------------
 
     // Modals
-    // http://twitter.github.io/bootstrap/2.3.2/javascript.html#modals
+    // http://getbootstrap.com/javascript/#modals
     // --------------------------------------------------
 
     /**
@@ -4016,7 +4350,7 @@ EOD;
         $headingOptions = TbArray::popValue('headingOptions', $htmlOptions, array());
         $closeLabel = TbArray::popValue('closeLabel', $htmlOptions, self::CLOSE_TEXT);
         $closeButton = self::closeButton($closeLabel, $closeOptions);
-        $header = self::tag('h3', $headingOptions, $content);
+        $header = self::tag('h4', $headingOptions, $content);
         return self::tag('div', $htmlOptions, $closeButton . $header);
     }
 
@@ -4045,8 +4379,8 @@ EOD;
     }
 
     // Tooltips and Popovers
-    // http://twitter.github.io/bootstrap/2.3.2/javascript.html#tooltips
-    // http://twitter.github.io/bootstrap/2.3.2/javascript.html#popovers
+    // http://getbootstrap.com/javascript/#tooltips
+    // http://getbootstrap.com/javascript/#popovers
     // --------------------------------------------------
 
     /**
@@ -4115,7 +4449,7 @@ EOD;
     }
 
     // Carousel
-    // http://twitter.github.io/bootstrap/2.3.2/javascript.html#carousel
+    // http://getbootstrap.com/javascript/#carousel
     // --------------------------------------------------
 
     /**
@@ -4314,14 +4648,42 @@ EOD;
     }
 
     /**
-     * Adds the grid span class to the given options is applicable.
+     * Adds the grid span class to the given options is applicable. BS3 no longer use span classes. During the BS3
+     * transition, this will use the col-md-* CSS class.
+     * @deprecated
      * @param array $htmlOptions the HTML attributes.
      */
     protected static function addSpanClass(&$htmlOptions)
     {
         $span = TbArray::popValue('span', $htmlOptions);
         if (!empty($span)) {
-            self::addCssClass('span' . $span, $htmlOptions);
+            self::addCssClass('col-md-' . $span, $htmlOptions);
+        }
+    }
+
+    /**
+     * Adds the appropriate column class to the given options applicable. The available columns are 'xs', 'sm', 'md',
+     * 'lg' for extra small, small, medium, and large to be used for the appropriate screen sizes. It is also possible
+     * to prevent your columns from stacking on smaller devices by combining a small column with a larger column:
+     * <code>
+     *  $htmlOptions = array(
+     *      'xs' => 12,
+     *      'md' => 8,
+     * )
+     * </code>
+     * Both classes will be applied.
+     * @param $htmlOptions
+     */
+    protected static function addColClass(&$htmlOptions)
+    {
+        $colSizes = array('xs', 'sm', 'md', 'lg');
+
+        // It's possible to stack an xs and md grid together
+        foreach ($colSizes as $colSize) {
+            $span = TbArray::popValue($colSize, $htmlOptions);
+            if (!empty($span)) {
+                self::addCssClass('col-' . $colSize . '-' . $span, $htmlOptions);
+            }
         }
     }
 
@@ -4347,5 +4709,97 @@ EOD;
         if (!empty($align)) {
             self::addCssClass('text-' . $align, $htmlOptions);
         }
+    }
+
+    /**
+     * Switches the column class to and from the col width itself to its offset counterpart. For example, passing in
+     * col-md-2 would be switched to col-md-offset-2
+     * @param string $class
+     * @return string
+     */
+    protected static function switchOffsetCol($class)
+    {
+        if (strpos($class, 'offset') !== false) {
+            return str_replace('-offset', '', $class);
+        } else {
+            preg_match('/^(col-.*-)([0-9]*)$/', $class, $matches);
+            return $matches[1] . 'offset-' . $matches[2];
+        }
+    }
+
+    /**
+     * Nearly identical to {@link switchOffsetCol()} except it forces the class to be returned as its offset
+     * counterpart. It is also safe to pass in a class that is already an offset and it will just re-return it. For
+     * example, passing in col-md-2 will return col-md-offset-2. Passing in col-md-offset-4 will still return
+     * col-md-offset-4.
+     * @param string $class
+     * @return string
+     */
+    protected static function switchColToOffset($class)
+    {
+        if ((strpos($class, 'offset') === false) && (preg_match('/^(col-.*-)([0-9]*)$/', $class, $matches) > 0)) {
+            return $matches[1] . 'offset-' . $matches[2];
+        } else {
+            return $class;
+        }
+    }
+
+    /**
+     * Nearly identical to {@link switchOffsetCol()} except it forces teh class to be returned as its column
+     * (e.g. "span") width counterpart. It is also safe to pass in a class that is already the column width and it will
+     * re-return it. For example, passing in col-md-offset-2 will return col-md-2. Passing in col-md-4 will still
+     * return col-md-4.
+     * @param string $class
+     * @return string
+     */
+    protected static function switchOffsetToCol($class)
+    {
+        if (strpos($class, 'offset') !== false) {
+            return str_replace('-offset', '', $class);
+        } else {
+            return $class;
+        }
+    }
+
+    /**
+     * Returns the col-* classes
+     * @param array $htmlOptions with "class" set
+     * @return string
+     */
+    protected static function getColClasses($htmlOptions)
+    {
+        $colClasses = array();
+        if (isset($htmlOptions['class']) && !empty($htmlOptions['class'])) {
+            $classes = explode(' ', $htmlOptions['class']);
+            foreach ($classes as $class) {
+                if (substr($class, 0, 4) == 'col-') {
+                    $colClasses[] = $class;
+                }
+            }
+        }
+        return implode(' ', $colClasses);
+    }
+
+    /**
+     * Returns the col-* classes and removes the classes from $htmlOptions['class']
+     * @param string $htmlOptions with class set
+     * @return string
+     */
+    protected static function popColClasses(&$htmlOptions)
+    {
+        $colClasses = array();
+        $returnClasses = array();
+        if (isset($htmlOptions['class']) && !empty($htmlOptions['class'])) {
+            $classes = explode(' ', $htmlOptions['class']);
+            foreach ($classes as $class) {
+                if (substr($class, 0, 4) == 'col-') {
+                    $colClasses[] = $class;
+                } elseif (!empty($class)) {
+                    $returnClasses[] = $class;
+                }
+            }
+            $htmlOptions['class'] = implode(' ', $returnClasses);
+        }
+        return implode(' ', $colClasses);
     }
 }

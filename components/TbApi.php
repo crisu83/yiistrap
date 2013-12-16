@@ -8,6 +8,8 @@
  * @version 1.2.0
  */
 
+Yii::import('bootstrap.helpers.TbHtml');
+
 /**
  * Bootstrap API component.
  */
@@ -38,7 +40,18 @@ class TbApi extends CApplicationComponent
      */
     public $forceCopyAssets = false;
 
+    /**
+     * @var string the default icon vendor
+     */
+    public $defaultIconVendor = 'glyphicon';
+
     private $_assetsUrl;
+
+    public function init()
+    {
+        TbHtml::$iconVendor = $this->defaultIconVendor;
+        parent::init();
+    }
 
     /**
      * Registers the Bootstrap CSS.
@@ -48,19 +61,6 @@ class TbApi extends CApplicationComponent
     {
         if ($url === null) {
             $fileName = YII_DEBUG ? 'bootstrap.css' : 'bootstrap.min.css';
-            $url = $this->getAssetsUrl() . '/css/' . $fileName;
-        }
-        Yii::app()->clientScript->registerCssFile($url);
-    }
-
-    /**
-     * Registers the responsive Bootstrap CSS.
-     * @param string $url the URL to the CSS file to register.
-     */
-    public function registerResponsiveCss($url = null)
-    {
-        if ($url === null) {
-            $fileName = YII_DEBUG ? 'bootstrap-responsive.css' : 'bootstrap-responsive.min.css';
             $url = $this->getAssetsUrl() . '/css/' . $fileName;
         }
         /** @var CClientScript $cs */
@@ -90,7 +90,6 @@ class TbApi extends CApplicationComponent
     public function registerAllCss()
     {
         $this->registerCoreCss();
-        $this->registerResponsiveCss();
         $this->registerYiistrapCss();
     }
 
