@@ -3216,14 +3216,11 @@ class TbHtmlTest extends TbTestCase
         $html = TbHtml::pagination(
             $items,
             array(
-                'class' => 'div',
-                'listOptions' => array('class' => 'list'),
+                'class' => 'ul',
             )
         );
-        $div = $I->createNode($html, 'div.pagination');
-        $I->seeNodeCssClass($div, 'div');
-        $ul = $div->filter('ul');
-        $I->seeNodeCssClass($ul, 'list');
+        $ul = $I->createNode($html, 'ul.pagination');
+        $I->seeNodeCssClass($ul, 'ul');
         $I->seeNodeNumChildren($ul, 7);
         foreach ($ul->children() as $i => $liElement) {
             $li = $I->createNode($liElement);
@@ -3245,17 +3242,8 @@ class TbHtmlTest extends TbTestCase
                 'size' => TbHtml::PAGINATION_SIZE_LARGE,
             )
         );
-        $div = $I->createNode($html, 'div.pagination');
-        $I->seeNodeCssClass($div, 'pagination-large');
-
-        $html = TbHtml::pagination(
-            $items,
-            array(
-                'align' => TbHtml::PAGINATION_ALIGN_CENTER,
-            )
-        );
-        $div = $I->createNode($html, 'div.pagination');
-        $I->seeNodeCssClass($div, 'pagination-centered');
+        $ul = $I->createNode($html, 'ul.pagination');
+        $I->seeNodeCssClass($ul, 'pagination-lg');
 
         $html = TbHtml::pagination(array());
         $this->assertEquals('', $html);

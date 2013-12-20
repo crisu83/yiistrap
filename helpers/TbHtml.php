@@ -134,7 +134,7 @@ class TbHtml extends CHtml // required in order to access the protected methods 
     const NAV_TYPE_LIST = 'list';
 
     const TABS_PLACEMENT_ABOVE = '';
-    const TABS_PLACEMENT_BELOW = 'below';
+    const TABS_PLACEMENT_BELOW = 'below'; // @todo deprecated in BS3
     const TABS_PLACEMENT_LEFT = 'left';
     const TABS_PLACEMENT_RIGHT = 'right';
 
@@ -153,14 +153,16 @@ class TbHtml extends CHtml // required in order to access the protected methods 
     // PAGINATION
     // --------------------------------------------------
 
-    const PAGINATION_SIZE_MINI = 'mini';
-    const PAGINATION_SIZE_SMALL = 'small';
+    const PAGINATION_SIZE_MINI = 'mini'; // deprecated, does not exist in BS3
+    const PAGINATION_SIZE_SMALL = 'sm'; // deprecated, BS3 compatibility
+    const PAGINATION_SIZE_SM = 'sm';
     const PAGINATION_SIZE_DEFAULT = '';
-    const PAGINATION_SIZE_LARGE = 'large';
+    const PAGINATION_SIZE_LARGE = 'lg'; // deprecated, BS3 compatibility
+    const PAGINATION_SIZE_LG = 'lg';
 
-    const PAGINATION_ALIGN_LEFT = 'left';
-    const PAGINATION_ALIGN_CENTER = 'centered';
-    const PAGINATION_ALIGN_RIGHT = 'right';
+    const PAGINATION_ALIGN_LEFT = 'left'; // deprecated in BS3?
+    const PAGINATION_ALIGN_CENTER = 'centered'; // deprecated in BS3?
+    const PAGINATION_ALIGN_RIGHT = 'right'; // deprecated in BS3?
 
     //
     // LABELS AND BADGES
@@ -2952,7 +2954,6 @@ EOD;
 
     /**
      * Generates an image tag within thumbnail frame.
-     * @deprecated See {@link imageThumbnail()}
      * @param string $src the image URL.
      * @param string $alt the alternative text display.
      * @param array $htmlOptions additional HTML attributes.
@@ -3291,6 +3292,7 @@ EOD;
 
     /**
      * Generates a stacked tab navigation.
+     * @deprecated Style does not exist in BS3
      * @param array $items the menu items.
      * @param array $htmlOptions additional HTML attributes.
      * @return string the generated menu.
@@ -3353,9 +3355,11 @@ EOD;
      */
     public static function nav($type, $items, $htmlOptions = array())
     {
-        self::addCssClass(array('nav', 'navbar-nav'), $htmlOptions);
+        self::addCssClass('nav', $htmlOptions);
         if (!empty($type)) {
             self::addCssClass('nav-' . $type, $htmlOptions);
+        } else {
+            self::addCssClass('navbar-nav', $htmlOptions);
         }
         $stacked = TbArray::popValue('stacked', $htmlOptions, false);
         if ($type !== self::NAV_TYPE_LIST && $stacked) {
@@ -3747,9 +3751,7 @@ EOD;
             if (!empty($align)) {
                 self::addCssClass('pagination-' . $align, $htmlOptions);
             }
-            $listOptions = TbArray::popValue('listOptions', $htmlOptions, array());
-            $output = self::openTag('div', $htmlOptions);
-            $output .= self::openTag('ul', $listOptions);
+            $output = self::openTag('ul', $htmlOptions);
             foreach ($items as $itemOptions) {
                 // todo: consider removing the support for htmlOptions.
                 $options = TbArray::popValue('htmlOptions', $itemOptions, array());
@@ -3760,7 +3762,7 @@ EOD;
                 $url = TbArray::popValue('url', $itemOptions, false);
                 $output .= self::paginationLink($label, $url, $itemOptions);
             }
-            $output .= '</ul></div>';
+            $output .= '</ul>';
             return $output;
         }
         return '';
@@ -3778,6 +3780,7 @@ EOD;
         $linkOptions = TbArray::popValue('linkOptions', $htmlOptions, array());
         if (TbArray::popValue('active', $htmlOptions, false)) {
             self::addCssClass('active', $htmlOptions);
+            $label .= ' ' . self::tag('span', array('class' => 'sr-only'), '(current)');
         }
         if (TbArray::popValue('disabled', $htmlOptions, false)) {
             self::addCssClass('disabled', $htmlOptions);
