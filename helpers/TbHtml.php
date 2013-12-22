@@ -62,6 +62,7 @@ class TbHtml extends CHtml // required in order to access the protected methods 
     const INPUT_TYPE_SEARCH = 'searchQuery';
     const INPUT_TYPE_CUSTOM = 'widget';
 
+    // Input sizes are deprecated in BS3, use col-*-* instead.
     const INPUT_SIZE_MINI = 'mini';
     const INPUT_SIZE_SMALL = 'small';
     const INPUT_SIZE_DEFAULT = '';
@@ -1638,6 +1639,14 @@ EOD;
     {
         parent::clientChange('change', $htmlOptions);
 
+        // In case we do need to create a div container for the input element (i.e. has addon or defined col)
+        $containerOptions = array();
+
+        // Get the intended input width before the rest of the options are normalized
+        self::addSpanClass($htmlOptions);
+        self::addColClass($htmlOptions);
+        $col = self::popColClasses($htmlOptions);
+
         $htmlOptions = self::normalizeInputOptions($htmlOptions);
         self::addCssClass('form-control', $htmlOptions);
 
@@ -1657,12 +1666,20 @@ EOD;
             $append = self::inputAddOn($append, $appendOptions);
         }
 
-        $output = '';
         if (!empty($addOnClass)) {
-            $output .= self::openTag('div', $addOnOptions);
+            $containerOptions = $addOnOptions;
+        }
+
+        if (!empty($col)) {
+            self::addCssClass($col, $containerOptions);
+        }
+
+        $output = '';
+        if (!empty($containerOptions)) {
+            $output .= self::openTag('div', $containerOptions);
         }
         $output .= $prepend . parent::inputField($type, $name, $value, $htmlOptions) . $append;
-        if (!empty($addOnClass)) {
+        if (!empty($containerOptions)) {
             $output .= '</div>';
         }
         return $output;
@@ -4778,7 +4795,7 @@ EOD;
                 }
             }
         }
-        return implode(' ', $colClasses);
+        return implode(' ', array_unique($colClasses));
     }
 
     /**
@@ -4801,6 +4818,6 @@ EOD;
             }
             $htmlOptions['class'] = implode(' ', $returnClasses);
         }
-        return implode(' ', $colClasses);
+        return implode(' ', array_unique($colClasses));
     }
 }

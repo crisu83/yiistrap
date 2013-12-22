@@ -438,6 +438,41 @@ class TbHtmlTest extends TbTestCase
         );
         $input = $I->createNode($html, 'input');
         $I->seeNodeCssClass($input, 'input-block-level');
+
+        $html = TbHtml::textField(
+            'text',
+            'text',
+            array(
+                'span' => 6,
+            )
+        );
+        $div = $I->createNode($html, 'div');
+        $I->seeNodeCssClass($div, 'col-md-6');
+        $I->seeNodeChildren($div, array('input'));
+
+        $html = TbHtml::textField(
+            'text',
+            'text',
+            array(
+                'xs' => 6,
+                'md' => 6,
+            )
+        );
+        $div = $I->createNode($html, 'div');
+        $I->seeNodeCssClass($div, 'col-xs-6');
+        $I->seeNodeCssClass($div, 'col-md-6');
+        $I->seeNodeChildren($div, array('input'));
+
+        $html = TbHtml::textField(
+            'text',
+            'text',
+            array(
+                'class' => 'col-md-4',
+            )
+        );
+        $div = $I->createNode($html, 'div');
+        $I->seeNodeCssClass($div, 'col-md-4');
+        $I->seeNodeChildren($div, array('input'));
     }
 
     public function testPasswordField()
@@ -3371,12 +3406,11 @@ class TbHtmlTest extends TbTestCase
         $html = TbHtml::badge(
             'Badge text',
             array(
-                'color' => TbHtml::BADGE_COLOR_WARNING,
                 'class' => 'span',
             )
         );
         $span = $I->createNode($html, 'span.badge');
-        $I->seeNodeCssClass($span, 'badge-warning span');
+        $I->seeNodeCssClass($span, 'span');
         $I->seeNodeText($span, 'Badge text');
     }
 
