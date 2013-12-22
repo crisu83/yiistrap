@@ -168,19 +168,19 @@ class TbHtml extends CHtml // required in order to access the protected methods 
     // LABELS AND BADGES
     // --------------------------------------------------
 
-    const LABEL_COLOR_DEFAULT = '';
+    const LABEL_COLOR_DEFAULT = 'default';
+    const LABEL_COLOR_PRIMARY = 'primary';
     const LABEL_COLOR_SUCCESS = 'success';
-    const LABEL_COLOR_WARNING = 'warning';
-    const LABEL_COLOR_IMPORTANT = 'important';
     const LABEL_COLOR_INFO = 'info';
-    const LABEL_COLOR_INVERSE = 'inverse';
+    const LABEL_COLOR_WARNING = 'warning';
+    const LABEL_COLOR_DANGER = 'danger';
 
-    const BADGE_COLOR_DEFAULT = '';
-    const BADGE_COLOR_SUCCESS = 'success';
-    const BADGE_COLOR_WARNING = 'warning';
-    const BADGE_COLOR_IMPORTANT = 'important';
-    const BADGE_COLOR_INFO = 'info';
-    const BADGE_COLOR_INVERSE = 'inverse';
+    const BADGE_COLOR_DEFAULT = ''; // deprecated, only a single badge color in BS3
+    const BADGE_COLOR_SUCCESS = 'success'; // deprecated, only a single badge color in BS3
+    const BADGE_COLOR_WARNING = 'warning'; // deprecated, only a single badge color in BS3
+    const BADGE_COLOR_IMPORTANT = 'important'; // deprecated, only a single badge color in BS3
+    const BADGE_COLOR_INFO = 'info'; // deprecated, only a single badge color in BS3
+    const BADGE_COLOR_INVERSE = 'inverse'; // deprecated, only a single badge color in BS3
 
     //
     // TOOLTIPS AND POPOVERS
@@ -3855,6 +3855,8 @@ EOD;
         $color = TbArray::popValue('color', $htmlOptions);
         if (!empty($color)) {
             self::addCssClass('label-' . $color, $htmlOptions);
+        } else {
+            self::addCssClass('label-default', $htmlOptions);
         }
         return self::tag('span', $htmlOptions, $label);
     }
@@ -3868,10 +3870,6 @@ EOD;
     public static function badge($label, $htmlOptions = array())
     {
         self::addCssClass('badge', $htmlOptions);
-        $color = TbArray::popValue('color', $htmlOptions);
-        if (!empty($color)) {
-            self::addCssClass('badge-' . $color, $htmlOptions);
-        }
         return self::tag('span', $htmlOptions, $label);
     }
 
