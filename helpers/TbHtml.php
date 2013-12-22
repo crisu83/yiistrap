@@ -920,9 +920,27 @@ class TbHtml extends CHtml // required in order to access the protected methods 
      */
     public static function textArea($name, $value = '', $htmlOptions = array())
     {
+        // In case we do need to create a div container for the text area
+        $containerOptions = array();
+
+        // Get the intended input width before the rest of the options are normalized
+        self::addSpanClass($htmlOptions);
+        self::addColClass($htmlOptions);
+        $col = self::popColClasses($htmlOptions);
+
         $htmlOptions = self::normalizeInputOptions($htmlOptions);
         self::addCssClass('form-control', $htmlOptions);
-        return parent::textArea($name, $value, $htmlOptions);
+
+        $output = '';
+        if (!empty($col)) {
+            self::addCssClass($col, $containerOptions);
+            $output .= self::openTag('div', $containerOptions);
+        }
+        $output .= parent::textArea($name, $value, $htmlOptions);
+        if (!empty($col)) {
+            $output .= '</div>';
+        }
+        return $output;
     }
 
     /**
@@ -1798,9 +1816,28 @@ EOD;
      */
     public static function activeTextArea($model, $attribute, $htmlOptions = array())
     {
+        // In case we do need to create a div container for the text area
+        $containerOptions = array();
+
+        // Get the intended input width before the rest of the options are normalized
+        self::addSpanClass($htmlOptions);
+        self::addColClass($htmlOptions);
+        $col = self::popColClasses($htmlOptions);
+
         $htmlOptions = self::normalizeInputOptions($htmlOptions);
         self::addCssClass('form-control', $htmlOptions);
-        return parent::activeTextArea($model, $attribute, $htmlOptions);
+
+        $output = '';
+        if (!empty($col)) {
+            self::addCssClass($col, $containerOptions);
+            $output .= self::openTag('div', $containerOptions);
+        }
+        $output .= parent::activeTextArea($model, $attribute, $htmlOptions);
+        if (!empty($col)) {
+            $output .= '</div>';
+        }
+
+        return $output;
     }
 
     /**
@@ -2501,6 +2538,14 @@ EOD;
         parent::resolveNameID($model, $attribute, $htmlOptions);
         parent::clientChange('change', $htmlOptions);
 
+        // In case we do need to create a div container for the input element (i.e. has addon or defined col)
+        $containerOptions = array();
+
+        // Get the intended input width before the rest of the options are normalized
+        self::addSpanClass($htmlOptions);
+        self::addColClass($htmlOptions);
+        $col = self::popColClasses($htmlOptions);
+
         $htmlOptions = self::normalizeInputOptions($htmlOptions);
         self::addCssClass('form-control', $htmlOptions);
 
@@ -2520,12 +2565,20 @@ EOD;
             $append = self::inputAddOn($append, $appendOptions);
         }
 
-        $output = '';
         if (!empty($addOnClass)) {
-            $output .= self::openTag('div', $addOnOptions);
+            $containerOptions = $addOnOptions;
+        }
+
+        if (!empty($col)) {
+            self::addCssClass($col, $containerOptions);
+        }
+
+        $output = '';
+        if (!empty($containerOptions)) {
+            $output .= self::openTag('div', $containerOptions);
         }
         $output .= $prepend . parent::activeInputField($type, $model, $attribute, $htmlOptions) . $append;
-        if (!empty($addOnClass)) {
+        if (!empty($containerOptions)) {
             $output .= '</div>';
         }
         return $output;

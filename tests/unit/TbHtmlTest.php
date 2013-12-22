@@ -649,6 +649,29 @@ class TbHtmlTest extends TbTestCase
             )
         );
         $I->seeNodeText($textarea, 'Textarea text');
+
+        $html = TbHtml::textArea(
+            'textarea',
+            'Textarea text',
+            array(
+                'xs' => 6,
+                'md' => 6,
+                'class' => 'textarea',
+            )
+        );
+        $div = $I->createNode($html, 'div');
+        $I->seeNodeCssClass($div, 'col-xs-6');
+        $I->seeNodeCssClass($div, 'col-md-6');
+        $textarea = $div->filter('textarea');
+        $I->seeNodeAttributes(
+            $textarea,
+            array(
+                'class' => 'textarea form-control',
+                'id' => 'textarea',
+                'name' => 'textarea',
+            )
+        );
+        $I->seeNodeText($textarea, 'Textarea text');
     }
 
     public function testRadioButton()
@@ -1272,6 +1295,41 @@ class TbHtmlTest extends TbTestCase
         $div = $I->createNode($html, 'div');
         $I->seeNodeCssClass($div, 'input-group');
         $I->seeNodeChildren($div, array('span.input-group-addon', 'input', 'span.input-group-addon'));
+
+        $html = TbHtml::activeTextField(
+            new Dummy,
+            'text',
+            array(
+                'span' => 6,
+            )
+        );
+        $div = $I->createNode($html, 'div');
+        $I->seeNodeCssClass($div, 'col-md-6');
+        $I->seeNodeChildren($div, array('input'));
+
+        $html = TbHtml::activeTextField(
+            new Dummy,
+            'text',
+            array(
+                'xs' => 6,
+                'md' => 6,
+            )
+        );
+        $div = $I->createNode($html, 'div');
+        $I->seeNodeCssClass($div, 'col-xs-6');
+        $I->seeNodeCssClass($div, 'col-md-6');
+        $I->seeNodeChildren($div, array('input'));
+
+        $html = TbHtml::activeTextField(
+            new Dummy,
+            'text',
+            array(
+                'class' => 'col-md-4',
+            )
+        );
+        $div = $I->createNode($html, 'div');
+        $I->seeNodeCssClass($div, 'col-md-4');
+        $I->seeNodeChildren($div, array('input'));
     }
 
     public function testActivePasswordField()
@@ -1417,6 +1475,29 @@ class TbHtmlTest extends TbTestCase
             )
         );
         $textarea = $I->createNode($html, 'textarea.form-control');
+        $I->seeNodeAttributes(
+            $textarea,
+            array(
+                'class' => 'textarea form-control',
+                'id' => 'Dummy_textarea',
+                'name' => 'Dummy[textarea]',
+            )
+        );
+        $I->seeNodeText($textarea, 'Textarea text');
+
+        $html = TbHtml::activeTextArea(
+            new Dummy,
+            'textarea',
+            array(
+                'xs' => 6,
+                'md' => 6,
+                'class' => 'textarea',
+            )
+        );
+        $div = $I->createNode($html, 'div');
+        $I->seeNodeCssClass($div, 'col-xs-6');
+        $I->seeNodeCssClass($div, 'col-md-6');
+        $textarea = $div->filter('textarea');
         $I->seeNodeAttributes(
             $textarea,
             array(
