@@ -1000,12 +1000,37 @@ class TbHtml extends CHtml // required in order to access the protected methods 
     public static function dropDownList($name, $select, $data, $htmlOptions = array())
     {
         $displaySize = TbArray::popValue('displaySize', $htmlOptions);
+
+        // In case we do need to create a div container for the input element (i.e. has addon or defined col)
+        $containerOptions = array();
+
+        // Get the intended input width before the rest of the options are normalized
+        self::addSpanClass($htmlOptions);
+        self::addColClass($htmlOptions);
+        $col = self::popColClasses($htmlOptions);
+
         $htmlOptions = self::normalizeInputOptions($htmlOptions);
         self::addCssClass('form-control', $htmlOptions);
         if (!empty($displaySize)) {
             $htmlOptions['size'] = $displaySize;
         }
-        return parent::dropDownList($name, $select, $data, $htmlOptions);
+
+        if (!empty($col)) {
+            self::addCssClass($col, $containerOptions);
+        }
+
+        $output = '';
+
+        if (!empty($containerOptions)) {
+            $output .= self::openTag('div', $containerOptions);
+        }
+        $output .= parent::dropDownList($name, $select, $data, $htmlOptions);
+
+        if (!empty($containerOptions)) {
+            $output .= '</div>';
+        }
+
+        return $output;
     }
 
     /**
@@ -1928,12 +1953,37 @@ EOD;
     public static function activeDropDownList($model, $attribute, $data, $htmlOptions = array())
     {
         $displaySize = TbArray::popValue('displaySize', $htmlOptions);
+
+        // In case we do need to create a div container for the input element (i.e. has addon or defined col)
+        $containerOptions = array();
+
+        // Get the intended input width before the rest of the options are normalized
+        self::addSpanClass($htmlOptions);
+        self::addColClass($htmlOptions);
+        $col = self::popColClasses($htmlOptions);
+
         $htmlOptions = self::normalizeInputOptions($htmlOptions);
         self::addCssClass('form-control', $htmlOptions);
         if (!empty($displaySize)) {
             $htmlOptions['size'] = $displaySize;
         }
-        return parent::activeDropDownList($model, $attribute, $data, $htmlOptions);
+
+        if (!empty($col)) {
+            self::addCssClass($col, $containerOptions);
+        }
+
+        $output = '';
+
+        if (!empty($containerOptions)) {
+            $output .= self::openTag('div', $containerOptions);
+        }
+        $output .= parent::activeDropDownList($model, $attribute, $data, $htmlOptions);
+
+        if (!empty($containerOptions)) {
+            $output .= '</div>';
+        }
+
+        return $output;
     }
 
     /**

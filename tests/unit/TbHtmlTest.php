@@ -752,6 +752,27 @@ class TbHtmlTest extends TbTestCase
         $select = $I->createNode($html, 'select.form-control');
         $I->seeNodeCssClass($select, 'input-large text-center list');
         $I->dontSeeNodeAttribute($select, 'size');
+
+        $I = $this->codeGuy;
+        $html = TbHtml::dropDownList(
+            'dropdown',
+            null,
+            array('1', '2', '3', '4', '5'),
+            array(
+                'xs' => 6,
+                'md' => 6,
+                'class' => 'list',
+                'empty' => 'Empty text',
+                'size' => TbHtml::INPUT_SIZE_LARGE,
+                'textAlign' => TbHtml::TEXT_ALIGN_CENTER,
+            )
+        );
+        $div = $I->createNode($html, 'div');
+        $I->seeNodeCssClass($div, 'col-xs-6');
+        $I->seeNodeCssClass($div, 'col-md-6');
+        $select = $div->filter('select.form-control');
+        $I->seeNodeCssClass($select, 'input-large text-center list');
+        $I->dontSeeNodeAttribute($select, 'size');
     }
 
     public function testListBox()
@@ -1595,6 +1616,26 @@ class TbHtmlTest extends TbTestCase
             )
         );
         $select = $I->createNode($html, 'select');
+        $I->seeNodeCssClass($select, 'input-large text-center list');
+        $I->dontSeeNodeAttribute($select, 'size');
+
+        $html = TbHtml::activeDropDownList(
+            new Dummy,
+            'dropdown',
+            array('1', '2', '3', '4', '5'),
+            array(
+                'xs' => 6,
+                'md' => 6,
+                'class' => 'list',
+                'empty' => 'Empty text',
+                'size' => TbHtml::INPUT_SIZE_LARGE,
+                'textAlign' => TbHtml::TEXT_ALIGN_CENTER,
+            )
+        );
+        $div = $I->createNode($html, 'div');
+        $I->seeNodeCssClass($div, 'col-xs-6');
+        $I->seeNodeCssClass($div, 'col-md-6');
+        $select = $div->filter('select');
         $I->seeNodeCssClass($select, 'input-large text-center list');
         $I->dontSeeNodeAttribute($select, 'size');
     }
