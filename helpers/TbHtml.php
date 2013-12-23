@@ -2718,6 +2718,7 @@ EOD;
 
     /**
      * Generates form controls row.
+     * @deprecated BS3 only requires a div.row container for all inputs if you want a controls row
      * @param mixed $controls the controls.
      * @param array $htmlOptions additional HTML attributes.
      * @return string the generated controls.
