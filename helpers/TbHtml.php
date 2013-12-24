@@ -1516,7 +1516,13 @@ EOD;
         $labelOptions = TbArray::popValue('labelOptions', $htmlOptions, array());
         $formLayout = TbArray::popValue('formLayout', $htmlOptions, self::FORM_LAYOUT_VERTICAL);
         $labelWidthClass = TbArray::popValue('labelWidthClass', $htmlOptions, self::$defaultFormLabelWidthClass);
-        $controlWidthClass = TbArray::popValue('controlWidthClass', $htmlOptions, self::$defaultFormControlWidthClass);
+        // Retrieve the old-style "span" option
+        $span = TbArray::popValue('span', $htmlOptions);
+        if (!empty($span)) {
+            $controlWidthClass = 'col-md-' . $span;
+        } else {
+            $controlWidthClass = TbArray::popValue('controlWidthClass', $htmlOptions, self::$defaultFormControlWidthClass);
+        }
         $useFormGroup = true;
         $useControls = true;
         $output = '';
@@ -2386,7 +2392,13 @@ EOD;
         $labelOptions = TbArray::popValue('labelOptions', $htmlOptions, array());
         $formLayout = TbArray::popValue('formLayout', $htmlOptions, self::FORM_LAYOUT_VERTICAL);
         $labelWidthClass = TbArray::popValue('labelWidthClass', $htmlOptions, self::$defaultFormLabelWidthClass);
-        $controlWidthClass = TbArray::popValue('controlWidthClass', $htmlOptions, self::$defaultFormControlWidthClass);
+        // Retrieve the old-style "span" option
+        $span = TbArray::popValue('span', $htmlOptions);
+        if (!empty($span)) {
+            $controlWidthClass = 'col-md-' . $span;
+        } else {
+            $controlWidthClass = TbArray::popValue('controlWidthClass', $htmlOptions, self::$defaultFormControlWidthClass);
+        }
         $useFormGroup = true;
         $useControls = true;
         $output = '';
