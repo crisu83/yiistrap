@@ -1700,13 +1700,13 @@ EOD;
         $prepend = TbArray::popValue('prepend', $htmlOptions, '');
         $prependOptions = TbArray::popValue('prependOptions', $htmlOptions, array());
         if (!empty($prepend)) {
-            $prepend = self::inputAddOn($prepend, $prependOptions);
+            $prepend = self::inputAddOn($prepend, $prependOptions, 'prepend');
         }
 
         $append = TbArray::popValue('append', $htmlOptions, '');
         $appendOptions = TbArray::popValue('appendOptions', $htmlOptions, array());
         if (!empty($append)) {
-            $append = self::inputAddOn($append, $appendOptions);
+            $append = self::inputAddOn($append, $appendOptions, 'append');
         }
 
         if (!empty($addOnClass)) {
@@ -2648,20 +2648,58 @@ EOD;
 
     /**
      * Generates an add-on for an input field.
-     * @param string $addOn the add-on.
+     * @param string|array $addOns the add-on.
      * @param array $htmlOptions additional HTML attributes.
+     * @param string $position either 'prepend' or 'append'. Position is only important if you are passing multiple
+     * addons and it's a mixture of text/radio/checkboxes or buttons. The current styling needs buttons at the ends.
      * @return string the generated add-on.
      */
-    protected static function inputAddOn($addOn, $htmlOptions)
+    protected static function inputAddOn($addOns, $htmlOptions, $position = 'prepend')
     {
+        $normal = array();
+        $buttons = array();
         $addOnOptions = TbArray::popValue('addOnOptions', $htmlOptions, array());
+        $normalAddOnOptions = $addOnOptions;
+        $buttonAddOnOptions = $addOnOptions;
+        self::addCssClass('input-group-addon', $normalAddOnOptions);
+        self::addCssClass('input-group-btn', $buttonAddOnOptions);
 
-        if (strpos($addOn, 'btn') === false) {
-            self::addCssClass('input-group-addon', $addOnOptions);
-        } else { // buttons need a special class
-            self::addCssClass('input-group-btn', $addOnOptions);
+        if (!is_array($addOns)) {
+            $addOns = array($addOns);
         }
-        return self::tag('span', $addOnOptions, $addOn);
+
+        foreach ($addOns as $addOn) {
+            if (strpos($addOn, 'btn') === false) {
+                $normal[] = $addOn;
+            } else { // TbHtml::butonDropdown() requires special parsing
+                if (preg_match('/^<div.*class="(.*)".*>(.*)<\/div>$/U', $addOn, $matches) > 0
+                    && (isset($matches[1]))
+                    && strpos($matches[1], 'btn-group') !== false
+                ) {
+                    $buttons[] = $matches[2];
+                } else {
+                    $buttons[] = $addOn;
+                }
+            }
+        }
+        $output = '';
+
+        if ($position == 'prepend') {
+            if (!empty($buttons)) {
+                $output .= self::tag('span', $buttonAddOnOptions, implode(' ', $buttons));
+            }
+            if (!empty($normal)) {
+                $output .= self::tag('span', $normalAddOnOptions, implode(' ', $normal));
+            }
+        } else { // append
+            if (!empty($normal)) {
+                $output .= self::tag('span', $normalAddOnOptions, implode(' ', $normal));
+            }
+            if (!empty($buttons)) {
+                $output .= self::tag('span', $buttonAddOnOptions, implode(' ', $buttons));
+            }
+        }
+        return $output;
     }
 
     /**
