@@ -15,6 +15,8 @@ Yii::import('bootstrap.behaviors.TbWidget');
  */
 class TbActiveForm extends CActiveForm
 {
+    public static $errorCss = 'has-error';
+
     /**
      * @var string the form layout.
      */
