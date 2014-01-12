@@ -15,8 +15,6 @@ Yii::import('bootstrap.behaviors.TbWidget');
  */
 class TbActiveForm extends CActiveForm
 {
-    public static $errorCss = 'has-error';
-
     /**
      * @var string the form layout.
      */
@@ -96,7 +94,9 @@ class TbActiveForm extends CActiveForm
             'model' => get_class($model),
             'name' => $attribute,
             'enableAjaxValidation' => $enableAjaxValidation,
-            'inputContainer' => 'div.control-group', // Bootstrap requires this
+            'inputContainer' => 'div.form-group', // Bootstrap requires this
+            'errorCssClass' => 'has-error',
+            'successCssClass' => 'has-success',
         );
         $optionNames = array(
             'validationDelay',
