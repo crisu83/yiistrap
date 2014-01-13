@@ -4093,7 +4093,6 @@ class TbHtmlTest extends TbTestCase
         );
         $carousel = $I->createNode($html, 'div.carousel');
         $I->seeNodeCssClass($carousel, 'div slide');
-        $I->seeNodeAttribute($carousel, 'carousel');
         $I->seeNodeChildren($carousel, array('ol.carousel-indicators', 'div.carousel-inner', 'a.carousel-control', 'a.carousel-control'));
         $inner = $carousel->filter('div.carousel-inner');
         foreach ($inner->children() as $i => $divElement) {
