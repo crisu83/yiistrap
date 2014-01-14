@@ -2547,6 +2547,7 @@ EOD;
         }
         if (TbArray::popValue('disabled', $htmlOptions, false)) {
             self::addCssClass('disabled', $htmlOptions);
+            $htmlOptions['disabled'] = 'disabled';
         }
         $loading = TbArray::popValue('loading', $htmlOptions);
         if (!empty($loading)) {
