@@ -2001,6 +2001,7 @@ class TbHtmlTest extends TbTestCase
                 'name' => 'button',
                 'data-loading-text' => 'Loading text',
                 'data-toggle' => 'button',
+                'disabled' => 'disabled',
             )
         );
         $I->seeNodeChildren($button, array('i.icon-check'));
