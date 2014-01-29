@@ -62,6 +62,7 @@ class TbHtml extends CHtml // required in order to access the protected methods 
     const INPUT_TYPE_SEARCH = 'searchQuery';
     const INPUT_TYPE_CUSTOM = 'widget';
 
+    // Input sizes are deprecated in BS3, use col-*-* instead.
     const INPUT_SIZE_MINI = 'mini';
     const INPUT_SIZE_SMALL = 'small';
     const INPUT_SIZE_DEFAULT = '';
@@ -134,7 +135,7 @@ class TbHtml extends CHtml // required in order to access the protected methods 
     const NAV_TYPE_LIST = 'list';
 
     const TABS_PLACEMENT_ABOVE = '';
-    const TABS_PLACEMENT_BELOW = 'below';
+    const TABS_PLACEMENT_BELOW = 'below'; // @todo deprecated in BS3
     const TABS_PLACEMENT_LEFT = 'left';
     const TABS_PLACEMENT_RIGHT = 'right';
 
@@ -153,32 +154,34 @@ class TbHtml extends CHtml // required in order to access the protected methods 
     // PAGINATION
     // --------------------------------------------------
 
-    const PAGINATION_SIZE_MINI = 'mini';
-    const PAGINATION_SIZE_SMALL = 'small';
+    const PAGINATION_SIZE_MINI = 'mini'; // deprecated, does not exist in BS3
+    const PAGINATION_SIZE_SMALL = 'sm'; // deprecated, BS3 compatibility
+    const PAGINATION_SIZE_SM = 'sm';
     const PAGINATION_SIZE_DEFAULT = '';
-    const PAGINATION_SIZE_LARGE = 'large';
+    const PAGINATION_SIZE_LARGE = 'lg'; // deprecated, BS3 compatibility
+    const PAGINATION_SIZE_LG = 'lg';
 
-    const PAGINATION_ALIGN_LEFT = 'left';
-    const PAGINATION_ALIGN_CENTER = 'centered';
-    const PAGINATION_ALIGN_RIGHT = 'right';
+    const PAGINATION_ALIGN_LEFT = 'left'; // deprecated in BS3?
+    const PAGINATION_ALIGN_CENTER = 'centered'; // deprecated in BS3?
+    const PAGINATION_ALIGN_RIGHT = 'right'; // deprecated in BS3?
 
     //
     // LABELS AND BADGES
     // --------------------------------------------------
 
-    const LABEL_COLOR_DEFAULT = '';
+    const LABEL_COLOR_DEFAULT = 'default';
+    const LABEL_COLOR_PRIMARY = 'primary';
     const LABEL_COLOR_SUCCESS = 'success';
-    const LABEL_COLOR_WARNING = 'warning';
-    const LABEL_COLOR_IMPORTANT = 'important';
     const LABEL_COLOR_INFO = 'info';
-    const LABEL_COLOR_INVERSE = 'inverse';
+    const LABEL_COLOR_WARNING = 'warning';
+    const LABEL_COLOR_DANGER = 'danger';
 
-    const BADGE_COLOR_DEFAULT = '';
-    const BADGE_COLOR_SUCCESS = 'success';
-    const BADGE_COLOR_WARNING = 'warning';
-    const BADGE_COLOR_IMPORTANT = 'important';
-    const BADGE_COLOR_INFO = 'info';
-    const BADGE_COLOR_INVERSE = 'inverse';
+    const BADGE_COLOR_DEFAULT = ''; // deprecated, only a single badge color in BS3
+    const BADGE_COLOR_SUCCESS = 'success'; // deprecated, only a single badge color in BS3
+    const BADGE_COLOR_WARNING = 'warning'; // deprecated, only a single badge color in BS3
+    const BADGE_COLOR_IMPORTANT = 'important'; // deprecated, only a single badge color in BS3
+    const BADGE_COLOR_INFO = 'info'; // deprecated, only a single badge color in BS3
+    const BADGE_COLOR_INVERSE = 'inverse'; // deprecated, only a single badge color in BS3
 
     //
     // TOOLTIPS AND POPOVERS
@@ -479,6 +482,10 @@ class TbHtml extends CHtml // required in order to access the protected methods 
      * @var string the CSS class for displaying error summaries.
      */
     public static $errorSummaryCss = 'alert alert-block alert-error';
+    /**
+     * @var string the CSS class for displaying error inputs
+     */
+    public static $errorCss = 'has-error';
     /**
      * @var string the icon vendor
      */
@@ -917,9 +924,27 @@ class TbHtml extends CHtml // required in order to access the protected methods 
      */
     public static function textArea($name, $value = '', $htmlOptions = array())
     {
+        // In case we do need to create a div container for the text area
+        $containerOptions = array();
+
+        // Get the intended input width before the rest of the options are normalized
+        self::addSpanClass($htmlOptions);
+        self::addColClass($htmlOptions);
+        $col = self::popColClasses($htmlOptions);
+
         $htmlOptions = self::normalizeInputOptions($htmlOptions);
         self::addCssClass('form-control', $htmlOptions);
-        return parent::textArea($name, $value, $htmlOptions);
+
+        $output = '';
+        if (!empty($col)) {
+            self::addCssClass($col, $containerOptions);
+            $output .= self::openTag('div', $containerOptions);
+        }
+        $output .= parent::textArea($name, $value, $htmlOptions);
+        if (!empty($col)) {
+            $output .= '</div>';
+        }
+        return $output;
     }
 
     /**
@@ -979,12 +1004,37 @@ class TbHtml extends CHtml // required in order to access the protected methods 
     public static function dropDownList($name, $select, $data, $htmlOptions = array())
     {
         $displaySize = TbArray::popValue('displaySize', $htmlOptions);
+
+        // In case we do need to create a div container for the input element (i.e. has addon or defined col)
+        $containerOptions = array();
+
+        // Get the intended input width before the rest of the options are normalized
+        self::addSpanClass($htmlOptions);
+        self::addColClass($htmlOptions);
+        $col = self::popColClasses($htmlOptions);
+
         $htmlOptions = self::normalizeInputOptions($htmlOptions);
         self::addCssClass('form-control', $htmlOptions);
         if (!empty($displaySize)) {
             $htmlOptions['size'] = $displaySize;
         }
-        return parent::dropDownList($name, $select, $data, $htmlOptions);
+
+        if (!empty($col)) {
+            self::addCssClass($col, $containerOptions);
+        }
+
+        $output = '';
+
+        if (!empty($containerOptions)) {
+            $output .= self::openTag('div', $containerOptions);
+        }
+        $output .= parent::dropDownList($name, $select, $data, $htmlOptions);
+
+        if (!empty($containerOptions)) {
+            $output .= '</div>';
+        }
+
+        return $output;
     }
 
     /**
@@ -1470,7 +1520,13 @@ EOD;
         $labelOptions = TbArray::popValue('labelOptions', $htmlOptions, array());
         $formLayout = TbArray::popValue('formLayout', $htmlOptions, self::FORM_LAYOUT_VERTICAL);
         $labelWidthClass = TbArray::popValue('labelWidthClass', $htmlOptions, self::$defaultFormLabelWidthClass);
-        $controlWidthClass = TbArray::popValue('controlWidthClass', $htmlOptions, self::$defaultFormControlWidthClass);
+        // Retrieve the old-style "span" option
+        $span = TbArray::popValue('span', $htmlOptions);
+        if (!empty($span)) {
+            $controlWidthClass = 'col-md-' . $span;
+        } else {
+            $controlWidthClass = TbArray::popValue('controlWidthClass', $htmlOptions, self::$defaultFormControlWidthClass);
+        }
         $useFormGroup = true;
         $useControls = true;
         $output = '';
@@ -1636,6 +1692,14 @@ EOD;
     {
         parent::clientChange('change', $htmlOptions);
 
+        // In case we do need to create a div container for the input element (i.e. has addon or defined col)
+        $containerOptions = array();
+
+        // Get the intended input width before the rest of the options are normalized
+        self::addSpanClass($htmlOptions);
+        self::addColClass($htmlOptions);
+        $col = self::popColClasses($htmlOptions);
+
         $htmlOptions = self::normalizeInputOptions($htmlOptions);
         self::addCssClass('form-control', $htmlOptions);
 
@@ -1646,21 +1710,29 @@ EOD;
         $prepend = TbArray::popValue('prepend', $htmlOptions, '');
         $prependOptions = TbArray::popValue('prependOptions', $htmlOptions, array());
         if (!empty($prepend)) {
-            $prepend = self::inputAddOn($prepend, $prependOptions);
+            $prepend = self::inputAddOn($prepend, $prependOptions, 'prepend');
         }
 
         $append = TbArray::popValue('append', $htmlOptions, '');
         $appendOptions = TbArray::popValue('appendOptions', $htmlOptions, array());
         if (!empty($append)) {
-            $append = self::inputAddOn($append, $appendOptions);
+            $append = self::inputAddOn($append, $appendOptions, 'append');
+        }
+
+        if (!empty($addOnClass)) {
+            $containerOptions = $addOnOptions;
+        }
+
+        if (!empty($col)) {
+            self::addCssClass($col, $containerOptions);
         }
 
         $output = '';
-        if (!empty($addOnClass)) {
-            $output .= self::openTag('div', $addOnOptions);
+        if (!empty($containerOptions)) {
+            $output .= self::openTag('div', $containerOptions);
         }
         $output .= $prepend . parent::inputField($type, $name, $value, $htmlOptions) . $append;
-        if (!empty($addOnClass)) {
+        if (!empty($containerOptions)) {
             $output .= '</div>';
         }
         return $output;
@@ -1779,9 +1851,28 @@ EOD;
      */
     public static function activeTextArea($model, $attribute, $htmlOptions = array())
     {
+        // In case we do need to create a div container for the text area
+        $containerOptions = array();
+
+        // Get the intended input width before the rest of the options are normalized
+        self::addSpanClass($htmlOptions);
+        self::addColClass($htmlOptions);
+        $col = self::popColClasses($htmlOptions);
+
         $htmlOptions = self::normalizeInputOptions($htmlOptions);
         self::addCssClass('form-control', $htmlOptions);
-        return parent::activeTextArea($model, $attribute, $htmlOptions);
+
+        $output = '';
+        if (!empty($col)) {
+            self::addCssClass($col, $containerOptions);
+            $output .= self::openTag('div', $containerOptions);
+        }
+        $output .= parent::activeTextArea($model, $attribute, $htmlOptions);
+        if (!empty($col)) {
+            $output .= '</div>';
+        }
+
+        return $output;
     }
 
     /**
@@ -1872,12 +1963,37 @@ EOD;
     public static function activeDropDownList($model, $attribute, $data, $htmlOptions = array())
     {
         $displaySize = TbArray::popValue('displaySize', $htmlOptions);
+
+        // In case we do need to create a div container for the input element (i.e. has addon or defined col)
+        $containerOptions = array();
+
+        // Get the intended input width before the rest of the options are normalized
+        self::addSpanClass($htmlOptions);
+        self::addColClass($htmlOptions);
+        $col = self::popColClasses($htmlOptions);
+
         $htmlOptions = self::normalizeInputOptions($htmlOptions);
         self::addCssClass('form-control', $htmlOptions);
         if (!empty($displaySize)) {
             $htmlOptions['size'] = $displaySize;
         }
-        return parent::activeDropDownList($model, $attribute, $data, $htmlOptions);
+
+        if (!empty($col)) {
+            self::addCssClass($col, $containerOptions);
+        }
+
+        $output = '';
+
+        if (!empty($containerOptions)) {
+            $output .= self::openTag('div', $containerOptions);
+        }
+        $output .= parent::activeDropDownList($model, $attribute, $data, $htmlOptions);
+
+        if (!empty($containerOptions)) {
+            $output .= '</div>';
+        }
+
+        return $output;
     }
 
     /**
@@ -2280,7 +2396,13 @@ EOD;
         $labelOptions = TbArray::popValue('labelOptions', $htmlOptions, array());
         $formLayout = TbArray::popValue('formLayout', $htmlOptions, self::FORM_LAYOUT_VERTICAL);
         $labelWidthClass = TbArray::popValue('labelWidthClass', $htmlOptions, self::$defaultFormLabelWidthClass);
-        $controlWidthClass = TbArray::popValue('controlWidthClass', $htmlOptions, self::$defaultFormControlWidthClass);
+        // Retrieve the old-style "span" option
+        $span = TbArray::popValue('span', $htmlOptions);
+        if (!empty($span)) {
+            $controlWidthClass = 'col-md-' . $span;
+        } else {
+            $controlWidthClass = TbArray::popValue('controlWidthClass', $htmlOptions, self::$defaultFormControlWidthClass);
+        }
         $useFormGroup = true;
         $useControls = true;
         $output = '';
@@ -2482,6 +2604,14 @@ EOD;
         parent::resolveNameID($model, $attribute, $htmlOptions);
         parent::clientChange('change', $htmlOptions);
 
+        // In case we do need to create a div container for the input element (i.e. has addon or defined col)
+        $containerOptions = array();
+
+        // Get the intended input width before the rest of the options are normalized
+        self::addSpanClass($htmlOptions);
+        self::addColClass($htmlOptions);
+        $col = self::popColClasses($htmlOptions);
+
         $htmlOptions = self::normalizeInputOptions($htmlOptions);
         self::addCssClass('form-control', $htmlOptions);
 
@@ -2501,12 +2631,20 @@ EOD;
             $append = self::inputAddOn($append, $appendOptions);
         }
 
-        $output = '';
         if (!empty($addOnClass)) {
-            $output .= self::openTag('div', $addOnOptions);
+            $containerOptions = $addOnOptions;
+        }
+
+        if (!empty($col)) {
+            self::addCssClass($col, $containerOptions);
+        }
+
+        $output = '';
+        if (!empty($containerOptions)) {
+            $output .= self::openTag('div', $containerOptions);
         }
         $output .= $prepend . parent::activeInputField($type, $model, $attribute, $htmlOptions) . $append;
-        if (!empty($addOnClass)) {
+        if (!empty($containerOptions)) {
             $output .= '</div>';
         }
         return $output;
@@ -2526,20 +2664,58 @@ EOD;
 
     /**
      * Generates an add-on for an input field.
-     * @param string $addOn the add-on.
+     * @param string|array $addOns the add-on.
      * @param array $htmlOptions additional HTML attributes.
+     * @param string $position either 'prepend' or 'append'. Position is only important if you are passing multiple
+     * addons and it's a mixture of text/radio/checkboxes or buttons. The current styling needs buttons at the ends.
      * @return string the generated add-on.
      */
-    protected static function inputAddOn($addOn, $htmlOptions)
+    protected static function inputAddOn($addOns, $htmlOptions, $position = 'prepend')
     {
+        $normal = array();
+        $buttons = array();
         $addOnOptions = TbArray::popValue('addOnOptions', $htmlOptions, array());
+        $normalAddOnOptions = $addOnOptions;
+        $buttonAddOnOptions = $addOnOptions;
+        self::addCssClass('input-group-addon', $normalAddOnOptions);
+        self::addCssClass('input-group-btn', $buttonAddOnOptions);
 
-        if (strpos($addOn, 'btn') === false) {
-            self::addCssClass('input-group-addon', $addOnOptions);
-        } else { // buttons need a special class
-            self::addCssClass('input-group-btn', $addOnOptions);
+        if (!is_array($addOns)) {
+            $addOns = array($addOns);
         }
-        return self::tag('span', $addOnOptions, $addOn);
+
+        foreach ($addOns as $addOn) {
+            if (strpos($addOn, 'btn') === false) {
+                $normal[] = $addOn;
+            } else { // TbHtml::butonDropdown() requires special parsing
+                if (preg_match('/^<div.*class="(.*)".*>(.*)<\/div>$/U', $addOn, $matches) > 0
+                    && (isset($matches[1]))
+                    && strpos($matches[1], 'btn-group') !== false
+                ) {
+                    $buttons[] = $matches[2];
+                } else {
+                    $buttons[] = $addOn;
+                }
+            }
+        }
+        $output = '';
+
+        if ($position == 'prepend') {
+            if (!empty($buttons)) {
+                $output .= self::tag('span', $buttonAddOnOptions, implode(' ', $buttons));
+            }
+            if (!empty($normal)) {
+                $output .= self::tag('span', $normalAddOnOptions, implode(' ', $normal));
+            }
+        } else { // append
+            if (!empty($normal)) {
+                $output .= self::tag('span', $normalAddOnOptions, implode(' ', $normal));
+            }
+            if (!empty($buttons)) {
+                $output .= self::tag('span', $buttonAddOnOptions, implode(' ', $buttons));
+            }
+        }
+        return $output;
     }
 
     /**
@@ -2596,6 +2772,7 @@ EOD;
 
     /**
      * Generates form controls row.
+     * @deprecated BS3 only requires a div.row container for all inputs if you want a controls row
      * @param mixed $controls the controls.
      * @param array $htmlOptions additional HTML attributes.
      * @return string the generated controls.
@@ -2952,7 +3129,6 @@ EOD;
 
     /**
      * Generates an image tag within thumbnail frame.
-     * @deprecated See {@link imageThumbnail()}
      * @param string $src the image URL.
      * @param string $alt the alternative text display.
      * @param array $htmlOptions additional HTML attributes.
@@ -3291,6 +3467,7 @@ EOD;
 
     /**
      * Generates a stacked tab navigation.
+     * @deprecated Style does not exist in BS3
      * @param array $items the menu items.
      * @param array $htmlOptions additional HTML attributes.
      * @return string the generated menu.
@@ -3353,9 +3530,11 @@ EOD;
      */
     public static function nav($type, $items, $htmlOptions = array())
     {
-        self::addCssClass(array('nav', 'navbar-nav'), $htmlOptions);
+        self::addCssClass('nav', $htmlOptions);
         if (!empty($type)) {
             self::addCssClass('nav-' . $type, $htmlOptions);
+        } else {
+            self::addCssClass('navbar-nav', $htmlOptions);
         }
         $stacked = TbArray::popValue('stacked', $htmlOptions, false);
         if ($type !== self::NAV_TYPE_LIST && $stacked) {
@@ -3747,9 +3926,7 @@ EOD;
             if (!empty($align)) {
                 self::addCssClass('pagination-' . $align, $htmlOptions);
             }
-            $listOptions = TbArray::popValue('listOptions', $htmlOptions, array());
-            $output = self::openTag('div', $htmlOptions);
-            $output .= self::openTag('ul', $listOptions);
+            $output = self::openTag('ul', $htmlOptions);
             foreach ($items as $itemOptions) {
                 // todo: consider removing the support for htmlOptions.
                 $options = TbArray::popValue('htmlOptions', $itemOptions, array());
@@ -3760,7 +3937,7 @@ EOD;
                 $url = TbArray::popValue('url', $itemOptions, false);
                 $output .= self::paginationLink($label, $url, $itemOptions);
             }
-            $output .= '</ul></div>';
+            $output .= '</ul>';
             return $output;
         }
         return '';
@@ -3778,6 +3955,7 @@ EOD;
         $linkOptions = TbArray::popValue('linkOptions', $htmlOptions, array());
         if (TbArray::popValue('active', $htmlOptions, false)) {
             self::addCssClass('active', $htmlOptions);
+            $label .= ' ' . self::tag('span', array('class' => 'sr-only'), '(current)');
         }
         if (TbArray::popValue('disabled', $htmlOptions, false)) {
             self::addCssClass('disabled', $htmlOptions);
@@ -3852,6 +4030,8 @@ EOD;
         $color = TbArray::popValue('color', $htmlOptions);
         if (!empty($color)) {
             self::addCssClass('label-' . $color, $htmlOptions);
+        } else {
+            self::addCssClass('label-default', $htmlOptions);
         }
         return self::tag('span', $htmlOptions, $label);
     }
@@ -3865,10 +4045,6 @@ EOD;
     public static function badge($label, $htmlOptions = array())
     {
         self::addCssClass('badge', $htmlOptions);
-        $color = TbArray::popValue('color', $htmlOptions);
-        if (!empty($color)) {
-            self::addCssClass('badge-' . $color, $htmlOptions);
-        }
         return self::tag('span', $htmlOptions, $label);
     }
 
@@ -4777,7 +4953,7 @@ EOD;
                 }
             }
         }
-        return implode(' ', $colClasses);
+        return implode(' ', array_unique($colClasses));
     }
 
     /**
@@ -4800,6 +4976,6 @@ EOD;
             }
             $htmlOptions['class'] = implode(' ', $returnClasses);
         }
-        return implode(' ', $colClasses);
+        return implode(' ', array_unique($colClasses));
     }
 }

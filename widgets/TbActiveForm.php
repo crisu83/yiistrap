@@ -94,7 +94,9 @@ class TbActiveForm extends CActiveForm
             'model' => get_class($model),
             'name' => $attribute,
             'enableAjaxValidation' => $enableAjaxValidation,
-            'inputContainer' => 'div.control-group', // Bootstrap requires this
+            'inputContainer' => 'div.form-group', // Bootstrap requires this
+            'errorCssClass' => 'has-error',
+            'successCssClass' => 'has-success',
         );
         $optionNames = array(
             'validationDelay',
@@ -723,6 +725,8 @@ class TbActiveForm extends CActiveForm
     public function createFormActions($actions, $htmlOptions = array())
     {
         $htmlOptions['formLayout'] = $this->layout;
+        $htmlOptions['labelWidthClass'] = TbArray::getValue('labelWidthClass', $htmlOptions, $this->labelWidthClass);
+        $htmlOptions['controlWidthClass'] = TbArray::getValue('controlWidthClass', $htmlOptions, $this->controlWidthClass);
         return TbHtml::formActions($actions, $htmlOptions);
     }
 
@@ -753,6 +757,8 @@ class TbActiveForm extends CActiveForm
         if (!TbArray::getValue('formLayout', $options, false)) {
             $options['formLayout'] = $this->layout;
         }
+        $options['labelWidthClass'] = TbArray::getValue('labelWidthClass', $options, $this->labelWidthClass);
+        $options['controlWidthClass'] = TbArray::getValue('controlWidthClass', $options, $this->controlWidthClass);
         return $options;
     }
 }

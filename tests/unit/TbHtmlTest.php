@@ -438,6 +438,41 @@ class TbHtmlTest extends TbTestCase
         );
         $input = $I->createNode($html, 'input');
         $I->seeNodeCssClass($input, 'input-block-level');
+
+        $html = TbHtml::textField(
+            'text',
+            'text',
+            array(
+                'span' => 6,
+            )
+        );
+        $div = $I->createNode($html, 'div');
+        $I->seeNodeCssClass($div, 'col-md-6');
+        $I->seeNodeChildren($div, array('input'));
+
+        $html = TbHtml::textField(
+            'text',
+            'text',
+            array(
+                'xs' => 6,
+                'md' => 6,
+            )
+        );
+        $div = $I->createNode($html, 'div');
+        $I->seeNodeCssClass($div, 'col-xs-6');
+        $I->seeNodeCssClass($div, 'col-md-6');
+        $I->seeNodeChildren($div, array('input'));
+
+        $html = TbHtml::textField(
+            'text',
+            'text',
+            array(
+                'class' => 'col-md-4',
+            )
+        );
+        $div = $I->createNode($html, 'div');
+        $I->seeNodeCssClass($div, 'col-md-4');
+        $I->seeNodeChildren($div, array('input'));
     }
 
     public function testPasswordField()
@@ -614,6 +649,29 @@ class TbHtmlTest extends TbTestCase
             )
         );
         $I->seeNodeText($textarea, 'Textarea text');
+
+        $html = TbHtml::textArea(
+            'textarea',
+            'Textarea text',
+            array(
+                'xs' => 6,
+                'md' => 6,
+                'class' => 'textarea',
+            )
+        );
+        $div = $I->createNode($html, 'div');
+        $I->seeNodeCssClass($div, 'col-xs-6');
+        $I->seeNodeCssClass($div, 'col-md-6');
+        $textarea = $div->filter('textarea');
+        $I->seeNodeAttributes(
+            $textarea,
+            array(
+                'class' => 'textarea form-control',
+                'id' => 'textarea',
+                'name' => 'textarea',
+            )
+        );
+        $I->seeNodeText($textarea, 'Textarea text');
     }
 
     public function testRadioButton()
@@ -692,6 +750,27 @@ class TbHtmlTest extends TbTestCase
             )
         );
         $select = $I->createNode($html, 'select.form-control');
+        $I->seeNodeCssClass($select, 'input-large text-center list');
+        $I->dontSeeNodeAttribute($select, 'size');
+
+        $I = $this->codeGuy;
+        $html = TbHtml::dropDownList(
+            'dropdown',
+            null,
+            array('1', '2', '3', '4', '5'),
+            array(
+                'xs' => 6,
+                'md' => 6,
+                'class' => 'list',
+                'empty' => 'Empty text',
+                'size' => TbHtml::INPUT_SIZE_LARGE,
+                'textAlign' => TbHtml::TEXT_ALIGN_CENTER,
+            )
+        );
+        $div = $I->createNode($html, 'div');
+        $I->seeNodeCssClass($div, 'col-xs-6');
+        $I->seeNodeCssClass($div, 'col-md-6');
+        $select = $div->filter('select.form-control');
         $I->seeNodeCssClass($select, 'input-large text-center list');
         $I->dontSeeNodeAttribute($select, 'size');
     }
@@ -1237,6 +1316,41 @@ class TbHtmlTest extends TbTestCase
         $div = $I->createNode($html, 'div');
         $I->seeNodeCssClass($div, 'input-group');
         $I->seeNodeChildren($div, array('span.input-group-addon', 'input', 'span.input-group-addon'));
+
+        $html = TbHtml::activeTextField(
+            new Dummy,
+            'text',
+            array(
+                'span' => 6,
+            )
+        );
+        $div = $I->createNode($html, 'div');
+        $I->seeNodeCssClass($div, 'col-md-6');
+        $I->seeNodeChildren($div, array('input'));
+
+        $html = TbHtml::activeTextField(
+            new Dummy,
+            'text',
+            array(
+                'xs' => 6,
+                'md' => 6,
+            )
+        );
+        $div = $I->createNode($html, 'div');
+        $I->seeNodeCssClass($div, 'col-xs-6');
+        $I->seeNodeCssClass($div, 'col-md-6');
+        $I->seeNodeChildren($div, array('input'));
+
+        $html = TbHtml::activeTextField(
+            new Dummy,
+            'text',
+            array(
+                'class' => 'col-md-4',
+            )
+        );
+        $div = $I->createNode($html, 'div');
+        $I->seeNodeCssClass($div, 'col-md-4');
+        $I->seeNodeChildren($div, array('input'));
     }
 
     public function testActivePasswordField()
@@ -1391,6 +1505,29 @@ class TbHtmlTest extends TbTestCase
             )
         );
         $I->seeNodeText($textarea, 'Textarea text');
+
+        $html = TbHtml::activeTextArea(
+            new Dummy,
+            'textarea',
+            array(
+                'xs' => 6,
+                'md' => 6,
+                'class' => 'textarea',
+            )
+        );
+        $div = $I->createNode($html, 'div');
+        $I->seeNodeCssClass($div, 'col-xs-6');
+        $I->seeNodeCssClass($div, 'col-md-6');
+        $textarea = $div->filter('textarea');
+        $I->seeNodeAttributes(
+            $textarea,
+            array(
+                'class' => 'textarea form-control',
+                'id' => 'Dummy_textarea',
+                'name' => 'Dummy[textarea]',
+            )
+        );
+        $I->seeNodeText($textarea, 'Textarea text');
     }
 
     public function testActiveRadioButton()
@@ -1479,6 +1616,26 @@ class TbHtmlTest extends TbTestCase
             )
         );
         $select = $I->createNode($html, 'select');
+        $I->seeNodeCssClass($select, 'input-large text-center list');
+        $I->dontSeeNodeAttribute($select, 'size');
+
+        $html = TbHtml::activeDropDownList(
+            new Dummy,
+            'dropdown',
+            array('1', '2', '3', '4', '5'),
+            array(
+                'xs' => 6,
+                'md' => 6,
+                'class' => 'list',
+                'empty' => 'Empty text',
+                'size' => TbHtml::INPUT_SIZE_LARGE,
+                'textAlign' => TbHtml::TEXT_ALIGN_CENTER,
+            )
+        );
+        $div = $I->createNode($html, 'div');
+        $I->seeNodeCssClass($div, 'col-xs-6');
+        $I->seeNodeCssClass($div, 'col-md-6');
+        $select = $div->filter('select');
         $I->seeNodeCssClass($select, 'input-large text-center list');
         $I->dontSeeNodeAttribute($select, 'size');
     }
@@ -3216,14 +3373,11 @@ class TbHtmlTest extends TbTestCase
         $html = TbHtml::pagination(
             $items,
             array(
-                'class' => 'div',
-                'listOptions' => array('class' => 'list'),
+                'class' => 'ul',
             )
         );
-        $div = $I->createNode($html, 'div.pagination');
-        $I->seeNodeCssClass($div, 'div');
-        $ul = $div->filter('ul');
-        $I->seeNodeCssClass($ul, 'list');
+        $ul = $I->createNode($html, 'ul.pagination');
+        $I->seeNodeCssClass($ul, 'ul');
         $I->seeNodeNumChildren($ul, 7);
         foreach ($ul->children() as $i => $liElement) {
             $li = $I->createNode($liElement);
@@ -3245,17 +3399,8 @@ class TbHtmlTest extends TbTestCase
                 'size' => TbHtml::PAGINATION_SIZE_LARGE,
             )
         );
-        $div = $I->createNode($html, 'div.pagination');
-        $I->seeNodeCssClass($div, 'pagination-large');
-
-        $html = TbHtml::pagination(
-            $items,
-            array(
-                'align' => TbHtml::PAGINATION_ALIGN_CENTER,
-            )
-        );
-        $div = $I->createNode($html, 'div.pagination');
-        $I->seeNodeCssClass($div, 'pagination-centered');
+        $ul = $I->createNode($html, 'ul.pagination');
+        $I->seeNodeCssClass($ul, 'pagination-lg');
 
         $html = TbHtml::pagination(array());
         $this->assertEquals('', $html);
@@ -3383,12 +3528,11 @@ class TbHtmlTest extends TbTestCase
         $html = TbHtml::badge(
             'Badge text',
             array(
-                'color' => TbHtml::BADGE_COLOR_WARNING,
                 'class' => 'span',
             )
         );
         $span = $I->createNode($html, 'span.badge');
-        $I->seeNodeCssClass($span, 'badge-warning span');
+        $I->seeNodeCssClass($span, 'span');
         $I->seeNodeText($span, 'Badge text');
     }
 
@@ -3949,7 +4093,6 @@ class TbHtmlTest extends TbTestCase
         );
         $carousel = $I->createNode($html, 'div.carousel');
         $I->seeNodeCssClass($carousel, 'div slide');
-        $I->seeNodeAttribute($carousel, 'carousel');
         $I->seeNodeChildren($carousel, array('ol.carousel-indicators', 'div.carousel-inner', 'a.carousel-control', 'a.carousel-control'));
         $inner = $carousel->filter('div.carousel-inner');
         foreach ($inner->children() as $i => $divElement) {
