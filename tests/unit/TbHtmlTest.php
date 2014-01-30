@@ -725,8 +725,9 @@ class TbHtmlTest extends TbTestCase
             $span,
             array('input[type=checkbox]', 'label.checkbox', 'label.checkbox', 'label.checkbox', 'label.checkbox')
         );
-        $first = $span->filter('label')->first();
-        $I->seeNodeAttribute($first, 'for', 'checkboxList_all');
+        $label = $span->filter('label')->first();
+        $input = $label->filter('input');
+        $I->seeNodeAttribute($input, 'name', 'checkboxList_all');
 
         $html = TbHtml::checkBoxList(
             'checkboxList',
@@ -742,8 +743,9 @@ class TbHtmlTest extends TbTestCase
             $span,
             array('label.checkbox', 'label.checkbox', 'label.checkbox', 'label.checkbox', 'input[type=checkbox]')
         );
-        $last = $span->filter('label')->last();
-        $I->seeNodeAttribute($last, 'for', 'checkboxList_all');
+        $label = $span->filter('label')->last();
+        $input = $label->filter('input');
+        $I->seeNodeAttribute($input, 'name', 'checkboxList_all');
     }
 
     public function testInlineCheckBoxList()
