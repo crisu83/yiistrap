@@ -37,6 +37,10 @@ class TbApi extends CApplicationComponent
      * @var bool whether we should copy the asset file or directory even if it is already published before.
      */
     public $forceCopyAssets = false;
+    /**
+     * @var string url to the css file adding the necessary padding for >=980px displays and fixed-top navbars. null uses the default file
+     */
+    public $paddingCssUrl = null;
 
     private $_assetsUrl;
 
@@ -52,6 +56,19 @@ class TbApi extends CApplicationComponent
             $url = $this->getAssetsUrl() . '/css/' . $fileName;
         }
         Yii::app()->clientScript->registerCssFile($url, $media);
+    }
+
+    /**
+     * Registers the fix for >=980px displays so that content is rendered properly even with
+     * fixed-top navbars
+     * @param string $url the URL to the CSS file to register.
+     */
+    public function registerPaddingCss($url = null) {
+        if ($url === null) {
+            $fileName = YII_DEBUG ? 'bootstrap-padding.css' : 'bootstrap-padding.min.css';
+            $url = $this->getAssetsUrl() . '/css/' . $fileName;
+        }
+        Yii::app()->clientScript->registerCssFile($url);
     }
 
     /**
@@ -91,6 +108,7 @@ class TbApi extends CApplicationComponent
     public function registerAllCss()
     {
         $this->registerCoreCss();
+        $this->registerPaddingCss($this->paddingCssUrl);
         $this->registerResponsiveCss();
         $this->registerYiistrapCss();
     }
