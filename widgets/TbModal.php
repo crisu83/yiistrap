@@ -111,6 +111,21 @@ class TbModal extends CWidget
     public $footer;
 
     /**
+     * @var int iframe height in px
+     */
+    public $iframeHeight = 600;
+
+    /**
+     * @var int iframe width in px
+     */
+    public $iframeWidth = 800;
+
+    /**
+     * @var array the htmlOptions for the iframe tag
+     */
+    public $iframeHtmlOptions=array();
+
+    /**
      * Widget's initialization method
      */
     public function init()
@@ -131,6 +146,7 @@ class TbModal extends CWidget
         }
 
         $this->initOptions();
+        $this->initIFrame();
         $this->initEvents();
     }
 
@@ -164,6 +180,84 @@ class TbModal extends CWidget
         TbArray::defaultValue('backdrop', $this->backdrop, $this->options);
         TbArray::defaultValue('keyboard', $this->keyboard, $this->options);
         TbArray::defaultValue('show', $this->show, $this->options);
+    }
+
+    /**
+     * Initialize the iframe
+     * Set the iframe hmloptions
+     * Set iframe src on event onShow, src='' onHide
+     * Add the iframe tag to content
+     * Override bootstrap css for modal height/width, remove header border-bottom if empty header
+     */
+    public function initIFrame()
+    {
+        $isIFrame = !empty($this->remote) && strpos($this->remote,'://') !== false;
+        if($isIFrame)
+        {
+            $this->iframeHtmlOptions['src']='';
+            TbArray::defaultValue('width','100%',$this->iframeHtmlOptions);
+            TbArray::defaultValue('height',$this->iframeHeight.'px', $this->iframeHtmlOptions);
+            TbArray::defaultValue('frameborder',0, $this->iframeHtmlOptions);
+
+            $this->addJsIFrameSrc('onShow',$this->remote);
+            $this->addJsIFrameSrc('onHide','');
+
+            $this->content = $this->content . TbHtml::tag('iframe', $this->iframeHtmlOptions,'');
+            $this->remote = null;
+
+            //bootstrap has set modal-body max-height to 400
+            $divId = $this->getId();
+            $modalWidth = ($this->iframeWidth + 30).'px'; //bootstrap padding = 30
+            if(empty($this->header))
+                $headerBtn = empty($this->header) ? "div#$divId .modal-header{border-bottom:none}" : '';
+            Yii::app()->getClientScript()->registerCss($this->getIFrameId(),"div#$divId .modal-body{max-height:none;min-width:$modalWidth} div#$divId.modal{width:auto}$headerBtn");
+        }
+    }
+
+    /**
+     * Get the id for the iframe tag
+     *
+     * @return mixed
+     */
+    public function getIFrameId()
+    {
+        if(!isset($this->iframeHtmlOptions['id']))
+            $this->iframeHtmlOptions['id'] = 'iframe-'.$this->getId();
+
+        return $this->iframeHtmlOptions['id'];
+    }
+
+    /**
+     * Add the js code to assign the iframe src onShow, onHide
+     * Check for assignd events
+     *
+     * @param $event
+     * @param $src
+     */
+    protected function addJsIFrameSrc($event,$src)
+    {
+        $assignedEvent = trim($this->$event);
+        $iframeSrcJs = "$('#{$this->getIFrameId()}').attr('src','{$src}');";
+
+        if(empty($assignedEvent))
+            $this->$event='function(){'.$iframeSrcJs.'}';
+        else
+        {
+            if(strpos($assignedEvent,'function') === 0)
+            {
+                $assignedEvent = substr($assignedEvent,0,-1); //remove ending }
+                if(substr($assignedEvent, -1) !=';')
+                    $assignedEvent .= ';';
+
+                $this->$event= $assignedEvent . $iframeSrcJs .'}';
+            }
+            else
+            {
+                if(substr($assignedEvent, -1) !=';')
+                    $assignedEvent .= ';';
+                $this->$event= 'function(){'.$assignedEvent . $iframeSrcJs.'}';
+            }
+        }
     }
 
     /**
@@ -238,10 +332,12 @@ class TbModal extends CWidget
      */
     public function renderModalFooter()
     {
-
-        echo '<div class="modal-footer">' . PHP_EOL;
-        echo $this->footer;
-        echo '</div>' . PHP_EOL;
+       if(!empty($this->footer))
+       {
+          echo '<div class="modal-footer">' . PHP_EOL;
+          echo $this->footer;
+          echo '</div>' . PHP_EOL;
+       }
     }
 
     /**
