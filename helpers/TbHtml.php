@@ -8,8 +8,6 @@
  * @package bootstrap.helpers
  */
 
-Yii::import('bootstrap.helpers.TbArray');
-
 /**
  * Bootstrap HTML helper.
  */
