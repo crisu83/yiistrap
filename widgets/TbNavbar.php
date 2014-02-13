@@ -104,7 +104,7 @@ class TbNavbar extends CWidget
             ob_start();
             /* @var TbCollapse $collapseWidget */
             $collapseWidget = $this->controller->widget(
-                'bootstrap.widgets.TbCollapse',
+                '\TbCollapse',
                 array(
                     'toggle' => false, // navbars are collapsed by default
                     'content' => $items,

@@ -63,7 +63,7 @@ class TbNav extends CWidget
     public function init()
     {
         $this->attachBehavior('TbWidget', new TbWidget);
-        $this->copyId();
+        $this->resolveId();
         $route = $this->controller->getRoute();
         if ($this->stacked) {
             TbHtml::addCssClass('nav-stacked', $this->htmlOptions);
@@ -72,7 +72,7 @@ class TbNav extends CWidget
             if (is_string($this->scrollspy)) {
                 $this->scrollspy = array('target' => $this->scrollspy);
             }
-            $this->widget('bootstrap.widgets.TbScrollspy', $this->scrollspy);
+            $this->widget('\TbScrollspy', $this->scrollspy);
         }
         $this->items = $this->normalizeItems($this->items, $route, $hasActiveChild);
     }
