@@ -7,8 +7,6 @@
  * @package bootstrap.widgets
  */
 
-Yii::import('bootstrap.behaviors.TbWidget');
-
 /**
  * Bootstrap scrollspy widget.
  * @see http://twitter.github.com/bootstrap/javascript.html#scrollspy

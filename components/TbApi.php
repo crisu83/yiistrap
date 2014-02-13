@@ -40,48 +40,42 @@ class TbApi extends CApplicationComponent
      */
     public $forceCopyAssets = false;
 
-    /**
-     * @var string the default icon vendor
-     */
-    public $defaultIconVendor = 'glyphicon';
-
     private $_assetsUrl;
-
-    public function init()
-    {
-        TbHtml::$iconVendor = $this->defaultIconVendor;
-        parent::init();
-    }
 
     /**
      * Registers the Bootstrap CSS.
      * @param string $url the URL to the CSS file to register.
+     * @param string $media the media type (defaults to 'screen').
      */
-    public function registerCoreCss($url = null)
+    public function registerCss($url = null, $media = 'screen')
     {
         if ($url === null) {
             $fileName = YII_DEBUG ? 'bootstrap.css' : 'bootstrap.min.css';
             $url = $this->getAssetsUrl() . '/css/' . $fileName;
         }
-        /** @var CClientScript $cs */
-        $cs = Yii::app()->getClientScript();
-        $cs->registerMetaTag('width=device-width, initial-scale=1.0', 'viewport');
-        $cs->registerCssFile($url);
+        Yii::app()->getClientScript()->registerCssFile($url, $media);
     }
 
     /**
      * Registers the Yiistrap CSS.
      * @param string $url the URL to the CSS file to register.
+     * @param string $media the media type.
      */
-    public function registerYiistrapCss($url = null)
+    public function registerYiistrapCss($url = null, $media = '')
     {
         if ($url === null) {
             $fileName = YII_DEBUG ? 'yiistrap.css' : 'yiistrap.min.css';
             $url = $this->getAssetsUrl() . '/css/' . $fileName;
         }
-        /** @var CClientScript $cs */
-        $cs = Yii::app()->getClientScript();
-        $cs->registerCssFile($url);
+        Yii::app()->getClientScript()->registerCssFile($url, $media);
+    }
+
+    /**
+     * Fixes panning and zooming on mobile devices.
+     */
+    public function fixPanningAndZooming()
+    {
+        Yii::app()->getClientScript()->registerMetaTag('width=device-width, initial-scale=1.0', 'viewport');
     }
 
     /**
@@ -89,8 +83,9 @@ class TbApi extends CApplicationComponent
      */
     public function registerAllCss()
     {
-        $this->registerCoreCss();
+        $this->registerCss();
         $this->registerYiistrapCss();
+        $this->fixPanningAndZooming();
     }
 
     /**
@@ -145,9 +140,7 @@ class TbApi extends CApplicationComponent
      */
     public function registerPopover($selector = 'body', $options = array())
     {
-        if (!isset($options['selector'])) {
-            $options['selector'] = 'a[rel=popover]';
-        }
+        TbArray::defaultValue('selector', 'a[rel=popover]', $options);
         $this->registerPlugin(self::PLUGIN_POPOVER, $selector, $options);
     }
 
@@ -159,9 +152,7 @@ class TbApi extends CApplicationComponent
      */
     public function registerTooltip($selector = 'body', $options = array())
     {
-        if (!isset($options['selector'])) {
-            $options['selector'] = 'a[rel=tooltip]';
-        }
+        TbArray::defaultValue('selector', 'a[rel=tooltip]', $options);
         $this->registerPlugin(self::PLUGIN_TOOLTIP, $selector, $options);
     }
 
@@ -188,20 +179,17 @@ class TbApi extends CApplicationComponent
      */
     public function registerEvents($selector, $events, $position = CClientScript::POS_END)
     {
-        if (empty($events)) {
-            return;
+        if (!empty($events)) {
+            $script = '';
+            foreach ($events as $name => $handler) {
+                if (!$handler instanceof CJavaScriptExpression) {
+                    $handler = new CJavaScriptExpression($handler);
+                }
+                $script .= "jQuery('{$selector}').on('{$name}', {$handler});";
+            }
+            $id = __CLASS__ . '#Events' . self::$counter++;
+            Yii::app()->clientScript->registerScript($id, $script, $position);
         }
-
-        $script = '';
-        foreach ($events as $name => $handler) {
-            $handler = ($handler instanceof CJavaScriptExpression)
-                ? $handler
-                : new CJavaScriptExpression($handler);
-
-            $script .= "jQuery('{$selector}').on('{$name}', {$handler});";
-        }
-        $id = __CLASS__ . '#Events' . self::$counter++;
-        Yii::app()->clientScript->registerScript($id, $script, $position);
     }
 
     /**

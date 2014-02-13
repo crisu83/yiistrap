@@ -8,8 +8,6 @@
  * @package bootstrap.helpers
  */
 
-Yii::import('bootstrap.helpers.TbArray');
-
 /**
  * Bootstrap HTML helper.
  */
@@ -101,7 +99,8 @@ class TbHtml extends CHtml // required in order to access the protected methods 
     const BUTTON_COLOR_SUCCESS = 'success';
     const BUTTON_COLOR_WARNING = 'warning';
     const BUTTON_COLOR_DANGER = 'danger';
-    const BUTTON_COLOR_INVERSE = 'inverse'; // @todo REMOVE: Does not exist in BS3
+    // todo: remove this as it is deprecated in bs3
+    const BUTTON_COLOR_INVERSE = 'inverse';
     const BUTTON_COLOR_LINK = 'link';
 
     const BUTTON_SIZE_MINI = 'xs'; // BS2 compatibility
@@ -122,7 +121,8 @@ class TbHtml extends CHtml // required in order to access the protected methods 
 
     const IMAGE_TYPE_ROUNDED = 'rounded';
     const IMAGE_TYPE_CIRCLE = 'circle';
-    const IMAGE_TYPE_POLAROID = 'thumbnail'; // @todo no longer exists in BS3, it is now thumbnail
+    // todo: remove this as it is deprecated in bs3
+    const IMAGE_TYPE_POLAROID = 'thumbnail';
     const IMAGE_TYPE_THUMBNAIL = 'thumbnail';
 
     //
@@ -135,7 +135,8 @@ class TbHtml extends CHtml // required in order to access the protected methods 
     const NAV_TYPE_LIST = 'list';
 
     const TABS_PLACEMENT_ABOVE = '';
-    const TABS_PLACEMENT_BELOW = 'below'; // @todo deprecated in BS3
+    // todo: remove this as it is deprecated in bs3
+    const TABS_PLACEMENT_BELOW = 'below';
     const TABS_PLACEMENT_LEFT = 'left';
     const TABS_PLACEMENT_RIGHT = 'right';
 
@@ -493,10 +494,12 @@ class TbHtml extends CHtml // required in order to access the protected methods 
     /**
      * @var string default form label width
      */
+    // todo: remove this.
     protected static $defaultFormLabelWidthClass = 'col-sm-2';
     /**
      * @var string default form control width
      */
+    // todo: remove this.
     protected static $defaultFormControlWidthClass = 'col-sm-10';
 
     //
@@ -670,14 +673,14 @@ class TbHtml extends CHtml // required in order to access the protected methods 
 
     /**
      * Generates a help block.
-     * @todo Remove or keep compatibility for BS2. There is only help-block and no help-inline
-     * @deprecated
      * @param string $text the help text.
      * @param array $htmlOptions additional HTML attributes.
      * @return string the generated block.
+     * @deprecated
      */
     public static function helpBlock($text, $htmlOptions = array())
     {
+        // todo: remove this as it is no longer valid for bs3
         $htmlOptions['type'] = self::HELP_TYPE_BLOCK;
         return self::help($text, $htmlOptions);
     }
@@ -778,6 +781,7 @@ class TbHtml extends CHtml // required in order to access the protected methods 
         $htmlOptions = array()
     ) {
         if (!empty($layout)) {
+            // refactor to not use a switch
             switch ($layout) {
                 case self::FORM_LAYOUT_HORIZONTAL:
                     self::addCssClass('form-' . self::FORM_LAYOUT_HORIZONTAL, $htmlOptions);
@@ -959,6 +963,7 @@ class TbHtml extends CHtml // required in order to access the protected methods 
         $label = TbArray::popValue('label', $htmlOptions, false);
         $labelOptions = TbArray::popValue('labelOptions', $htmlOptions, array());
         $input = parent::radioButton($name, $checked, $htmlOptions);
+        // todo: refactor to make a single call to createCheckBoxAndRadioButtonLabel
         if (TbArray::popValue('useContainer', $htmlOptions, false)) {
             return self::tag(
                 'div',
@@ -982,6 +987,7 @@ class TbHtml extends CHtml // required in order to access the protected methods 
         $label = TbArray::popValue('label', $htmlOptions, false);
         $labelOptions = TbArray::popValue('labelOptions', $htmlOptions, array());
         $input = parent::checkBox($name, $checked, $htmlOptions);
+        // todo: refactor to make a single call to createCheckBoxAndRadioButtonLabel
         if (TbArray::popValue('useContainer', $htmlOptions, false)) {
             return self::tag(
                 'div',
@@ -1169,7 +1175,8 @@ class TbHtml extends CHtml // required in order to access the protected methods 
         if (isset($checkAllLabel)) {
             $htmlOptions['value'] = 1;
             $htmlOptions['id'] = $id = $baseID . '_all';
-            $label = self::label($checkAllLabel, $id, $labelOptions);
+            // todo: fix undeclared variable $option
+            $item = self::label($option . ' ' . $checkAllLabel, false, $labelOptions);
             if ($inline) {
                 $htmlOptions['label'] = $checkAllLabel;
                 self::addCssClass('checkbox-inline', $labelOptions);
@@ -1180,6 +1187,7 @@ class TbHtml extends CHtml // required in order to access the protected methods 
                 $item = self::tag(
                     'div',
                     array('class' => 'checkbox'),
+                    // todo: fix undeclared variable $label
                     self::label($option . ' ' . $label, false, $labelOptions)
                 );
             }
@@ -1518,6 +1526,7 @@ EOD;
         $controlOptions = TbArray::popValue('controlOptions', $htmlOptions, array());
         $label = TbArray::popValue('label', $htmlOptions);
         $labelOptions = TbArray::popValue('labelOptions', $htmlOptions, array());
+        // todo: remove everything that has to do with form layouts.
         $formLayout = TbArray::popValue('formLayout', $htmlOptions, self::FORM_LAYOUT_VERTICAL);
         $labelWidthClass = TbArray::popValue('labelWidthClass', $htmlOptions, self::$defaultFormLabelWidthClass);
         // Retrieve the old-style "span" option
@@ -1575,6 +1584,8 @@ EOD;
                     break;
             }
         }
+        // remove until here.
+
         $help = TbArray::popValue('help', $htmlOptions, '');
         $helpOptions = TbArray::popValue('helpOptions', $htmlOptions, array());
         if (!empty($help)) {
@@ -2024,9 +2035,9 @@ EOD;
         parent::resolveNameID($model, $attribute, $htmlOptions);
         $selection = parent::resolveValue($model, $attribute);
         $name = TbArray::popValue('name', $htmlOptions);
-        $unCheck = TbArray::popValue('uncheckValue', $htmlOptions, '');
+        $uncheckValue = isset($htmlOptions['uncheckValue']) ? TbArray::popValue('uncheckValue', $htmlOptions) : '';
         $hiddenOptions = isset($htmlOptions['id']) ? array('id' => parent::ID_PREFIX . $htmlOptions['id']) : array('id' => false);
-        $hidden = $unCheck !== null ? parent::hiddenField($name, $unCheck, $hiddenOptions) : '';
+        $hidden = isset($uncheckValue) ? parent::hiddenField($name, $uncheckValue, $hiddenOptions) : '';
         return $hidden . self::radioButtonList($name, $selection, $data, $htmlOptions);
     }
 
@@ -2060,9 +2071,9 @@ EOD;
             parent::addErrorCss($htmlOptions);
         }
         $name = TbArray::popValue('name', $htmlOptions);
-        $unCheck = TbArray::popValue('uncheckValue', $htmlOptions, '');
+        $uncheckValue = isset($htmlOptions['uncheckValue']) ? TbArray::popValue('uncheckValue', $htmlOptions) : '';
         $hiddenOptions = isset($htmlOptions['id']) ? array('id' => parent::ID_PREFIX . $htmlOptions['id']) : array('id' => false);
-        $hidden = $unCheck !== null ? parent::hiddenField($name, $unCheck, $hiddenOptions) : '';
+        $hidden = isset($uncheckValue) ? parent::hiddenField($name, $uncheckValue, $hiddenOptions) : '';
         return $hidden . self::checkBoxList($name, $selection, $data, $htmlOptions);
     }
 
@@ -2394,6 +2405,7 @@ EOD;
         $controlOptions = TbArray::popValue('controlOptions', $htmlOptions, array());
         $label = TbArray::popValue('label', $htmlOptions);
         $labelOptions = TbArray::popValue('labelOptions', $htmlOptions, array());
+        // todo: remove everything that has to do with form layout
         $formLayout = TbArray::popValue('formLayout', $htmlOptions, self::FORM_LAYOUT_VERTICAL);
         $labelWidthClass = TbArray::popValue('labelWidthClass', $htmlOptions, self::$defaultFormLabelWidthClass);
         // Retrieve the old-style "span" option
@@ -2451,6 +2463,8 @@ EOD;
                     break;
             }
         }
+        // remove until here.
+
         if (isset($label) && $label !== false) {
             $labelOptions['label'] = $label;
         }
@@ -2672,6 +2686,7 @@ EOD;
      */
     protected static function inputAddOn($addOns, $htmlOptions, $position = 'prepend')
     {
+        // todo: refactor this method
         $normal = array();
         $buttons = array();
         $addOnOptions = TbArray::popValue('addOnOptions', $htmlOptions, array());
@@ -2797,18 +2812,16 @@ EOD;
         if (is_array($actions)) {
             $actions = implode(' ', $actions);
         }
+        // todo: remove this
         $labelWidthClass = TbArray::popValue('labelWidthClass', $htmlOptions, self::$defaultFormLabelWidthClass);
         $controlWidthClass = TbArray::popValue('controlWidthClass', $htmlOptions, self::$defaultFormControlWidthClass);
 
+        // todo: remove everything that has to do with form layout
         if (TbArray::popValue('formLayout', $htmlOptions, self::FORM_LAYOUT_VERTICAL) == self::FORM_LAYOUT_HORIZONTAL) {
             self::addCssClass(self::switchColToOffset($labelWidthClass), $htmlOptions);
             self::addCssClass(self::switchOffsetToCol($controlWidthClass), $htmlOptions);
 
-            return self::tag(
-                'div',
-                array('class' => 'form-group'),
-                self::tag('div', $htmlOptions, $actions)
-            );
+            return self::tag('div', array('class' => 'form-group'), self::tag('div', $htmlOptions, $actions));
         } else {
             return self::tag('div', $htmlOptions, $actions);
         }
@@ -2992,6 +3005,7 @@ EOD;
         }
         if (TbArray::popValue('disabled', $htmlOptions, false)) {
             self::addCssClass('disabled', $htmlOptions);
+            $htmlOptions['disabled'] = 'disabled';
         }
         $loading = TbArray::popValue('loading', $htmlOptions);
         if (!empty($loading)) {
@@ -3178,31 +3192,20 @@ EOD;
     // --------------------------------------------------
 
     /**
-     * Generates an icon. By default, Glyphicons are used. Font Awesome is also supported by using 'fa' for the $vendor
-     * parameter.
+     * Generates an icon.
      * @param string $icon the icon type.
      * @param array $htmlOptions additional HTML attributes.
      * @param string $tagName the icon HTML tag.
      * @param string $vendor the icon vendor.
      * @return string the generated icon.
      */
-    public static function icon($icon, $htmlOptions = array(), $tagName = 'i', $vendor = null)
+    public static function icon($icon, $htmlOptions = array(), $tagName = 'span')
     {
         if (is_string($icon)) {
-            if ($vendor === null) {
-                // Determine whether the icon is Glyphicon or Font Awesome
-                if (preg_match('/^(glyphicon|fa)-(.*)$/', $icon, $matches) > 0) {
-                    $vendor = $matches[1];
-                    $icon = $matches[2];
-                } else {
-                    $vendor = self::$iconVendor;
-                }
+            if (strpos($icon, 'glyphicon-') === false) {
+                $icon = 'glyphicon-' . implode(' glyphicon-', explode(' ', $icon));
             }
-            if (strpos($icon, $vendor . '-') === false) {
-                $icon = "{$vendor}-" . implode(" {$vendor}-", explode(' ', $icon));
-            }
-            self::addCssClass(array($vendor, $icon), $htmlOptions);
-            // Color is specifically for glyphicon
+            self::addCssClass(array('glyphicon', $icon), $htmlOptions);
             $color = TbArray::popValue('color', $htmlOptions);
             if (!empty($color) && $color === self::ICON_COLOR_WHITE) {
                 self::addCssClass("glyphicon-white", $htmlOptions);
@@ -3744,6 +3747,7 @@ EOD;
             $menuItem['active'] = TbArray::getValue('active', $tabOptions, false);
             $menuItem['disabled'] = TbArray::popValue('disabled', $tabOptions, false);
             $menuItem['linkOptions'] = TbArray::popValue('linkOptions', $tabOptions, array());
+            $menuItem['htmlOptions'] = TbArray::popValue('htmlOptions', $tabOptions, array());
             $items = TbArray::popValue('items', $tabOptions, array());
             if (!empty($items)) {
                 $menuItem['linkOptions']['data-toggle'] = 'dropdown';
@@ -4826,9 +4830,10 @@ EOD;
     /**
      * Adds the grid span class to the given options is applicable. BS3 no longer use span classes. During the BS3
      * transition, this will use the col-md-* CSS class.
-     * @deprecated
      * @param array $htmlOptions the HTML attributes.
+     * @deprecated
      */
+    // todo: remove this
     protected static function addSpanClass(&$htmlOptions)
     {
         $span = TbArray::popValue('span', $htmlOptions);
@@ -4852,6 +4857,7 @@ EOD;
      */
     protected static function addColClass(&$htmlOptions)
     {
+        // todo: use constants
         $colSizes = array('xs', 'sm', 'md', 'lg');
 
         // It's possible to stack an xs and md grid together
@@ -4881,6 +4887,7 @@ EOD;
      */
     protected static function addTextAlignClass(&$htmlOptions)
     {
+        // todo: check if this is supported in bs3
         $align = TbArray::popValue('textAlign', $htmlOptions);
         if (!empty($align)) {
             self::addCssClass('text-' . $align, $htmlOptions);
@@ -4895,6 +4902,7 @@ EOD;
      */
     protected static function switchOffsetCol($class)
     {
+        // todo: why would you want to do this
         if (strpos($class, 'offset') !== false) {
             return str_replace('-offset', '', $class);
         } else {
@@ -4913,6 +4921,7 @@ EOD;
      */
     protected static function switchColToOffset($class)
     {
+        // todo: why would you want to do this
         if ((strpos($class, 'offset') === false) && (preg_match('/^(col-.*-)([0-9]*)$/', $class, $matches) > 0)) {
             return $matches[1] . 'offset-' . $matches[2];
         } else {
@@ -4930,6 +4939,7 @@ EOD;
      */
     protected static function switchOffsetToCol($class)
     {
+        // todo: why would you want to do this
         if (strpos($class, 'offset') !== false) {
             return str_replace('-offset', '', $class);
         } else {
@@ -4944,6 +4954,7 @@ EOD;
      */
     protected static function getColClasses($htmlOptions)
     {
+        // todo: why would you want to do this
         $colClasses = array();
         if (isset($htmlOptions['class']) && !empty($htmlOptions['class'])) {
             $classes = explode(' ', $htmlOptions['class']);
@@ -4963,6 +4974,7 @@ EOD;
      */
     protected static function popColClasses(&$htmlOptions)
     {
+        // todo: why would you want to do this
         $colClasses = array();
         $returnClasses = array();
         if (isset($htmlOptions['class']) && !empty($htmlOptions['class'])) {

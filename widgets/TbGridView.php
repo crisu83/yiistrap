@@ -9,8 +9,6 @@
  */
 
 Yii::import('zii.widgets.grid.CGridView');
-Yii::import('bootstrap.helpers.TbHtml');
-Yii::import('bootstrap.widgets.TbDataColumn');
 
 /**
  * Bootstrap Zii grid view.

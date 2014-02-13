@@ -7,8 +7,6 @@
  * @package bootstrap.widgets
  */
 
-Yii::import('bootstrap.helpers.TbHtml');
-
 /**
  * Bootstrap navbar widget.
  * @see http://twitter.github.com/bootstrap/components.html#navbar

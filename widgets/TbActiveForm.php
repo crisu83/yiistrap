@@ -7,9 +7,6 @@
  * @package bootstrap.widgets
  */
 
-Yii::import('bootstrap.helpers.TbHtml');
-Yii::import('bootstrap.behaviors.TbWidget');
-
 /**
  * Bootstrap active form widget.
  */

@@ -16,14 +16,7 @@
             "homepage": "http://www.ramirezcobos.com/"
         }
     ],
-    "repositories": [
-        {
-            "type": "composer",
-            "url": "http://packages.phundament.com"
-        }
-    ],
     "require-dev": {
-        "php": ">=5.3.0",
         "codeception/codeception": "@stable",
         "crisu83/yii-composer": ">=1.0.0",
         "yiisoft/yii": ">=1.1.13"
@@ -36,6 +29,15 @@
     "extra": {
         "yii-install-writable": [
             "tests/_log"
+        ]
+    },
+    "autoload": {
+        "classmap": [
+            "behaviors/",
+            "components/",
+            "form/",
+            "helpers/",
+            "widgets/"
         ]
     }
 }

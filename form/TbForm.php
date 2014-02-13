@@ -7,8 +7,6 @@
  * @package bootstrap.form
  */
 
-Yii::import('bootstrap.form.*');
-
 /**
  * Bootstrap form object that contains form input specifications.
  */

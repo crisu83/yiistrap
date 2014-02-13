@@ -7,9 +7,6 @@
  * @package bootstrap.widgets
  */
 
-Yii::import('bootstrap.helpers.TbHtml');
-Yii::import('bootstrap.behaviors.TbWidget');
-
 /**
  * Bootstrap pager widget.
  * http://twitter.github.com/bootstrap/components.html#pagination

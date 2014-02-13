@@ -896,8 +896,9 @@ class TbHtmlTest extends TbTestCase
             $div,
             array('input[type=checkbox]', 'label', 'label', 'label', 'label')
         );
-        $first = $div->filter('label')->first();
-        $I->seeNodeChildren($first, array('input#checkboxList_all'));
+        $label = $span->filter('label')->first();
+        $input = $label->filter('input');
+        $I->seeNodeAttribute($input, 'name', 'checkboxList_all');
 
         $html = TbHtml::checkBoxList(
             'checkboxList',
@@ -913,8 +914,9 @@ class TbHtmlTest extends TbTestCase
             $div,
             array('label', 'label', 'label', 'label', 'input[type=checkbox]')
         );
-        $last = $div->filter('label')->last();
-        $I->seeNodeAttribute($last, 'for', 'checkboxList_all');
+        $label = $span->filter('label')->last();
+        $input = $label->filter('input');
+        $I->seeNodeAttribute($input, 'name', 'checkboxList_all');
     }
 
     public function testInlineCheckBoxList()
@@ -2260,6 +2262,7 @@ class TbHtmlTest extends TbTestCase
                 'name' => 'button',
                 'data-loading-text' => 'Loading text',
                 'data-toggle' => 'button',
+                'disabled' => 'disabled',
             )
         );
         $I->seeNodeChildren($button, array('i.glyphicon-check'));

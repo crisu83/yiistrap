@@ -6,8 +6,6 @@
  * @license http://www.opensource.org/licenses/bsd-license.php New BSD License
  */
 
-Yii::import('bootstrap.helpers.TbHtml');
-
 /**
  * Bootstrap breadcrumb widget.
  * @see http://getbootstrap.com/components/#breadcrumbs
