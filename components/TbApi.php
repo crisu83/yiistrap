@@ -47,10 +47,24 @@ class TbApi extends CApplicationComponent
      * @param string $url the URL to the CSS file to register.
      * @param string $media the media type (defaults to 'screen').
      */
-    public function registerCss($url = null, $media = 'screen')
+    public function registerCoreCss($url = null, $media = 'screen')
     {
         if ($url === null) {
             $fileName = YII_DEBUG ? 'bootstrap.css' : 'bootstrap.min.css';
+            $url = $this->getAssetsUrl() . '/css/' . $fileName;
+        }
+        Yii::app()->getClientScript()->registerCssFile($url, $media);
+    }
+
+    /**
+     * Registers the Bootstrap theme CSS.
+     * @param string $url the URL to the CSS file to register.
+     * @param string $media the media type (defaults to 'screen').
+     */
+    public function registerThemeCss($url = null, $media = 'screen')
+    {
+        if ($url === null) {
+            $fileName = YII_DEBUG ? 'bootstrap-theme.css' : 'bootstrap-theme.min.css';
             $url = $this->getAssetsUrl() . '/css/' . $fileName;
         }
         Yii::app()->getClientScript()->registerCssFile($url, $media);
@@ -83,7 +97,7 @@ class TbApi extends CApplicationComponent
      */
     public function registerAllCss()
     {
-        $this->registerCss();
+        $this->registerCoreCss();
         $this->registerYiistrapCss();
         $this->fixPanningAndZooming();
     }
@@ -201,7 +215,7 @@ class TbApi extends CApplicationComponent
         if (isset($this->_assetsUrl)) {
             return $this->_assetsUrl;
         } else {
-            $assetsPath = Yii::getPathOfAlias('bootstrap.assets');
+            $assetsPath = realpath(dirname(__DIR__) . '/assets');
             $assetsUrl = Yii::app()->assetManager->publish($assetsPath, false, -1, $this->forceCopyAssets);
             return $this->_assetsUrl = $assetsUrl;
         }
