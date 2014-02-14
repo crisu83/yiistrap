@@ -40,7 +40,23 @@ class TbApi extends CApplicationComponent
      */
     public $forceCopyAssets = false;
 
+    /**
+     * @var string path to Bootstrap assets.
+     */
+    public $assetsPath;
+
     private $_assetsUrl;
+
+    /**
+     * Initializes this component.
+     */
+    public function init()
+    {
+        parent::init();
+        if ($this->assetsPath === null) {
+            $this->assetsPath = realpath(dirname(__DIR__) . '/assets');
+        }
+    }
 
     /**
      * Registers the Bootstrap CSS.
@@ -212,13 +228,13 @@ class TbApi extends CApplicationComponent
      */
     protected function getAssetsUrl()
     {
-        if (isset($this->_assetsUrl)) {
-            return $this->_assetsUrl;
-        } else {
-            $assetsPath = realpath(dirname(__DIR__) . '/assets');
-            $assetsUrl = Yii::app()->assetManager->publish($assetsPath, false, -1, $this->forceCopyAssets);
-            return $this->_assetsUrl = $assetsUrl;
+        if (!isset($this->_assetsUrl)) {
+            if (($path = Yii::getPathOfAlias($this->assetsPath)) !== false) {
+                $this->assetsPath = $path;
+            }
+            $assetsUrl = Yii::app()->assetManager->publish($path, false, -1, $this->forceCopyAssets);
+            $this->_assetsUrl = $assetsUrl;
         }
+        return $this->_assetsUrl;
     }
-
 }
