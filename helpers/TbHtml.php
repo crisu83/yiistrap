@@ -3572,10 +3572,11 @@ EOD;
         self::addCssClass('page-header', $htmlOptions);
         $headerOptions = TbArray::popValue('headerOptions', $htmlOptions, array());
         $subtextOptions = TbArray::popValue('subtextOptions', $htmlOptions, array());
+		$headerTag = TbArray::popValue('tag', $htmlOptions, array());
         $output = self::openTag('div', $htmlOptions);
-        $output .= self::openTag('h1', $headerOptions);
+        $output .= self::openTag($headerTag, $headerOptions);
         $output .= parent::encode($heading) . ' ' . self::tag('small', $subtextOptions, $subtext);
-        $output .= '</h1>';
+		$output .= "</{$headerTag}>";
         $output .= '</div>';
         return $output;
     }
