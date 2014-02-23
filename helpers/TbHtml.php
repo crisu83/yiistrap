@@ -2854,7 +2854,12 @@ EOD;
                 if (!empty($items)) {
                     $output .= self::buttonDropdown($buttonLabel, $items, $buttonOptions);
                 } else {
-                    $output .= self::linkButton($buttonLabel, $buttonOptions);
+                	$ajaxOptions = TbArray::popValue('ajaxOptions', $buttonOptions, array());
+                	if(!empty($ajaxOptions)) {	                
+	                	$output .= self::ajaxButton($buttonLabel, TbArray::popValue('url', $ajaxOptions, '#'), $ajaxOptions, $buttonOptions);
+	                } else {
+	                    $output .= self::linkButton($buttonLabel, $buttonOptions);
+	                }
                 }
             }
             $output .= '</div>';
