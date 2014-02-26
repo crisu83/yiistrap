@@ -4241,10 +4241,6 @@ EOD;
     public static function progressBar($width = 0, $htmlOptions = array())
     {
         self::addCssClass('progress', $htmlOptions);
-        $color = TbArray::popValue('color', $htmlOptions);
-        if (!empty($color)) {
-            self::addCssClass('progress-' . $color, $htmlOptions);
-        }
         if (TbArray::popValue('striped', $htmlOptions, false)) {
             self::addCssClass('progress-striped', $htmlOptions);
         }
@@ -4252,6 +4248,10 @@ EOD;
             self::addCssClass('active', $htmlOptions);
         }
         $barOptions = TbArray::popValue('barOptions', $htmlOptions, array());
+        $color = TbArray::popValue('color', $htmlOptions);
+        if (!empty($color)) {
+            $barOptions['color'] = $color;
+        }
         $content = TbArray::popValue('content', $htmlOptions);
         if (!empty($content)) {
             $barOptions['content'] = $content;
@@ -4322,10 +4322,10 @@ EOD;
      */
     protected static function bar($width = 0, $htmlOptions = array())
     {
-        self::addCssClass('bar', $htmlOptions);
+        self::addCssClass('progress-bar', $htmlOptions);
         $color = TbArray::popValue('color', $htmlOptions);
         if (!empty($color)) {
-            self::addCssClass('bar-' . $color, $htmlOptions);
+            self::addCssClass('progress-bar-' . $color, $htmlOptions);
         }
         if ($width < 0) {
             $width = 0;

@@ -54,7 +54,7 @@ class TbPager extends CBasePager
     public function init()
     {
         $this->attachBehavior('TbWidget', new TbWidget);
-        $this->copyId();
+        $this->resolveId();
         if (isset($this->size)) {
             TbArray::defaultValue('size', $this->size, $this->htmlOptions);
         }
