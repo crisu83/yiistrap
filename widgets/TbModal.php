@@ -203,7 +203,9 @@ class TbModal extends CWidget
 
         $this->renderModalHeader();
         $this->renderModalBody();
-        $this->renderModalFooter();
+        if($this->footer !== false) {
+            $this->renderModalFooter();
+        }
 
         echo '</div>' . PHP_EOL;
     }
