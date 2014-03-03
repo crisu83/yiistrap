@@ -72,7 +72,7 @@ class TbNav extends CWidget
             if (is_string($this->scrollspy)) {
                 $this->scrollspy = array('target' => $this->scrollspy);
             }
-            $this->widget('bootstrap.widgets.TbScrollspy', $this->scrollspy);
+            $this->widget('bootstrap.widgets.TbScrollSpy', $this->scrollspy);
         }
         $this->items = $this->normalizeItems($this->items, $route, $hasActiveChild);
     }
