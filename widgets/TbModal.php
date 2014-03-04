@@ -42,6 +42,11 @@ class TbModal extends CWidget
     public $keyboard = true;
 
     /**
+     * @var bool $show, shows the modal when initialized.
+     */
+    public $show = false;
+
+    /**
      * @var mixed includes a modal-backdrop element. Alternatively, specify `static` for a backdrop which doesn't close
      * the modal on click.
      */
