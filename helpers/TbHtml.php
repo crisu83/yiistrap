@@ -2542,7 +2542,7 @@ EOD;
         if (TbArray::popValue('block', $htmlOptions, false)) {
             self::addCssClass('btn-block', $htmlOptions);
         }
-        if (TbArray::popValue('disabled', $htmlOptions, false)) {
+        if (TbArray::getValue('disabled', $htmlOptions, false)) {
             self::addCssClass('disabled', $htmlOptions);
             $htmlOptions['disabled'] = 'disabled';
         }
