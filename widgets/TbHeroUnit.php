@@ -11,7 +11,7 @@
  * Bootstrap hero unit widget.
  * @see http://twitter.github.com/bootstrap/javascript.html#affix
  */
-class TbJumbotron extends CWidget
+class TbHeroUnit extends CWidget
 {
     /**
      * @var string the heading text.
@@ -57,6 +57,6 @@ class TbJumbotron extends CWidget
      */
     public function run()
     {
-        echo TbHtml::jumbotron($this->heading, $this->content, $this->htmlOptions);
+        echo TbHtml::heroUnit($this->heading, $this->content, $this->htmlOptions);
     }
 }

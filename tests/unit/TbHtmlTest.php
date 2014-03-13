@@ -3542,7 +3542,7 @@ class TbHtmlTest extends TbTestCase
     public function testJumbotron()
     {
         $I = $this->codeGuy;
-        $html = TbHtml::jumbotron(
+        $html = TbHtml::heroUnit(
             'Heading text',
             'Content text',
             array(

@@ -12,7 +12,7 @@
 
 <div class="wide form">
 
-    <?php echo "<?php \$form=\$this->beginWidget('bootstrap.widgets.TbActiveForm', array(
+    <?php echo "<?php \$form=\$this->beginWidget('\\TbActiveForm', array(
 	'action'=>Yii::app()->createUrl(\$this->route),
 	'method'=>'get',
 )); ?>\n"; ?>
