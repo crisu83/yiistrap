@@ -3518,7 +3518,8 @@ EOD;
             }
             if (!isset($itemOptions['url']) && !isset($itemOptions['items'])) {
                 $label = TbArray::popValue('label', $itemOptions, '');
-                $items[$i] = self::menuHeader($label, $itemOptions);
+                $options = TbArray::popValue('htmlOptions', $itemOptions, array());
+                $items[$i] = self::menuHeader($label,  $options);
             }
         }
         return self::nav(self::NAV_TYPE_LIST, $items, $htmlOptions);
