@@ -709,7 +709,6 @@ class TbActiveForm extends CActiveForm
             $options['error'] = $error;
         }
         $helpOptions = TbArray::popValue('helpOptions', $options, array());
-        $helpOptions['type'] = $this->helpType;
         $options['helpOptions'] = $helpOptions;
         return $options;
     }
