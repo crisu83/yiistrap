@@ -3263,6 +3263,29 @@ class TbHtmlTest extends TbTestCase
         $I->seeNodeCssClass($small, 'subtext');
         $I->seeNodeText($small, 'Subtext');
     }
+	
+	public function testCustomPageHeader()
+	{
+        $I = $this->codeGuy;
+        $html = TbHtml::pageHeader(
+            'Heading text',
+            'Subtext',
+            array(
+                'class' => 'header',
+                'headerOptions' => array('class' => 'heading'),
+                'subtextOptions' => array('class' => 'subtext'),
+				'tag' => 'h3',
+            )
+        );
+        $header = $I->createNode($html, 'div.page-header');
+        $I->seeNodeCssClass($header, 'header');
+        $h3 = $header->filter('h3');
+        $I->seeNodeCssClass($h3, 'heading');
+        $I->seeNodeText($h3, 'Heading text');
+        $small = $h3->filter('small');
+        $I->seeNodeCssClass($small, 'subtext');
+        $I->seeNodeText($small, 'Subtext');
+	}
 
     public function testThumbnails()
     {
