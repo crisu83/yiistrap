@@ -53,6 +53,10 @@ class TbNavbar extends CWidget
      * @var array the HTML attributes for the navbar.
      */
     public $htmlOptions = array();
+    /**
+     * @var string the HTML tag that will wrap the navbar
+     */
+    public $tag = 'div';
 
     /**
      * Initializes the widget.
@@ -120,7 +124,7 @@ class TbNavbar extends CWidget
         $containerOptions = TbArray::popValue('containerOptions', $this->htmlOptions, array());
         TbHtml::addCssClass($this->fluid ? 'container-fluid' : 'container', $containerOptions);
         ob_start();
-        echo TbHtml::openTag('div', $containerOptions);
+        echo TbHtml::openTag($this->tag, $containerOptions);
         echo $containerContent;
         echo '</div>';
         $content = ob_get_clean();
