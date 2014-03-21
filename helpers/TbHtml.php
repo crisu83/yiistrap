@@ -3283,9 +3283,14 @@ EOD;
         }
         $innerOptions = TbArray::popValue('innerOptions', $htmlOptions, array());
         self::addCssClass('navbar-inner', $innerOptions);
-        $output = self::openTag('div', $htmlOptions);
+        $tag = 'div';
+        if (isset($htmlOptions['tag'])) {
+            $tag = $htmlOptions['tag'];
+            unset($htmlOptions['tag']);
+        }
+        $output = self::openTag($tag, $htmlOptions);
         $output .= self::tag('div', $innerOptions, $content);
-        $output .= '</div>';
+        $output .= self::closeTag($tag);
         return $output;
     }
 
