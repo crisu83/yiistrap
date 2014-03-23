@@ -98,7 +98,7 @@ class TbNavbar extends CWidget
         $items = ob_get_clean();
         ob_start();
         if ($this->collapse !== false) {
-            TbHtml::addCssClass('nav-collapse', $this->collapseOptions);
+            TbHtml::addCssClass('nav-collapse collapse', $this->collapseOptions);
             ob_start();
             /* @var TbCollapse $collapseWidget */
             $collapseWidget = $this->controller->widget(
