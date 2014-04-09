@@ -1674,6 +1674,35 @@ EOD;
         if (!empty($displaySize)) {
             $htmlOptions['size'] = $displaySize;
         }
+
+        $addOnClasses = self::getAddOnClasses($htmlOptions);
+        $addOnOptions = TbArray::popValue('addOnOptions', $htmlOptions, array());
+        self::addCssClass($addOnClasses, $addOnOptions);
+
+        $prepend = TbArray::popValue('prepend', $htmlOptions, '');
+        $prependOptions = TbArray::popValue('prependOptions', $htmlOptions, array());
+        if (!empty($prepend)) {
+            $prepend = self::inputAddOn($prepend, $prependOptions);
+        }
+
+        $append = TbArray::popValue('append', $htmlOptions, '');
+        $appendOptions = TbArray::popValue('appendOptions', $htmlOptions, array());
+        if (!empty($append)) {
+            $append = self::inputAddOn($append, $appendOptions);
+        }
+
+        $output = '';
+        if (!empty($addOnClasses)) {
+            $output .= self::openTag('div', $addOnOptions);
+        }
+        $output .= $prepend . parent::activeDropDownList($model, $attribute, $data, $htmlOptions) . $append;
+        if (!empty($addOnClasses)) {
+            $output .= '</div>';
+        }
+        return $output;
+
+
+
         return parent::activeDropDownList($model, $attribute, $data, $htmlOptions);
     }
 
