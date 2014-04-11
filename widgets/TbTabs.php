@@ -68,7 +68,7 @@ class TbTabs extends CWidget
     {
         foreach (array('onShow', 'onShown') as $event) {
             if ($this->$event !== null) {
-                $modalEvent = strtolower(substr($event, 2));
+                $modalEvent = strtolower(substr($event, 2)) . '.bs.tab';
                 if ($this->$event instanceof CJavaScriptExpression) {
                     $this->events[$modalEvent] = $this->$event;
                 } else {
@@ -122,4 +122,15 @@ class TbTabs extends CWidget
         Yii::app()->clientScript->registerScript(__CLASS__ . $selector, "jQuery('{$selector}').tab('show');");
         $this->registerEvents($selector, $this->events);
     }
+    
+    /**
+     * Registers events script.
+     */
+    public function registerEvents($selector, $events) {
+        foreach ($this->events as $name => $handler) {
+            $handler = CJavaScript::encode($handler);
+            Yii::app()->clientScript->registerScript(__CLASS__ . $selector . '_' . $name, "jQuery('{$selector}').on('{$name}', {$handler});");
+        }
+    }
+    
 }
