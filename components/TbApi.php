@@ -229,6 +229,8 @@ class TbApi extends CApplicationComponent
         if (!isset($this->_assetsUrl)) {
             if (($path = Yii::getPathOfAlias($this->assetsPath)) !== false) {
                 $this->assetsPath = $path;
+            } else {
+                $this->assetsPath = Yii::getPathOfAlias('bootstrap.assets');
             }
             $assetsUrl = Yii::app()->assetManager->publish($this->assetsPath, false, -1, $this->forceCopyAssets);
             $this->_assetsUrl = $assetsUrl;
