@@ -94,11 +94,12 @@ class TbApi extends CApplicationComponent
      */
     public function registerYiistrapCss($url = null, $media = '')
     {
-        if ($url === null) {
+    	// Obsolete since this file doesn't exist
+        /*if ($url === null) {
             $fileName = YII_DEBUG ? 'yiistrap.css' : 'yiistrap.min.css';
             $url = $this->getAssetsUrl() . '/css/' . $fileName;
         }
-        Yii::app()->getClientScript()->registerCssFile($url, $media);
+        Yii::app()->getClientScript()->registerCssFile($url, $media);*/
     }
 
     /**
