@@ -54,6 +54,9 @@ class TbApi extends CApplicationComponent
         if ($this->assetsPath === null) {
             $this->assetsPath = Yii::getPathOfAlias('vendor.twbs.bootstrap.dist');
         }
+        if ($this->assetsPath === null || strlen($this->assetsPath) < 1) {
+        	$this->assetsPath = realpath(__DIR__ . '/../assets');
+        }
     }
 
     /**
@@ -230,6 +233,7 @@ class TbApi extends CApplicationComponent
             if (($path = Yii::getPathOfAlias($this->assetsPath)) !== false) {
                 $this->assetsPath = $path;
             }
+            
             $assetsUrl = Yii::app()->assetManager->publish($this->assetsPath, false, -1, $this->forceCopyAssets);
             $this->_assetsUrl = $assetsUrl;
         }
