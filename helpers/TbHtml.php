@@ -1925,7 +1925,7 @@ EOD;
         if (TbArray::popValue('useContainer', $htmlOptions, false)) {
             return self::tag(
                 'div',
-                array('class' => 'radio'),
+                array('class' => 'checkbox'),
                 self::createCheckBoxAndRadioButtonLabel($label, $input, $labelOptions)
             );
         } else {
