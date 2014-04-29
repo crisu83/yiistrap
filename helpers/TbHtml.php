@@ -40,6 +40,7 @@ class TbHtml extends CHtml // required in order to access the protected methods 
     const FORM_LAYOUT_SEARCH = 'search';
 
     const INPUT_TYPE_TEXT = 'textField';
+    const INPUT_TYPE_HIDDEN = 'hiddenField';
     const INPUT_TYPE_PASSWORD = 'passwordField';
     const INPUT_TYPE_URL = 'urlField';
     const INPUT_TYPE_EMAIL = 'emailField';
@@ -829,6 +830,19 @@ class TbHtml extends CHtml // required in order to access the protected methods 
     }
 
     /**
+     * Generates a hidden field input.
+     * @param string $name the input name.
+     * @param string $value the input value.
+     * @param array $htmlOptions additional HTML attributes.
+     * @return string the generated input field.
+     * @see self::textInputField
+     */
+    public static function hiddenField($name, $value = '', $htmlOptions = array())
+    {
+        return self::textInputField('hidden', $name, $value, $htmlOptions);
+    }
+
+    /**
      * Generates a password field input.
      * @param string $name the input name.
      * @param string $value the input value.
@@ -1565,6 +1579,7 @@ EOD;
         } elseif ($formLayout == self::FORM_LAYOUT_INLINE || $formLayout == self::FORM_LAYOUT_SEARCH) {
             switch ($type) {
                 case self::INPUT_TYPE_TEXT:
+                case self::INPUT_TYPE_HIDDEN:
                 case self::INPUT_TYPE_PASSWORD:
                 case self::INPUT_TYPE_URL:
                 case self::INPUT_TYPE_EMAIL:
@@ -1649,6 +1664,8 @@ EOD;
         switch ($type) {
             case self::INPUT_TYPE_TEXT:
                 return self::textField($name, $value, $htmlOptions);
+            case self::INPUT_TYPE_HIDDEN:
+                return self::hiddenField($name, $value, $htmlOptions);
             case self::INPUT_TYPE_PASSWORD:
                 return self::passwordField($name, $value, $htmlOptions);
             case self::INPUT_TYPE_URL:
@@ -1760,6 +1777,19 @@ EOD;
     public static function activeTextField($model, $attribute, $htmlOptions = array())
     {
         return self::activeTextInputField('text', $model, $attribute, $htmlOptions);
+    }
+
+    /**
+     * Generates a hidden field input for a model attribute.
+     * @param CModel $model the data model.
+     * @param string $attribute the attribute.
+     * @param array $htmlOptions additional HTML attributes.
+     * @return string the generated input field.
+     * @see self::activeTextInputField
+     */
+    public static function activeHiddenField($model, $attribute, $htmlOptions = array())
+    {
+        return self::activeTextInputField('hidden', $model, $attribute, $htmlOptions);
     }
 
     /**
@@ -2129,6 +2159,19 @@ EOD;
     public static function activeTextFieldControlGroup($model, $attribute, $htmlOptions = array())
     {
         return self::activeControlGroup(self::INPUT_TYPE_TEXT, $model, $attribute, $htmlOptions);
+    }
+
+    /**
+     * Generates a control group with a hidden field for a model attribute.
+     * @param CModel $model the data model.
+     * @param string $attribute the attribute.
+     * @param array $htmlOptions additional HTML attributes.
+     * @return string the generated control group.
+     * @see self::activeControlGroup
+     */
+    public static function activeHiddenFieldControlGroup($model, $attribute, $htmlOptions = array())
+    {
+        return self::activeControlGroup(self::INPUT_TYPE_HIDDEN, $model, $attribute, $htmlOptions);
     }
 
     /**
@@ -2533,6 +2576,8 @@ EOD;
         switch ($type) {
             case self::INPUT_TYPE_TEXT:
                 return self::activeTextField($model, $attribute, $htmlOptions);
+            case self::INPUT_TYPE_HIDDEN:
+                return self::activeHiddenField($model, $attribute, $htmlOptions);
             case self::INPUT_TYPE_PASSWORD:
                 return self::activePasswordField($model, $attribute, $htmlOptions);
             case self::INPUT_TYPE_URL:
