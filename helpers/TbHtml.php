@@ -482,7 +482,7 @@ class TbHtml extends CHtml // required in order to access the protected methods 
     /**
      * @var string the CSS class for displaying error summaries.
      */
-    public static $errorSummaryCss = 'alert alert-block alert-error';
+    public static $errorSummaryCss = 'alert alert-block alert-danger';
     /**
      * @var string the CSS class for displaying error inputs
      */
