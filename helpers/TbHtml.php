@@ -1579,6 +1579,7 @@ EOD;
         } elseif ($formLayout == self::FORM_LAYOUT_INLINE || $formLayout == self::FORM_LAYOUT_SEARCH) {
             switch ($type) {
                 case self::INPUT_TYPE_TEXT:
+                case self::INPUT_TYPE_HIDDEN:
                 case self::INPUT_TYPE_PASSWORD:
                 case self::INPUT_TYPE_URL:
                 case self::INPUT_TYPE_EMAIL:
