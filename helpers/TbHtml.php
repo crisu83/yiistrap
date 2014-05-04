@@ -3082,7 +3082,7 @@ EOD;
                     $url = TbArray::popValue('url', $itemOptions, false);
                     if (empty($items)) {
                         if (!$url) {
-                            $output .= self::menuHeader($label);
+                            $output .= $label=='-' ? self::menuDivider() : self::menuHeader($label);
                         } else {
                             $itemOptions['linkOptions']['tabindex'] = -1;
                             $output .= self::menuLink($label, $url, $itemOptions);
