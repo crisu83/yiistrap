@@ -3082,7 +3082,7 @@ EOD;
                     $url = TbArray::popValue('url', $itemOptions, false);
                     if (empty($items)) {
                         if (!$url) {
-                            $output .= $label=='-' ? self::menuDivider() : self::menuHeader($label);
+                            $output .= $label=='-' ? self::menuDivider() : $label == '--' ? self::menuNavDivider() : self::menuHeader($label);
                         } else {
                             $itemOptions['linkOptions']['tabindex'] = -1;
                             $output .= self::menuLink($label, $url, $itemOptions);
@@ -3163,6 +3163,17 @@ EOD;
     public static function menuDivider($htmlOptions = array())
     {
         self::addCssClass('divider', $htmlOptions);
+        return self::tag('li', $htmlOptions);
+    }
+    
+    /**
+     * Generates a menu nsv divider.
+     * @param array $htmlOptions additional HTML attributes.
+     * @return string the generated menu item.
+     */
+    public static function menuNavDivider($htmlOptions = array())
+    {
+        self::addCssClass('nav-divider', $htmlOptions);
         return self::tag('li', $htmlOptions);
     }
 
