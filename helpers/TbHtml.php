@@ -2096,6 +2096,8 @@ EOD;
             $help = self::inputHelp($help, $helpOptions);
         }
         $error = TbArray::popValue('error', $htmlOptions, '');
+        $errorOptions = TbArray::popValue('errorOptions', $htmlOptions, array());
+        $error = self::inputHelp($error, $errorOptions);
 
         $input = isset($htmlOptions['input'])
             ? $htmlOptions['input']
