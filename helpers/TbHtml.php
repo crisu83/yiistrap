@@ -2066,10 +2066,15 @@ EOD;
      * @param string $attribute the attribute.
      * @param array $htmlOptions additional HTML attributes.
      * @param array $data data for multiple select inputs.
+     * @param bool $showErrors overrides help and color with error information when set to true
      * @return string the generated control group.
      */
-    public static function activeControlGroup($type, $model, $attribute, $htmlOptions = array(), $data = array())
+    public static function activeControlGroup($type, $model, $attribute, $htmlOptions = array(), $data = array(), $showErrors = true)
     {
+        if($showErrors && $model->hasErrors($attribute)) {
+            $htmlOptions['error'] = $model->getError($attribute);
+            $htmlOptions['color'] = self::INPUT_COLOR_ERROR;
+        }
         $color = TbArray::popValue('color', $htmlOptions);
         $groupOptions = TbArray::popValue('groupOptions', $htmlOptions, array());
         $controlOptions = TbArray::popValue('controlOptions', $htmlOptions, array());
