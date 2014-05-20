@@ -52,7 +52,7 @@ class TbApi extends CApplicationComponent
     {
         parent::init();
         if ($this->assetsPath === null) {
-            $this->assetsPath = Yii::getPathOfAlias('vendor.twbs.bootstrap.dist');
+            $this->assetsPath = Yii::getPathOfAlias('bootstrap.assets');
         }
     }
 
