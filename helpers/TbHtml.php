@@ -3282,10 +3282,11 @@ EOD;
             self::addCssClass('navbar-' . $color, $htmlOptions);
         }
         $innerOptions = TbArray::popValue('innerOptions', $htmlOptions, array());
+        $tag = TbArray::popValue('tag', $htmlOptions, 'div');
         self::addCssClass('navbar-inner', $innerOptions);
-        $output = self::openTag('div', $htmlOptions);
+        $output = self::openTag($tag, $htmlOptions);
         $output .= self::tag('div', $innerOptions, $content);
-        $output .= '</div>';
+        $output .= self::closeTag($tag);
         return $output;
     }
 
