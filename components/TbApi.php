@@ -54,6 +54,9 @@ class TbApi extends CApplicationComponent
         if ($this->assetsPath === null) {
             $this->assetsPath = Yii::getPathOfAlias('vendor.twbs.bootstrap.dist');
         }
+        if ($this->assetsPath === null || strlen($this->assetsPath) < 1) {
+        	$this->assetsPath = realpath(__DIR__ . '/../assets');
+        }
     }
 
     /**
@@ -91,11 +94,12 @@ class TbApi extends CApplicationComponent
      */
     public function registerYiistrapCss($url = null, $media = '')
     {
-        if ($url === null) {
+    	// Obsolete since this file doesn't exist
+        /*if ($url === null) {
             $fileName = YII_DEBUG ? 'yiistrap.css' : 'yiistrap.min.css';
             $url = $this->getAssetsUrl() . '/css/' . $fileName;
         }
-        Yii::app()->getClientScript()->registerCssFile($url, $media);
+        Yii::app()->getClientScript()->registerCssFile($url, $media);*/
     }
 
     /**
@@ -230,6 +234,7 @@ class TbApi extends CApplicationComponent
             if (($path = Yii::getPathOfAlias($this->assetsPath)) !== false) {
                 $this->assetsPath = $path;
             }
+            
             $assetsUrl = Yii::app()->assetManager->publish($this->assetsPath, false, -1, $this->forceCopyAssets);
             $this->_assetsUrl = $assetsUrl;
         }
