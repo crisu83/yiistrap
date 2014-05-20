@@ -698,6 +698,21 @@ class TbActiveForm extends CActiveForm
     }
 
     /**
+     * Generates a control group with a custom (pre-rendered) input for a model attribute.
+     * @param string $input the rendered input.
+     * @param CModel $model the data model.
+     * @param string $attribute the attribute name.
+     * @param array $htmlOptions additional HTML attributes.
+     * @return string the generated control group.
+     * @see TbHtml::activeControlGroup
+     */
+    public function customControlGroup($input, $model, $attribute, $htmlOptions = array())
+    {
+        $htmlOptions['input'] = $input;
+        return $this->createControlGroup(TbHtml::INPUT_TYPE_CUSTOM, $model, $attribute, $htmlOptions);
+    }
+
+    /**
      * Generates a control group for a model attribute.
      * @param string $type the input type.
      * @param CModel $model the data model.
