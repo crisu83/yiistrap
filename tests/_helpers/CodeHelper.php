@@ -1,6 +1,8 @@
 <?php
 namespace Codeception\Module;
 
+use Exception;
+
 class CodeHelper extends \Codeception\Module
 {
     /**
@@ -38,6 +40,9 @@ class CodeHelper extends \Codeception\Module
         if (is_string($cssClass)) {
             $cssClass = explode(' ', $cssClass);
         }
+        if (!is_array($cssClass)) {
+            throw new Exception('$cssClass must be an array.');
+        }
         foreach ($cssClass as $className) {
             $this->assertTrue(in_array($className, explode(' ', $node->attr('class'))));
         }
@@ -52,6 +57,9 @@ class CodeHelper extends \Codeception\Module
         if (is_string($cssClass)) {
             $cssClass = explode(' ', $cssClass);
         }
+        if (!is_array($cssClass)) {
+            throw new Exception('$cssClass must be an array.');
+        }
         foreach ($cssClass as $className) {
             $this->assertFalse(in_array($className, explode(' ', $node->attr('class'))));
         }
@@ -65,6 +73,9 @@ class CodeHelper extends \Codeception\Module
     {
         if (is_string($cssStyle)) {
             $cssStyle = explode(';', rtrim($cssStyle, ';'));
+        }
+        if (!is_array($cssStyle)) {
+            throw new Exception('$cssStyle must be an array.');
         }
         $cssStyle = $this->normalizeCssStyle($cssStyle);
         foreach ($cssStyle as $style) {
@@ -153,6 +164,9 @@ class CodeHelper extends \Codeception\Module
      */
     public function seeNodeChildren($node, array $elements)
     {
+        if (!count($node)) {
+            $this->assertTrue(false);
+        }
         /** @var \DomElement $child */
         foreach ($node->children() as $i => $child) {
             if (isset($elements[$i])) {
@@ -167,6 +181,9 @@ class CodeHelper extends \Codeception\Module
      */
     public function dontSeeNodeChildren($node, array $elements)
     {
+        if (!count($node)) {
+            $this->assertTrue(true);
+        }
         /** @var \DomElement $child */
         foreach ($node->children() as $i => $child) {
             if (isset($elements[$i])) {
