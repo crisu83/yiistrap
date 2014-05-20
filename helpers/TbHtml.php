@@ -4829,6 +4829,12 @@ EOD;
             : $style;
     }
 
+    /**
+     * Adds the grid span class to the given options is applicable. BS3 no longer use span classes. During the BS3
+     * transition, this will use the col-md-* CSS class.
+     * @param array $htmlOptions the HTML attributes.
+     * @deprecated
+     */
     protected static function addSpanClass(&$htmlOptions)
     {
         // todo: remove this method
