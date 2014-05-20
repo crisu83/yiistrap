@@ -12,3 +12,4 @@ script: vendor/bin/codecept run unit
 branches:
   only:
     - master
+    - bs3
