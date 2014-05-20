@@ -187,6 +187,19 @@ class TbActiveForm extends CActiveForm
     }
 
     /**
+     * Generates a hidden field for a model attribute.
+     * @param CModel $model the data model.
+     * @param string $attribute the attribute.
+     * @param array $htmlOptions additional HTML attributes.
+     * @return string the generated input field.
+     * @see TbHtml::activeHiddenField
+     */
+    public function hiddenField($model, $attribute, $htmlOptions = array())
+    {
+        return $this->createInput(TbHtml::INPUT_TYPE_HIDDEN, $model, $attribute, $htmlOptions);
+    }
+
+    /**
      * Generates a password field for a model attribute.
      * @param CModel $model the data model.
      * @param string $attribute the attribute.
@@ -456,6 +469,19 @@ class TbActiveForm extends CActiveForm
     }
 
     /**
+     * Generates a control group with a hidden field for a model attribute.
+     * @param CModel $model the data model.
+     * @param string $attribute the attribute name.
+     * @param array $htmlOptions additional HTML attributes.
+     * @return string the generated control group.
+     * @see TbHtml::activeHiddenFieldControlGroup
+     */
+    public function hiddenFieldControlGroup($model, $attribute, $htmlOptions = array())
+    {
+        return $this->createControlGroup(TbHtml::INPUT_TYPE_HIDDEN, $model, $attribute, $htmlOptions);
+    }
+
+    /**
      * Generates a control group with a password field for a model attribute.
      * @param CModel $model the data model.
      * @param string $attribute the attribute name.
@@ -695,6 +721,21 @@ class TbActiveForm extends CActiveForm
     public function searchQueryControlGroup($model, $attribute, $htmlOptions = array())
     {
         return $this->createControlGroup(TbHtml::INPUT_TYPE_SEARCH, $model, $attribute, $htmlOptions);
+    }
+
+    /**
+     * Generates a control group with a custom (pre-rendered) input for a model attribute.
+     * @param string $input the rendered input.
+     * @param CModel $model the data model.
+     * @param string $attribute the attribute name.
+     * @param array $htmlOptions additional HTML attributes.
+     * @return string the generated control group.
+     * @see TbHtml::activeTextFieldControlGroup
+     */
+    public function customInputControlGroup($input, $model, $attribute, $htmlOptions = array())
+    {
+        $htmlOptions['input'] = $input;
+        return $this->createControlGroup(TbHtml::INPUT_TYPE_CUSTOM, $model, $attribute, $htmlOptions);
     }
 
     /**

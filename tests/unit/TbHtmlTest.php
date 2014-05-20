@@ -2123,7 +2123,7 @@ class TbHtmlTest extends TbTestCase
             )
         );
         $div = $I->createNode($html, 'div.alert');
-        $I->seeNodeCssClass($div, 'alert-block alert-error summary');
+        $I->seeNodeCssClass($div, 'alert-block alert-danger summary');
         $I->seeNodePattern($div, '/^Header text/');
         $I->seeNodePattern($div, '/Footer text$/');
         $li = $div->filter('ul > li')->first();
