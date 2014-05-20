@@ -896,7 +896,7 @@ class TbHtmlTest extends TbTestCase
             $div,
             array('input[type=checkbox]', 'label', 'label', 'label', 'label')
         );
-        $label = $span->filter('label')->first();
+        $label = $div->filter('label')->first();
         $input = $label->filter('input');
         $I->seeNodeAttribute($input, 'name', 'checkboxList_all');
 
@@ -914,7 +914,7 @@ class TbHtmlTest extends TbTestCase
             $div,
             array('label', 'label', 'label', 'label', 'input[type=checkbox]')
         );
-        $label = $span->filter('label')->last();
+        $label = $div->filter('label')->last();
         $input = $label->filter('input');
         $I->seeNodeAttribute($input, 'name', 'checkboxList_all');
     }
@@ -2265,7 +2265,7 @@ class TbHtmlTest extends TbTestCase
                 'disabled' => 'disabled',
             )
         );
-        $I->seeNodeChildren($button, array('i.glyphicon-check'));
+        $I->seeNodeChildren($button, array('span.glyphicon-check'));
         $I->seeNodePattern($button, '/> Button$/');
     }
 
@@ -2516,8 +2516,8 @@ class TbHtmlTest extends TbTestCase
                 'class' => 'icon',
             )
         );
-        $i = $I->createNode($html, 'i.glyphicon-check');
-        $I->seeNodeEmpty($i);
+        $span = $I->createNode($html, 'span.glyphicon-check');
+        $I->seeNodeEmpty($span);
 
         $html = TbHtml::icon(
             TbHtml::ICON_REMOVE,
@@ -2525,14 +2525,14 @@ class TbHtmlTest extends TbTestCase
                 'color' => TbHtml::ICON_COLOR_WHITE,
             )
         );
-        $i = $I->createNode($html, 'i.glyphicon-remove');
-        $I->seeNodeCssClass($i, 'glyphicon-white');
-        $I->seeNodeEmpty($i);
+        $span = $I->createNode($html, 'span.glyphicon-remove');
+        $I->seeNodeCssClass($span, 'glyphicon-white');
+        $I->seeNodeEmpty($span);
 
         $html = TbHtml::icon('pencil white');
-        $i = $I->createNode($html, 'i.glyphicon-pencil');
-        $I->seeNodeCssClass($i, 'glyphicon-white');
-        $I->seeNodeEmpty($i);
+        $span = $I->createNode($html, 'span.glyphicon-pencil');
+        $I->seeNodeCssClass($span, 'glyphicon-white');
+        $I->seeNodeEmpty($span);
 
         $html = TbHtml::icon(array());
         $this->assertEquals('', $html);
@@ -3013,7 +3013,7 @@ class TbHtmlTest extends TbTestCase
                 }
             } else {
                 if ($i === 0) {
-                    $I->seeNodeChildren($li, array('i.glyphicon-home', 'a'));
+                    $I->seeNodeChildren($li, array('span.glyphicon-home', 'a'));
                 }
                 if ($i === 2) {
                     $I->seeNodeCssClass($li, 'disabled');
@@ -3730,13 +3730,12 @@ class TbHtmlTest extends TbTestCase
                 'class' => 'div',
                 'color' => TbHtml::PROGRESS_COLOR_INFO,
                 'content' => 'Bar text',
-                'barOptions' => array('class' => 'div'),
+                'barOptions' => array('class' => 'another-div'),
             )
         );
         $progress = $I->createNode($html, 'div.progress');
-        $I->seeNodeCssClass($progress, 'progress-info div');
-        $bar = $progress->filter('div.bar');
-        $I->seeNodeCssClass($bar, 'div');
+        $bar = $progress->filter('div.progress-bar');
+        $I->seeNodeCssClass($bar, 'progress-bar-info another-div');
         $I->seeNodeCssStyle($bar, 'width: 60%');
         $I->seeNodeText($bar, 'Bar text');
 
@@ -3747,18 +3746,18 @@ class TbHtmlTest extends TbTestCase
             )
         );
         $progress = $I->createNode($html, 'div.progress');
-        $bar = $progress->filter('div.bar');
-        $I->seeNodeCssClass($bar, 'bar-success');
+        $bar = $progress->filter('div.progress-bar');
+        $I->seeNodeCssClass($bar, 'progress-bar-success');
         $I->seeNodeCssStyle($bar, 'width: 35%');
 
         $html = TbHtml::progressBar(-1);
         $progress = $I->createNode($html, 'div.progress');
-        $bar = $progress->filter('div.bar');
+        $bar = $progress->filter('div.progress-bar');
         $I->seeNodeCssStyle($bar, 'width: 0');
 
         $html = TbHtml::progressBar(100.1);
         $progress = $I->createNode($html, 'div.progress');
-        $bar = $progress->filter('div.bar');
+        $bar = $progress->filter('div.progress-bar');
         $I->seeNodeCssStyle($bar, 'width: 100%');
     }
 
@@ -3768,7 +3767,7 @@ class TbHtmlTest extends TbTestCase
         $html = TbHtml::stripedProgressBar(20);
         $progress = $I->createNode($html, 'div.progress');
         $I->seeNodeCssClass($progress, 'progress-striped');
-        $bar = $progress->filter('div.bar');
+        $bar = $progress->filter('div.progress-bar');
         $I->seeNodeCssStyle($bar, 'width: 20%');
     }
 
@@ -3778,7 +3777,7 @@ class TbHtmlTest extends TbTestCase
         $html = TbHtml::animatedProgressBar(40);
         $progress = $I->createNode($html, 'div.progress');
         $I->seeNodeCssClass($progress, 'progress-striped active');
-        $bar = $progress->filter('div.bar');
+        $bar = $progress->filter('div.progress-bar');
         $I->seeNodeCssStyle($bar, 'width: 40%');
     }
 
@@ -3794,15 +3793,22 @@ class TbHtmlTest extends TbTestCase
             )
         );
         $progress = $I->createNode($html, 'div.progress');
-        $I->seeNodeChildren($progress, array('div.bar-success', 'div.bar-warning', 'div.bar-danger'));
-        $success = $progress->filter('div.bar-success');
-        $I->seeNodeCssClass($success, 'bar');
+        $I->seeNodeChildren(
+            $progress,
+            array(
+                'div.progress-bar-success',
+                'div.progress-bar-warning',
+                'div.progress-bar-danger',
+            )
+        );
+        $success = $progress->filter('div.progress-bar-success');
+        $I->seeNodeCssClass($success, 'progress-bar');
         $I->seeNodeCssStyle($success, 'width: 35%');
-        $warning = $progress->filter('div.bar-warning');
-        $I->seeNodeCssClass($warning, 'bar');
+        $warning = $progress->filter('div.progress-bar-warning');
+        $I->seeNodeCssClass($warning, 'progress-bar');
         $I->seeNodeCssStyle($warning, 'width: 20%');
-        $danger = $progress->filter('div.bar-danger');
-        $I->seeNodeCssClass($danger, 'bar');
+        $danger = $progress->filter('div.progress-bar-danger');
+        $I->seeNodeCssClass($danger, 'progress-bar');
         $I->seeNodeCssStyle($danger, 'width: 10%');
 
         $html = TbHtml::stackedProgressBar(
@@ -3813,7 +3819,7 @@ class TbHtmlTest extends TbTestCase
             )
         );
         $progress = $I->createNode($html, 'div.progress');
-        $last = $progress->filter('div.bar')->last();
+        $last = $progress->filter('div.progress-bar')->last();
         $I->seeNodeCssStyle($last, 'width: 45%');
 
         $html = TbHtml::stackedProgressBar(
@@ -3824,7 +3830,7 @@ class TbHtmlTest extends TbTestCase
             )
         );
         $progress = $I->createNode($html, 'div.progress');
-        $last = $progress->filter('div.bar')->last();
+        $last = $progress->filter('div.progress-bar')->last();
         $I->seeNodeCssStyle($last, 'width: 20%');
 
         $html = TbHtml::stackedProgressBar(array());
