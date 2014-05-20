@@ -2542,7 +2542,7 @@ EOD;
         if (TbArray::popValue('block', $htmlOptions, false)) {
             self::addCssClass('btn-block', $htmlOptions);
         }
-        if (TbArray::popValue('disabled', $htmlOptions, false)) {
+        if (TbArray::getValue('disabled', $htmlOptions, false)) {
             self::addCssClass('disabled', $htmlOptions);
             $htmlOptions['disabled'] = 'disabled';
         }
@@ -3383,7 +3383,7 @@ EOD;
         self::addCssClass('breadcrumb', $htmlOptions);
         $output = self::openTag('ul', $htmlOptions);
         foreach ($links as $label => $url) {
-            if (is_string($label)) {
+            if (is_string($label) || is_array($url)) {
                 $output .= self::openTag('li');
                 $output .= self::link($label, $url);
                 $output .= self::tag('span', array('class' => 'divider'), $divider);
