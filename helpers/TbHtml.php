@@ -1526,6 +1526,7 @@ EOD;
         $controlOptions = TbArray::popValue('controlOptions', $htmlOptions, array());
         $label = TbArray::popValue('label', $htmlOptions);
         $labelOptions = TbArray::popValue('labelOptions', $htmlOptions, array());
+
         // todo: remove everything that has to do with form layouts.
         $formLayout = TbArray::popValue('formLayout', $htmlOptions, self::FORM_LAYOUT_VERTICAL);
         $labelWidthClass = TbArray::popValue('labelWidthClass', $htmlOptions, self::$defaultFormLabelWidthClass);
@@ -2405,6 +2406,7 @@ EOD;
         $controlOptions = TbArray::popValue('controlOptions', $htmlOptions, array());
         $label = TbArray::popValue('label', $htmlOptions);
         $labelOptions = TbArray::popValue('labelOptions', $htmlOptions, array());
+
         // todo: remove everything that has to do with form layout
         $formLayout = TbArray::popValue('formLayout', $htmlOptions, self::FORM_LAYOUT_VERTICAL);
         $labelWidthClass = TbArray::popValue('labelWidthClass', $htmlOptions, self::$defaultFormLabelWidthClass);
@@ -4827,15 +4829,9 @@ EOD;
             : $style;
     }
 
-    /**
-     * Adds the grid span class to the given options is applicable. BS3 no longer use span classes. During the BS3
-     * transition, this will use the col-md-* CSS class.
-     * @param array $htmlOptions the HTML attributes.
-     * @deprecated
-     */
-    // todo: remove this
     protected static function addSpanClass(&$htmlOptions)
     {
+        // todo: remove this method
         $span = TbArray::popValue('span', $htmlOptions);
         if (!empty($span)) {
             self::addCssClass('col-md-' . $span, $htmlOptions);
