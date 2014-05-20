@@ -16,6 +16,9 @@
             "homepage": "http://www.ramirezcobos.com/"
         }
     ],
+    "require": {
+        "twbs/bootstrap": ">=3.0.0"
+    },
     "require-dev": {
         "codeception/codeception": "@stable",
         "crisu83/yii-composer": ">=1.0.0",
