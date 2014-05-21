@@ -9,6 +9,8 @@
 
 /**
  * Bootstrap active form widget.
+ *
+ * @method null copyId() via TbWidget
  */
 class TbActiveForm extends CActiveForm
 {
@@ -122,6 +124,7 @@ class TbActiveForm extends CActiveForm
             {
                 $attributeName = substr($attribute, $pos + 1);
             }
+            /** @var CValidator $validator */
             foreach ($model->getValidators($attributeName) as $validator) {
                 if ($validator->enableClientValidation) {
                     if (($js = $validator->clientValidateAttribute($model, $attributeName)) != '') {
@@ -130,10 +133,8 @@ class TbActiveForm extends CActiveForm
                 }
             }
             if ($validators !== array()) {
-                $option['clientValidation'] = "js:function(value, messages, attribute) {\n" . implode(
-                        "\n",
-                        $validators
-                    ) . "\n}";
+                $validators = implode("\n", $validators);
+                $option['clientValidation'] = "js:function(value, messages, attribute) {\n$validators\n}";
             }
         }
         $html = TbHtml::error($model, $attribute, $htmlOptions);
