@@ -61,10 +61,10 @@ class TbFormInputElement extends CFormInputElement
             $type = self::$coreTypes[$this->type];
         } else {
             $type = TbHtml::INPUT_TYPE_CUSTOM;
-            $attributes = $this->attributes;
-            $attributes['model'] = $model;
-            $attributes['attribute'] = $this->name;
-            $this->attributes['input'] = $parent->getOwner()->widget($this->type, $attributes, true);
+            $properties = $this->attributes;
+            $properties['model'] = $model;
+            $properties['attribute'] = $this->name;
+            $this->attributes['input'] = $parent->getOwner()->widget($this->type, $properties, true);
         }
 
         return $form->createControlGroup($type, $model, $this->name, $this->attributes, $this->items);
