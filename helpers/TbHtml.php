@@ -216,7 +216,6 @@ class TbHtml extends CHtml // required in order to access the protected methods 
     const ALERT_COLOR_INFO = 'info';
     const ALERT_COLOR_SUCCESS = 'success';
     const ALERT_COLOR_WARNING = 'warning';
-    const ALERT_COLOR_ERROR = 'error';
     const ALERT_COLOR_DANGER = 'danger';
 
     //
@@ -482,7 +481,7 @@ class TbHtml extends CHtml // required in order to access the protected methods 
     /**
      * @var string the CSS class for displaying error summaries.
      */
-    public static $errorSummaryCss = 'alert alert-block alert-error';
+    public static $errorSummaryCss = 'alert alert-block alert-danger';
     /**
      * @var string the CSS class for displaying error inputs
      */
