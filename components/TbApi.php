@@ -29,9 +29,14 @@ class TbApi extends CApplicationComponent
     const PLUGIN_TYPEAHEAD = 'typeahead';
 
     /**
-     * @var int static counter, used for determining script identifiers
+     * @var int static counter, used for determining script identifiers.
      */
     public static $counter = 0;
+
+    /**
+     * @var string path to Bootstrap assets (will default to vendor/twbs/bootstrap/dist).
+     */
+    public $bootstrapPath;
 
     /**
      * @var bool whether we should copy the asset file or directory even if it is already published before.
@@ -39,11 +44,13 @@ class TbApi extends CApplicationComponent
     public $forceCopyAssets = false;
 
     /**
-     * @var string path to Bootstrap assets.
+     * @var string base URL to Bootstrap CDN - set this if you wish to use Bootstrap though a CDN.
+     * @see http://getbootstrap.com/getting-started/#download-cdn
      */
-    public $assetsPath;
+    public $cdnUrl;
 
     private $_assetsUrl;
+    private $_bootstrapUrl;
 
     /**
      * Initializes this component.
@@ -51,8 +58,8 @@ class TbApi extends CApplicationComponent
     public function init()
     {
         parent::init();
-        if ($this->assetsPath === null) {
-            $this->assetsPath = Yii::getPathOfAlias('vendor.twbs.bootstrap.dist');
+        if ($this->bootstrapPath === null) {
+            $this->bootstrapPath = Yii::getPathOfAlias('vendor.twbs.bootstrap.dist');
         }
     }
 
@@ -65,7 +72,7 @@ class TbApi extends CApplicationComponent
     {
         if ($url === null) {
             $fileName = YII_DEBUG ? 'bootstrap.css' : 'bootstrap.min.css';
-            $url = $this->getAssetsUrl() . '/css/' . $fileName;
+            $url = $this->getBootstrapUrl() . '/css/' . $fileName;
         }
         Yii::app()->getClientScript()->registerCssFile($url, $media);
     }
@@ -79,7 +86,7 @@ class TbApi extends CApplicationComponent
     {
         if ($url === null) {
             $fileName = YII_DEBUG ? 'bootstrap-theme.css' : 'bootstrap-theme.min.css';
-            $url = $this->getAssetsUrl() . '/css/' . $fileName;
+            $url = $this->getBootstrapUrl() . '/css/' . $fileName;
         }
         Yii::app()->getClientScript()->registerCssFile($url, $media);
     }
@@ -87,9 +94,9 @@ class TbApi extends CApplicationComponent
     /**
      * Registers the Yiistrap CSS.
      * @param string $url the URL to the CSS file to register.
-     * @param string $media the media type.
+     * @param string $media the media type (default to 'screen').
      */
-    public function registerYiistrapCss($url = null, $media = '')
+    public function registerYiistrapCss($url = null, $media = 'screen')
     {
         if ($url === null) {
             $fileName = YII_DEBUG ? 'yiistrap.css' : 'yiistrap.min.css';
@@ -100,6 +107,7 @@ class TbApi extends CApplicationComponent
 
     /**
      * Fixes panning and zooming on mobile devices.
+     * @see http://getbootstrap.com/css/#overview-mobile
      */
     public function fixPanningAndZooming()
     {
@@ -125,7 +133,7 @@ class TbApi extends CApplicationComponent
     {
         if ($url === null) {
             $fileName = YII_DEBUG ? 'bootstrap.js' : 'bootstrap.min.js';
-            $url = $this->getAssetsUrl() . '/js/' . $fileName;
+            $url = $this->getBootstrapUrl() . '/js/' . $fileName;
         }
         /** @var CClientScript $cs */
         $cs = Yii::app()->getClientScript();
@@ -221,17 +229,36 @@ class TbApi extends CApplicationComponent
     }
 
     /**
-     * Returns the url to the published assets folder.
+     * Returns the url to the published Bootstrap folder, or the CDN if applicable.
+     * @return string the url.
+     */
+    protected function getBootstrapUrl()
+    {
+        if (!isset($this->_bootstrapUrl)) {
+            if (isset($this->cdnUrl)) {
+                $this->_bootstrapUrl = $this->cdnUrl;
+            } else {
+                if (($path = Yii::getPathOfAlias($this->bootstrapPath)) !== false) {
+                    $this->bootstrapPath = $path;
+                }
+                $this->_bootstrapUrl = Yii::app()->assetManager->publish($this->bootstrapPath, false, -1, $this->forceCopyAssets);
+            }
+        }
+        return $this->_bootstrapUrl;
+    }
+
+    /**
+     * Returns the url to the published folder that contains the assets for this extension.
      * @return string the url.
      */
     protected function getAssetsUrl()
     {
         if (!isset($this->_assetsUrl)) {
-            if (($path = Yii::getPathOfAlias($this->assetsPath)) !== false) {
-                $this->assetsPath = $path;
+            if (($path = Yii::getPathOfAlias($this->bootstrapPath)) !== false) {
+                $this->bootstrapPath = $path;
             }
-            $assetsUrl = Yii::app()->assetManager->publish($this->assetsPath, false, -1, $this->forceCopyAssets);
-            $this->_assetsUrl = $assetsUrl;
+            $assetPath = dirname(__DIR__) . '/assets';
+            $this->_assetsUrl = Yii::app()->assetManager->publish($assetPath, false, -1, $this->forceCopyAssets);
         }
         return $this->_assetsUrl;
     }
