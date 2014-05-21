@@ -1,5 +1,4 @@
 <?php
-
 /**
  * TbFormInputElement class file.
  * @author Christoffer Niska <christoffer.niska@gmail.com>
@@ -13,13 +12,12 @@
  */
 class TbFormInputElement extends CFormInputElement
 {
-
     /**
      * @var array Core input types (alias=>TbHtml method name)
      */
     public static $coreTypes = array(
         'text' => TbHtml::INPUT_TYPE_TEXT,
-//        'hidden' => TbHtml::INPUT_TYPE_HIDDEN, @todo: requires https://github.com/crisu83/yiistrap/pull/227
+        'hidden' => TbHtml::INPUT_TYPE_HIDDEN,
         'password' => TbHtml::INPUT_TYPE_PASSWORD,
         'textarea' => TbHtml::INPUT_TYPE_TEXTAREA,
         'file' => TbHtml::INPUT_TYPE_FILE,
@@ -42,9 +40,8 @@ class TbFormInputElement extends CFormInputElement
     );
 
     /**
-     * Renders everything for this input.
-     * When this->type is not a coreType, render widget of specified type.
-     * @return string the complete rendering result for this input, including label, input field, hint, and error.
+     * Renders a control group for this input.
+     * @return string the rendered control group.
      */
     public function render()
     {
@@ -52,20 +49,24 @@ class TbFormInputElement extends CFormInputElement
         $parent = $this->getParent();
         /** @var TbActiveForm $form */
         $form = $parent->getActiveFormWidget();
+        /** @var CModel $model */
+        $model = $parent->getModel();
+
+        // Hidden fields do not require control groups.
+        if ($this->type === TbHtml::INPUT_TYPE_HIDDEN) {
+            return $form->hiddenField($model, $this->name, $this->attributes);
+        }
 
         if (isset(self::$coreTypes[$this->type])) {
             $type = self::$coreTypes[$this->type];
-            return $form->createControlGroup($type, $parent->getModel(), $this->name, $this->attributes, $this->items);
         } else {
+            $type = TbHtml::INPUT_TYPE_CUSTOM;
             $attributes = $this->attributes;
-            $attributes['model'] = $parent->getModel();
+            $attributes['model'] = $model;
             $attributes['attribute'] = $this->name;
-            ob_start();
-            $this->getParent()->getOwner()->widget($this->type, $attributes);
-            $this->attributes['input'] = ob_get_clean();
-
-            return $form->createControlGroup(TbHtml::INPUT_TYPE_CUSTOM, $parent->getModel(), $this->name, $this->attributes);
+            $this->attributes['input'] = $parent->getOwner()->widget($this->type, $attributes, true);
         }
-    }
 
+        return $form->createControlGroup($type, $model, $this->name, $this->attributes, $this->items);
+    }
 }

@@ -58,6 +58,7 @@ class TbHtml extends CHtml // required in order to access the protected methods 
     const INPUT_TYPE_INLINERADIOBUTTONLIST = 'inlineRadioButtonList';
     const INPUT_TYPE_UNEDITABLE = 'uneditableField';
     const INPUT_TYPE_SEARCH = 'searchQuery';
+    const INPUT_TYPE_HIDDEN = 'hidden';
     const INPUT_TYPE_CUSTOM = 'widget';
 
     // Input sizes are deprecated in BS3, use col-*-* instead.
