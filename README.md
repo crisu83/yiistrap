@@ -61,6 +61,21 @@ If you are not using composer's autoload, then you need to add the following to 
 .....
 ```
 
+### Usage note
+
+When creating widget, prepend a \ to the filename to use the Composer autoloader:
+
+```php
+<?php $this->widget('\TbNav', array(
+    'type' => TbHtml::NAV_TYPE_TABS,
+    'items' => array(
+        array('label' => 'Home', 'url' => '#', 'active' => true),
+        array('label' => 'Profile', 'url' => '#',),
+        array('label' => 'Messages', 'url' => '#',),
+    ),
+)); ?>
+```
+
 ## More
 
 More documentation can be found here:
