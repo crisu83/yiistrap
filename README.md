@@ -42,6 +42,8 @@ Add the following line to your main layout in protected/views/layouts/main.php t
 <?php Yii::app()->bootstrap->register(); ?>
 ```
 
+### Without Composer ###
+
 If you are not using composer's autoload, then you need to add the following to your application configuration:
 
 ```php
@@ -61,9 +63,12 @@ If you are not using composer's autoload, then you need to add the following to 
 .....
 ```
 
-### Usage note
+## Usage
 
-When creating widget, prepend a \ to the filename to use the Composer autoloader:
+No fully updated documentation available yet, use this as a guideline:
+[http://www.getyiistrap.com](http://www.getyiistrap.com)
+
+Note: When creating widget, prepend a \ to the filename to use the Composer autoloader:
 
 ```php
 <?php $this->widget('\TbNav', array(
@@ -75,8 +80,3 @@ When creating widget, prepend a \ to the filename to use the Composer autoloader
     ),
 )); ?>
 ```
-
-## More
-
-More documentation can be found here:
-[http://www.getyiistrap.com](http://www.getyiistrap.com)
