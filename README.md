@@ -1,7 +1,6 @@
 Yiistrap
 ========
 
-[![Latest Stable Version](https://poser.pugx.org/crisu83/yiistrap/v/stable.png)](https://packagist.org/packages/crisu83/yiistrap)
 [![Build Status](https://travis-ci.org/crisu83/yiistrap.svg?branch=bs3)](https://travis-ci.org/crisu83/yiistrap)
 
 Twitter Bootstrap for Yii.
