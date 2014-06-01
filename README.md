@@ -7,7 +7,7 @@ Twitter Bootstrap for Yii.
 
 ## Installation
 
-The easiest way to install payment manager is to use Composer.
+The easiest way to install Yiistrap is to use Composer.
 Add the following to your composer.json file:
 
 ```js
@@ -35,7 +35,7 @@ Add the following to your application configuration:
 .....
 ```
 
-Add the following line to your main layout in protected/views/layouts/main.php to register the necessary CSS and JavaScript files:
+Add the following line to your main layout in ```protected/views/layouts/main.php``` to register the necessary CSS and JavaScript files:
 
 ```php
 <?php Yii::app()->bootstrap->register(); ?>
@@ -43,11 +43,11 @@ Add the following line to your main layout in protected/views/layouts/main.php t
 
 ### Without Composer ###
 
-If you are not using composer's autoload, then you need to add the following to your application configuration:
+If you are not using Composer, then you need to add the following to your application configuration:
 
 ```php
 'aliases' => array(
-    'yiistrap' => __DIR__ . '/vendor/crisu83/yiistrap',
+    'yiistrap' => __DIR__ . '/relative/path/to/yiistrap',
 ),
 .....
 'import' => array(
@@ -57,17 +57,16 @@ If you are not using composer's autoload, then you need to add the following to 
     'yiistrap.form.*',
     'yiistrap.helpers.*',
     'yiistrap.widgets.*',
-    .....
 ),
 .....
 ```
 
 ## Usage
 
-No fully updated documentation available yet, use this as a guideline:
+Documentation not updated yet, but use the current docs as a guideline:
 [http://www.getyiistrap.com](http://www.getyiistrap.com)
 
-Note: When creating widget, prepend a \ to the filename to use the Composer autoloader:
+___Note: When you use a widget, prepend a ```\``` to the filename to use autoload it through Composer:___
 
 ```php
 <?php $this->widget('\TbNav', array(
