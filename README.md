@@ -33,6 +33,14 @@ Add the following to your application configuration:
     ),
 ),
 .....
+'modules' => array(
+    .....
+    'gii' => array(
+        'class' => 'system.gii.GiiModule',
+        'generatorPaths' => array('vendor.crisu83.yiistrap.gii'),
+    ),
+),
+.....
 ```
 
 Add the following line to your main layout in ```protected/views/layouts/main.php``` to register the necessary CSS and JavaScript files:

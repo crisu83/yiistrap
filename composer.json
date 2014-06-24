@@ -40,7 +40,8 @@
             "components/",
             "form/",
             "helpers/",
-            "widgets/"
+            "widgets/",
+            "gii/bootstrap/BootstrapCode.php"
         ]
     }
 }
