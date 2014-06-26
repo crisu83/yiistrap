@@ -30,7 +30,7 @@ class TbForm extends CForm
     /**
      * @var array the configuration used to create the active form widget.
      */
-    public $activeForm = array('class' => 'TbActiveForm');
+    public $activeForm = array('class' => '\TbActiveForm');
 
     /**
      * Initializes this form.
