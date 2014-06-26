@@ -38,6 +38,7 @@ class TbForm extends CForm
     public function init()
     {
         TbArray::defaultValue('layout', $this->layout, $this->activeForm);
+        TbArray::defaultValue('class', '\TbActiveForm', $this->activeForm);
     }
 
     /**
