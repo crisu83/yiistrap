@@ -2723,7 +2723,7 @@ EOD;
     public static function icon($icon, $htmlOptions = array(), $tagName = 'i')
     {
         if (is_string($icon)) {
-            if (strpos($icon, 'icon') === false) {
+            if ((strpos($icon, 'icon') === false) && (strpos($icon, 'fa') === false)) {
                 $icon = 'icon-' . implode(' icon-', explode(' ', $icon));
             }
             self::addCssClass($icon, $htmlOptions);
