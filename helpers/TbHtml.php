@@ -697,7 +697,7 @@ class TbHtml extends CHtml // required in order to access the protected methods 
      */
     public static function code($code, $htmlOptions = array())
     {
-        return self::tag('code', $htmlOptions, $code);
+        return self::tag('code', $htmlOptions, self::encode($code));
     }
 
     /**
@@ -708,7 +708,7 @@ class TbHtml extends CHtml // required in order to access the protected methods 
      */
     public static function codeBlock($code, $htmlOptions = array())
     {
-        return self::tag('pre', $htmlOptions, $code);
+        return self::tag('pre', $htmlOptions, self::encode($code));
     }
 
     /**
