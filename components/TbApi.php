@@ -231,6 +231,7 @@ class TbApi extends CApplicationComponent
     /**
      * Returns the url to the published Bootstrap folder, or the CDN if applicable.
      * @return string the url.
+     * @throws Exception
      */
     protected function getBootstrapUrl()
     {
@@ -240,6 +241,8 @@ class TbApi extends CApplicationComponent
             } else {
                 if (($path = Yii::getPathOfAlias($this->bootstrapPath)) !== false) {
                     $this->bootstrapPath = $path;
+                } else {
+                    throw new Exception("Invalid Bootstrap path and CDN URL not set. Set vendor.twbs.bootstrap.dist alias or cdnUrl parameter in the configuration file.");
                 }
                 $this->_bootstrapUrl = Yii::app()->assetManager->publish($this->bootstrapPath, false, -1, $this->forceCopyAssets);
             }
