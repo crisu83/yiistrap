@@ -3222,7 +3222,7 @@ EOD;
      * @param integer $i the running index.
      * @return array the items.
      */
-    protected static function normalizeTabs($tabs, &$panes, $i = 0)
+    protected static function normalizeTabs($tabs, &$panes, &$i = 0)
     {
         $menuItems = array();
         foreach ($tabs as $tabOptions) {
