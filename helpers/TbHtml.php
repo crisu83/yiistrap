@@ -3293,14 +3293,20 @@ EOD;
     /**
      * Generates a brand link for the navbar.
      * @param string $label the link label text.
-     * @param string $url the link url.
+     * @param string $url the link url. If false, a span will be generated 
+     * instead of a link
      * @param array $htmlOptions additional HTML attributes.
-     * @return string the generated link.
+     * @return string the generated HTML.
      */
     public static function navbarBrandLink($label, $url, $htmlOptions = array())
     {
         self::addCssClass('brand', $htmlOptions);
-        return self::link($label, $url, $htmlOptions);
+        
+        if ($url !== false) {
+            return self::link($label, $url, $htmlOptions);
+        } else {
+            return self::tag ('span', $htmlOptions, $label);
+    	}
     }
 
     /**
