@@ -2637,8 +2637,8 @@ class TbHtmlTest extends TbTestCase
         foreach ($group->children() as $i => $btnElement) {
             $btn = $I->createNode($btnElement);
             if ($i === 1) {
-                $I->seeNodeChildren($btn, array('a.dropdown-toggle', 'ul.dropdown-menu'));
-                $a = $btn->filter('a.dropdown-toggle');
+                $I->seeNodeChildren($btn, array('button.dropdown-toggle', 'ul.dropdown-menu'));
+                $a = $btn->filter('button.dropdown-toggle');
                 $I->seeNodeCssClass($a, 'btn-inverse');
                 $I->seeNodeText($a, 'Middle');
             } else {
@@ -2685,8 +2685,8 @@ class TbHtmlTest extends TbTestCase
         foreach ($group->children() as $i => $btnElement) {
             $btn = $I->createNode($btnElement);
             if ($i === 1) {
-                $I->seeNodeChildren($btn, array('a.dropdown-toggle', 'ul.dropdown-menu'));
-                $a = $btn->filter('a.dropdown-toggle');
+                $I->seeNodeChildren($btn, array('button.dropdown-toggle', 'ul.dropdown-menu'));
+                $a = $btn->filter('button.dropdown-toggle');
                 $I->seeNodeCssClass($a, 'btn-inverse');
                 $I->seeNodeText($a, 'Middle');
             } else {
@@ -2779,7 +2779,7 @@ class TbHtmlTest extends TbTestCase
         $this->assertEquals('', $html);
     }
 
-    public function testButtonDropdown()
+    public function testButtonDropdownHtmlButton()
     {
         $I = $this->codeGuy;
 
@@ -2804,6 +2804,71 @@ class TbHtmlTest extends TbTestCase
                 'dropup' => true,
                 'groupOptions' => array('class' => 'group'),
                 'menuOptions' => array('class' => 'menu'),
+            )
+        );
+        $group = $I->createNode($html, 'div.btn-group');
+        $I->seeNodeCssClass($group, 'dropup group');
+        $I->seeNodeChildren($group, array('button.dropdown-toggle', 'ul.dropdown-menu'));
+        $a = $group->filter('button.dropdown-toggle');
+        $I->seeNodeCssClass($a, 'link');
+        $I->seeNodeAttributes(
+            $a,
+            array(
+                'data-toggle' => 'dropdown'
+            )
+        );
+        $I->seeNodePattern($a, '/Action </');
+        $b = $a->filter('b.caret');
+        $I->seeNodeEmpty($b);
+        $ul = $group->filter('ul.dropdown-menu');
+        foreach ($ul->children() as $i => $liElement) {
+            $li = $I->createNode($liElement);
+            if ($i === 3) {
+                $I->seeNodeCssClass($li, 'divider');
+            } else {
+                $a = $li->filter('a');
+                if ($i === 0) {
+                    $I->seeNodeCssClass($li, 'item');
+                    $I->seeNodeCssClass($a, 'link');
+                }
+                $I->seeNodeAttributes(
+                    $a,
+                    array(
+                        'href' => '#',
+                        'tabindex' => '-1',
+                    )
+                );
+                $I->seeNodeText($a, $items[$i]['label']);
+            }
+        }
+    }
+
+    public function testButtonDropdownLinkButton()
+    {
+        $I = $this->codeGuy;
+
+        $items = array(
+            array(
+                'label' => 'Action',
+                'url' => '#',
+                'class' => 'item',
+                'linkOptions' => array('class' => 'link'),
+            ),
+            array('label' => 'Another action', 'url' => '#'),
+            array('label' => 'Something else here', 'url' => '#'),
+            TbHtml::menuDivider(),
+            array('label' => 'Separate link', 'url' => '#'),
+        );
+
+        $html = TbHtml::buttonDropdown(
+            'Action',
+            $items,
+            array(
+                'class' => 'link',
+                'dropup' => true,
+                'groupOptions' => array('class' => 'group'),
+                'menuOptions' => array('class' => 'menu'),
+                'type'=>TbHtml::BUTTON_TYPE_LINK
             )
         );
         $group = $I->createNode($html, 'div.btn-group');
@@ -2844,7 +2909,7 @@ class TbHtmlTest extends TbTestCase
         }
     }
 
-    public function testSplitButtonDropdown()
+    public function testSplitButtonDropdownHtmlButtons()
     {
         $I = $this->codeGuy;
 
@@ -2858,7 +2923,35 @@ class TbHtmlTest extends TbTestCase
 
         $html = TbHtml::splitButtonDropdown('Action',  $items);
         $group = $I->createNode($html, 'div.btn-group');
-        $I->seeNodeChildren($group, array('a.btn', 'button.dropdown-toggle', 'ul.dropdown-menu'));
+        $I->seeNodeChildren($group, array('button.btn', 'button.dropdown-toggle', 'ul.dropdown-menu'));
+        CHtml::$count = 0;
+    }
+
+    public function testSplitButtonDropdownLinkButtons()
+    {
+        $I = $this->codeGuy;
+
+        $items = array(
+            array('label' => 'Action', 'url' => '#'),
+            array('label' => 'Another action', 'url' => '#'),
+            array('label' => 'Something else here', 'url' => '#'),
+            TbHtml::menuDivider(),
+            array('label' => 'Separate link', 'url' => '#'),
+        );
+
+        $html = TbHtml::splitButtonDropdown('Action',  $items, array(
+                'type'=>array(TbHtml::BUTTON_TYPE_LINKBUTTON, TbHtml::BUTTON_TYPE_LINK)
+            )
+        );
+        $group = $I->createNode($html, 'div.btn-group');
+        $I->seeNodeChildren($group, array('a.btn', 'a.dropdown-toggle', 'ul.dropdown-menu'));
+        $a = $group->filter('a.btn');
+        $I->seeNodeAttributes(
+            $a,
+            array(
+                'href' => '#'
+            )
+        );
         CHtml::$count = 0;
     }
 
