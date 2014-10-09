@@ -276,13 +276,13 @@ class TbHtml extends CHtml // required in order to access the protected methods 
 
     const COLUMN_SIZE_XS = 'xs';
     const COLUMN_SIZE_SM = 'sm';
-	const COLUMN_SIZE_MD = 'md';
-	const COLUMN_SIZE_LG = 'lg';
-	// Verbose
-	const COLUMN_SIZE_EXTRA_SMALL = 'xs';
-	const COLUMN_SIZE_SMALL = 'sm';
-	const COLUMN_SIZE_MEDIUM = 'md';
-	const COLUMN_SIZE_LARGE = 'lg';
+    const COLUMN_SIZE_MD = 'md';
+    const COLUMN_SIZE_LG = 'lg';
+    // Verbose
+    const COLUMN_SIZE_EXTRA_SMALL = 'xs';
+    const COLUMN_SIZE_SMALL = 'sm';
+    const COLUMN_SIZE_MEDIUM = 'md';
+    const COLUMN_SIZE_LARGE = 'lg';
 
     //
     // ICON
@@ -1191,13 +1191,13 @@ class TbHtml extends CHtml // required in order to access the protected methods 
         if (isset($checkAllLabel)) {
             $htmlOptions['value'] = 1;
             $htmlOptions['id'] = $id = $baseID . '_all';
-			$htmlOptions['label'] = $checkAllLabel;
-			$htmlOptions['labelOptions'] = $labelOptions;
-			$item = self::checkBox($id, $checkAll, $htmlOptions);
-			if ($inline) {
+            $htmlOptions['label'] = $checkAllLabel;
+            $htmlOptions['labelOptions'] = $labelOptions;
+            $item = self::checkBox($id, $checkAll, $htmlOptions);
+            if ($inline) {
                 self::addCssClass('checkbox-inline', $labelOptions);
             } else {
-				$item = self::checkBox($id, $checkAll, $htmlOptions);
+                $item = self::checkBox($id, $checkAll, $htmlOptions);
                 $item = self::tag(
                     'div',
                     array('class' => 'checkbox'),
@@ -3001,9 +3001,9 @@ EOD;
      * @param array $htmlOptions additional HTML attributes.
      * @return string the generated button.
      */
-	public static function inputButton($label, $htmlOptions = array()) {
-		return self::btn(self::BUTTON_TYPE_INPUTBUTTON, $label, $htmlOptions);
-	}
+    public static function inputButton($label, $htmlOptions = array()) {
+        return self::btn(self::BUTTON_TYPE_INPUTBUTTON, $label, $htmlOptions);
+    }
 
 	/**
      * Generates a form input submit push button.
@@ -3011,9 +3011,9 @@ EOD;
      * @param array $htmlOptions additional HTML attributes.
      * @return string the generated button.
      */
-	public static function inputSubmit($label = 'Submit', $htmlOptions = array()) {
-		return self::btn(self::BUTTON_TYPE_INPUTSUBMIT, $label, $htmlOptions);
-	}
+    public static function inputSubmit($label = 'Submit', $htmlOptions = array()) {
+        return self::btn(self::BUTTON_TYPE_INPUTSUBMIT, $label, $htmlOptions);
+    }
 
     /**
      * Generates a button.
