@@ -20,6 +20,8 @@ class TbHtml extends CHtml // required in order to access the protected methods 
     const TEXT_ALIGN_LEFT = 'left';
     const TEXT_ALIGN_CENTER = 'center';
     const TEXT_ALIGN_RIGHT = 'right';
+    const TEXT_ALIGN_JUSTIFY = 'justify';
+    const TEXT_ALIGN_NOWRAP = 'nowrap';
 
     const TEXT_COLOR_DEFAULT = '';
     const TEXT_COLOR_WARNING = 'warning';
@@ -267,6 +269,20 @@ class TbHtml extends CHtml // required in order to access the protected methods 
 
     const AFFIX_POSITION_TOP = 'top';
     const AFFIX_POSITION_BOTTOM = 'bottom';
+
+	//
+    // COLUMNS
+    // --------------------------------------------------
+
+    const COLUMN_SIZE_XS = 'xs';
+    const COLUMN_SIZE_SM = 'sm';
+    const COLUMN_SIZE_MD = 'md';
+    const COLUMN_SIZE_LG = 'lg';
+    // Verbose
+    const COLUMN_SIZE_EXTRA_SMALL = 'xs';
+    const COLUMN_SIZE_SMALL = 'sm';
+    const COLUMN_SIZE_MEDIUM = 'md';
+    const COLUMN_SIZE_LARGE = 'lg';
 
     //
     // ICON
@@ -1175,20 +1191,17 @@ class TbHtml extends CHtml // required in order to access the protected methods 
         if (isset($checkAllLabel)) {
             $htmlOptions['value'] = 1;
             $htmlOptions['id'] = $id = $baseID . '_all';
-            // todo: fix undeclared variable $option
-            $item = self::label($option . ' ' . $checkAllLabel, false, $labelOptions);
+            $htmlOptions['label'] = $checkAllLabel;
+            $htmlOptions['labelOptions'] = $labelOptions;
+            $item = self::checkBox($id, $checkAll, $htmlOptions);
             if ($inline) {
-                $htmlOptions['label'] = $checkAllLabel;
                 self::addCssClass('checkbox-inline', $labelOptions);
-                $htmlOptions['labelOptions'] = $labelOptions;
-                $item = self::checkBox($id, $checkAll, $htmlOptions);
             } else {
-                $option = self::checkBox($id, $checkAll, $htmlOptions);
+                $item = self::checkBox($id, $checkAll, $htmlOptions);
                 $item = self::tag(
                     'div',
                     array('class' => 'checkbox'),
-                    // todo: fix undeclared variable $label
-                    self::label($option . ' ' . $label, false, $labelOptions)
+                    $item
                 );
             }
             if ($checkAllLast) {
@@ -2982,7 +2995,25 @@ EOD;
         return self::ajaxButton($label, $url, $ajaxOptions, $htmlOptions);
     }
 
-    // todo: add methods for input button and input submit.
+     /**
+     * Generates a form input push button.
+     * @param string $label the button label
+     * @param array $htmlOptions additional HTML attributes.
+     * @return string the generated button.
+     */
+    public static function inputButton($label, $htmlOptions = array()) {
+        return self::btn(self::BUTTON_TYPE_INPUTBUTTON, $label, $htmlOptions);
+    }
+
+	/**
+     * Generates a form input submit push button.
+     * @param string $label the button label
+     * @param array $htmlOptions additional HTML attributes.
+     * @return string the generated button.
+     */
+    public static function inputSubmit($label = 'Submit', $htmlOptions = array()) {
+        return self::btn(self::BUTTON_TYPE_INPUTSUBMIT, $label, $htmlOptions);
+    }
 
     /**
      * Generates a button.
@@ -4859,8 +4890,7 @@ EOD;
      */
     protected static function addColClass(&$htmlOptions)
     {
-        // todo: use constants
-        $colSizes = array('xs', 'sm', 'md', 'lg');
+        $colSizes = array(self::COLUMN_SIZE_XS, self::COLUMN_SIZE_SM, self::COLUMN_SIZE_MD, self::COLUMN_SIZE_LG);
 
         // It's possible to stack an xs and md grid together
         foreach ($colSizes as $colSize) {
@@ -4889,7 +4919,6 @@ EOD;
      */
     protected static function addTextAlignClass(&$htmlOptions)
     {
-        // todo: check if this is supported in bs3
         $align = TbArray::popValue('textAlign', $htmlOptions);
         if (!empty($align)) {
             self::addCssClass('text-' . $align, $htmlOptions);
