@@ -2542,7 +2542,7 @@ EOD;
         if (TbArray::popValue('block', $htmlOptions, false)) {
             self::addCssClass('btn-block', $htmlOptions);
         }
-        if (TbArray::popValue('disabled', $htmlOptions, false)) {
+        if (TbArray::getValue('disabled', $htmlOptions, false)) {
             self::addCssClass('disabled', $htmlOptions);
             $htmlOptions['disabled'] = 'disabled';
         }
@@ -2723,7 +2723,7 @@ EOD;
     public static function icon($icon, $htmlOptions = array(), $tagName = 'i')
     {
         if (is_string($icon)) {
-            if (strpos($icon, 'icon') === false) {
+            if ((strpos($icon, 'icon') === false) && (strpos($icon, 'fa') === false)) {
                 $icon = 'icon-' . implode(' icon-', explode(' ', $icon));
             }
             self::addCssClass($icon, $htmlOptions);
@@ -2854,7 +2854,12 @@ EOD;
                 if (!empty($items)) {
                     $output .= self::buttonDropdown($buttonLabel, $items, $buttonOptions);
                 } else {
-                    $output .= self::linkButton($buttonLabel, $buttonOptions);
+                	$ajaxOptions = TbArray::popValue('ajaxOptions', $buttonOptions, array());
+                	if(!empty($ajaxOptions)) {	                
+	                	$output .= self::ajaxButton($buttonLabel, TbArray::popValue('url', $ajaxOptions, '#'), $ajaxOptions, $buttonOptions);
+	                } else {
+	                    $output .= self::linkButton($buttonLabel, $buttonOptions);
+	                }
                 }
             }
             $output .= '</div>';
@@ -3217,7 +3222,7 @@ EOD;
      * @param integer $i the running index.
      * @return array the items.
      */
-    protected static function normalizeTabs($tabs, &$panes, $i = 0)
+    protected static function normalizeTabs($tabs, &$panes, &$i = 0)
     {
         $menuItems = array();
         foreach ($tabs as $tabOptions) {
@@ -3277,24 +3282,31 @@ EOD;
             self::addCssClass('navbar-' . $color, $htmlOptions);
         }
         $innerOptions = TbArray::popValue('innerOptions', $htmlOptions, array());
+        $tag = TbArray::popValue('tag', $htmlOptions, 'div');
         self::addCssClass('navbar-inner', $innerOptions);
-        $output = self::openTag('div', $htmlOptions);
+        $output = self::openTag($tag, $htmlOptions);
         $output .= self::tag('div', $innerOptions, $content);
-        $output .= '</div>';
+        $output .= self::closeTag($tag);
         return $output;
     }
 
     /**
      * Generates a brand link for the navbar.
      * @param string $label the link label text.
-     * @param string $url the link url.
+     * @param string $url the link url. If false, a span will be generated 
+     * instead of a link
      * @param array $htmlOptions additional HTML attributes.
-     * @return string the generated link.
+     * @return string the generated HTML.
      */
     public static function navbarBrandLink($label, $url, $htmlOptions = array())
     {
         self::addCssClass('brand', $htmlOptions);
-        return self::link($label, $url, $htmlOptions);
+        
+        if ($url !== false) {
+            return self::link($label, $url, $htmlOptions);
+        } else {
+            return self::tag ('span', $htmlOptions, $label);
+    	}
     }
 
     /**
@@ -3378,7 +3390,7 @@ EOD;
         self::addCssClass('breadcrumb', $htmlOptions);
         $output = self::openTag('ul', $htmlOptions);
         foreach ($links as $label => $url) {
-            if (is_string($label)) {
+            if (is_string($label) || is_array($url)) {
                 $output .= self::openTag('li');
                 $output .= self::link($label, $url);
                 $output .= self::tag('span', array('class' => 'divider'), $divider);
