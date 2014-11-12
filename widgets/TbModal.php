@@ -37,6 +37,11 @@ class TbModal extends CWidget
     public $fade = true;
 
     /**
+     * @var string sets what size the modal should have based on the modal-sm or modal-lg classes mentioned in bootstrap docs since 3.1.1. Defaults to '', meaning that no new class will be added.
+     */
+    public $size = TbHtml::MODAL_SIZE_DEFAULT;
+
+    /**
      * @var bool $keyboard, closes the modal when escape key is pressed.
      */
     public $keyboard = true;
@@ -134,7 +139,7 @@ class TbModal extends CWidget
         $this->initEvents();
 
         echo TbHtml::openTag('div', $this->htmlOptions) . PHP_EOL;
-        echo TbHtml::openTag('div', array('class' => 'modal-dialog')) . PHP_EOL;
+        echo TbHtml::openTag('div', array('class' => 'modal-dialog' . $this->size)) . PHP_EOL;
         echo TbHtml::openTag('div', array('class' => 'modal-content')) . PHP_EOL;
         echo TbHtml::modalHeader($this->header);
 
