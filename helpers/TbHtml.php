@@ -4563,6 +4563,7 @@ EOD;
         $headingOptions = TbArray::popValue('headingOptions', $htmlOptions, array());
         $closeLabel = TbArray::popValue('closeLabel', $htmlOptions, self::CLOSE_TEXT);
         $closeButton = self::closeButton($closeLabel, $closeOptions);
+        self::addCssClass('modal-title', $headingOptions);
         $header = self::tag('h4', $headingOptions, $content);
         return self::tag('div', $htmlOptions, $closeButton . $header);
     }
