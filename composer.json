@@ -17,7 +17,7 @@
         }
     ],
     "require": {
-        "twbs/bootstrap": ">=3.0.0"
+        "twbs/bootstrap": "3.2.*"
     },
     "require-dev": {
         "codeception/codeception": "@stable",
