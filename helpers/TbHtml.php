@@ -285,6 +285,14 @@ class TbHtml extends CHtml // required in order to access the protected methods 
     const COLUMN_SIZE_LARGE = 'lg';
 
     //
+    // MODAL
+    // --------------------------------------------------
+
+    const MODAL_SIZE_SMALL = ' modal-sm';
+    const MODAL_SIZE_DEFAULT = '';
+    const MODAL_SIZE_LARGE = ' modal-lg';
+
+    //
     // ICON
     // --------------------------------------------------
 
