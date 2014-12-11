@@ -2651,6 +2651,15 @@ EOD;
 
         $htmlOptions = self::normalizeInputOptions($htmlOptions);
         self::addCssClass('form-control', $htmlOptions);
+        
+        $attributesLabel = $model->attributeLabels();
+        $placeHolder = \TbArray::popValue('placeholder', $htmlOptions, null);
+
+        if ($placeHolder !== null) {
+            $htmlOptions['placeholder'] = $placeHolder;
+        } else if ($placeHolder !== false) {
+            $htmlOptions['placeholder'] = isset($attributesLabel[$attribute]) ? $attributesLabel[$attribute] : '';
+        }
 
         $addOnClass = self::getAddOnClasses($htmlOptions);
         $addOnOptions = TbArray::popValue('addOnOptions', $htmlOptions, array());
