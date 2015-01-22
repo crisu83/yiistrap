@@ -7,6 +7,8 @@ Twitter Bootstrap for Yii.
 
 ## Installation
 
+### With Composer ###
+
 The easiest way to install Yiistrap is to use Composer.
 Add the following to your composer.json file:
 
@@ -51,7 +53,9 @@ Add the following line to your main layout in ```protected/views/layouts/main.ph
 
 ### Without Composer ###
 
-If you are not using Composer, then you need to add the following to your application configuration:
+Follow the above steps first, but download and unzip Yiistrap instead of requiring it through Composer.
+
+Then you also need to add the following to your application configuration:
 
 ```php
 'aliases' => array(
