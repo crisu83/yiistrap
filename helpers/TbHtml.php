@@ -1106,7 +1106,7 @@ class TbHtml extends CHtml // required in order to access the protected methods 
             if (!is_array($empty)) {
                 $empty = array('' => $empty);
             }
-            $data = TbArray::mergeArray($data, $empty);
+            $data = TbArray::merge($empty, $data);
         }
 
         $items = array();
