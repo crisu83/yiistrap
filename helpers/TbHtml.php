@@ -1103,9 +1103,7 @@ class TbHtml extends CHtml // required in order to access the protected methods 
         $labelOptions = TbArray::popValue('labelOptions', $htmlOptions, array());
         $empty = TbArray::popValue('empty', $htmlOptions);
         if (isset($empty)) {
-            if (!is_array($empty)) {
-                $empty = array('' => $empty);
-            }
+            $empty = !is_array($empty) ? array('' => $empty) : $empty;
             $data = TbArray::merge($empty, $data);
         }
 
