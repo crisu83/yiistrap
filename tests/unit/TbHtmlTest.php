@@ -1767,10 +1767,12 @@ class TbHtmlTest extends TbTestCase
         $items = array(0);
         $model = new Dummy();
         $outputsWithHidden = array(
-            'checkbox' => TbHtml::checkBox('cb1'),
-            'checkboxList' => TbHtml::checkBoxList('cb2', 0, $items),
-            'radio' => TbHtml::radioButton('rd1'),
-            'radioList' => TbHtml::radioButtonList('rd2', 0, $items),
+            // hidden field not printed in these cases
+            'checkbox' => TbHtml::checkBox('cb1', false, array('uncheckValue'=>1)),
+            'checkboxList' => TbHtml::checkBoxList('cb2', 0, $items, array('uncheckValue'=>1)),
+            'radio' => TbHtml::radioButton('rd1', false, array('uncheckValue'=>1)),
+            'radioList' => TbHtml::radioButtonList('rd2', 0, $items, array('uncheckValue'=>1)),
+            // but not printed by default in active* methods o_O
             'activeCheckbox' => TbHtml::activeCheckBox($model, 'checkboxList'),
             'activeCheckboxList' => TbHtml::activeCheckBoxList($model, 'checkboxList', $items),
             'activeRadio' => TbHtml::activeRadioButton($model, 'radioList'),
@@ -1783,10 +1785,10 @@ class TbHtmlTest extends TbTestCase
         // comparing against null 'uncheckValue' option
         $noHiddenOptions = array('uncheckValue'=>null);
         $outputsWithoutHidden = array(
-            'checkbox' => TbHtml::checkBox('cb1', false, $noHiddenOptions),
-            'checkboxList' => TbHtml::checkBoxList('cb2', 0, $items, $noHiddenOptions),
-            'radio' => TbHtml::radioButton('rd1', false, $noHiddenOptions),
-            'radioList' => TbHtml::radioButtonList('rd2', 0, $items, $noHiddenOptions),
+            'checkbox' => TbHtml::checkBox('cb1'),
+            'checkboxList' => TbHtml::checkBoxList('cb2', 0, $items),
+            'radio' => TbHtml::radioButton('rd1'),
+            'radioList' => TbHtml::radioButtonList('rd2', 0, $items),
             'activeCheckbox' => TbHtml::activeCheckBox($model, 'checkboxList', $noHiddenOptions),
             'activeCheckboxList' => TbHtml::activeCheckBoxList($model, 'checkboxList', $items, $noHiddenOptions),
             'activeRadio' => TbHtml::activeRadioButton($model, 'radioList', $noHiddenOptions),
