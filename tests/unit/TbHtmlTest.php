@@ -1777,7 +1777,7 @@ class TbHtmlTest extends TbTestCase
             'activeRadioList' => TbHtml::activeRadioButtonList($model, 'radioList', $items),
         );
         foreach ($outputsWithHidden as $output) {
-            $I->seeNodeChildren($I->createNode($output), 'input[type=hidden]');
+            $I->seeNodeChildren($I->createNode($output), array('input[type=hidden]'));
         }
 
         // comparing against null 'uncheckValue' option
@@ -1793,7 +1793,7 @@ class TbHtmlTest extends TbTestCase
             'activeRadioList' => TbHtml::activeRadioButtonList($model, 'radioList', $items, $noHiddenOptions),
         );
         foreach ($outputsWithoutHidden as $output) {
-            $I->dontSeeNodeChildren($I->createNode($output), 'input[type=hidden]');
+            $I->dontSeeNodeChildren($I->createNode($output), array('input[type=hidden]'));
         }
     }
 
