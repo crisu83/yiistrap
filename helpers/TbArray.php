@@ -21,7 +21,7 @@ class TbArray
      */
     public static function getValue($key, array $array, $defaultValue = null)
     {
-        return isset($array[$key]) ? $array[$key] : $defaultValue;
+        return array_key_exists($key, $array) ? $array[$key] : $defaultValue;
     }
 
     /**
