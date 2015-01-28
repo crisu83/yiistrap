@@ -25,7 +25,7 @@ class TbArrayTest extends TbTestCase
         $this->assertEquals('value', TbArray::popValue('key', $array));
         $this->assertArrayNotHasKey('key', $array);
         $nullValueArray = array('key' => null);
-        $this->assertNull(TbArray::popValue('key', $nullValueArray));
+        $this->assertNull(TbArray::popValue('key', $nullValueArray, 'not null'), 'Null value has to be found');
         $this->assertArrayNotHasKey('key', $nullValueArray);
     }
 
