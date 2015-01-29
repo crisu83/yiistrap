@@ -10,7 +10,7 @@ Twitter Bootstrap for Yii.
 ### With Composer ###
 
 The easiest way to install Yiistrap is to use Composer.
-Add the following to your composer.json file:
+Add the following to your protected/composer.json file:
 
 ```js
 "require": {
@@ -33,6 +33,10 @@ Add the following to your application configuration:
     'bootstrap' => array(
         'class' => '\TbApi',
     ),
+),
+'aliases' => array(
+    .....
+    'vendor.twbs.bootstrap.dist' => realpath(__DIR__ . '/../vendor/twbs/bootstrap/dist'),
 ),
 .....
 'modules' => array(
