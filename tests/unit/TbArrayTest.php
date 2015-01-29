@@ -14,6 +14,9 @@ class TbArrayTest extends TbTestCase
     {
         $array = array('key' => 'value');
         $this->assertEquals('value', TbArray::getValue('key', $array));
+        $nullValueArray = array('key' => null);
+        $this->assertNull(TbArray::getValue('key', $nullValueArray));
+        $this->assertNull(TbArray::getValue('key', $nullValueArray, 'not null'), 'Null value has to be found');
     }
 
     public function testPopValue()
@@ -21,6 +24,9 @@ class TbArrayTest extends TbTestCase
         $array = array('key' => 'value');
         $this->assertEquals('value', TbArray::popValue('key', $array));
         $this->assertArrayNotHasKey('key', $array);
+        $nullValueArray = array('key' => null);
+        $this->assertNull(TbArray::popValue('key', $nullValueArray, 'not null'), 'Null value has to be found');
+        $this->assertArrayNotHasKey('key', $nullValueArray);
     }
 
     public function testDefaultValue()

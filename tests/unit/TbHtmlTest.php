@@ -1761,6 +1761,44 @@ class TbHtmlTest extends TbTestCase
         );
     }
 
+    public function testUncheckValueOptionForCheckboxesAndRadioInputs()
+    {
+        $I = $this->codeGuy;
+        $items = array(0);
+        $model = new Dummy();
+        $outputsWithHidden = array(
+            // hidden field not printed in these cases
+            'checkbox' => TbHtml::checkBox('cb1', false, array('uncheckValue'=>1)),
+            'checkboxList' => TbHtml::checkBoxList('cb2', 0, $items, array('uncheckValue'=>1)),
+            'radio' => TbHtml::radioButton('rd1', false, array('uncheckValue'=>1)),
+            'radioList' => TbHtml::radioButtonList('rd2', 0, $items, array('uncheckValue'=>1)),
+            // but not printed by default in active* methods o_O
+            'activeCheckbox' => TbHtml::activeCheckBox($model, 'checkboxList'),
+            'activeCheckboxList' => TbHtml::activeCheckBoxList($model, 'checkboxList', $items),
+            'activeRadio' => TbHtml::activeRadioButton($model, 'radioList'),
+            'activeRadioList' => TbHtml::activeRadioButtonList($model, 'radioList', $items),
+        );
+        foreach ($outputsWithHidden as $output) {
+            $I->seeNodeChildren($I->createNode($output), array('input[type=hidden]'));
+        }
+
+        // comparing against null 'uncheckValue' option
+        $noHiddenOptions = array('uncheckValue'=>null);
+        $outputsWithoutHidden = array(
+            'checkbox' => TbHtml::checkBox('cb1'),
+            'checkboxList' => TbHtml::checkBoxList('cb2', 0, $items),
+            'radio' => TbHtml::radioButton('rd1'),
+            'radioList' => TbHtml::radioButtonList('rd2', 0, $items),
+            'activeCheckbox' => TbHtml::activeCheckBox($model, 'checkboxList', $noHiddenOptions),
+            'activeCheckboxList' => TbHtml::activeCheckBoxList($model, 'checkboxList', $items, $noHiddenOptions),
+            'activeRadio' => TbHtml::activeRadioButton($model, 'radioList', $noHiddenOptions),
+            'activeRadioList' => TbHtml::activeRadioButtonList($model, 'radioList', $items, $noHiddenOptions),
+        );
+        foreach ($outputsWithoutHidden as $output) {
+            $I->dontSeeNodeChildren($I->createNode($output), array('input[type=hidden]'));
+        }
+    }
+
     public function testActiveUneditableField()
     {
         $I = $this->codeGuy;
