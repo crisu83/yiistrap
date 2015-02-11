@@ -3062,7 +3062,7 @@ EOD;
         }
         $icon = TbArray::popValue('icon', $htmlOptions);
         $iconOptions = TbArray::popValue('iconOptions', $htmlOptions, array());
-        if (strpos($type, 'input') === false) {
+        if (!is_array($type) && strpos($type, 'input') === false) {
             if (!empty($icon)) {
                 $label = self::icon($icon, $iconOptions) . ' ' . $label;
             }
@@ -3094,11 +3094,16 @@ EOD;
             self::addCssClass('dropup', $groupOptions);
         }
         $output = self::openTag('div', $groupOptions);
+        $toggleButtonType = TbArray::popValue('type', $htmlOptions, self::BUTTON_TYPE_HTML);
+        $toggleButtonType = is_array($toggleButtonType) ? $toggleButtonType[1] : $toggleButtonType;
         if (TbArray::popValue('split', $htmlOptions, false)) {
             $output .= self::createButton($type, $label, $htmlOptions);
-            $output .= self::dropdownToggleButton('', $htmlOptions);
+            $label = '';
+        }        
+        if(in_array($toggleButtonType, array(self::BUTTON_TYPE_LINKBUTTON, self::BUTTON_TYPE_LINK))){
+            $output .= self::dropdownToggleLink($label, $htmlOptions);       
         } else {
-            $output .= self::dropdownToggleLink($label, $htmlOptions);
+            $output .= self::dropdownToggleButton($label, $htmlOptions);
         }
         $output .= self::dropdown($items, $menuOptions);
         $output .= '</div>';
@@ -3482,7 +3487,8 @@ EOD;
     public static function buttonDropdown($label, $items, $htmlOptions = array())
     {
         $htmlOptions['items'] = $items;
-        $type = TbArray::popValue('type', $htmlOptions, self::BUTTON_TYPE_LINKBUTTON);
+        $type = isset($htmlOptions['type']) ? $htmlOptions['type'] : self::BUTTON_TYPE_SUBMIT;
+        $type = is_array($type) ? $type[0] : $type;
         return self::btn($type, $label, $htmlOptions);
     }
 
