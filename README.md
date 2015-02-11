@@ -74,6 +74,12 @@ If you are not using Composer, then you need to add the following to your applic
 Documentation not updated yet, but use the current docs as a guideline:
 [http://www.getyiistrap.com](http://www.getyiistrap.com)
 
+Use the following command to generate ApiGen documentation:
+
+```
+php vendor\bin\apigen generate
+```
+
 ___Note: When you use a widget, prepend a ```\``` to the filename to use autoload it through Composer:___
 
 ```php

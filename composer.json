@@ -22,7 +22,8 @@
     "require-dev": {
         "codeception/codeception": "@stable",
         "crisu83/yii-composer": ">=1.0.0",
-        "yiisoft/yii": ">=1.1.13"
+        "yiisoft/yii": ">=1.1.13",
+        "apigen/apigen": "~4.0"
     },
     "scripts": {
         "post-install-cmd": [
