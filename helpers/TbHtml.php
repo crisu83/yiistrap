@@ -3398,7 +3398,6 @@ EOD;
                 if (!empty($items)) {
                     $output .= self::buttonDropdown($buttonLabel, $items, $buttonOptions);
                 } else {
-                    $checked = TbArray::popValue('checked', $buttonOptions, false);
                     if (in_array($toggle, array(self::BUTTON_TOGGLE_CHECKBOX, self::BUTTON_TOGGLE_RADIO))) {
                         // Put the "button" label back into its options and add a few label options as well
                         $buttonOptions['label'] = $buttonLabel;
@@ -3406,6 +3405,11 @@ EOD;
                             array('btn', 'btn-' . TbArray::getValue('color', $buttonOptions)),
                             $buttonOptions['labelOptions']
                         );
+
+                        $checked = TbArray::popValue('checked', $buttonOptions, false);
+                        if ($checked) {
+                            self::addCssClass('active', $buttonOptions['labelOptions']);
+                        }
                         if ($toggle === self::BUTTON_TOGGLE_CHECKBOX) { // BS3 toggle uses checkbox...
                             $output .= self::checkBox($name, $checked, $buttonOptions);
                         } elseif ($toggle === self::BUTTON_TOGGLE_RADIO) { // ...or BS3 toggle uses radio
