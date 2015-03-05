@@ -714,6 +714,25 @@ class TbActiveForm extends CActiveForm
     }
 
     /**
+     * Generates a control group with a widget input.
+     * 
+     * @param CModel $model the data model.
+     * @param string $attribute the attribute name.
+     * @param string $widgetClass The widget class name or class in dot syntax (e.g. application.widgets.MyWidget). Should extend CInputWidget.
+     * @param array $widgetProperties list of additional initial property values for the widget (Property Name => Property Value). Model and attribute already set.
+     * @param array $htmlOptions additional HTML attributes.
+     * @return string the generated control group.
+     * @see TbHtml::customControlGroup
+     */
+    public function widgetControlGroup($model, $attribute, $widgetClass, $widgetProperties = array(), $htmlOptions = array())
+    {
+        $widgetProperties['model'] = $model;
+        $widgetProperties['attribute'] = $attribute;
+        $input = $this->getOwner()->widget($widgetClass, $widgetProperties, true);
+        return $this->customControlGroup($input, $model, $attribute, $htmlOptions);
+    }
+
+    /**
      * Generates a control group for a model attribute.
      * @param string $type the input type.
      * @param CModel $model the data model.
