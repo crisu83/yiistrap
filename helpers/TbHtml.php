@@ -4643,7 +4643,7 @@ EOD;
         $htmlOptions['rel'] = 'popover';
         $htmlOptions['data-content'] = $content;
         $htmlOptions['data-toggle'] = 'popover';
-        return self::tooltipPopover($label, '#', $title, $htmlOptions);
+        return self::tooltipPopover($label, 'javascript:void(0)', $title, $htmlOptions);
     }
 
     /**
