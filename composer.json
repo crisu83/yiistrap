@@ -31,6 +31,9 @@
         ]
     },
     "extra": {
+        "branch-alias": {
+            "dev-develop": "2.0.x-dev"
+        },
         "yii-install-writable": [
             "tests/_log"
         ]
