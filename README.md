@@ -5,6 +5,13 @@ Yiistrap
 
 Twitter Bootstrap for Yii.
 
+## NOTE!
+
+We have re-arranged the repository for this project to make it easier for people to choose the right version. Please make sure you do the following changes if they apply to you:
+
+- If you are using the old ```bs3``` branch you should switch to use the ```2.0.0``` tag (or ```2.0.x-dev``` alias). 
+- If you are using the old ```master``` branch you should switch to use the ```1.x``` branch. 
+
 ## Installation
 
 ### With Composer ###
@@ -14,7 +21,7 @@ Add the following to your composer.json file:
 
 ```js
 "require": {
-	"crisu83/yiistrap": "dev-bs3"
+	"crisu83/yiistrap": "2.0.x-dev"
 }
 ````
 
