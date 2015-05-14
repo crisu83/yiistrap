@@ -118,7 +118,7 @@ class TbActiveForm extends CActiveForm
             $option['status'] = 1;
         }
         if ($enableClientValidation) {
-            $validators = TbArray::getValue('clientValidation', $htmlOptions, array());
+            $validators = (array) TbArray::popValue('clientValidation', $htmlOptions, array());
             $attributeName = $attribute;
             if (($pos = strrpos($attribute, ']')) !== false && $pos !== strlen($attribute) - 1) // e.g. [a]name
             {
