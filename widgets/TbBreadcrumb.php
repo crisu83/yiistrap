@@ -53,7 +53,11 @@ class TbBreadcrumb extends CWidget
                     }
                     $links[$label] = $url;
                 } else {
-                    $links[] = $this->encodeLabel ? CHtml::encode($url) : $url;
+                       if(is_array($url)){
+                                $links[$label] = $url;                                
+                        }else{
+                                $links[] = $this->encodeLabel ? CHtml::encode($url) : $url;
+                        }
                 }
             }
             echo TbHtml::breadcrumbs($links, $this->htmlOptions);
